@@ -1,0 +1,28 @@
+<dialog class="video-dialog" [open]="isOpen" (click)="onBackdropClick($event)">
+    <article class="video-container main-background">
+        <button class="close-btn" (click)="close()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="video-wrapper">
+            <video #videoPlayer controls class="shared-video">
+                <source [src]="videoSource" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <div class="video-meta" dir="ltr">
+            <h3 class="video-title">{{ videoTitle }}</h3>
+            <p class="video-description">{{ videoDescription }}</p>
+
+            <div class="video-actions">
+                <button class="btn-download" (click)="downloadVideo()">
+                    <i class="fa-solid fa-download"></i> Download
+                </button>
+                <button class="btn-share" (click)="shareVideo()">
+                    <i class="fa-solid fa-share-nodes"></i> Share
+                </button>
+            </div>
+        </div>
+    </article>
+</dialog>

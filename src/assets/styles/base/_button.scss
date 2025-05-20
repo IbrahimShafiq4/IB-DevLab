@@ -1,0 +1,60 @@
+@import './variables';
+
+@mixin hover-effect($background, $border-color, $text) {
+    background-color: $background;
+    border: 1px solid $border-color;
+    color: $text;
+}
+
+button {
+    padding: 0.2rem 0.5rem;
+    outline: none;
+    border: none;
+    font-size: 1rem;
+    border: 1px solid transparent;
+    transition: $main-transition;
+    border-radius: 5px;
+
+    &.primary {
+        @include hover-effect($bs-blue, $primary-color, $white-color);
+
+        &:hover {
+            @include hover-effect(transparent, $bs-blue, $bs-blue);
+        }
+    }
+
+    &.primary-hover {
+        @include hover-effect(transparent, $primary-color, $primary-color);
+
+        &:hover {
+            @include hover-effect($primary-color, $primary-color, $white-color);
+
+            path {
+                stroke: $white-color;
+            }
+        }
+    }
+
+    &.primary-color {
+        color: $primary-color;
+        background-color: transparent;
+        padding-inline: 0;
+    }
+
+    &:disabled {
+        cursor: no-drop;
+    }
+
+    &.default-btn {
+        color: $primary-color;
+        background-color: transparent;
+    }
+
+    &.delete-btn {
+        @include hover-effect($warning-color-100, $warning-color-100, $white-color);
+
+        &:hover {
+            @include hover-effect(transparent, $warning-color-100, $warning-color-100);
+        }
+    }
+}

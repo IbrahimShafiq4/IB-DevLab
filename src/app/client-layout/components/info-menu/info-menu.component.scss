@@ -1,0 +1,143 @@
+@use './../../../../assets/styles/layout' as vars;
+
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.profile-card,
+.skills-card {
+    background-color: vars.$primary-color;
+    padding: 0.5rem 1rem;
+    box-shadow: vars.$main-box-shadow;
+    border: vars.$main-border;
+    transition: vars.$main-transition;
+}
+
+.profile-card {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-direction: column;
+
+    figure {
+        img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid vars.$bs-blue;
+        }
+    }
+
+    .profile-content {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .profile-details {
+            h4 {
+                color: vars.$white-color;
+                font-size: 1.25rem;
+                text-align: center;
+            }
+
+            .age,
+            .title {
+                color: vars.$grey-color-500;
+                font-size: vars.$default-p-font-size;
+                text-align: center;
+            }
+
+            .bio {
+                color: vars.$grey-color;
+                font-size: vars.$default-p-font-size;
+                text-align: center;
+            }
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+
+            a {
+                color: vars.$white-color;
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: vars.$main-transition;
+
+                &.whatsapp {
+                    background-color: #25D366;
+                }
+
+                &.linkedin {
+                    background-color: #0077B5;
+                }
+
+                &.github {
+                    background-color: vars.$grey-color-30;
+                }
+
+                &:hover {
+                    transform: scale(1.1);
+                }
+
+                i {
+                    font-size: 1.2rem;
+                }
+            }
+        }
+    }
+}
+
+.skills-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    h5 {
+        color: vars.$white-color;
+        font-size: 1.25rem;
+        text-align: center;
+    }
+
+    .skills-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+        justify-content: center;
+
+        .skill-tag {
+            background-color: rgba(vars.$bs-blue, 0.2);
+            color: vars.$white-color;
+            padding: 0.5rem;
+            border-radius: 2px;
+            font-size: 0.625rem;
+            border: 1px solid vars.$bs-blue;
+            transition: vars.$main-transition;
+
+            &:hover {
+                background-color: vars.$bs-blue;
+                transform: translateY(-2px);
+            }
+        }
+    }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+    .profile-card {
+        flex-direction: column;
+        text-align: center;
+
+        .social-links {
+            justify-content: center;
+        }
+    }
+}

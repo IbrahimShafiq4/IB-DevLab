@@ -1,0 +1,45 @@
+<article class="project-card" dir="ltr" [attr.data-project-name]="title" [class.opposite-border-side]="oppositeSideBorder">
+    <div class="video-container">
+        <video #videoPlayer autoplay loop muted>
+            <source [src]="videoSrc" type="video/mp4">
+            Your browser doesn't support HTML5 video
+        </video>
+    </div>
+
+    <div class="project-content main-background">
+        <div class="project-meta flex-column align-items-start">
+            <div class="project-tags">
+                <ul>
+                    <li *ngFor="let tag of tags">
+                        <span class="tag-icon">
+                            <i [class]="getTagIcon(tag)"></i>
+                        </span>
+                        {{ tag }}
+                    </li>
+                </ul>
+            </div>
+
+            <div class="project-date">
+                <i class="far fa-calendar-alt"></i>
+                {{ date | date:'mediumDate' }}
+            </div>
+        </div>
+
+        <h3 class="project-title">{{ title.length > 50 ? title.slice(0, 50) + '...' : title }}</h3>
+
+        <p class="project-description" [innerHTML]="description"></p>
+
+        <div class="project-actions flex-wrap">
+            <button class="primary rounded-0 px-4 text-nowrap" [routerLink]="projectUrl">
+                {{ visitText }}
+            </button>
+
+            <div class="social-share" *ngIf="showShare">
+                <button *ngFor="let platform of sharePlatforms" [class]="'share-btn ' + platform"
+                    (click)="shareProject(platform)">
+                    <i [class]="'fab fa-' + platform"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</article>

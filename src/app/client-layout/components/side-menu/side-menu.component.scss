@@ -1,0 +1,38 @@
+@import './../../../../assets/styles/layout';
+
+aside {
+    padding: 0.5rem 1rem;
+}
+
+h4 {
+    font-size: 1.25rem;
+    color: $white-color;
+    text-align: center;
+}
+
+ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+li {
+    color: $white-color;
+    position: relative;
+    width: fit-content;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -5px;
+        height: 100%;
+        width: 3%;
+        background-color: $bs-blue;
+        transition: $main-transition;
+    }
+}
+
+.li-showed {
+    width: calc(100% + 10px);
+}

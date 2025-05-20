@@ -1,0 +1,83 @@
+@import './variables';
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+a,
+ul,
+li,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+figure {
+    margin: 0;
+}
+
+.font-weight-400 {
+    font-weight: 400;
+}
+
+.font-weight-500 {
+    font-weight: 500;
+}
+
+.font-weight-600 {
+    font-weight: 600;
+}
+
+.font-weight-700 {
+    font-weight: 700;
+}
+
+.font-weight-800 {
+    font-weight: 800;
+}
+
+.font-weight-900 {
+    font-weight: 900;
+}
+
+.font-size-inherit {
+    font-size: inherit;
+}
+
+.w-fit-content {
+    width: fit-content;
+}
+
+.rtl-dir {
+    direction: rtl;
+}
+
+.ltr-dir {
+    direction: ltr;
+}
+
+.main-background {
+    background-color: $primary-color;
+    background-image: repeating-linear-gradient(45deg,
+            rgba(255, 255, 255, 0.04),
+            rgba(255, 255, 255, 0.04) 1px,
+            transparent 1px,
+            transparent 30px,
+        ),
+        repeating-linear-gradient(-45deg,
+            rgba(255, 255, 255, 0.04),
+            rgba(255, 255, 255, 0.04) 1px,
+            transparent 1px,
+            transparent 30px,
+        );
+
+    border: $main-border;
+    box-shadow: $main-box-shadow;
+}

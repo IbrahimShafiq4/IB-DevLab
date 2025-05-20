@@ -1,0 +1,40 @@
+<header class="d-flex align-items-center justify-content-between mb-1 position-relative">
+    <figure class="logo" role="button" routerLink="/">
+        <img src="assets/images/ib.png" alt="ib-devLab logo">
+    </figure>
+    <nav class="d-flex align-items-center px-5 position-relative">
+        <ul class="d-md-flex d-none align-items-center gap-4 fixed-menu">
+            <li role="button">
+                <a routerLink="/" [routerLinkActive]="'active--li--header'"
+                    [routerLinkActiveOptions]="{exact: true}">الرَئيسية</a>
+            </li>
+            <li role="button">
+                <a routerLink="/projects" [routerLinkActive]="'active--li--header'"
+                    [routerLinkActiveOptions]="{exact: true}">المشاريعْ</a>
+            </li>
+            <li role="button">
+                <a routerLink="/exp" [routerLinkActive]="'active--li--header'"
+                    [routerLinkActiveOptions]="{exact: true}">شُروحات</a>
+            </li>
+        </ul>
+
+        <div class="hamburger-menu d-md-none d-flex" [class.hamburger-menu-active]="activeMenu"
+            (click)="activeMenu = !activeMenu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <ul class="d-flex flex-column align-items-center gap-1 popup-menu d-md-none" [class.active-menu]="activeMenu">
+            <li role="button" class="main-background" style="--delay-amount: 0">
+                <a routerLink="/">الرَئيسية</a>
+            </li>
+            <li role="button" class="main-background" style="--delay-amount: 0.15">
+                <a routerLink="/projects">المشاريعْ</a>
+            </li>
+            <li role="button" class="main-background" style="--delay-amount: 0.3">
+                <a routerLink="/exp">شُروحات</a>
+            </li>
+        </ul>
+    </nav>
+</header>

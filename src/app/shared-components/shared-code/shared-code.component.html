@@ -1,0 +1,124 @@
+<main class="d-flex flex-column gap-1">
+    <article dir="ltr" class="project-card main-background">
+        <div class="project-details">
+            <div class="project-name">
+                <h2 [innerHTML]="projectName"></h2>
+                <div class="project-meta d-flex align-items-center">
+                    <span class="project-date">{{ projectDate }}</span>
+                    <span class="project-version">{{ projectVersion }}</span>
+                </div>
+            </div>
+
+            <div class="project-description">
+                <p [innerHTML]="projectDescription"></p>
+            </div>
+
+            <div class="project-tags">
+                <ul>
+                    @for (tag of tags; track $index) {
+                    <li>
+                        <span class="tag-icon">
+                            <i [class]="getTagIcon(tag)"></i>
+                        </span>
+                        {{ tag }}
+                    </li>
+                    }
+
+                </ul>
+            </div>
+
+            <div class="project-actions">
+                <a class="btn-demo">
+                    <i class="fa-solid fa-eye" (click)="onWatchDemo()"></i> Live Demo
+                </a>
+                <a class="btn-code" (click)="scrollToSource()" role="button">
+                    <i class="fa-solid fa-code"></i> View Source
+                </a>
+                <a class="btn-code" (click)="onNavigateBack()" role="button">
+                    <i class="fa-solid fa-chevron-left"></i> Back
+                </a>
+            </div>
+        </div>
+    </article>
+    @for (htmlCode of HTMLCodeSnippet; track $index) {
+    <article class="main-background" #sourceElement>
+        <div class="title d-flex align-items-center justify-content-between flex-wrap flex-row-reverse">
+            <h4 class="file-name">{{ htmlCode.codeTitle }}</h4>
+            <p (click)="onCopy(htmlCode.code)">{{ !isItCopied ? 'copy' : 'copied'}} <i class="fa-solid fa-copy"
+                    [class.d-none]="isItCopied" [class.d-block]="!isItCopied"></i></p>
+        </div>
+        <pre class="language-javascript" dir="ltr">
+                <code class="language-javascript" [innerHTML]="htmlCode.code | escapeHtml"></code>
+            </pre>
+        <div class="project-actions p-2" dir="ltr">
+            <a class="btn-code" (click)="onNavigateBack()" role="button">
+                <i class="fa-solid fa-chevron-left"></i> Back
+            </a>
+        </div>
+    </article>
+    }
+    @for (cssCode of CSSCodeSnippet; track $index) {
+    <article class="main-background">
+        <div class="title d-flex align-items-center justify-content-between flex-wrap flex-row-reverse">
+            <h4 class="file-name">{{ cssCode.codeTitle }}</h4>
+            <p (click)="onCopy(cssCode.code)">{{ !isItCopied ? 'copy' : 'copied'}} <i class="fa-solid fa-copy"
+                    [class.d-none]="isItCopied" [class.d-block]="!isItCopied"></i></p>
+        </div>
+        <pre class="language-javascript" dir="ltr">
+            <code class="language-javascript" [innerHTML]="cssCode.code"></code>
+        </pre>
+        <div class="project-actions p-2" dir="ltr">
+            <a class="btn-code" (click)="onNavigateBack()" role="button">
+                <i class="fa-solid fa-chevron-left"></i> Back
+            </a>
+        </div>
+    </article>
+    }
+    @for (jsCode of JSCodeSnippet; track $index) {
+    <article class="main-background">
+        <div class="title d-flex align-items-center justify-content-between flex-wrap flex-row-reverse">
+            <h4 class="file-name">{{ jsCode.codeTitle }}</h4>
+            <p (click)="onCopy(jsCode.code)">{{ !isItCopied ? 'copy' : 'copied'}} <i class="fa-solid fa-copy"
+                    [class.d-none]="isItCopied" [class.d-block]="!isItCopied"></i></p>
+        </div>
+        <pre class="language-javascript" dir="ltr">
+            <code class="language-javascript" [innerHTML]="jsCode.code"></code>
+        </pre>
+        <div class="project-actions p-2" dir="ltr">
+            <a class="btn-code" (click)="onNavigateBack()" role="button">
+                <i class="fa-solid fa-chevron-left"></i> Back
+            </a>
+        </div>
+    </article>
+    }
+
+    <article class="main-background p-3 d-flex flex-column gap-3" dir="ltr">
+        <div class="d-flex align-items-center gap-2">
+            <i class="fa-solid fa-file-zipper fs-4" style="color: #6a85fb;"></i>
+            <h5 class="m-0">Project Assets</h5>
+        </div>
+
+        <div class="zip-card p-3 d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-3">
+                <div class="zip-icon">
+                    <i class="fa-solid fa-file-zipper fs-2"></i>
+                </div>
+                <div class="assets-text">
+                    <p class="m-0 fw-bold" dir="ltr">Complete Project Files</p>
+                    <small class="">Includes all source code and assets</small>
+                </div>
+            </div>
+
+            <button class="btn-download" (click)="downloadZip()">
+                <i class="fa-solid fa-download me-2"></i> Download
+            </button>
+        </div>
+
+        <div class="project-actions p-2" dir="ltr">
+            <a class="btn-code" (click)="onNavigateBack()" role="button">
+                <i class="fa-solid fa-chevron-left"></i> Back
+            </a>
+        </div>
+    </article>
+</main>
+<ng-container #popContainer></ng-container>
