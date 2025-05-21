@@ -58,4 +58,42 @@
             <span class="skill-tag">NgRx</span>
         </div>
     </aside>
+
+    <aside class="main-background pagination-card" dir="ltr">
+        <div class="pagination-container">
+            <button class="pagination-arrow" aria-label="Previous page" (click)="prevPage()"
+                [disabled]="currentPage === 1">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <div class="pagination-numbers">
+                @if (getPageNumbers()[0] > 1) {
+                <button class="page-number" (click)="goToPage(1)">1</button>
+                @if (getPageNumbers()[0] > 2) {
+                <span class="page-dots">...</span>
+                }
+                }
+
+                @for (page of getPageNumbers(); track page) {
+                <button class="page-number" [class.active]="page === currentPage" (click)="goToPage(page)">
+                    {{ page }}
+                </button>
+                }
+
+                @if (getPageNumbers()[getPageNumbers().length - 1] < totalPages) { @if
+                    (getPageNumbers()[getPageNumbers().length - 1] < totalPages - 1) { <span class="page-dots">
+                    ...</span>
+                    }
+                    <button class="page-number" (click)="goToPage(totalPages)">
+                        {{ totalPages }}
+                    </button>
+                    }
+            </div>
+
+            <button class="pagination-arrow" aria-label="Next page" (click)="nextPage()"
+                [disabled]="currentPage === totalPages">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+    </aside>
 </div>

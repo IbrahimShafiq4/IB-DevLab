@@ -1,9 +1,9 @@
 <!-- <aside class="main-background" dir="ltr">
-    <h4>Page Titles</h4>
+    <h4>Page Projects</h4>
     <ul>
-        @for (item of projectTitles; track $index) {
-        <li [class.li-showed]="getActiveTab(item.title)">
-            {{ item.title }}
+        @for (item of projectTitles; track trackByFn($index, item)) {
+        <li [class.li-showed]="isActive(item.id)" class="menu-item">
+            <a [href]="'#' + item.title" class="truncate">{{ item.title.length > 30 ? item.title.slice(0, 30) + '...' : item.title }}</a>
         </li>
         }
     </ul>

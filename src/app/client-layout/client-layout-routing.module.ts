@@ -20,6 +20,9 @@ import { SolarSystemLoadingComponent } from './components/structured-components/
 import { TextStrokeAnimationComponent } from './components/structured-components/text-stroke-animation/text-stroke-animation.component';
 import { TextStrokeFillAnimationComponent } from './components/structured-components/text-stroke-fill-animation/text-stroke-fill-animation.component';
 import { AnimatedGIFImage3dComponent } from './components/structured-components/animated-gifimage3d/animated-gifimage3d.component';
+import { HtmlCssJsComponent } from './components/structured-components/html-css-js/html-css-js.component';
+import { NewsAppComponent } from './components/structured-components/news-app/news-app.component';
+import { PieChartComponent } from './components/structured-components/pie-chart/pie-chart.component';
 
 const routes: Routes = [
   {
@@ -123,8 +126,22 @@ const routes: Routes = [
         path: 'text-stroke-animation',
         component: TextStrokeAnimationComponent,
         title: 'Text Stroke Animation'
-      }
-
+      },
+      {
+        path: 'html-css-js',
+        component: HtmlCssJsComponent,
+        title: 'HTML CSS JS projects'
+      },
+      {
+        path: 'news-app',
+        component: NewsAppComponent,
+        title: 'News app project'
+      },
+      {
+        path: 'pie-chart',
+        component: PieChartComponent,
+        title: 'Pie chart project'
+      },
     ]
   }
 ];

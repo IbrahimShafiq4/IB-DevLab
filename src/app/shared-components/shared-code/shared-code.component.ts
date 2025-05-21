@@ -33,13 +33,16 @@ export class SharedCodeComponent implements AfterViewInit {
   @Input() projectVersion: string = '';
   @Input() projectDate: string = '';
   @Input() zipFile: string = ''
+  @Input() isProjectHasNotAssists: boolean = true;
+  @Input() projectOnYoutube: string = '';
+  @Input() project_demo: string = '';
 
   @Input() tags: string[] = ['Web Development', 'HTML', 'CSS', 'JS', 'API'];
 
   private _ComponentFactoryResolver = inject(ComponentFactoryResolver);
   @ViewChild('popContainer', { read: ViewContainerRef, static: true }) popupContainer!: ViewContainerRef;
   @ViewChild('sourceElement') sourceElement!: ElementRef;
-  
+
   private _Router: Router = inject(Router);
   private _ActivatedRoute: ActivatedRoute = inject(ActivatedRoute);
 
@@ -106,7 +109,9 @@ export class SharedCodeComponent implements AfterViewInit {
     }
   }
 
-  async onWatchDemo() {
+  onWatchDemo() {
+    console.log('hello')
+
     this.popupContainer.clear();
 
     const componentRef = this.popupContainer.createComponent(SharedVideoComponent);

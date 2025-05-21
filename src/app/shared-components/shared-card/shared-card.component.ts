@@ -21,6 +21,9 @@ export class SharedCardComponent {
   @Input() projectUrl: string = '#';
   @Input() showShare: boolean = true;
   @Input() oppositeSideBorder: boolean | undefined = false;
+  @Input() isNavigationOnTheWebsite: boolean = false;
+  @Input() project_demo: string = '';
+  @Input() project_id: string = ''
 
   sharePlatforms: string[] = ['twitter', 'facebook', 'linkedin', 'whatsapp'];
 
@@ -62,5 +65,15 @@ export class SharedCardComponent {
     };
 
     window.open(urls[platform], '_blank', 'width=600,height=400');
+  }
+
+  ngAfterViewInit() {
+    if (this.videoPlayer) {
+      this.videoPlayer.nativeElement.muted = true;
+      this.videoPlayer.nativeElement.playsInline = true;
+      this.videoPlayer.nativeElement.play().catch(e => {
+        console.warn('Autoplay blocked:', e);
+      });
+    }
   }
 }

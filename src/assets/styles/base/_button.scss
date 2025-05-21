@@ -6,7 +6,7 @@
     color: $text;
 }
 
-button {
+button, a {
     padding: 0.2rem 0.5rem;
     outline: none;
     border: none;
@@ -24,14 +24,10 @@ button {
     }
 
     &.primary-hover {
-        @include hover-effect(transparent, $primary-color, $primary-color);
+        @include hover-effect(transparent, $bs-blue, $bs-blue);
 
         &:hover {
-            @include hover-effect($primary-color, $primary-color, $white-color);
-
-            path {
-                stroke: $white-color;
-            }
+            @include hover-effect($bs-blue, $bs-blue, $white-color);
         }
     }
 

@@ -1,15 +1,10 @@
 <section class="row g-1">
-    @for (project of projects; track $index; let index = $index) {
+    @for (project of paginatedProjects; track $index; let index = $index) {
     <div class="col-md-6 col-12">
-        <app-shared-card
-            [date]="project.date"
-            [projectUrl]="project.projectUrl"
-            [description]="project.description"
-            [title]="project.title"
-            [videoSrc]="project.videoSrc"
-            [tags]="project.tags"
-            [oppositeSideBorder]="index % 2 === 0"
-        ></app-shared-card>
+        <app-shared-card [date]="project.date" [isNavigationOnTheWebsite]="project.navigationState"
+            [projectUrl]="project.projectUrl" [description]="project.description" [title]="project.title"
+            [videoSrc]="project.videoSrc" [tags]="project.tags"
+            [oppositeSideBorder]="index % 2 === 0"></app-shared-card>
     </div>
     }
 </section>

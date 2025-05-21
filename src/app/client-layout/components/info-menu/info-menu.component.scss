@@ -4,6 +4,8 @@
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+    position: relative;
+    z-index: -1;
 }
 
 .profile-card,
@@ -130,7 +132,6 @@
     }
 }
 
-// Responsive adjustments
 @media (max-width: 768px) {
     .profile-card {
         flex-direction: column;
@@ -139,5 +140,92 @@
         .social-links {
             justify-content: center;
         }
+    }
+}
+
+.pagination-card {
+    padding: 1rem;
+    background-color: vars.$primary-color;
+    box-shadow: vars.$main-box-shadow;
+    border: vars.$main-border;
+}
+
+.pagination-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.pagination-arrow {
+    background: transparent;
+    border: 1px solid vars.$bs-blue;
+    color: vars.$white-color;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: vars.$main-transition;
+
+    &:hover {
+        background: rgba(vars.$bs-blue, 0.2);
+        transform: scale(1.1);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+.pagination-numbers {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.page-number {
+    background: transparent;
+    border: 1px solid vars.$bs-blue;
+    color: vars.$white-color;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: vars.$main-transition;
+    font-size: 0.9rem;
+
+    &:hover:not(.active) {
+        background: rgba(vars.$bs-blue, 0.2);
+    }
+
+    &.active {
+        background: vars.$bs-blue;
+        font-weight: bold;
+    }
+}
+
+.page-dots {
+    color: vars.$grey-color;
+    padding: 0 0.5rem;
+}
+
+@media (max-width: 480px) {
+    .pagination-numbers {
+        gap: 0.25rem;
+    }
+
+    .page-number,
+    .pagination-arrow {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8rem;
     }
 }

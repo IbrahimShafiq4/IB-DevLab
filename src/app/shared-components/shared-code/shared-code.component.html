@@ -28,12 +28,15 @@
             </div>
 
             <div class="project-actions">
-                <a class="btn-demo">
-                    <i class="fa-solid fa-eye" (click)="onWatchDemo()"></i> Live Demo
+                <a class="btn-demo" (click)="!projectOnYoutube ? onWatchDemo() : null"
+                    [href]="projectOnYoutube ? projectOnYoutube : null" target="_blank">
+                    <i class="fa-solid fa-eye"></i> Live Demo
                 </a>
+                @if (isProjectHasNotAssists) {
                 <a class="btn-code" (click)="scrollToSource()" role="button">
                     <i class="fa-solid fa-code"></i> View Source
                 </a>
+                }
                 <a class="btn-code" (click)="onNavigateBack()" role="button">
                     <i class="fa-solid fa-chevron-left"></i> Back
                 </a>
@@ -92,13 +95,14 @@
     </article>
     }
 
+    @if (isProjectHasNotAssists) {
     <article class="main-background p-3 d-flex flex-column gap-3" dir="ltr">
         <div class="d-flex align-items-center gap-2">
             <i class="fa-solid fa-file-zipper fs-4" style="color: #6a85fb;"></i>
             <h5 class="m-0">Project Assets</h5>
         </div>
 
-        <div class="zip-card p-3 d-flex justify-content-between align-items-center">
+        <div class="zip-card p-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div class="d-flex align-items-center gap-3">
                 <div class="zip-icon">
                     <i class="fa-solid fa-file-zipper fs-2"></i>
@@ -109,7 +113,7 @@
                 </div>
             </div>
 
-            <button class="btn-download" (click)="downloadZip()">
+            <button class="btn-download d-block" (click)="downloadZip()">
                 <i class="fa-solid fa-download me-2"></i> Download
             </button>
         </div>
@@ -120,5 +124,6 @@
             </a>
         </div>
     </article>
+    }
 </main>
 <ng-container #popContainer></ng-container>

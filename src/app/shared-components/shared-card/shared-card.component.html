@@ -1,9 +1,15 @@
-<article class="project-card" dir="ltr" [attr.data-project-name]="title" [class.opposite-border-side]="oppositeSideBorder">
+<article class="project-card" dir="ltr" [attr.data-project-name]="title"
+    [class.opposite-border-side]="oppositeSideBorder">
     <div class="video-container">
-        <video #videoPlayer autoplay loop muted>
-            <source [src]="videoSrc" type="video/mp4">
-            Your browser doesn't support HTML5 video
-        </video>
+        @if (isNavigationOnTheWebsite) {
+        <video #videoPlayer autoplay loop [src]="videoSrc" type="video/mp4"></video>
+        }
+
+        @if(!isNavigationOnTheWebsite) {
+        <figure>
+            <img [src]="videoSrc" [alt]="title" [title]="title">
+        </figure>
+        }
     </div>
 
     <div class="project-content main-background">
@@ -30,9 +36,23 @@
         <p class="project-description" [innerHTML]="description"></p>
 
         <div class="project-actions flex-wrap">
-            <button class="primary rounded-0 px-4 text-nowrap" [routerLink]="projectUrl">
+            @if (isNavigationOnTheWebsite) {
+            <button class="primary rounded-0 px-4 text-nowrap"
+                [routerLink]="isNavigationOnTheWebsite ? projectUrl : null">
                 {{ visitText }}
             </button>
+            }
+
+            @if (!isNavigationOnTheWebsite) {
+            <a class="primary rounded-0 px-4 text-nowrap d-block" target="_blank"
+                [href]="!isNavigationOnTheWebsite ? projectUrl : null">{{ visitText }}</a>
+
+            <button class="btn-code rounded-0 px-4 text-nowrap"
+                [routerLink]="project_demo">
+                Project Brief
+            </button>
+            }
+
 
             <div class="social-share" *ngIf="showShare">
                 <button *ngFor="let platform of sharePlatforms" [class]="'share-btn ' + platform"

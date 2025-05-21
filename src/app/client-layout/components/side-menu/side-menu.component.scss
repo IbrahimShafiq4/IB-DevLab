@@ -20,6 +20,18 @@ li {
     color: $white-color;
     position: relative;
     width: fit-content;
+    z-index: 2;
+
+    a {
+        position: relative;
+        z-index: 2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        display: block;
+        color: #fff;
+    }
 
     &::before {
         content: '';
@@ -30,9 +42,12 @@ li {
         width: 3%;
         background-color: $bs-blue;
         transition: $main-transition;
+        z-index: 1;
     }
 }
 
 .li-showed {
-    width: calc(100% + 10px);
+    &::before {
+        width: 103%;
+    }
 }
