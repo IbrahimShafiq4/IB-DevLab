@@ -16,8 +16,11 @@
             <p class="video-description">{{ videoDescription }}</p>
 
             <div class="video-actions">
-                <button class="btn-download" (click)="downloadVideo()">
-                    <i class="fa-solid fa-download"></i> Download
+                <button class="btn-download" (click)="download('video')">
+                    <i class="fa-solid fa-download"></i> Download Video
+                </button>
+                <button class="btn-download" (click)="download('file')">
+                    <i class="fa-solid fa-download"></i> Download File
                 </button>
                 <button class="btn-share" (click)="shareVideo()">
                     <i class="fa-solid fa-share-nodes"></i> Share

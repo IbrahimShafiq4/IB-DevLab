@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PaginationService } from '../../services/pagination.service';
+import { RoutingService } from '../../services/routing.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-info-menu',
@@ -11,8 +13,10 @@ export class InfoMenuComponent implements OnInit {
   currentPage = 1;
   totalPages = 0;
   itemsPerPage = 20;
+  isPaginationActive: boolean = false;
+  private routeSubscription?: Subscription;
 
-  constructor(private paginationService: PaginationService) { }
+  constructor(private paginationService: PaginationService, private _RoutingService: RoutingService) { }
 
   ngOnInit() {
     this.paginationService.currentPage$.subscribe(page => {
@@ -23,6 +27,16 @@ export class InfoMenuComponent implements OnInit {
       this.itemsPerPage = this.paginationService.getItemsPerPage();
       this.totalPages = Math.ceil(totalItems / this.itemsPerPage);
     });
+
+    this.routeSubscription = this._RoutingService.isRouteActive$.subscribe(
+      (isActive: boolean) => {
+        this.isPaginationActive = isActive;
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    this.routeSubscription?.unsubscribe();
   }
 
   goToPage(page: number): void {

@@ -59,6 +59,7 @@
         </div>
     </aside>
 
+    @if (isPaginationActive) {
     <aside class="main-background pagination-card" dir="ltr">
         <div class="pagination-container">
             <button class="pagination-arrow" aria-label="Previous page" (click)="prevPage()"
@@ -96,4 +97,5 @@
             </button>
         </div>
     </aside>
+    }
 </div>

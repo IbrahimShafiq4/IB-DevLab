@@ -36,6 +36,7 @@ export class SharedCodeComponent implements AfterViewInit {
   @Input() isProjectHasNotAssists: boolean = true;
   @Input() projectOnYoutube: string = '';
   @Input() project_demo: string = '';
+  @Input() projectVideoSrc: string = '';
 
   @Input() tags: string[] = ['Web Development', 'HTML', 'CSS', 'JS', 'API'];
 
@@ -116,10 +117,10 @@ export class SharedCodeComponent implements AfterViewInit {
 
     const componentRef = this.popupContainer.createComponent(SharedVideoComponent);
 
-    componentRef.instance.videoTitle = 'Tab Navigation System';
-    componentRef.instance.videoDescription =
-      'A responsive tab navigation component built with vanilla JavaScript that smoothly transitions between content sections with animated underline effect.';
-    componentRef.instance.videoSource = './../../../assets/video-samples/video_1.mp4';
+    componentRef.instance.videoTitle = this.projectName;
+    componentRef.instance.videoDescription = this.projectDescription;
+    componentRef.instance.videoSource = this.projectVideoSrc;
+    componentRef.instance.zipFile = this.zipFile;
 
     componentRef.instance.closed.subscribe(() => {
       this.popupContainer.clear();

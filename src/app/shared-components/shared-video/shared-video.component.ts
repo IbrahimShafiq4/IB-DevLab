@@ -13,6 +13,7 @@ export class SharedVideoComponent {
   @Input() videoSource: string = '';
   @Input() videoTitle: string = 'Project Demonstration';
   @Input() videoDescription: string = 'Watch the project in action';
+  @Input() zipFile: string = '';
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
   isOpen = false;
@@ -55,19 +56,18 @@ export class SharedVideoComponent {
     }
   }
 
-  downloadVideo() {
-    if (!this.videoSource) return;
+  download(type: string) {
+    if (!this.videoSource || !this.zipFile) return;
 
     try {
       const link = document.createElement('a');
-      link.href = this.videoSource;
-      link.download = this.videoTitle.replace(/\s+/g, '-').toLowerCase() + '.mp4';
+      link.href = type === 'video' ? this.videoSource : this.zipFile;
+      link.download = type === 'video' ? this.videoTitle.replace(/\s+/g, '-').toLowerCase() + '.mp4' : this.videoTitle.replace(/\s+g/, '_').toLowerCase() + '.rar';
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     } catch (error) {
-      console.error('Error downloading video:', error);
-      alert('Could not download video. Please try again.');
+      type === 'video' ? console.error('Error downloading video:', error) : console.error('Error downloading File:', error);
     }
   }
 

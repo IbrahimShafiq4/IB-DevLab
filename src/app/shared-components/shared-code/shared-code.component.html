@@ -28,10 +28,19 @@
             </div>
 
             <div class="project-actions">
-                <a class="btn-demo" (click)="!projectOnYoutube ? onWatchDemo() : null"
-                    [href]="projectOnYoutube ? projectOnYoutube : null" target="_blank">
+                @if (!projectOnYoutube) {
+                <a class="btn-demo" (click)="projectOnYoutube.length == 0 ? onWatchDemo() : null" role="button"
+                    target="_blank">
                     <i class="fa-solid fa-eye"></i> Live Demo
                 </a>
+                }
+
+                @if (projectOnYoutube) {
+                <a class="btn-demo" role="button" [href]="projectOnYoutube.length != 0 ? projectOnYoutube : null"
+                    target="_blank">
+                    <i class="fa-solid fa-eye"></i> Live Demo
+                </a>
+                }
                 @if (isProjectHasNotAssists) {
                 <a class="btn-code" (click)="scrollToSource()" role="button">
                     <i class="fa-solid fa-code"></i> View Source
