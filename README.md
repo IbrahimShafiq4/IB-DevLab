@@ -1,7 +1,3 @@
-Absolutely — here’s a refined and cleaner `README.md` for your **IBDevLab** project, with **no mention of Angular** and a more professional tone, focusing entirely on the **UI/UX project showcase**:
-
----
-
 # IBDevLab – Interactive Front-End Experiments & Components
 
 **IBDevLab** is a personal design lab for experimenting with creative front-end concepts, micro-interactions, and reusable UI components. It serves as a growing collection of visually engaging and interactive web projects built with modern web technologies.
@@ -62,7 +58,3 @@ Have a cool animation or component idea? Contributions are welcome! Fork the pro
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
-
----
-
-Let me know if you'd like to add badges (e.g. GitHub stars, license, etc.) or include visual screenshots in the README for more impact.
