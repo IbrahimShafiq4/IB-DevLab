@@ -5,7 +5,7 @@
         </button>
 
         <div class="video-wrapper">
-            <video #videoPlayer controls class="shared-video">
+            <video #videoPlayer autoplay muted loop playsInline class="shared-video">
                 <source [src]="videoSource" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -13,7 +13,7 @@
 
         <div class="video-meta" dir="ltr">
             <h3 class="video-title">{{ videoTitle }}</h3>
-            <p class="video-description">{{ videoDescription }}</p>
+            <p class="video-description" [innerHTML]="videoDescription"></p>
 
             <div class="video-actions">
                 <button class="btn-download" (click)="download('video')">

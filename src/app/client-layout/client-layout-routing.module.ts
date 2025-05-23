@@ -23,6 +23,20 @@ import { AnimatedGIFImage3dComponent } from './components/structured-components/
 import { HtmlCssJsComponent } from './components/structured-components/html-css-js/html-css-js.component';
 import { NewsAppComponent } from './components/structured-components/news-app/news-app.component';
 import { PieChartComponent } from './components/structured-components/pie-chart/pie-chart.component';
+import { TextV4Component } from './components/structured-components/text-v4/text-v4.component';
+import { RainsComponent } from './components/structured-components/rains/rains.component';
+import { LoadingV2Component } from './components/structured-components/loading-v2/loading-v2.component';
+import { TextV5Component } from './components/structured-components/text-v5/text-v5.component';
+import { MouseMoveV3Component } from './components/structured-components/mouse-move-v3/mouse-move-v3.component';
+import { TextV3Component } from './components/structured-components/text-v3/text-v3.component';
+import { MouseMoveV2Component } from './components/structured-components/mouse-move-v2/mouse-move-v2.component';
+import { ImageScrollingComponent } from './components/structured-components/image-scrolling/image-scrolling.component';
+import { TiltV1Component } from './components/structured-components/tilt-v1/tilt-v1.component';
+import { TiltV2Component } from './components/structured-components/tilt-v2/tilt-v2.component';
+import { TiltV3Component } from './components/structured-components/tilt-v3/tilt-v3.component';
+import { MouseMoveV1Component } from './components/structured-components/mouse-move-v1/mouse-move-v1.component';
+import { LoadingV1Component } from './components/structured-components/loading-v1/loading-v1.component';
+import { CubeComponent } from './components/structured-components/cube/cube.component';
 
 const routes: Routes = [
   {
@@ -142,6 +156,76 @@ const routes: Routes = [
         component: PieChartComponent,
         title: 'Pie chart project'
       },
+      {
+        path: 'text-v4',
+        component: TextV4Component,
+        title: 'Text Animation V4'
+      },
+      {
+        path: 'rains',
+        component: RainsComponent,
+        title: 'Rains Animation'
+      },
+      {
+        path: 'loading-v2',
+        component: LoadingV2Component,
+        title: 'Loading Animation V2'
+      },
+      {
+        path: 'text-v5',
+        component: TextV5Component,
+        title: 'Text Animation V5'
+      },
+      {
+        path: 'mouse-move-v3',
+        component: MouseMoveV3Component,
+        title: 'Mouse Move Animation V3'
+      },
+      {
+        path: 'text-v3',
+        component: TextV3Component,
+        title: 'Text Animation V3'
+      },
+      {
+        path: 'mouse-move-v2',
+        component: MouseMoveV2Component,
+        title: 'Mouse Move Animation V2'
+      },
+      {
+        path: 'image-scrolling',
+        component: ImageScrollingComponent,
+        title: 'Image Scrolling Effect'
+      },
+      {
+        path: 'tilt-v1',
+        component: TiltV1Component,
+        title: 'Tilt Effect V1'
+      },
+      {
+        path: 'tilt-v2',
+        component: TiltV2Component,
+        title: 'Tilt Effect V2'
+      },
+      {
+        path: 'tilt-v3',
+        component: TiltV3Component,
+        title: 'Tilt Effect V3'
+      },
+      {
+        path: 'mouse-move-v1',
+        component: MouseMoveV1Component,
+        title: 'Mouse Move Animation V1'
+      },
+      {
+        path: 'loading-v1',
+        component: LoadingV1Component,
+        title: 'Loading Animation V1'
+      },
+      {
+        path: 'cube',
+        component: CubeComponent,
+        title: 'Cube Animation'
+      }
     ]
   }
 ];

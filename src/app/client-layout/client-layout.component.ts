@@ -44,7 +44,7 @@ import { SideMenuComponent } from "./components/side-menu/side-menu.component";
             }
         }
     `,
-    imports: [RouterModule, HeaderComponent, InfoMenuComponent, SideMenuComponent]
+    imports: [RouterModule, HeaderComponent, InfoMenuComponent]
 })
 
 export class ClientLayoutComponent {
