@@ -31,6 +31,7 @@ export class RoutingService {
   }
 
   private checkIfRouteIsActive(url: string): boolean {
+    console.log(url)
     const cleanUrl = url.split('?')[0].split('#')[0];
     
     const segments = cleanUrl.split('/').filter(segment => segment !== '');
