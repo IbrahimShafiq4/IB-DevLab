@@ -16,12 +16,9 @@ import { SideMenuComponent } from "./components/side-menu/side-menu.component";
                 <div class="col-lg-3 info-menu top-0">
                     <app-info-menu></app-info-menu>
                 </div>
-                <div class="col-lg-9 col-md-12 pb-5">
+                <div class="col-lg-9 col-md-12">
                     <router-outlet></router-outlet>
                 </div>
-                <!-- <div class="col-lg-3 col-md-12 side-menu top-0">
-                    <app-side-menu></app-side-menu>
-                </div> -->
             </div>
         </section>
 
@@ -41,6 +38,13 @@ import { SideMenuComponent } from "./components/side-menu/side-menu.component";
             z-index: 1;
             @media (max-width: 991px) {
                 position: relative;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .info-menu {
+                order: 9;
+                padding-bottom: 20px;
             }
         }
     `,

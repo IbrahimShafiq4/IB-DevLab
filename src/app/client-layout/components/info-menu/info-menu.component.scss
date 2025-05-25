@@ -148,6 +148,10 @@
     background-color: vars.$primary-color;
     box-shadow: vars.$main-box-shadow;
     border: vars.$main-border;
+
+    @media (max-width: 767px) {
+        order: -1;
+    }
 }
 
 .pagination-container {
@@ -155,6 +159,8 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
+
+
 }
 
 .pagination-arrow {

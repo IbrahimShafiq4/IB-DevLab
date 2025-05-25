@@ -37,15 +37,6 @@ body {
         radial-gradient(50% 50% at 50% 50%,
             #181818 0,
             rgba(7, 7, 7, 1) 100%);
-    
     scroll-behavior: smooth;
-}
-
-body,
-html {
-    min-height: 100vh;
-}
-
-html {
-    position: relative
+    overflow: visible;
 }

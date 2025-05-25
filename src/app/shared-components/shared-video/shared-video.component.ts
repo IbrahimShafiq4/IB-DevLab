@@ -20,7 +20,6 @@ export class SharedVideoComponent {
 
   open() {
     this.isOpen = true;
-    document.body.style.overflow = 'hidden';
 
     setTimeout(() => {
       if (this.videoPlayer?.nativeElement) {
@@ -34,7 +33,6 @@ export class SharedVideoComponent {
 
   close() {
     this.isOpen = false;
-    document.body.style.overflow = '';
 
     if (this.videoPlayer?.nativeElement) {
       this.videoPlayer.nativeElement.pause();
