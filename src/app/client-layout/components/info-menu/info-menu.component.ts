@@ -2,10 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { PaginationService } from '../../services/pagination.service';
 import { RoutingService } from '../../services/routing.service';
 import { Subscription } from 'rxjs';
+import { Analytics } from '@angular/fire/analytics';
+import { logEvent } from '@firebase/analytics';
+import { VisitorsService } from '../../services/visitors/visitors.service';
+import { onValue } from '@angular/fire/database';
 
 @Component({
   selector: 'app-info-menu',
   imports: [],
+  providers: [VisitorsService],
   templateUrl: './info-menu.component.html',
   styleUrl: './info-menu.component.scss'
 })
@@ -15,9 +20,18 @@ export class InfoMenuComponent implements OnInit {
   itemsPerPage = 20;
   isPaginationActive: boolean = false;
   private routeSubscription?: Subscription;
+  visitorCount: number = 0;
 
-  constructor(private paginationService: PaginationService, private _RoutingService: RoutingService) { }
+  constructor(
+    private paginationService: PaginationService,
+    private _RoutingService: RoutingService, private analytics: Analytics, private visitorsService: VisitorsService) { }
 
+
+  trackAction() {
+    logEvent(this.analytics, 'button_click', {
+      button_name: 'demo_click'
+    });
+  }
   ngOnInit() {
     this.paginationService.currentPage$.subscribe(page => {
       this.currentPage = page;
@@ -33,6 +47,8 @@ export class InfoMenuComponent implements OnInit {
         this.isPaginationActive = isActive;
       }
     );
+
+    this.trackAction()
   }
 
   ngOnDestroy() {
@@ -75,5 +91,13 @@ export class InfoMenuComponent implements OnInit {
     }
 
     return pages;
+  }
+
+  trackAndGetCount(): void {
+    this.visitorsService.trackVisit();
+
+    onValue(this.visitorsService.getVisitCount(), (snapshot) => {
+      this.visitorCount = snapshot.val() || 0;
+    });
   }
 }

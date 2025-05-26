@@ -235,3 +235,20 @@
         font-size: 0.8rem;
     }
 }
+
+.visitors-count {
+    background-color: rgba(vars.$bs-blue, 0.2);
+    padding: 5px;
+    border: 1px solid vars.$bs-blue;
+    color: #fff;
+    display: block;
+    transition: 0.3s linear;
+    height: 100%;
+    width: 100%;
+    font-size: 1.25rem;
+
+    &:hover {
+        background-color: vars.$bs-blue;
+        transform: translateY(-2px);
+    }
+}

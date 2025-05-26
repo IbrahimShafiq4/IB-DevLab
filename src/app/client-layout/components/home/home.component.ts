@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener } from '@angular/core';
 import { SharedCardComponent } from "../../../shared-components/shared-card/shared-card.component";
 import { HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -288,7 +288,12 @@ This project is ideal for learning 3D transformations, animations, and interacti
   ) { }
 
   ngOnInit() {
-    this.paginationService.setCurrentPage(1);
+    if (localStorage.getItem('page_num')) {
+      let page_num: number = Number(localStorage.getItem('page_num'))
+      this.paginationService.setCurrentPage(page_num);
+    } else {
+      this.paginationService.setCurrentPage(1);
+    }
     this.paginationService.setAllItems(this.projects.length);
     this.paginationService.setItemsPerPage(4);
 
@@ -313,4 +318,11 @@ This project is ideal for learning 3D transformations, animations, and interacti
 
     this.totalPages = Math.ceil(this.projects.length / itemsPerPage);
   }
+
+  @HostListener('window:beforeunload', ['$event'])
+  onBeforeUnload(event: Event): void {
+    localStorage.clear();
+    console.log('LocalStorage cleared before page unload');
+  }
+
 }

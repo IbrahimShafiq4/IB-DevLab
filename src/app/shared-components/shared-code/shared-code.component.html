@@ -94,7 +94,7 @@
                     [class.d-none]="isItCopied" [class.d-block]="!isItCopied"></i></p>
         </div>
         <pre class="language-javascript" dir="ltr">
-            <code class="language-javascript" [innerHTML]="jsCode.code"></code>
+            <code class="language-javascript" [textContent]="jsCode.code"></code>
         </pre>
         <div class="project-actions p-2" dir="ltr">
             <a class="btn-code" (click)="onNavigateBack()" role="button">
@@ -103,7 +103,6 @@
         </div>
     </article>
     }
-
     @if (isProjectHasNotAssists) {
     <article class="main-background p-3 d-flex flex-column gap-3" dir="ltr">
         <div class="d-flex align-items-center gap-2">
