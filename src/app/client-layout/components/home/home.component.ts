@@ -278,6 +278,24 @@ This project is ideal for learning 3D transformations, animations, and interacti
         tags: ['Web Development', 'HTML', 'CSS'],
         projectUrl: '/loading-v2',
       },
+      {
+        videoSrc: './../../../../assets/video-samples/buttons/button v1.mp4',
+        navigationState: true,
+        title: '🎯 Animated Button Hover Effect with CSS',
+        description: `This project demonstrates a sleek and modern hover animation for anchor (<a>) tags using pure HTML and CSS. The layout centers multiple buttons vertically and horizontally on the screen with a dark background. Each button features a smooth transition effect: when hovered, the background turns white, and the text appears to rise with a subtle transformation, giving a polished, interactive experience. Ideal for stylish landing pages or call-to-action elements.`,
+        date: 'May 23, 27',
+        tags: ['Web Development', 'HTML', 'CSS'],
+        projectUrl: '/buttons/button-v1',
+      },
+      {
+        videoSrc: './../../../../assets/video-samples/night mode/01 - night mode.mp4',
+        navigationState: true,
+        title: '🌗 Meme-Inspired Day/Night Mode Toggle',
+        description: `A ✨ visually explosive and meme-worthy Day/Night mode toggle button that goes beyond the basics. Designed with gradient skies, glowing celestial elements, and a bouncy toggle animation, this button transforms from a bright, happy ☀️ day scene to a mysterious, starry 🌌 night`,
+        date: 'May 23, 27',
+        tags: ['Web Development', 'HTML', 'CSS', 'JS'],
+        projectUrl: '/night-mode/night-mode-v1',
+      },
     ];
 
   paginatedProjects: any[] = [];
@@ -288,8 +306,8 @@ This project is ideal for learning 3D transformations, animations, and interacti
   ) { }
 
   ngOnInit() {
-    if (localStorage.getItem('page_num')) {
-      let page_num: number = Number(localStorage.getItem('page_num'))
+    if (sessionStorage.getItem('page_num')) {
+      let page_num: number = Number(sessionStorage.getItem('page_num'))
       this.paginationService.setCurrentPage(page_num);
     } else {
       this.paginationService.setCurrentPage(1);
@@ -321,7 +339,7 @@ This project is ideal for learning 3D transformations, animations, and interacti
 
   @HostListener('window:beforeunload', ['$event'])
   onBeforeUnload(event: Event): void {
-    localStorage.clear();
+    sessionStorage.clear();
     console.log('LocalStorage cleared before page unload');
   }
 

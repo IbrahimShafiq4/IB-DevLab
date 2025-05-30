@@ -16,7 +16,7 @@ export class PaginationService {
   setCurrentPage(page: number): void {
     this.currentPageSubject.next(page);
     if (page) {
-      localStorage.setItem('page_num', JSON.stringify(page));
+      sessionStorage.setItem('page_num', JSON.stringify(page));
     }
   }
 

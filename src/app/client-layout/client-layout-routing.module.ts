@@ -225,6 +225,16 @@ const routes: Routes = [
         path: 'cube',
         component: CubeComponent,
         title: 'Cube Animation'
+      },
+      {
+        path: 'buttons',
+        loadChildren: () =>
+          import('./components/structured-components/buttons/buttons.module').then(m => m.ButtonsModule),
+      },
+      {
+        path: 'night-mode',
+        loadChildren: () =>
+          import('./components/structured-components/night-mode/night-mode.module').then(m => m.NightModeModule)
       }
     ]
   }
