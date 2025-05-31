@@ -382,5 +382,5 @@ nightModeContainer.addEventListener('click', () => {
     }
   ]
 
-  zipFile: string = 'assets/zip-files/night-mode/night mode-v1.rar';
+  zipFile: string = 'assets/zip-files/night-mode/01 - night mode.rar';
 }

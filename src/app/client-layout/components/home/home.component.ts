@@ -296,6 +296,15 @@ This project is ideal for learning 3D transformations, animations, and interacti
         tags: ['Web Development', 'HTML', 'CSS', 'JS'],
         projectUrl: '/night-mode/night-mode-v1',
       },
+      {
+        videoSrc: './../../../../assets/video-samples/night mode/02 night mode v2.mp4',
+        navigationState: true,
+        title: ' 🌗 Meme-Inspired Day/Night Mode Toggle – V2',
+        description: `This isn't just a toggle—it’s a whole celestial performance. The Cosmic Chaos Edition takes the original meme-inspired concept and supercharges it with polished visuals, buttery-smooth transitions, and interstellar flair.`,
+        date: 'May 31, 2025',
+        tags: ['Web Development', 'HTML', 'CSS'],
+        projectUrl: '/night-mode/night-mode-v2',
+      },
     ];
 
   paginatedProjects: any[] = [];
