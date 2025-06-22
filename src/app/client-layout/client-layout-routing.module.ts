@@ -235,9 +235,12 @@ const routes: Routes = [
         path: 'night-mode',
         loadChildren: () =>
           import('./components/structured-components/night-mode/night-mode.module').then(m => m.NightModeModule)
-      }
+      },
+      { path: 'layers', loadChildren: () => import('./components/structured-components/layers/layers-module').then(m => m.LayersModule) },
+      { path: 'loading', loadChildren: () => import('./components/structured-components/loading/loading-module').then(m => m.LoadingModule) },
+      { path: 'button', loadChildren: () => import('./components/structured-components/button/button-module').then(m => m.ButtonModule) },
     ]
-  }
+  },
 ];
 
 @NgModule({
