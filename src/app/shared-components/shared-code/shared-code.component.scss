@@ -41,7 +41,7 @@
 
 .project-description {
     p {
-        color: rgba(255, 255, 255, 0.8);
+        color: #fff;
         line-height: 1.6;
         margin: 0;
         font-size: 1rem;
@@ -215,13 +215,13 @@ h4 {
 }
 
 p:not(.assets-text p) {
-    background-color: #0d6efd;
+    background-color: rgb(13, 109, 252, 0.8);
     display: flex;
     flex-direction: row-reverse;
     gap: 0.25rem;
     align-items: center;
     color: #fff;
-    padding: 5px 10px;
+    padding: 10px;
     font-family: monospace;
     cursor: pointer;
     font-size: 0.725rem;

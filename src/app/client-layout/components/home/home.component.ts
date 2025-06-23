@@ -395,11 +395,39 @@ Perfect for async loading states, splash screens, or interactive preloaders that
       {
         videoSrc: './../../../../assets/video-samples/loading/09 - loading.mp4',
         navigationState: true,
-        title: 'Compact Rotating Spiral Loader – Version 1️⃣.1',
+        title: 'Compact Rotating Spiral Loader – Version 9.0 🌌',
         description: `This version introduces a scaled-down spiral loader using scale(0.75) combined with four 90°-rotated layers (rotate(calc(90deg * var(--j)))), creating a tighter, crisper animation that is both minimal and futuristic 🌌.`,
         date: 'June 22, 2025',
         tags: ['Web Development', 'HTML', 'CSS', 'JS'],
         projectUrl: '/loading/loading-v9',
+      },
+      {
+        videoSrc: './../../../../assets/video-samples/drop of water.mp4',
+        navigationState: true,
+        title: 'Soft Neumorphic Water Drop Animation – Pure CSS',
+        description: `This animation simulates a floating water droplet using pure CSS, beautifully blending organic shapes, light reflections, and neumorphic shadows 🌫️. The bouncing motion creates a gentle rhythm, making it ideal for calm and modern UI designs.`,
+        date: 'June 23, 2025',
+        tags: ['Web Development', 'HTML', 'CSS'],
+        projectUrl: '/drop-of-water',
+      },
+      {
+        videoSrc: './../../../../assets/video-samples/circular logo.mp4',
+        navigationState: true,
+        title: 'Conic Gradient Hover Buttons with Social Icons',
+        description: `A sleek, modern button set featuring social media icons (LinkedIn, GitHub, Facebook) wrapped in interactive circular borders. When hovered, the buttons animate with a smooth conic gradient fill effect, giving a high-tech, dynamic glow around the icons. This effect is achieved using the experimental CSS @property feature, allowing a custom CSS variable (--fill) to transition seamlessly.`,
+        date: 'June 23, 2025',
+        tags: ['Web Development', 'HTML', 'CSS'],
+        projectUrl: '/circular-logo',
+      },
+      {
+        videoSrc: './../../../../assets/video-samples/can rotation.mp4',
+        navigationState: true,
+        title: 'Rotational Image Pack Reveal Animation',
+        description: `This animation creates a sleek and interactive image reveal effect using HTML and CSS. Two layered image elements are masked with a device mockup shape. On hover, the background image of the first "pack" smoothly shifts position, while the second image fades in — giving the illusion of a dynamic content switch or rotation inside the same device frame.
+The effect combines background blending, mask-image, and background-position transitions to create a visually engaging UI component.`,
+        date: 'June 23, 2025',
+        tags: ['Web Development', 'HTML', 'CSS'],
+        projectUrl: '/can-rotation',
       },
     ];
 

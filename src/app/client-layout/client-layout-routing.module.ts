@@ -37,6 +37,9 @@ import { TiltV3Component } from './components/structured-components/tilt-v3/tilt
 import { MouseMoveV1Component } from './components/structured-components/mouse-move-v1/mouse-move-v1.component';
 import { LoadingV1Component } from './components/structured-components/loading-v1/loading-v1.component';
 import { CubeComponent } from './components/structured-components/cube/cube.component';
+import { DropOfWater } from './components/structured-components/drop-of-water/drop-of-water';
+import { CanRotation } from './components/structured-components/can-rotation/can-rotation';
+import { CircularLogo } from './components/structured-components/circular-logo/circular-logo';
 
 const routes: Routes = [
   {
@@ -239,6 +242,9 @@ const routes: Routes = [
       { path: 'layers', loadChildren: () => import('./components/structured-components/layers/layers-module').then(m => m.LayersModule) },
       { path: 'loading', loadChildren: () => import('./components/structured-components/loading/loading-module').then(m => m.LoadingModule) },
       { path: 'button', loadChildren: () => import('./components/structured-components/button/button-module').then(m => m.ButtonModule) },
+      { path: 'drop-of-water', component: DropOfWater, title: 'Drop of Water Animation' },
+      { path: 'can-rotation', component: CanRotation, title: 'Can Rotation Animation' },
+      { path: 'circular-logo', component: CircularLogo, title: 'Circular Logo Animation' }
     ]
   },
 ];
