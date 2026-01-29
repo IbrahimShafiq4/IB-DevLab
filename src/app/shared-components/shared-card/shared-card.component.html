@@ -1,5 +1,4 @@
-<article class="project-card" dir="ltr" [attr.data-project-name]="title"
-    [class.opposite-border-side]="oppositeSideBorder">
+<article class="project-card" dir="ltr" [attr.data-project-name]="title">
     <div class="video-container">
         @if (isNavigationOnTheWebsite) {
         <video #videoPlayer autoplay loop [src]="videoSrc" type="video/mp4"></video>
@@ -44,13 +43,18 @@
             }
 
             @if (!isNavigationOnTheWebsite) {
+            @if(isItCssBattle) {
+            <button class="btn-code rounded-0 px-4 text-nowrap" [routerLink]="projectUrl">
+                Visit Project
+            </button>
+            } @else {
             <a class="primary rounded-0 px-4 text-nowrap d-block" target="_blank"
                 [href]="!isNavigationOnTheWebsite ? projectUrl : null">{{ visitText }}</a>
 
-            <button class="btn-code rounded-0 px-4 text-nowrap"
-                [routerLink]="project_demo">
+            <button class="btn-code rounded-0 px-4 text-nowrap" [routerLink]="project_demo">
                 Project Brief
             </button>
+            }
             }
 
 

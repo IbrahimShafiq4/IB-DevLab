@@ -32,13 +32,18 @@ This CSS loader is perfect for preloaders, meditation apps, weather dashboards, 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Drop of Water</title>
+  <title>Battle 1</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="drops">
-      <div class="drop"></div>
-  </div>
+    <div class="parent">
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+        <div class="block"></div>
+    </div>
 </body>
 </html>
     `,
@@ -49,73 +54,45 @@ This CSS loader is perfect for preloaders, meditation apps, weather dashboards, 
   CSSCodeSnippets: ICodeStructure[] = [
     {
       code: `
+:root {
+    --white_blue: #37b4bd;
+    --white_pink: #f9eaf1;
+    --darken_color: #394257;
+}
+
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: var(--white_blue);
 }
 
-.drops {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+div.parent {
+    width: 100px;
+    height: 60px;
+    background: #dd6b4d;
+    transform: translateY(-8px);
+    width: 340px;
+    padding-left: 20px;
+    background:
+        var(--white_pink);
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row-reverse;
+    gap: 30px;
 
-  .drop {
-      position: absolute;
-      top: 0;
-
-      position: absolute;
-      width: 150px;
-      height: 150px;
-      background-color: transparent;
-      border-radius: 57% 43% 37% 63% / 45% 52% 48% 55%;
-      box-shadow:
-          inset 10px 10px 10px rgba(0, 0, 0, 0.05),
-          15px 25px 10px rgba(0, 0, 0, 0.1),
-          15px 20px 20px rgba(0, 0, 0, 0.05),
-          inset -10px -10px 15px rgba(255, 255, 255, 0.05);
-
-      animation: waterDrop 1.5s ease-in-out infinite;
-
-      &::before {
-          content: '';
-          position: absolute;
-          top: 25px;
-          left: 35px;
-          background-color: #ffffff59;
-          height: 20px;
-          width: 20px;
-          border-radius: 42% 58% 37% 63% / 40% 43% 57% 60%;
-
-      }
-
-  }
-}
-
-@keyframes waterDrop {
-  0% {
-      transform: translateY(-20px);
-      opacity: 1;
-  }
-
-  50% {
-      transform: translateY(10px);
-      opacity: 0.5;
-  }
-
-  100% {
-      transform: translateY(-20px);
-      opacity: 1;
-  }
+    .block {
+        width: 30px;
+        height: 30px;
+        background-color: var(--darken_color)
+    }
 }
     `,
       codeTitle: 'style.css'

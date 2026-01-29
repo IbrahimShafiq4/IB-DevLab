@@ -7,6 +7,7 @@ import { initializeApp } from 'firebase/app';
 import { provideAnalytics, getAnalytics, ScreenTrackingService } from '@angular/fire/analytics';
 import { provideDatabase, getDatabase } from '@angular/fire/database';
 import { environment } from '../enviroments/enviroment';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,6 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAnalytics(() => getAnalytics()),
     provideDatabase(() => getDatabase()),
+    provideAnimations(),
     ScreenTrackingService
   ]
 };

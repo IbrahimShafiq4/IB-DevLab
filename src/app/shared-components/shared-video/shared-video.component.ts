@@ -15,6 +15,7 @@ export class SharedVideoComponent {
   @Input() videoDescription: string = 'Watch the project in action';
   @Input() zipFile: string = '';
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
+  @Input() itIsNotVideo: boolean = false;;
 
   isOpen = false;
 

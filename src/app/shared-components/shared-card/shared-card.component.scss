@@ -1,58 +1,64 @@
-@use './../../../assets/styles/layout' as vars;
+@use "./../../../assets/styles/layout" as vars;
+
+/* =========================
+    Project Card
+========================= */
 
 .project-card {
     display: flex;
     flex-direction: column;
-    transition: all 0.4s ease-in-out;
     overflow: hidden;
+    transition: vars.$main-transition;
+    gap: 0.25rem;
 
+    /* -------------------------
+        Media / Video
+    ------------------------- */
     .video-container {
         position: relative;
         width: 100%;
 
-        video {
-            object-fit: cover;
+        video,
+        figure {
             width: 100%;
             height: 100%;
             aspect-ratio: 2 / 0.8;
-            transition: 0.5s linear;
-        }
-
-        video,
-        figure {
-            border-top-left-radius: 500px;
-            border-bottom-right-radius: 500px;
+            object-fit: cover;
             overflow: hidden;
-
+            transition: transform 0.5s ease;
+            border-radius: 10px;
+            corner-shape: scoop;
         }
     }
 
     &.opposite-border-side {
         .video-container {
-
             video,
             figure {
-                border-top-right-radius: 500px;
-                border-bottom-left-radius: 500px;
-                border-top-left-radius: 0px;
-                border-bottom-right-radius: 0px;
+                border-radius: 0;
             }
         }
     }
 
+    /* -------------------------
+        Content
+    ------------------------- */
     .project-content {
-        padding: 0.5rem;
-        flex-grow: 1;
+        padding: 0.75rem;
         display: flex;
         flex-direction: column;
-        gap: 0.6rem;
+        gap: 0.75rem;
+        flex-grow: 1;
+        border-radius: 10px;
+        corner-shape: scoop;
 
+        /* Meta */
         .project-meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 1rem;
+            gap: 0.75rem;
 
             .project-tags ul {
                 display: flex;
@@ -65,134 +71,139 @@
                 li {
                     display: flex;
                     align-items: center;
-                    gap: 0.2rem;
+                    gap: 0.35rem;
+                    font-size: 0.8rem;
+                    font-family: "Courier New", Courier, monospace;
                     color: vars.$white-color;
-                    font-size: 0.82rem;
-                    font-family: 'Courier New', Courier, monospace;
 
                     .tag-icon {
-                        width: 25px;
-                        height: 25px;
+                        width: 24px;
+                        height: 24px;
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        background-color: rgba(vars.$bs-blue, 0.2);
-                        color: vars.$white-color;
                         border: 1px solid vars.$bs-blue;
+                        background-color: rgba(vars.$bs-blue, 0.15);
                         transition: vars.$main-transition;
                     }
 
                     &:hover .tag-icon {
                         background-color: vars.$bs-blue;
-                        transform: rotate(15deg);
+                        transform: rotate(12deg);
                     }
                 }
             }
 
             .project-date {
-                color: vars.$grey-color;
-                font-size: 0.8rem;
                 display: flex;
                 align-items: center;
-                gap: 0.5rem;
+                gap: 0.4rem;
+                font-size: 0.75rem;
+                color: vars.$grey-color;
             }
         }
 
+        /* Title */
         .project-title {
-            color: vars.$white-color;
             font-size: 1rem;
+            font-weight: 600;
+            color: vars.$white-color;
+            line-height: 1.4;
         }
 
+        /* Description */
         .project-description {
-            color: vars.$grey-color;
             font-size: 0.82rem;
+            color: vars.$grey-color;
+            line-height: 1.5;
             overflow: hidden;
             display: -webkit-box;
             -webkit-line-clamp: 2;
-            line-clamp: 2;
             -webkit-box-orient: vertical;
         }
 
+        /* -------------------------
+            Actions
+        ------------------------- */
         .project-actions {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 1rem;
+            gap: 0.75rem;
+            margin-top: auto;
 
+            /* Social */
             .social-share {
                 display: flex;
-                gap: 0.2rem;
+                gap: 0.35rem;
 
                 .share-btn {
-                    width: 30px;
-                    height: 30px;
-                    border-radius: 0;
+                    width: 32px;
+                    height: 32px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    color: vars.$white-color;
                     border: none;
                     cursor: pointer;
+                    color: vars.$white-color;
                     transition: vars.$main-transition;
 
                     &.twitter {
-                        background: #1DA1F2;
+                        background: #1da1f2;
                     }
-
                     &.facebook {
-                        background: #4267B2;
+                        background: #4267b2;
                     }
-
                     &.linkedin {
-                        background: #0077B5;
+                        background: #0077b5;
                     }
-
                     &.whatsapp {
-                        background: #25D366;
+                        background: #25d366;
                     }
 
                     &:hover {
-                        transform: scale(1.1) translateY(-2px);
+                        transform: translateY(-2px) scale(1.05);
                     }
                 }
             }
 
-            .primary {
-                padding: 0.6rem 1.2rem;
-            }
-
+            /* Buttons */
             a.btn-code,
             button.btn-code {
-                padding: 0.6rem 1.2rem;
+                padding: 0.55rem 1.2rem;
+                font-size: 0.85rem;
                 font-weight: 500;
-                font-size: 0.9rem;
                 display: flex;
                 align-items: center;
-                gap: 0.5rem;
+                gap: 0.45rem;
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                background: rgba(255, 255, 255, 0.08);
+                color: vars.$white-color;
                 cursor: pointer;
-                transition: all 0.3s ease;
-                border: none;
+                transition: vars.$main-transition;
 
-                &.btn-code {
-                    background: rgba(255, 255, 255, 0.1);
-                    color: white;
-                    border: 1px solid rgba(255, 255, 255, 0.1);
-
-                    &:hover {
-                        background: rgba(255, 255, 255, 0.2);
-                        transform: translateY(-2px);
-                    }
+                &:hover {
+                    background: rgba(255, 255, 255, 0.18);
+                    transform: translateY(-2px);
                 }
             }
         }
     }
 }
 
+/* =========================
+    Global Image Fallback
+========================= */
+
 img {
     width: 100%;
     aspect-ratio: 2 / 1;
     object-fit: cover;
 }
+
+/* =========================
+    Responsive
+========================= */
 
 @media (max-width: 768px) {
     .project-card {

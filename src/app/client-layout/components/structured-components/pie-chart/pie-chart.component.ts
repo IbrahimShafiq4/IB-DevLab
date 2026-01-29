@@ -2,22 +2,22 @@ import { Component } from '@angular/core';
 import { ICodeStructure, SharedCodeComponent } from '../../../../shared-components/shared-code/shared-code.component';
 
 @Component({
-  selector: 'app-pie-chart',
-  imports: [SharedCodeComponent],
-  templateUrl: './pie-chart.component.html',
-  styleUrl: './pie-chart.component.scss'
+    selector: 'app-pie-chart',
+    imports: [SharedCodeComponent],
+    templateUrl: './pie-chart.component.html',
+    styleUrl: './pie-chart.component.scss'
 })
 export class PieChartComponent {
-  projectName: string = '🎨 Animated Conic Gradient Pie Chart with Legend';
-  projectDescription: string = `This project showcases a visually appealing animated pie chart using pure HTML and CSS. The chart is built with conic-gradient to represent data segments in varying colors, and includes a dynamic rotation animation for enhanced visual engagement. A corresponding legend below the chart uses colored labels and percentage values to clearly describe each section. This component is ideal for dashboards or presentations where aesthetic and clarity are key.`;
-  projectDate: string = 'Last updated: May 2025';
-  projectVersion: string = 'v1.0.0';
-  projectTags: string[] = ['Web Development', 'HTML', 'CSS'];
-  projectVideoOnYoutube: string = 'https://www.youtube.com/watch?v=yG76tp7NR20&list=PL7S9lp7CuORZGO8goXg2462Cc3dWpisPI&index=8';
+    projectName: string = '🎨 Animated Conic Gradient Pie Chart with Legend';
+    projectDescription: string = `This project showcases a visually appealing animated pie chart using pure HTML and CSS. The chart is built with conic-gradient to represent data segments in varying colors, and includes a dynamic rotation animation for enhanced visual engagement. A corresponding legend below the chart uses colored labels and percentage values to clearly describe each section. This component is ideal for dashboards or presentations where aesthetic and clarity are key.`;
+    projectDate: string = 'Last updated: May 2025';
+    projectVersion: string = 'v1.0.0';
+    projectTags: string[] = ['Web Development', 'HTML', 'CSS'];
+    projectVideoOnYoutube: string = 'https://www.youtube.com/watch?v=yG76tp7NR20&list=PL7S9lp7CuORZGO8goXg2462Cc3dWpisPI&index=8';
 
-  HTMLCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
+    HTMLCodeSnippets: ICodeStructure[] = [
+        {
+            code: `
 <!DOCTYPE html>
 <html lang="en">
 
@@ -58,13 +58,13 @@ export class PieChartComponent {
 
 </html>
     `,
-      codeTitle: 'index.html'
-    }
-  ];
+            codeTitle: 'index.html'
+        }
+    ];
 
-  CSSCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
+    CSSCodeSnippets: ICodeStructure[] = [
+        {
+            code: `
 * {
     margin: 0;
     padding: 0;
@@ -160,9 +160,9 @@ figcaption {
     100% { filter: hue-rotate(360deg); }
 }
     `,
-      codeTitle: 'style.css'
-    }
-  ];
+            codeTitle: 'style.css'
+        }
+    ];
 
-  zipFile: string = 'assets/zip-files/PIE CHART.rar';
+    zipFile: string = 'assets/zip-files/PIE CHART.rar';
 }

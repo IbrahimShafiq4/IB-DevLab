@@ -1,7 +1,6 @@
 import { Component, AfterViewInit, Input, inject, ComponentFactoryResolver, ViewChild, ViewContainerRef, ElementRef } from '@angular/core';
 
 import Prism from 'prismjs';
-import 'prismjs/themes/prism-okaidia.min.css';
 import { EscapeHtmlPipe } from '../../client-layout/pipes/EscapeHtml.pipe';
 import { CommonModule } from '@angular/common';
 import { SharedVideoComponent } from "../shared-video/shared-video.component";
@@ -37,6 +36,7 @@ export class SharedCodeComponent implements AfterViewInit {
   @Input() projectOnYoutube: string = '';
   @Input() project_demo: string = '';
   @Input() projectVideoSrc: string = '';
+  @Input() isItCssBattle: boolean = false;
 
   @Input() tags: string[] = ['Web Development', 'HTML', 'CSS', 'JS', 'API'];
 
@@ -111,8 +111,6 @@ export class SharedCodeComponent implements AfterViewInit {
   }
 
   onWatchDemo() {
-    console.log('hello')
-
     this.popupContainer.clear();
 
     const componentRef = this.popupContainer.createComponent(SharedVideoComponent);
@@ -121,6 +119,7 @@ export class SharedCodeComponent implements AfterViewInit {
     componentRef.instance.videoDescription = this.projectDescription;
     componentRef.instance.videoSource = this.projectVideoSrc;
     componentRef.instance.zipFile = this.zipFile;
+    componentRef.instance.itIsNotVideo = this.isItCssBattle;
 
     componentRef.instance.closed.subscribe(() => {
       this.popupContainer.clear();

@@ -1,27 +1,65 @@
-import { ChangeDetectorRef, Component, HostListener } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, signal } from '@angular/core';
 import { SharedCardComponent } from "../../../shared-components/shared-card/shared-card.component";
 import { HttpClient } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PaginationService } from '../../services/pagination.service';
-
+import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [SharedCardComponent, ReactiveFormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
-  providers: [HttpClient]
+  providers: [HttpClient],
+  animations: [
+    trigger('tabAnimation', [
+      transition('* => *', [
+        style({ 'will-change': 'transform, opacity' }),
+
+        animate('10ms', style({ opacity: 0.9 })),
+
+        query(':leave', [
+          animate('10ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            style({
+              opacity: 0,
+              transform: 'translateY(5px)',
+            }))
+        ], { optional: true }),
+
+        query(':enter', [
+          style({
+            opacity: 0,
+            transform: 'translateY(-5px)'
+          }),
+          stagger(30, [
+            animate('10ms cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+              style({
+                opacity: 1,
+                transform: 'translateY(0)'
+              }))
+          ])
+        ], { optional: true }),
+
+        animate('10ms', style({ opacity: 1 }))
+      ])
+    ])
+  ]
 })
 export class HomeComponent {
+  activeTab = signal<'all' | 'cssbattle'>('all');
+
+  filteredProjects: any[] = [];
+
   projects: {
     videoSrc: string;
-    navigationState: true,
+    navigationState: boolean,
     title: string;
     description: string;
     date: string;
     tags: string[];
     projectUrl: string;
     oppositeSideBorder?: boolean;
+    isItCssBattle?: boolean;
   }[] = [
       {
         videoSrc: './../../../../assets/video-samples/Tabs.mp4',
@@ -429,33 +467,123 @@ The effect combines background blending, mask-image, and background-position tra
         tags: ['Web Development', 'HTML', 'CSS'],
         projectUrl: '/can-rotation',
       },
+      {
+        videoSrc: './../../../../assets/video-samples/can rotation.mp4',
+        navigationState: true,
+        title: 'Rotational Image Pack Reveal Animation',
+        description: `This animation creates a sleek and interactive image reveal effect using HTML and CSS. Two layered image elements are masked with a device mockup shape. On hover, the background image of the first "pack" smoothly shifts position, while the second image fades in — giving the illusion of a dynamic content switch or rotation inside the same device frame.
+          The effect combines background blending, mask-image, and background-position transitions to create a visually engaging UI component.`,
+        date: 'June 23, 2025',
+        tags: ['Web Development', 'HTML', 'CSS'],
+        projectUrl: '/can-rotation',
+      },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/Piano.png',
+        navigationState: false,
+        title: 'CSS Battle – Layout Blocks Challenge',
+        description: `CSS Battle challenge focused on recreating a block-based layout using pure HTML and CSS.
+The solution relies on flexbox alignment, spacing, and solid background colors without images, SVGs, or JavaScript.`,
+        date: 'June 23, 2025',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_P1',
+        isItCssBattle: true,
+      },
+      {
+        videoSrc: './../../../../../assets/video-samples/cssbattle/circle.png',
+        navigationState: false,
+        title: 'CSS Battle – Circular Shapes Challenge',
+        description: `CSS Battle challenge built using layered circular div elements.
+The design uses border-radius, positioning, and color contrast to recreate the target shape using pure CSS only.`,
+        date: 'June 23, 2025',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_P2',
+        isItCssBattle: true,
+      },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/percentage.png',
+        navigationState: false,
+        title: 'CSS Battle – Percentage Symbol Challenge',
+        description: `CSS Battle challenge recreating a percentage symbol using simple div elements.
+The solution uses transforms, border-radius, and positioning without images, SVGs, or JavaScript.`,
+        date: 'June 23, 2025',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_P3',
+        isItCssBattle: true,
+      },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/reflect_1.png',
+        navigationState: false,
+        title: 'CSS Battle – Sticks Reflection Challenge',
+        description: `CSS Battle challenge using a single HTML element with CSS reflection.
+The design relies on -webkit-box-reflect and pseudo-elements to create mirrored shapes and curved details.`,
+        date: 'June 23, 2025',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_P4',
+        isItCssBattle: true,
+      },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/reflect_2.png',
+        navigationState: false,
+        title: 'CSS Battle – Advanced Reflection Shapes',
+        description: `Advanced CSS Battle challenge combining reflection techniques with pseudo-elements.
+The layout is created using pure CSS, focusing on positioning, borders, and shape construction.`,
+        date: 'June 23, 2025',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_P5',
+        isItCssBattle: true,
+      }
     ];
 
   paginatedProjects: any[] = [];
   totalPages = 1;
 
   constructor(
-    private paginationService: PaginationService
+    private paginationService: PaginationService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
+    this.initializeFromSessionStorage();
+    this.setupPagination();
+    this.updateFilteredProjects();
+  }
+
+  private initializeFromSessionStorage() {
     if (sessionStorage.getItem('page_num')) {
-      let page_num: number = Number(sessionStorage.getItem('page_num'))
+      let page_num: number = Number(sessionStorage.getItem('page_num'));
       this.paginationService.setCurrentPage(page_num);
     } else {
       this.paginationService.setCurrentPage(1);
     }
-    this.paginationService.setAllItems(this.projects.length);
+
+    const savedTab = sessionStorage.getItem('activeTab');
+    if (savedTab === 'cssbattle' || savedTab === 'all') {
+      this.activeTab.set(savedTab as 'all' | 'cssbattle');
+    }
+  }
+
+  private setupPagination() {
+    this.paginationService.setAllItems(this.filteredProjects.length);
     this.paginationService.setItemsPerPage(4);
 
-    this.paginationService.currentPage$.subscribe(page => {
+    this.paginationService.currentPage$.subscribe(() => {
       this.updatePaginatedProjects();
     });
 
     this.paginationService.itemsPerPage$.subscribe(() => {
       this.updatePaginatedProjects();
     });
+  }
 
+  private updateFilteredProjects() {
+    if (this.activeTab() === 'cssbattle') {
+      this.filteredProjects = this.projects.filter(project => project.isItCssBattle === true);
+    } else {
+      this.filteredProjects = this.projects;
+    }
+
+    this.paginationService.setAllItems(this.filteredProjects.length);
+    this.paginationService.setCurrentPage(1);
     this.updatePaginatedProjects();
   }
 
@@ -465,15 +593,27 @@ The effect combines background blending, mask-image, and background-position tra
 
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    this.paginatedProjects = this.projects.slice(startIndex, endIndex);
+    this.paginatedProjects = this.filteredProjects.slice(startIndex, endIndex);
 
-    this.totalPages = Math.ceil(this.projects.length / itemsPerPage);
+    this.totalPages = Math.ceil(this.filteredProjects.length / itemsPerPage);
   }
 
-  @HostListener('window:beforeunload', ['$event'])
-  onBeforeUnload(event: Event): void {
-    sessionStorage.clear();
-    console.log('LocalStorage cleared before page unload');
+  changeTab(tab: 'all' | 'cssbattle'): void {
+    if (this.activeTab() === tab) return;
+
+    if (document.startViewTransition) {
+      document.startViewTransition(() => {
+        this.performTabChange(tab);
+      });
+    } else {
+      this.performTabChange(tab);
+    }
   }
 
+  private performTabChange(tab: 'all' | 'cssbattle'): void {
+    this.activeTab.set(tab);
+    sessionStorage.setItem('activeTab', tab);
+    this.updateFilteredProjects();
+    this.cdr.detectChanges();
+  }
 }

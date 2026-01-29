@@ -23,7 +23,8 @@ export class SharedCardComponent {
   @Input() oppositeSideBorder: boolean | undefined = false;
   @Input() isNavigationOnTheWebsite: boolean = false;
   @Input() project_demo: string = '';
-  @Input() project_id: string = ''
+  @Input() project_id: string = '';
+  @Input() isItCssBattle: boolean = false;
 
   sharePlatforms: string[] = ['twitter', 'facebook', 'linkedin', 'whatsapp'];
 

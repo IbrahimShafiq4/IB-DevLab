@@ -40,6 +40,11 @@ import { CubeComponent } from './components/structured-components/cube/cube.comp
 import { DropOfWater } from './components/structured-components/drop-of-water/drop-of-water';
 import { CanRotation } from './components/structured-components/can-rotation/can-rotation';
 import { CircularLogo } from './components/structured-components/circular-logo/circular-logo';
+import { CssBattleP1 } from './components/structured-components/css-battle-p1/css-battle-p1';
+import { CssBattleP2 } from './components/structured-components/css-battle-p2/css-battle-p2';
+import { CssBattleP4 } from './components/structured-components/css-battle-p4/css-battle-p4';
+import { CssBattleP3 } from './components/structured-components/css-battle-p3/css-battle-p3';
+import { CssBattleP5 } from './components/structured-components/css-battle-p5/css-battle-p5';
 
 const routes: Routes = [
   {
@@ -244,7 +249,12 @@ const routes: Routes = [
       { path: 'button', loadChildren: () => import('./components/structured-components/button/button-module').then(m => m.ButtonModule) },
       { path: 'drop-of-water', component: DropOfWater, title: 'Drop of Water Animation' },
       { path: 'can-rotation', component: CanRotation, title: 'Can Rotation Animation' },
-      { path: 'circular-logo', component: CircularLogo, title: 'Circular Logo Animation' }
+      { path: 'circular-logo', component: CircularLogo, title: 'Circular Logo Animation' },
+      { path: 'css_battle_P1', component: CssBattleP1, title: 'CSS Battle Project 1' },
+      { path: 'css_battle_P2', component: CssBattleP2, title: 'CSS Battle Project 2' },
+      { path: 'css_battle_P3', component: CssBattleP3, title: 'CSS Battle Project 3' },
+      { path: 'css_battle_P4', component: CssBattleP4, title: 'CSS Battle Project 4' },
+      { path: 'css_battle_P5', component: CssBattleP5, title: 'CSS Battle Project 5' }
     ]
   },
 ];

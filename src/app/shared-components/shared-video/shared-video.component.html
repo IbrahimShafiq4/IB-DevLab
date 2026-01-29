@@ -5,10 +5,16 @@
         </button>
 
         <div class="video-wrapper">
+            @if (!itIsNotVideo) {
             <video #videoPlayer autoplay muted loop playsInline class="shared-video">
                 <source [src]="videoSource" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
+            } @else {
+                <figure>
+                    <img [src]="videoSource" [alt]="videoTitle">
+                </figure>
+            }
         </div>
 
         <div class="video-meta" dir="ltr">
