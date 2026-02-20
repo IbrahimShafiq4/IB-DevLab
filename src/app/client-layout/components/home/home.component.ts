@@ -531,7 +531,20 @@ The layout is created using pure CSS, focusing on positioning, borders, and shap
         tags: ['HTML', 'CSS', 'CSS Battle'],
         projectUrl: '/css_battle_P5',
         isItCssBattle: true,
-      }
+      },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/p6.png',
+        navigationState: false,
+        title: 'CSS Battle – Polygon Shape Challenge',
+        description: `CSS Battle challenge using a single HTML element and pure CSS.
+The design relies on nested universal selectors and
+clip-path: polygon() to construct a complex geometric shape.
+All visuals are built using only CSS without extra elements.`,
+        date: 'June 23, 2025',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_P6',
+        isItCssBattle: true,
+      },
     ];
 
   paginatedProjects: any[] = [];
