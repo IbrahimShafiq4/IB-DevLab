@@ -545,6 +545,25 @@ All visuals are built using only CSS without extra elements.`,
         projectUrl: '/css_battle_P6',
         isItCssBattle: true,
       },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/p7.png',
+        navigationState: false,
+        title: 'CSS Battle – Advanced Polygon Challenge',
+        description: `CSS Battle challenge recreating a layered burger-like structure 
+using pure CSS and minimal HTML.
+
+The design depends on:
+- border-block for thick horizontal bars
+- border-radius for rounded middle section
+- box-shadow for side extensions
+- nested universal selectors for compact structure
+
+No images. No extra elements. Just CSS precision.`,
+        date: 'June 23, 2025',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_P7',
+        isItCssBattle: true,
+      },
     ];
 
   paginatedProjects: any[] = [];
