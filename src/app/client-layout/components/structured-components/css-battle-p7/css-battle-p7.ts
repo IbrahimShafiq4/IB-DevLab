@@ -37,60 +37,35 @@ No images. No extra elements. Just CSS precision.
   HTMLCodeSnippets: ICodeStructure[] = [
     {
       code: `
-<!DOCTYPE html>
-<html>
-<head>
+<p>
 <style>
 *{
   background:#F7CB71;
-  color:#7C3219;
-  *{
+  color:7C3219;
+  +*{
     border-block:32q solid;
     margin:90 140;
     border-radius:32q
   }
 }
-p{
-  padding:20 60;
-  margin:10 0;
-  box-shadow:0 95q,0 -95q,0 0 0 22q inset
-}
+  p{
+    padding:20+60;
+    margin:10-0;
+    box-shadow:0 95q,0-95q,0 0 0 22q inset
+  }
 </style>
-</head>
-<body>
-  <p></p>
-</body>
-</html>
       `,
       codeTitle: 'index.html'
     }
   ];
 
-  CSSCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
-*{
-  background:#F7CB71;
-  color:#7C3219;
-  *{
-    border-block:32q solid;
-    margin:90 140;
-    border-radius:32q
-  }
-}
-
-p{
-  padding:20 60;
-  margin:10 0;
-  box-shadow:
-    0 95q,
-    0 -95q,
-    0 0 0 22q inset
-}
-      `,
-      codeTitle: 'style.css'
-    }
-  ];
+  // CSSCodeSnippets: ICodeStructure[] = [
+  //   {
+  //     code: `
+  //     `,
+  //     codeTitle: 'style.css'
+  //   }
+  // ];
 
   zipFile: string = 'assets/zip-files/cssBattle/07 - p7.rar';
 }
