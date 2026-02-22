@@ -47,6 +47,7 @@ import { CssBattleP3 } from './components/structured-components/css-battle-p3/cs
 import { CssBattleP5 } from './components/structured-components/css-battle-p5/css-battle-p5';
 import { CssBattleP6 } from './components/structured-components/css-battle-p6/css-battle-p6';
 import { CssBattleP7 } from './components/structured-components/css-battle-p7/css-battle-p7';
+import { CssBattleP8 } from './components/structured-components/css-battle-p8/css-battle-p8';
 
 const routes: Routes = [
   {
@@ -259,6 +260,7 @@ const routes: Routes = [
       { path: 'css_battle_P5', component: CssBattleP5, title: 'CSS Battle Project 5' },
       { path: 'css_battle_P6', component: CssBattleP6, title: 'CSS Battle Project 6' },
       { path: 'css_battle_P7', component: CssBattleP7, title: 'CSS Battle Project 7' },
+      { path: 'css_battle_P8', component: CssBattleP8, title: 'CSS Battle Project 8' },
     ]
   },
 ];

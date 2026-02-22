@@ -42,14 +42,5 @@ No images. No extra elements. Just CSS precision.
       codeTitle: 'index.html'
     }
   ];
-
-  // CSSCodeSnippets: ICodeStructure[] = [
-  //   {
-  //     code: `
-  //     `,
-  //     codeTitle: 'style.css'
-  //   }
-  // ];
-
   zipFile: string = 'assets/zip-files/cssBattle/07 - p7.rar';
 }

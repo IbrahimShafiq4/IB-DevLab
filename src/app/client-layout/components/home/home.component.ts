@@ -564,6 +564,26 @@ No images. No extra elements. Just CSS precision.`,
         projectUrl: '/css_battle_P7',
         isItCssBattle: true,
       },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/p8.png',
+        navigationState: false,
+        title: 'CSS Battle – Reflect Shape Challenge',
+        description: `CSS Battle challenge recreating a mirrored curved shape
+using pure CSS and minimal markup.
+
+The design depends on:
+- asymmetric border-radius
+- thick border manipulation
+- -webkit-box-reflect for mirroring
+- compact nested universal selector trick
+
+No images. No extra elements.
+Just CSS creativity and precision.`,
+        date: 'June 23, 2025',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_P8',
+        isItCssBattle: true,
+      },
     ];
 
   paginatedProjects: any[] = [];
