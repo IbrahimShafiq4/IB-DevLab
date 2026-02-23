@@ -584,6 +584,26 @@ Just CSS creativity and precision.`,
         projectUrl: '/css_battle_P8',
         isItCssBattle: true,
       },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/p8.png',
+        navigationState: false,
+        title: 'CSS Battle – Mirrored Arc Shape',
+        description: `CSS Battle challenge recreating a symmetric double-arc shape
+using pure CSS and minimal markup.
+
+The design depends on:
+- large border-radius curves
+- thick border trick
+- -webkit-box-reflect for mirroring
+- precision spacing using q units
+
+No images. No extra elements.
+Just CSS creativity and geometry control.`,
+        date: 'June 23, 2025',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_P9',
+        isItCssBattle: true,
+      },
     ];
 
   paginatedProjects: any[] = [];
