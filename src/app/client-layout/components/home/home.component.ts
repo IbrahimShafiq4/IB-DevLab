@@ -585,7 +585,7 @@ Just CSS creativity and precision.`,
         isItCssBattle: true,
       },
       {
-        videoSrc: './../../../../assets/video-samples/cssbattle/p8.png',
+        videoSrc: './../../../../assets/video-samples/cssbattle/p9.png',
         navigationState: false,
         title: 'CSS Battle – Mirrored Arc Shape',
         description: `CSS Battle challenge recreating a symmetric double-arc shape
