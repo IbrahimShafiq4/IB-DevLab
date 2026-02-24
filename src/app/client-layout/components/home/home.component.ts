@@ -604,6 +604,28 @@ Just CSS creativity and geometry control.`,
         projectUrl: '/css_battle_P9',
         isItCssBattle: true,
       },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/p10.png',
+        navigationState: false,
+        title: 'CSS Battle – Five Pill Layout',
+        description: `  CSS recreation of a minimal geometric layout featuring five vertical pill shapes.
+  
+  The design uses:
+  - Flexbox layout
+  - Precise spacing
+  - Large border-radius for capsule shapes
+  - Clean color contrast
+  - Pure CSS (no images)
+
+  The layout consists of:
+  - 3 top capsules
+  - 2 bottom capsules
+  - Centered composition`,
+        date: 'June 23, 2025',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_P10',
+        isItCssBattle: true,
+      },
     ];
 
   paginatedProjects: any[] = [];
