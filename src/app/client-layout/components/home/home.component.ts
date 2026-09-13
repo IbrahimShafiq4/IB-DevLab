@@ -660,6 +660,16 @@ Just CSS creativity and geometry control.`,
         tags: ['Problem Solving', 'JavaScript', 'LeetCode'],
         projectUrl: '/problem-solving/roman-to-integer',
         isItProblemSolving: true,
+      },
+      {
+        videoSrc: '../../../../assets/video-samples/problem solving/longest_substring_without_repeating_characters.jpeg',
+        navigationState: false,
+        title: 'Longest Substring',
+        description: 'Find the longest substring without repeating characters.',
+        date: 'September 13, 2026',
+        tags: ['Problem Solving', 'JavaScript', 'LeetCode'],
+        projectUrl: '/problem-solving/longest-substring',
+        isItProblemSolving: true,
       }
     ];
 

@@ -43,7 +43,7 @@
             }
 
             @if (!isNavigationOnTheWebsite) {
-            @if(isItCssBattle) {
+            @if(isItCssBattle || isItLeetCodeProblemSolving) {
             <button class="btn-code rounded-0 px-4 text-nowrap" [routerLink]="projectUrl">
                 Visit Project
             </button>

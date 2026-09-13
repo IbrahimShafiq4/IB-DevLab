@@ -25,6 +25,7 @@ export class SharedCardComponent {
   @Input() project_demo: string = '';
   @Input() project_id: string = '';
   @Input() isItCssBattle: boolean = false;
+  @Input() isItLeetCodeProblemSolving: boolean = false;
 
   sharePlatforms: string[] = ['twitter', 'facebook', 'linkedin', 'whatsapp'];
 
