@@ -51,6 +51,8 @@ import { CssBattleP8 } from './components/structured-components/css-battle-p8/cs
 import { CssBattleP9 } from './components/structured-components/css-battle-p9/css-battle-p9';
 import { CssBattleP10 } from './components/structured-components/css-battle-p10/css-battle-p10';
 import { CssBattleP11 } from './components/structured-components/css-battle-p11/css-battle-p11';
+import { LeetCode1 } from './components/structured-components/leet-code-1/leet-code-1';
+
 
 const routes: Routes = [
   {
@@ -267,6 +269,7 @@ const routes: Routes = [
       { path: 'css_battle_P9', component: CssBattleP9, title: 'CSS Battle Project 9' },
       { path: 'css_battle_P10', component: CssBattleP10, title: 'CSS Battle Project 10' },
       { path: 'css_battle_p11', component: CssBattleP11, title: 'Css Battle Project 11' },
+      { path: 'problem-solving/roman-to-integer', component: LeetCode1, title: 'Roman To Integer' },
     ]
   },
 ];

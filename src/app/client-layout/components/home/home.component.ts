@@ -46,7 +46,7 @@ import { trigger, transition, style, animate, query, stagger } from '@angular/an
   ]
 })
 export class HomeComponent {
-  activeTab = signal<'all' | 'cssbattle'>('all');
+  activeTab = signal<'all' | 'cssbattle' | 'problem-solving'>('all');
 
   filteredProjects: any[] = [];
 
@@ -60,6 +60,7 @@ export class HomeComponent {
     projectUrl: string;
     oppositeSideBorder?: boolean;
     isItCssBattle?: boolean;
+    isItProblemSolving?: boolean;
   }[] = [
       {
         videoSrc: './../../../../assets/video-samples/Tabs.mp4',
@@ -650,6 +651,16 @@ Just CSS creativity and geometry control.`,
         projectUrl: '/css_battle_p11',
         isItCssBattle: true,
       },
+      {
+        videoSrc: '../../../../assets/video-samples/problem solving/roman_to_integer.jpeg',
+        navigationState: false,
+        title: 'Roman to Integer',
+        description: 'Convert a Roman numeral to an integer using a single-pass approach.',
+        date: 'September 13, 2026',
+        tags: ['Problem Solving', 'JavaScript', 'LeetCode'],
+        projectUrl: '/problem-solving/roman-to-integer',
+        isItProblemSolving: true,
+      }
     ];
 
   paginatedProjects: any[] = [];
@@ -675,8 +686,15 @@ Just CSS creativity and geometry control.`,
     }
 
     const savedTab = sessionStorage.getItem('activeTab');
-    if (savedTab === 'cssbattle' || savedTab === 'all') {
-      this.activeTab.set(savedTab as 'all' | 'cssbattle');
+
+    if (
+      savedTab === 'cssbattle' ||
+      savedTab === 'problem-solving' ||
+      savedTab === 'all'
+    ) {
+      this.activeTab.set(
+        savedTab as 'all' | 'cssbattle' | 'problem-solving'
+      );
     }
   }
 
@@ -695,7 +713,13 @@ Just CSS creativity and geometry control.`,
 
   private updateFilteredProjects() {
     if (this.activeTab() === 'cssbattle') {
-      this.filteredProjects = this.projects.filter(project => project.isItCssBattle === true);
+      this.filteredProjects = this.projects.filter(
+        project => project.isItCssBattle === true
+      );
+    } else if (this.activeTab() === 'problem-solving') {
+      this.filteredProjects = this.projects.filter(
+        project => project.isItProblemSolving === true
+      );
     } else {
       this.filteredProjects = this.projects;
     }
@@ -716,7 +740,7 @@ Just CSS creativity and geometry control.`,
     this.totalPages = Math.ceil(this.filteredProjects.length / itemsPerPage);
   }
 
-  changeTab(tab: 'all' | 'cssbattle'): void {
+  changeTab(tab: 'all' | 'cssbattle' | 'problem-solving'): void {
     if (this.activeTab() === tab) return;
 
     if (document.startViewTransition) {
@@ -728,7 +752,9 @@ Just CSS creativity and geometry control.`,
     }
   }
 
-  private performTabChange(tab: 'all' | 'cssbattle'): void {
+  private performTabChange(
+    tab: 'all' | 'cssbattle' | 'problem-solving'
+  ): void {
     this.activeTab.set(tab);
     sessionStorage.setItem('activeTab', tab);
     this.updateFilteredProjects();

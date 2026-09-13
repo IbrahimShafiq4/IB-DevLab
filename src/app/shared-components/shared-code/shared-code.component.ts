@@ -1,4 +1,13 @@
-import { Component, AfterViewInit, Input, inject, ComponentFactoryResolver, ViewChild, ViewContainerRef, ElementRef } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ComponentFactoryResolver,
+  ElementRef,
+  Input,
+  ViewChild,
+  ViewContainerRef,
+  inject
+} from '@angular/core';
 
 import Prism from 'prismjs';
 import { EscapeHtmlPipe } from '../../client-layout/pipes/EscapeHtml.pipe';
@@ -8,7 +17,25 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 export interface ICodeStructure {
   codeTitle: string | any;
-  code: string
+  code: string;
+}
+
+export interface IProblemSolvingContent {
+  problem: string;
+  generalIdea: string;
+  solutionIdea: string;
+  steps: string[];
+  example?: {
+    input: string;
+    output: string;
+    explanation: string;
+  };
+  complexity: {
+    time: string;
+    space: string;
+  };
+  code: ICodeStructure[];
+  learned: string[];
 }
 
 @Component({
@@ -19,55 +46,126 @@ export interface ICodeStructure {
   styleUrls: ['./shared-code.component.scss']
 })
 export class SharedCodeComponent implements AfterViewInit {
-  ngAfterViewInit() {
-    Prism.highlightAll();
-  }
-  isItCopied: boolean = false;
 
   @Input() HTMLCodeSnippet: ICodeStructure[] = [];
   @Input() CSSCodeSnippet: ICodeStructure[] = [];
   @Input() JSCodeSnippet: ICodeStructure[] = [];
+
   @Input() projectName: string = '';
   @Input() projectDescription: string = '';
   @Input() projectVersion: string = '';
   @Input() projectDate: string = '';
-  @Input() zipFile: string = ''
+  @Input() zipFile: string = '';
+
   @Input() isProjectHasNotAssists: boolean = true;
   @Input() projectOnYoutube: string = '';
   @Input() project_demo: string = '';
   @Input() projectVideoSrc: string = '';
-  @Input() isItCssBattle: boolean = false;
 
-  @Input() tags: string[] = ['Web Development', 'HTML', 'CSS', 'JS', 'API'];
+  @Input() isItCssBattle: boolean = false;
+  @Input() isItProblemSolving: boolean = false;
+
+  @Input() problemSolvingContent: IProblemSolvingContent | null = null;
+
+  @Input() tags: string[] = [
+    'Web Development',
+    'HTML',
+    'CSS',
+    'JS',
+    'API'
+  ];
+
+  isItCopied: boolean = false;
 
   private _ComponentFactoryResolver = inject(ComponentFactoryResolver);
-  @ViewChild('popContainer', { read: ViewContainerRef, static: true }) popupContainer!: ViewContainerRef;
-  @ViewChild('sourceElement') sourceElement!: ElementRef;
+
+  @ViewChild('popContainer', {
+    read: ViewContainerRef,
+    static: true
+  })
+  popupContainer!: ViewContainerRef;
+
+  @ViewChild('sourceElement')
+  sourceElement!: ElementRef;
 
   private _Router: Router = inject(Router);
   private _ActivatedRoute: ActivatedRoute = inject(ActivatedRoute);
 
+  ngAfterViewInit() {
+    Prism.highlightAll();
+  }
+
   scrollToSource() {
     setTimeout(() => {
-      this.sourceElement.nativeElement.scrollIntoView({
+      this.sourceElement?.nativeElement.scrollIntoView({
         behavior: 'smooth',
         block: 'start'
       });
     }, 100);
   }
+
   getTagIcon(tag: string): string {
-    const iconMap: { [key: string]: { icon: string; type: 'solid' | 'brands' } } = {
-      'Web Development': { icon: 'desktop', type: 'solid' },
-      'HTML': { icon: 'html5', type: 'brands' },
-      'CSS': { icon: 'css3-alt', type: 'brands' },
-      'JS': { icon: 'js', type: 'brands' },
-      'Angular': { icon: 'angular', type: 'brands' },
-      'React': { icon: 'react', type: 'brands' },
-      'Database': { icon: 'database', type: 'solid' },
-      'API': { icon: 'server', type: 'solid' }
+    const iconMap: {
+      [key: string]: {
+        icon: string;
+        type: 'solid' | 'brands';
+      }
+    } = {
+      'Web Development': {
+        icon: 'desktop',
+        type: 'solid'
+      },
+      'HTML': {
+        icon: 'html5',
+        type: 'brands'
+      },
+      'CSS': {
+        icon: 'css3-alt',
+        type: 'brands'
+      },
+      'JS': {
+        icon: 'js',
+        type: 'brands'
+      },
+      'Angular': {
+        icon: 'angular',
+        type: 'brands'
+      },
+      'React': {
+        icon: 'react',
+        type: 'brands'
+      },
+      'Database': {
+        icon: 'database',
+        type: 'solid'
+      },
+      'API': {
+        icon: 'server',
+        type: 'solid'
+      },
+      'Problem Solving': {
+        icon: 'brain',
+        type: 'solid'
+      },
+      'LeetCode': {
+        icon: 'code',
+        type: 'solid'
+      },
+      'TypeScript': {
+        icon: 'code',
+        type: 'brands'
+      },
+      'JavaScript': {
+        icon: 'js',
+        type: 'brands'
+      }
     };
 
-    const defaultIcon = { icon: 'tag', type: 'solid' };
+    const defaultIcon = {
+      icon: 'tag',
+      type: 'solid'
+    };
+
     const selected = iconMap[tag] || defaultIcon;
 
     return `fa-${selected.type} fa-${selected.icon}`;
@@ -75,9 +173,10 @@ export class SharedCodeComponent implements AfterViewInit {
 
   onCopy(text: string): void {
     this.isItCopied = !this.isItCopied;
+
     setTimeout(() => {
-      this.isItCopied = !this.isItCopied
-    }, 3000)
+      this.isItCopied = !this.isItCopied;
+    }, 3000);
 
     navigator.clipboard.writeText(text);
   }
@@ -94,9 +193,12 @@ export class SharedCodeComponent implements AfterViewInit {
       const url = window.URL.createObjectURL(blob);
 
       const link = document.createElement('a');
+
       link.href = url;
       link.download = `${this.projectName.replace(/\s+/g, '_')}.rar`;
+
       document.body.appendChild(link);
+
       link.click();
 
       setTimeout(() => {
@@ -113,7 +215,8 @@ export class SharedCodeComponent implements AfterViewInit {
   onWatchDemo() {
     this.popupContainer.clear();
 
-    const componentRef = this.popupContainer.createComponent(SharedVideoComponent);
+    const componentRef =
+      this.popupContainer.createComponent(SharedVideoComponent);
 
     componentRef.instance.videoTitle = this.projectName;
     componentRef.instance.videoDescription = this.projectDescription;
@@ -129,6 +232,8 @@ export class SharedCodeComponent implements AfterViewInit {
   }
 
   onNavigateBack(): void {
-    this._Router.navigate(['/'], { relativeTo: this._ActivatedRoute })
+    this._Router.navigate(['/'], {
+      relativeTo: this._ActivatedRoute
+    });
   }
 }

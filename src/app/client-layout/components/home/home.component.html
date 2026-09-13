@@ -12,6 +12,10 @@
                     class="tab-link">
                     Css Battle
                 </a>
+                <a [class.active_link]="activeTab() === 'problem-solving'" (click)="changeTab('problem-solving')" role="button"
+                    class="tab-link">
+                    Problem Solving
+                </a>
             </nav>
         </div>
     </header>
