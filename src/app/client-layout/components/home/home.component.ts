@@ -626,6 +626,30 @@ Just CSS creativity and geometry control.`,
         projectUrl: '/css_battle_P10',
         isItCssBattle: true,
       },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/flag.png',
+        navigationState: false,
+        title: 'CSS Battle – Geometric Flag Challenge',
+        description: `CSS recreation of a geometric flag-like shape using pure CSS and minimal HTML.
+
+  The design uses:
+  - ::before and ::after pseudo-elements
+  - Absolute positioning
+  - Precise dimensions and spacing
+  - Layered geometric shapes
+  - -webkit-box-reflect for mirroring
+  - Solid colors with no images or SVG
+
+  The composition consists of:
+  - A vertical dark pole
+  - A white geometric flag
+  - Dark borders and extensions
+  - Mirrored sections created with CSS reflection`,
+        date: 'June 23, 2025',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_p11',
+        isItCssBattle: true,
+      },
     ];
 
   paginatedProjects: any[] = [];
