@@ -681,7 +681,7 @@ Just CSS creativity and geometry control.`,
   and -webkit-box-reflect with minimal HTML.`,
         date: 'September 14, 2026',
         tags: ['HTML', 'CSS', 'CSS Battle'],
-        projectUrl: '/css_battle_p11',
+        projectUrl: '/css_battle_p12',
         isItCssBattle: true,
       },
     ];
