@@ -670,7 +670,20 @@ Just CSS creativity and geometry control.`,
         tags: ['Problem Solving', 'JavaScript', 'LeetCode'],
         projectUrl: '/problem-solving/longest-substring',
         isItProblemSolving: true,
-      }
+      },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/cross-circle.png',
+        navigationState: false,
+        title: 'CSS Battle – Geometric Cross',
+        description: `A pure CSS recreation of a geometric cross and circular pattern.
+
+  Built with pseudo-elements, precise positioning, CSS borders, border-radius,
+  and -webkit-box-reflect with minimal HTML.`,
+        date: 'September 14, 2026',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_p11',
+        isItCssBattle: true,
+      },
     ];
 
   paginatedProjects: any[] = [];
