@@ -242,10 +242,12 @@ small {
 }
 
 .problem-solving-content {
-    padding: 2rem;
+    padding: 2.25rem;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 2.25rem;
+    direction: rtl;
+    text-align: right;
 }
 
 .problem-solving-header {
@@ -257,30 +259,30 @@ small {
 }
 
 .section-icon {
-    width: 52px;
-    height: 52px;
-    min-width: 52px;
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
     border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: rgba(106, 133, 251, 0.12);
     color: #6a85fb;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
 }
 
 .section-label {
     display: block;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 1.5px;
     color: #6a85fb;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.3rem;
 }
 
 .problem-solving-header h3 {
     margin: 0;
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     font-weight: 700;
     color: #fff;
 }
@@ -299,17 +301,18 @@ small {
 
 .section-title i {
     color: #6a85fb;
-    font-size: 1rem;
+    font-size: 1.15rem;
 }
 
 .section-title h4 {
     margin: 0;
-    font-size: 1.15rem;
+    padding: 0;
+    font-size: 1.3rem;
     font-weight: 700;
 }
 
 .section-content {
-    padding: 1.25rem;
+    padding: 1.5rem;
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.025);
     border: 1px solid rgba(255, 255, 255, 0.06);
@@ -318,21 +321,22 @@ small {
 .section-content p {
     margin: 0;
     white-space: pre-line;
-    line-height: 1.8;
-    color: rgba(255, 255, 255, 0.78);
+    line-height: 2;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 1.05rem;
 }
 
 .steps-list {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.85rem;
 }
 
 .step-item {
     display: flex;
     align-items: flex-start;
     gap: 1rem;
-    padding: 1rem;
+    padding: 1.2rem;
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.025);
     border: 1px solid rgba(255, 255, 255, 0.06);
@@ -340,33 +344,34 @@ small {
 }
 
 .step-item:hover {
-    transform: translateX(4px);
+    transform: translateX(-4px);
     border-color: rgba(106, 133, 251, 0.25);
 }
 
 .step-number {
-    width: 30px;
-    height: 30px;
-    min-width: 30px;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
     background: rgba(106, 133, 251, 0.12);
     color: #6a85fb;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     font-weight: 700;
 }
 
 .step-item p {
     margin: 0;
-    padding-top: 4px;
-    line-height: 1.6;
-    color: rgba(255, 255, 255, 0.78);
+    padding-top: 3px;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 1.05rem;
 }
 
 .example-box {
-    padding: 1.25rem;
+    padding: 1.5rem;
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.025);
     border: 1px solid rgba(255, 255, 255, 0.06);
@@ -381,16 +386,19 @@ small {
 
 .example-label {
     min-width: 80px;
-    color: rgba(255, 255, 255, 0.55);
-    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.95rem;
     font-weight: 600;
 }
 
 .example-row code {
-    padding: 0.45rem 0.7rem;
+    padding: 0.5rem 0.8rem;
     border-radius: 7px;
     background: rgba(106, 133, 251, 0.1);
     color: #8ea4ff;
+    font-size: 0.95rem;
+    direction: ltr;
+    text-align: left;
 }
 
 .example-explanation {
@@ -400,15 +408,17 @@ small {
 
 .example-explanation strong {
     display: block;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.6rem;
     color: #fff;
+    font-size: 1rem;
 }
 
 .example-explanation p {
     margin: 0;
-    line-height: 1.7;
-    color: rgba(255, 255, 255, 0.72);
+    line-height: 1.9;
+    color: rgba(255, 255, 255, 0.78);
     white-space: pre-line;
+    font-size: 1.05rem;
 }
 
 .complexity-grid {
@@ -418,23 +428,25 @@ small {
 }
 
 .complexity-card {
-    padding: 1.25rem;
+    padding: 1.4rem;
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.025);
     border: 1px solid rgba(255, 255, 255, 0.06);
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.6rem;
 }
 
 .complexity-label {
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.55);
 }
 
 .complexity-card strong {
-    font-size: 1.3rem;
+    font-size: 1.45rem;
     color: #6a85fb;
+    direction: ltr;
+    text-align: right;
 }
 
 .code-block {
@@ -442,6 +454,8 @@ small {
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.06);
     background: rgba(0, 0, 0, 0.15);
+    direction: ltr;
+    text-align: left;
 }
 
 .code-block .title {
@@ -457,44 +471,47 @@ small {
 
 .code-block .title h4 {
     margin: 0;
-    font-size: 0.9rem;
+    padding: 0;
+    font-size: 0.95rem;
 }
 
 .code-block .title p {
     margin: 0;
     cursor: pointer;
     color: #6a85fb;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     user-select: none;
 }
 
 .code-block pre {
     margin: 0;
-    padding: 1.25rem;
+    padding: 1.4rem;
     overflow-x: auto;
-    line-height: 1.7;
+    line-height: 1.8;
 }
 
 .code-block code {
     font-family: "Fira Code", Consolas, monospace;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
 }
 
 .learned-list {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.85rem;
 }
 
 .learned-item {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    padding: 0.9rem 1rem;
+    padding: 1.1rem 1.2rem;
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.025);
     border: 1px solid rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.75);
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.05rem;
+    line-height: 1.7;
 }
 
 .learned-item i {
@@ -503,12 +520,19 @@ small {
 
 @media (max-width: 768px) {
     .problem-solving-content {
-        padding: 1.25rem;
-        gap: 1.5rem;
+        padding: 1.5rem;
+        gap: 1.75rem;
     }
 
     .problem-solving-header h3 {
-        font-size: 1.3rem;
+        font-size: 1.45rem;
+    }
+
+    .section-content p,
+    .step-item p,
+    .example-explanation p,
+    .learned-item {
+        font-size: 1rem;
     }
 
     .complexity-grid {
@@ -532,7 +556,8 @@ small {
 
 @media (max-width: 480px) {
     .problem-solving-content {
-        padding: 1rem;
+        padding: 1.1rem;
+        gap: 1.5rem;
     }
 
     .problem-solving-header {
@@ -540,12 +565,16 @@ small {
     }
 
     .section-icon {
-        width: 44px;
-        height: 44px;
-        min-width: 44px;
+        width: 46px;
+        height: 46px;
+        min-width: 46px;
     }
 
     .problem-solving-header h3 {
+        font-size: 1.25rem;
+    }
+
+    .section-title h4 {
         font-size: 1.15rem;
     }
 
