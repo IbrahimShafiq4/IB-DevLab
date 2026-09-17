@@ -228,7 +228,7 @@
                         {{ code.codeTitle }}
                     </h4>
 
-                    <p (click)="onCopy(code.code)" role="button">
+                    <p (click)="onCopy(code.code)" role="button" class="copy-role-btn">
                         {{ !isItCopied ? "copy" : "copied" }}
 
                         <i class="fa-solid fa-copy" [class.d-none]="isItCopied" [class.d-block]="!isItCopied">
@@ -344,7 +344,7 @@
                 {{ jsCode.codeTitle }}
             </h4>
 
-            <p (click)="onCopy(jsCode.code)">
+            <p (click)="onCopy(jsCode.code)" class="copy-role-btn">
                 {{ !isItCopied ? "copy" : "copied" }}
 
                 <i class="fa-solid fa-copy" [class.d-none]="isItCopied" [class.d-block]="!isItCopied">

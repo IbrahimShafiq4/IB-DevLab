@@ -218,12 +218,12 @@ p:not(.assets-text p) {
     display: flex;
     flex-direction: row-reverse;
     gap: 0.25rem;
-    align-items: center;
+    align-items: flex-start;
     color: #fff;
     padding: 10px;
     font-family: monospace;
     cursor: pointer;
-    font-size: 0.725rem;
+    justify-content: flex-end;
 }
 
 h5 {

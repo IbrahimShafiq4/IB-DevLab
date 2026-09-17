@@ -57,6 +57,9 @@ import { CssBattle } from './components/structured-components/css-battle/css-bat
 import { CssBattleP13 } from './components/structured-components/css-battle-p13/css-battle-p13';
 import { LeetCode3 } from './components/structured-components/leet-code-3/leet-code-3';
 import { LeetCode4 } from './components/structured-components/leet-code-4/leet-code-4';
+import { LeetCode5 } from './components/structured-components/leet-code-5/leet-code-5';
+import { CssBattleP14 } from './components/structured-components/css-battle-p14/css-battle-p14';
+import { CssBattleP15 } from './components/structured-components/css-battle-p15/css-battle-p15';
 
 
 const routes: Routes = [
@@ -276,10 +279,13 @@ const routes: Routes = [
       { path: 'css_battle_p11', component: CssBattleP11, title: 'Css Battle Project 11' },
       { path: 'css_battle_p12', component: CssBattle, title: 'Css Battle Project 12' },
       { path: 'css_battle_p13', component: CssBattleP13, title: 'Css Battle Project 13' },
+      { path: 'css_battle_p14', component: CssBattleP14, title: 'Css Battle Project 14' },
+      { path: 'css_battle_p15', component: CssBattleP15, title: 'Css Battle Project 15' },
       { path: 'problem-solving/roman-to-integer', component: LeetCode1, title: 'Roman To Integer' },
       { path: 'problem-solving/longest-substring', component: LeetCode2, title: 'Longest Substring' },
       { path: 'problem-solving/palindrome-number', component: LeetCode3, title: 'Palindrome Number' },
       { path: 'problem-solving/longest-common-prefix', component: LeetCode4, title: 'Longest Common Prefix' },
+      { path: 'problem-solving/valid-parentheses', component: LeetCode5, title: 'Valid Parentheses' },
     ]
   },
 ];
