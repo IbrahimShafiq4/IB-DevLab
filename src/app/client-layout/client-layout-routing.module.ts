@@ -60,6 +60,7 @@ import { LeetCode4 } from './components/structured-components/leet-code-4/leet-c
 import { LeetCode5 } from './components/structured-components/leet-code-5/leet-code-5';
 import { CssBattleP14 } from './components/structured-components/css-battle-p14/css-battle-p14';
 import { CssBattleP15 } from './components/structured-components/css-battle-p15/css-battle-p15';
+import { CssBattleP16 } from './components/structured-components/css-battle-p16/css-battle-p16';
 
 
 const routes: Routes = [
@@ -281,6 +282,7 @@ const routes: Routes = [
       { path: 'css_battle_p13', component: CssBattleP13, title: 'Css Battle Project 13' },
       { path: 'css_battle_p14', component: CssBattleP14, title: 'Css Battle Project 14' },
       { path: 'css_battle_p15', component: CssBattleP15, title: 'Css Battle Project 15' },
+      { path: 'css_battle_p16', component: CssBattleP16, title: 'Css Battle Project 16' },
       { path: 'problem-solving/roman-to-integer', component: LeetCode1, title: 'Roman To Integer' },
       { path: 'problem-solving/longest-substring', component: LeetCode2, title: 'Longest Substring' },
       { path: 'problem-solving/palindrome-number', component: LeetCode3, title: 'Palindrome Number' },

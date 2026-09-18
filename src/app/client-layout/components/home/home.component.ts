@@ -744,6 +744,38 @@ Just CSS creativity and geometry control.`,
         projectUrl: '/css_battle_p15',
         isItCssBattle: true,
       },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/geometric-hook.png',
+        navigationState: false,
+        title: 'CSS Battle – Geometric Hook',
+        description: `CSS recreation of a geometric hook-like shape using pure CSS.
+
+  The design uses:
+  - CSS pseudo-elements
+  - Precise positioning
+  - Border-radius
+  - CSS transforms
+  - Minimal HTML structure
+
+  The composition consists of:
+  - A rounded outer shape
+  - A horizontal inner bar
+  - A vertical end section`,
+        date: 'September 18, 2026',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_p16',
+        isItCssBattle: true,
+      },
+      // {
+      //   videoSrc: '../../../../assets/video-samples/problem solving/merge_two_sorted_lists.png',
+      //   navigationState: false,
+      //   title: 'Merge Two Sorted Lists',
+      //   description: 'Merge two sorted linked lists into one sorted linked list.',
+      //   date: 'September 18, 2026',
+      //   tags: ['Problem Solving', 'JavaScript', 'LeetCode', 'Linked List'],
+      //   projectUrl: '/problem-solving/merge-two-sorted-lists',
+      //   isItProblemSolving: true
+      // }
     ];
 
   paginatedProjects: any[] = [];
