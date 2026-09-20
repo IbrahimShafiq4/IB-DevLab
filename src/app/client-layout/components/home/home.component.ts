@@ -766,16 +766,70 @@ Just CSS creativity and geometry control.`,
         projectUrl: '/css_battle_p16',
         isItCssBattle: true,
       },
-      // {
-      //   videoSrc: '../../../../assets/video-samples/problem solving/merge_two_sorted_lists.png',
-      //   navigationState: false,
-      //   title: 'Merge Two Sorted Lists',
-      //   description: 'Merge two sorted linked lists into one sorted linked list.',
-      //   date: 'September 18, 2026',
-      //   tags: ['Problem Solving', 'JavaScript', 'LeetCode', 'Linked List'],
-      //   projectUrl: '/problem-solving/merge-two-sorted-lists',
-      //   isItProblemSolving: true
-      // }
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/envelope-icon.png',
+        navigationState: false,
+        title: 'CSS Battle – Envelope Icon',
+        description: `CSS recreation of a flat envelope icon inside a circular badge using pure CSS.
+
+  The design uses:
+  - A circle shape
+  - CSS triangles for the envelope flap
+  - Absolute positioning
+  - Layered shapes to build the envelope silhouette
+
+  The composition consists of:
+  - A dark navy background
+  - An orange/peach circular badge
+  - A navy envelope body centered inside the circle
+  - A triangular flap forming the mail icon`,
+        date: 'September 19, 2026',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_p17',
+        isItCssBattle: true,
+      },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/geometric-h.png',
+        navigationState: false,
+        title: 'CSS Battle – Geometric H',
+        description: `CSS recreation of a geometric H-like shape using pure CSS.
+
+  The design uses:
+  - CSS pseudo-elements
+  - Precise positioning
+  - CSS box-reflect
+  - Layered rectangular shapes
+  - Minimal HTML structure
+
+  The composition consists of:
+  - Two vertical side sections
+  - Top and bottom horizontal bars
+  - A centered opening`,
+        date: 'September 20, 2026',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_p18',
+        isItCssBattle: true,
+      },
+      {
+        videoSrc: '../../../../assets/video-samples/problem solving/merge_two_sorted_lists.png',
+        navigationState: false,
+        title: 'Merge Two Sorted Lists',
+        description: 'Merge two sorted linked lists into one sorted linked list.',
+        date: 'September 18, 2026',
+        tags: ['Problem Solving', 'JavaScript', 'LeetCode', 'Linked List'],
+        projectUrl: '/problem-solving/merge-two-sorted-lists',
+        isItProblemSolving: true
+      },
+      {
+        videoSrc: '../../../../assets/video-samples/problem solving/remove_duplicates_from_sorted_array.png',
+        navigationState: false,
+        title: 'Remove Duplicates from Sorted Array',
+        description: 'Remove duplicates in-place from a sorted array using two pointers.',
+        date: 'September 20, 2026',
+        tags: ['Problem Solving', 'JavaScript', 'LeetCode', 'Two Pointers'],
+        projectUrl: '/problem-solving/remove-duplicates-from-sorted-array',
+        isItProblemSolving: true
+      },
     ];
 
   paginatedProjects: any[] = [];

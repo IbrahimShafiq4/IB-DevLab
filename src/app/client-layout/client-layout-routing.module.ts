@@ -61,6 +61,10 @@ import { LeetCode5 } from './components/structured-components/leet-code-5/leet-c
 import { CssBattleP14 } from './components/structured-components/css-battle-p14/css-battle-p14';
 import { CssBattleP15 } from './components/structured-components/css-battle-p15/css-battle-p15';
 import { CssBattleP16 } from './components/structured-components/css-battle-p16/css-battle-p16';
+import { CssBattleP17 } from './components/structured-components/css-battle-p17/css-battle-p17';
+import { CssBattleP18 } from './components/structured-components/css-battle-p18/css-battle-p18';
+import { LeetCode6 } from './components/structured-components/leet-code-6/leet-code-6';
+import { LeetCode7 } from './components/structured-components/leet-code-7/leet-code-7';
 
 
 const routes: Routes = [
@@ -283,11 +287,15 @@ const routes: Routes = [
       { path: 'css_battle_p14', component: CssBattleP14, title: 'Css Battle Project 14' },
       { path: 'css_battle_p15', component: CssBattleP15, title: 'Css Battle Project 15' },
       { path: 'css_battle_p16', component: CssBattleP16, title: 'Css Battle Project 16' },
+      { path: 'css_battle_p17', component: CssBattleP17, title: 'Css Battle Project 17' },
+      { path: 'css_battle_p18', component: CssBattleP18, title: 'Css Battle Project 18' },
       { path: 'problem-solving/roman-to-integer', component: LeetCode1, title: 'Roman To Integer' },
       { path: 'problem-solving/longest-substring', component: LeetCode2, title: 'Longest Substring' },
       { path: 'problem-solving/palindrome-number', component: LeetCode3, title: 'Palindrome Number' },
       { path: 'problem-solving/longest-common-prefix', component: LeetCode4, title: 'Longest Common Prefix' },
       { path: 'problem-solving/valid-parentheses', component: LeetCode5, title: 'Valid Parentheses' },
+      { path: 'problem-solving/merge-two-sorted-lists', component: LeetCode6, title: 'Merge Two Sorted Lists' },
+      { path: 'problem-solving/remove-duplicates-from-sorted-array', component: LeetCode7, title: 'Remove duplicates from sorted array' },
     ]
   },
 ];
