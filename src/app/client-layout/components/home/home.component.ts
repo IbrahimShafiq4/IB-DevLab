@@ -830,6 +830,28 @@ Just CSS creativity and geometry control.`,
         projectUrl: '/problem-solving/remove-duplicates-from-sorted-array',
         isItProblemSolving: true
       },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/geometric-b.png',
+        navigationState: false,
+        title: 'CSS Battle – Geometric B',
+        description: `CSS recreation of a geometric B-like shape using pure CSS.
+
+  The design uses:
+  - CSS pseudo-elements
+  - Border-radius
+  - Precise positioning
+  - Layered shapes
+  - Minimal HTML structure
+
+  The composition consists of:
+  - A vertical central bar
+  - Two curved circular sections
+  - Overlapping geometric shapes`,
+        date: 'September 22, 2026',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_p19',
+        isItCssBattle: true,
+      },
     ];
 
   paginatedProjects: any[] = [];
