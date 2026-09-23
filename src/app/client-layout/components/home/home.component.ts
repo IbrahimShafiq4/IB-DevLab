@@ -852,6 +852,28 @@ Just CSS creativity and geometry control.`,
         projectUrl: '/css_battle_p19',
         isItCssBattle: true,
       },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/geometric-capsule.png',
+        navigationState: false,
+        title: 'CSS Battle – Geometric Capsule',
+        description: `CSS recreation of a geometric capsule-like shape using pure CSS.
+
+  The design uses:
+  - CSS pseudo-elements
+  - Border-radius
+  - CSS box-reflect
+  - Precise positioning
+  - Minimal HTML structure
+
+  The composition consists of:
+  - A rounded vertical shape
+  - Horizontal side cutouts
+  - Centered vertical cutouts`,
+        date: 'September 23, 2026',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_p20',
+        isItCssBattle: true,
+      },
     ];
 
   paginatedProjects: any[] = [];
