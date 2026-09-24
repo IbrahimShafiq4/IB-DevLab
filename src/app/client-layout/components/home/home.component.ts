@@ -874,6 +874,27 @@ Just CSS creativity and geometry control.`,
         projectUrl: '/css_battle_p20',
         isItCssBattle: true,
       },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/geometric-plus.png',
+        navigationState: false,
+        title: 'CSS Battle – Geometric Plus',
+        description: `CSS recreation of a geometric plus-like shape using pure CSS.
+
+  The design uses:
+  - CSS pseudo-elements
+  - Precise positioning
+  - Layered geometric shapes
+  - Minimal HTML structure
+
+  The composition consists of:
+  - A vertical main section
+  - A horizontal center section
+  - Two additional square sections`,
+        date: 'September 24, 2026',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_p21',
+        isItCssBattle: true,
+      },
     ];
 
   paginatedProjects: any[] = [];
