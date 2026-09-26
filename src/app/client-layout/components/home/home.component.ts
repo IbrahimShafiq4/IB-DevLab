@@ -895,6 +895,29 @@ Just CSS creativity and geometry control.`,
         projectUrl: '/css_battle_p21',
         isItCssBattle: true,
       },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/geometric-trash-can.png',
+        navigationState: false,
+        title: 'CSS Battle – Geometric Trash Can',
+        description: `CSS recreation of a geometric trash can using pure CSS.
+
+  The design uses:
+  - CSS pseudo-elements
+  - Precise positioning
+  - Border-radius
+  - CSS box-reflect
+  - Minimal HTML structure
+
+  The composition consists of:
+  - A rounded container
+  - A top lid
+  - A raised handle
+  - Three vertical inner sections`,
+        date: 'September 26, 2026',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_p22',
+        isItCssBattle: true,
+      },
     ];
 
   paginatedProjects: any[] = [];
