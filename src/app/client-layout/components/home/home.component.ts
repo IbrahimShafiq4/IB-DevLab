@@ -918,6 +918,50 @@ Just CSS creativity and geometry control.`,
         projectUrl: '/css_battle_p22',
         isItCssBattle: true,
       },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/geometric-container.png',
+        navigationState: false,
+        title: 'CSS Battle – Geometric Container',
+        description: `CSS recreation of a minimal geometric container using pure CSS.
+
+  The design uses:
+  - CSS pseudo-elements
+  - Precise positioning
+  - Border-radius
+  - CSS box-reflect
+  - Minimal HTML structure
+
+  The composition consists of:
+  - A rounded rectangular container
+  - A dark top section
+  - Two circular side details`,
+        date: 'September 27, 2026',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_p23',
+        isItCssBattle: true,
+      },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/geometric-alarm-clock.png',
+        navigationState: false,
+        title: 'CSS Battle – Geometric Alarm Clock',
+        description: `CSS recreation of a geometric alarm clock using pure CSS.
+
+  The design uses:
+  - CSS pseudo-elements
+  - Border-radius
+  - CSS transforms
+  - Precise positioning
+  - Minimal HTML structure
+
+  The composition consists of:
+  - A circular clock body
+  - Two alarm bells
+  - Two angled legs`,
+        date: 'September 27, 2026',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_p24',
+        isItCssBattle: true,
+      },
     ];
 
   paginatedProjects: any[] = [];
