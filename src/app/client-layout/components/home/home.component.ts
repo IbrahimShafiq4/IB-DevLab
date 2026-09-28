@@ -962,6 +962,29 @@ Just CSS creativity and geometry control.`,
         projectUrl: '/css_battle_p24',
         isItCssBattle: true,
       },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/geometric-d.png',
+        navigationState: false,
+        title: 'CSS Battle – Geometric D',
+        description: `CSS recreation of a geometric D-like shape using pure CSS.
+
+  The design uses:
+  - CSS pseudo-elements
+  - Border-radius
+  - CSS box-reflect
+  - Precise positioning
+  - Minimal HTML structure
+
+  The composition consists of:
+  - A curved geometric shape
+  - A vertical section
+  - A small bottom extension
+  - Two horizontal bars`,
+        date: 'September 28, 2026',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_p25',
+        isItCssBattle: true,
+      },
     ];
 
   paginatedProjects: any[] = [];
