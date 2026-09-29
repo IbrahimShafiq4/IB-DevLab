@@ -73,6 +73,7 @@ import { CssBattleP23 } from './components/structured-components/css-battle-p23/
 import { CssBattleP24 } from './components/structured-components/css-battle-p24/css-battle-p24';
 import { CssBattleP25 } from './components/structured-components/css-battle-p25/css-battle-p25';
 import { CssBattleP26 } from './components/structured-components/css-battle-p26/css-battle-p26';
+import { LeetCode8 } from './components/structured-components/leet-code-8/leet-code-8';
 
 
 const routes: Routes = [
@@ -312,6 +313,7 @@ const routes: Routes = [
       { path: 'problem-solving/valid-parentheses', component: LeetCode5, title: 'Valid Parentheses' },
       { path: 'problem-solving/merge-two-sorted-lists', component: LeetCode6, title: 'Merge Two Sorted Lists' },
       { path: 'problem-solving/remove-duplicates-from-sorted-array', component: LeetCode7, title: 'Remove duplicates from sorted array' },
+      { path: 'problem-solving/remove-element', component: LeetCode8, title: 'Remove Element' },
     ]
   },
 ];
