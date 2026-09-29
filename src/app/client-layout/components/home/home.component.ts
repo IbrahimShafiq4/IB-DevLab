@@ -985,6 +985,29 @@ Just CSS creativity and geometry control.`,
         projectUrl: '/css_battle_p25',
         isItCssBattle: true,
       },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/geometric-bars.png',
+        navigationState: false,
+        title: 'CSS Battle – Geometric Bars',
+        description: `CSS recreation of a geometric bar pattern using pure CSS.
+
+  The design uses:
+  - CSS pseudo-elements
+  - Box-shadow
+  - Absolute positioning
+  - Precise dimensions and spacing
+  - Minimal HTML structure
+
+  The composition consists of:
+  - Two vertical dark sections
+  - Four horizontal red bars
+  - One long bottom bar
+  - A centered geometric layout`,
+        date: 'September 29, 2026',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_p26',
+        isItCssBattle: true,
+      },
     ];
 
   paginatedProjects: any[] = [];
