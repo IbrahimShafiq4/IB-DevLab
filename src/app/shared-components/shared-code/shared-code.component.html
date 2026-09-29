@@ -26,7 +26,6 @@
                         <span class="tag-icon">
                             <i [class]="getTagIcon(tag)"></i>
                         </span>
-
                         {{ tag }}
                     </li>
                     }
@@ -34,14 +33,14 @@
             </div>
 
             <div class="project-actions">
-                @if (!projectOnYoutube && !isItProblemSolving) {
+                @if (!projectOnYoutube && !isItProblemSolving && !isItCleanCode) {
                 <a class="btn-demo" (click)="onWatchDemo()" role="button" target="_blank">
                     <i class="fa-solid fa-eye"></i>
                     Live Demo
                 </a>
                 }
 
-                @if (projectOnYoutube && !isItProblemSolving) {
+                @if (projectOnYoutube && !isItProblemSolving && !isItCleanCode) {
                 <a class="btn-demo" role="button" [href]="projectOnYoutube" target="_blank">
                     <i class="fa-solid fa-eye"></i>
                     Live Demo
@@ -55,7 +54,14 @@
                 </a>
                 }
 
-                @if (isProjectHasNotAssists && !isItProblemSolving) {
+                @if (isItCleanCode) {
+                <a class="btn-code" (click)="scrollToSource()" role="button">
+                    <i class="fa-solid fa-broom"></i>
+                    Read the Guide
+                </a>
+                }
+
+                @if (isProjectHasNotAssists && !isItProblemSolving && !isItCleanCode) {
                 <a class="btn-code" (click)="scrollToSource()" role="button">
                     <i class="fa-solid fa-code"></i>
                     View Source
@@ -70,6 +76,9 @@
         </div>
     </article>
 
+    <!-- =============================================
+         PROBLEM SOLVING SECTION
+    ============================================== -->
     @if (isItProblemSolving && problemSolvingContent) {
     <article class="main-background problem-solving-content" dir="rtl" #sourceElement>
 
@@ -80,10 +89,7 @@
 
             <div>
                 <span class="section-label">Problem Solving</span>
-
-                <h3>
-                    {{ projectName }}
-                </h3>
+                <h3>{{ projectName }}</h3>
             </div>
         </div>
 
@@ -92,11 +98,8 @@
                 <i class="fa-solid fa-circle-question"></i>
                 <h4>Problem</h4>
             </div>
-
             <div class="section-content">
-                <p>
-                    {{ problemSolvingContent.problem }}
-                </p>
+                <p>{{ problemSolvingContent.problem }}</p>
             </div>
         </section>
 
@@ -105,11 +108,8 @@
                 <i class="fa-solid fa-lightbulb"></i>
                 <h4>General Idea</h4>
             </div>
-
             <div class="section-content">
-                <p>
-                    {{ problemSolvingContent.generalIdea }}
-                </p>
+                <p>{{ problemSolvingContent.generalIdea }}</p>
             </div>
         </section>
 
@@ -118,11 +118,8 @@
                 <i class="fa-solid fa-gears"></i>
                 <h4>Solution Idea</h4>
             </div>
-
             <div class="section-content">
-                <p>
-                    {{ problemSolvingContent.solutionIdea }}
-                </p>
+                <p>{{ problemSolvingContent.solutionIdea }}</p>
             </div>
         </section>
 
@@ -135,13 +132,8 @@
             <div class="steps-list">
                 @for (step of problemSolvingContent.steps; track $index) {
                 <div class="step-item">
-                    <span class="step-number">
-                        {{ $index + 1 }}
-                    </span>
-
-                    <p>
-                        {{ step }}
-                    </p>
+                    <span class="step-number">{{ $index + 1 }}</span>
+                    <p>{{ step }}</p>
                 </div>
                 }
             </div>
@@ -156,31 +148,18 @@
 
             <div class="example-box">
                 <div class="example-row">
-                    <span class="example-label">
-                        Input
-                    </span>
-
-                    <code dir="ltr">
-                        {{ problemSolvingContent.example.input }}
-                    </code>
+                    <span class="example-label">Input</span>
+                    <code dir="ltr">{{ problemSolvingContent.example.input }}</code>
                 </div>
 
                 <div class="example-row">
-                    <span class="example-label">
-                        Output
-                    </span>
-
-                    <code dir="ltr">
-                        {{ problemSolvingContent.example.output }}
-                    </code>
+                    <span class="example-label">Output</span>
+                    <code dir="ltr">{{ problemSolvingContent.example.output }}</code>
                 </div>
 
                 <div class="example-explanation">
                     <strong>Explanation</strong>
-
-                    <p>
-                        {{ problemSolvingContent.example.explanation }}
-                    </p>
+                    <p>{{ problemSolvingContent.example.explanation }}</p>
                 </div>
             </div>
         </section>
@@ -194,23 +173,13 @@
 
             <div class="complexity-grid">
                 <div class="complexity-card">
-                    <span class="complexity-label">
-                        Time Complexity
-                    </span>
-
-                    <strong dir="ltr">
-                        {{ problemSolvingContent.complexity.time }}
-                    </strong>
+                    <span class="complexity-label">Time Complexity</span>
+                    <strong dir="ltr">{{ problemSolvingContent.complexity.time }}</strong>
                 </div>
 
                 <div class="complexity-card">
-                    <span class="complexity-label">
-                        Space Complexity
-                    </span>
-
-                    <strong dir="ltr">
-                        {{ problemSolvingContent.complexity.space }}
-                    </strong>
+                    <span class="complexity-label">Space Complexity</span>
+                    <strong dir="ltr">{{ problemSolvingContent.complexity.space }}</strong>
                 </div>
             </div>
         </section>
@@ -224,23 +193,16 @@
             @for (code of problemSolvingContent.code; track $index) {
             <div class="code-block" dir="ltr">
                 <div class="title">
-                    <h4 class="file-name">
-                        {{ code.codeTitle }}
-                    </h4>
+                    <h4 class="file-name">{{ code.codeTitle }}</h4>
 
-                    <p (click)="onCopy(code.code)" role="button" class="copy-role-btn">
-                        {{ !isItCopied ? "copy" : "copied" }}
-
-                        <i class="fa-solid fa-copy" [class.d-none]="isItCopied" [class.d-block]="!isItCopied">
-                        </i>
+                    <p (click)="onCopy(code.code, $index)" role="button" class="copy-role-btn">
+                        {{ copiedIndex !== $index ? "copy" : "copied" }}
+                        <i class="fa-solid fa-copy" [class.d-none]="copiedIndex === $index"></i>
                     </p>
                 </div>
 
                 <pre class="language-javascript">
-                    <code
-                        class="language-javascript"
-                        [textContent]="code.code">
-                    </code>
+                    <code class="language-javascript" [textContent]="code.code"></code>
                 </pre>
             </div>
             }
@@ -256,10 +218,7 @@
                 @for (item of problemSolvingContent.learned; track $index) {
                 <div class="learned-item">
                     <i class="fa-solid fa-check"></i>
-
-                    <span>
-                        {{ item }}
-                    </span>
+                    <span>{{ item }}</span>
                 </div>
                 }
             </div>
@@ -274,27 +233,201 @@
     </article>
     }
 
-    @if (!isItProblemSolving) {
+    <!-- =============================================
+         CLEAN CODE SECTION
+    ============================================== -->
+    @if (isItCleanCode && cleanCodeContent) {
+    <article class="main-background clean-code-content" dir="rtl" #sourceElement>
+
+        <!-- Header -->
+        <div class="problem-solving-header">
+            <div class="section-icon">
+                <i class="fa-solid fa-broom"></i>
+            </div>
+
+            <div>
+                <span class="section-label">Clean Code</span>
+                <h3>{{ projectName }}</h3>
+            </div>
+        </div>
+
+        <!-- Introduction -->
+        <section class="problem-section">
+            <div class="section-title">
+                <i class="fa-solid fa-book-open"></i>
+                <h4>Introduction</h4>
+            </div>
+            <div class="section-content">
+                <p>{{ cleanCodeContent.introduction }}</p>
+            </div>
+        </section>
+
+        <!-- Story -->
+        <section class="problem-section">
+            <div class="section-title">
+                <i class="fa-solid fa-comment-dots"></i>
+                <h4>The Story</h4>
+            </div>
+            <div class="section-content story-box">
+                <p>{{ cleanCodeContent.story }}</p>
+            </div>
+        </section>
+
+        <!-- Principles -->
+        @for (principle of cleanCodeContent.principles; track $index) {
+        <section class="principle-block">
+
+            <div class="principle-header">
+                <div class="principle-icon">
+                    <i [class]="principle.icon"></i>
+                </div>
+
+                <div>
+                    <span class="principle-number">Principle {{ $index + 1 }}</span>
+                    <h4>{{ principle.title }}</h4>
+                </div>
+            </div>
+
+            <p class="principle-description">{{ principle.description }}</p>
+
+            <div class="comparison-grid">
+
+                <!-- Bad -->
+                <div class="code-block bad-code">
+                    <div class="title">
+                        <h4 class="file-name">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                            {{ principle.badExample.title }}
+                        </h4>
+                        <p (click)="onCopy(principle.badExample.code, $index * 2)" role="button" class="copy-role-btn">
+                            {{ copiedIndex !== $index * 2 ? "copy" : "copied" }}
+                            <i class="fa-solid fa-copy" [class.d-none]="copiedIndex === $index * 2"></i>
+                        </p>
+                    </div>
+                    <pre class="language-javascript" dir="ltr">
+                        <code class="language-javascript"
+                              [textContent]="principle.badExample.code"></code>
+                    </pre>
+                </div>
+
+                <!-- Good -->
+                <div class="code-block good-code">
+                    <div class="title">
+                        <h4 class="file-name">
+                            <i class="fa-solid fa-circle-check"></i>
+                            {{ principle.goodExample.title }}
+                        </h4>
+                        <p (click)="onCopy(principle.goodExample.code, $index * 2 + 1)" role="button"
+                            class="copy-role-btn">
+                            {{ copiedIndex !== $index * 2 + 1 ? "copy" : "copied" }}
+                            <i class="fa-solid fa-copy" [class.d-none]="copiedIndex === $index * 2 + 1"></i>
+                        </p>
+                    </div>
+                    <pre class="language-javascript" dir="ltr">
+                        <code class="language-javascript"
+                              [textContent]="principle.goodExample.code"></code>
+                    </pre>
+                </div>
+
+            </div>
+
+            <div class="explanation-box">
+                <i class="fa-solid fa-lightbulb"></i>
+                <p>{{ principle.explanation }}</p>
+            </div>
+
+            @if (principle.tips && principle.tips.length) {
+            <div class="tips-list">
+                @for (tip of principle.tips; track $index) {
+                <div class="tip-item">
+                    <i class="fa-solid fa-check-double"></i>
+                    <span>{{ tip }}</span>
+                </div>
+                }
+            </div>
+            }
+
+        </section>
+        }
+
+        <!-- Quote -->
+        @if (cleanCodeContent.quote) {
+        <div class="quote-box">
+            <i class="fa-solid fa-quote-right"></i>
+            <p>{{ cleanCodeContent.quote.text }}</p>
+            <span>— {{ cleanCodeContent.quote.author }}</span>
+        </div>
+        }
+
+        <!-- Key Takeaways -->
+        <section class="problem-section">
+            <div class="section-title">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <h4>Key Takeaways</h4>
+            </div>
+            <div class="learned-list">
+                @for (item of cleanCodeContent.keyTakeaways; track $index) {
+                <div class="learned-item">
+                    <i class="fa-solid fa-check"></i>
+                    <span>{{ item }}</span>
+                </div>
+                }
+            </div>
+        </section>
+
+        <!-- References -->
+        @if (cleanCodeContent.references && cleanCodeContent.references.length) {
+        <section class="problem-section">
+            <div class="section-title">
+                <i class="fa-solid fa-bookmark"></i>
+                <h4>References</h4>
+            </div>
+            <div class="learned-list">
+                @for (ref of cleanCodeContent.references; track $index) {
+                <div class="learned-item">
+                    <i class="fa-solid fa-book"></i>
+                    <span>{{ ref }}</span>
+                </div>
+                }
+            </div>
+        </section>
+        }
+
+        <!-- Hashtags -->
+        @if (cleanCodeContent.hashtags && cleanCodeContent.hashtags.length) {
+        <div class="hashtags-row" dir="ltr">
+            @for (tag of cleanCodeContent.hashtags; track $index) {
+            <span class="hashtag">#{{ tag }}</span>
+            }
+        </div>
+        }
+
+        <div class="project-actions p-2">
+            <a class="btn-code" (click)="onNavigateBack()" role="button">
+                <i class="fa-solid fa-chevron-left"></i>
+                Back
+            </a>
+        </div>
+
+    </article>
+    }
+
+    <!-- =============================================
+         SOURCE CODE SECTIONS
+    ============================================== -->
+    @if (!isItProblemSolving && !isItCleanCode) {
     @for (htmlCode of HTMLCodeSnippet; track $index) {
     <article class="main-background" #sourceElement>
         <div class="title d-flex align-items-center justify-content-between flex-wrap flex-row-reverse">
-            <h4 class="file-name">
-                {{ htmlCode.codeTitle }}
-            </h4>
-
+            <h4 class="file-name">{{ htmlCode.codeTitle }}</h4>
             <p (click)="onCopy(htmlCode.code)">
                 {{ !isItCopied ? "copy" : "copied" }}
-
-                <i class="fa-solid fa-copy" [class.d-none]="isItCopied" [class.d-block]="!isItCopied">
-                </i>
+                <i class="fa-solid fa-copy" [class.d-none]="isItCopied" [class.d-block]="!isItCopied"></i>
             </p>
         </div>
 
         <pre class="language-javascript" dir="ltr">
-            <code
-                class="language-javascript"
-                [innerHTML]="htmlCode.code | escapeHtml">
-            </code>
+            <code class="language-javascript" [innerHTML]="htmlCode.code | escapeHtml"></code>
         </pre>
 
         <div class="project-actions p-2" dir="ltr">
@@ -309,23 +442,15 @@
     @for (cssCode of CSSCodeSnippet; track $index) {
     <article class="main-background">
         <div class="title d-flex align-items-center justify-content-between flex-wrap flex-row-reverse">
-            <h4 class="file-name">
-                {{ cssCode.codeTitle }}
-            </h4>
-
+            <h4 class="file-name">{{ cssCode.codeTitle }}</h4>
             <p (click)="onCopy(cssCode.code)">
                 {{ !isItCopied ? "copy" : "copied" }}
-
-                <i class="fa-solid fa-copy" [class.d-none]="isItCopied" [class.d-block]="!isItCopied">
-                </i>
+                <i class="fa-solid fa-copy" [class.d-none]="isItCopied" [class.d-block]="!isItCopied"></i>
             </p>
         </div>
 
         <pre class="language-javascript" dir="ltr">
-            <code
-                class="language-javascript"
-                [innerHTML]="cssCode.code">
-            </code>
+            <code class="language-javascript" [innerHTML]="cssCode.code"></code>
         </pre>
 
         <div class="project-actions p-2" dir="ltr">
@@ -340,23 +465,15 @@
     @for (jsCode of JSCodeSnippet; track $index) {
     <article class="main-background">
         <div class="title d-flex align-items-center justify-content-between flex-wrap flex-row-reverse">
-            <h4 class="file-name">
-                {{ jsCode.codeTitle }}
-            </h4>
-
+            <h4 class="file-name">{{ jsCode.codeTitle }}</h4>
             <p (click)="onCopy(jsCode.code)" class="copy-role-btn">
                 {{ !isItCopied ? "copy" : "copied" }}
-
-                <i class="fa-solid fa-copy" [class.d-none]="isItCopied" [class.d-block]="!isItCopied">
-                </i>
+                <i class="fa-solid fa-copy" [class.d-none]="isItCopied" [class.d-block]="!isItCopied"></i>
             </p>
         </div>
 
         <pre class="language-javascript" dir="ltr">
-            <code
-                class="language-javascript"
-                [textContent]="jsCode.code">
-            </code>
+            <code class="language-javascript" [textContent]="jsCode.code"></code>
         </pre>
 
         <div class="project-actions p-2" dir="ltr">
@@ -372,10 +489,7 @@
     <article class="main-background p-3 d-flex flex-column gap-3" dir="ltr">
         <div class="d-flex align-items-center gap-2">
             <i class="fa-solid fa-file-zipper fs-4" style="color: #6a85fb"></i>
-
-            <h5 class="m-0">
-                Project Assets
-            </h5>
+            <h5 class="m-0">Project Assets</h5>
         </div>
 
         <div class="zip-card p-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
@@ -385,13 +499,8 @@
                 </div>
 
                 <div class="assets-text">
-                    <p class="m-0 fw-bold" dir="ltr">
-                        Complete Project Files
-                    </p>
-
-                    <small>
-                        Includes all source code and assets
-                    </small>
+                    <p class="m-0 fw-bold" dir="ltr">Complete Project Files</p>
+                    <small>Includes all source code and assets</small>
                 </div>
             </div>
 

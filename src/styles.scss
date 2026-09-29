@@ -1,14 +1,15 @@
 @import 'prismjs/themes/prism-tomorrow';
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap');
 
-@font-face {
-    font-family: Cairo;
-    src: url("./assets/cairo/CairoPlay-Regular.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-}
+// @font-face {
+//     font-family: Cairo;
+//     src: url("./assets/cairo/CairoPlay-Bold.ttf") format("truetype");
+//     font-weight: normal;
+//     font-style: normal;
+// }
 
 *:not(i) {
-    font-family: Cairo, sans-serif;
+    font-family: "Cairo", sans-serif;
 }
 
 body {

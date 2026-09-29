@@ -74,6 +74,8 @@ import { CssBattleP24 } from './components/structured-components/css-battle-p24/
 import { CssBattleP25 } from './components/structured-components/css-battle-p25/css-battle-p25';
 import { CssBattleP26 } from './components/structured-components/css-battle-p26/css-battle-p26';
 import { LeetCode8 } from './components/structured-components/leet-code-8/leet-code-8';
+import { CleanCode01 } from './components/structured-components/clean-code-01/clean-code-01';
+import { CleanCode02 } from './components/structured-components/clean-code-02/clean-code-02';
 
 
 const routes: Routes = [
@@ -280,6 +282,9 @@ const routes: Routes = [
       { path: 'drop-of-water', component: DropOfWater, title: 'Drop of Water Animation' },
       { path: 'can-rotation', component: CanRotation, title: 'Can Rotation Animation' },
       { path: 'circular-logo', component: CircularLogo, title: 'Circular Logo Animation' },
+
+
+      // --------------------------------- CSS BATTLE -----------------------------------
       { path: 'css_battle_P1', component: CssBattleP1, title: 'CSS Battle Project 1' },
       { path: 'css_battle_P2', component: CssBattleP2, title: 'CSS Battle Project 2' },
       { path: 'css_battle_P3', component: CssBattleP3, title: 'CSS Battle Project 3' },
@@ -306,6 +311,9 @@ const routes: Routes = [
       { path: 'css_battle_p24', component: CssBattleP24, title: 'Css Battle Project 24' },
       { path: 'css_battle_p25', component: CssBattleP25, title: 'Css Battle Project 25' },
       { path: 'css_battle_p26', component: CssBattleP26, title: 'Css Battle Project 26' },
+
+
+      // ---------------------- PROBLEM SOLVING -------------------------- //
       { path: 'problem-solving/roman-to-integer', component: LeetCode1, title: 'Roman To Integer' },
       { path: 'problem-solving/longest-substring', component: LeetCode2, title: 'Longest Substring' },
       { path: 'problem-solving/palindrome-number', component: LeetCode3, title: 'Palindrome Number' },
@@ -314,6 +322,19 @@ const routes: Routes = [
       { path: 'problem-solving/merge-two-sorted-lists', component: LeetCode6, title: 'Merge Two Sorted Lists' },
       { path: 'problem-solving/remove-duplicates-from-sorted-array', component: LeetCode7, title: 'Remove duplicates from sorted array' },
       { path: 'problem-solving/remove-element', component: LeetCode8, title: 'Remove Element' },
+
+
+      // ----------------------- CLEAN CODE ------------------------------
+      {
+        path: 'clean-code-01',
+        component: CleanCode01,
+        title: 'Clean Code – From Messy to Maintainable'
+      },
+      {
+        path: 'clean-code-02',
+        component: CleanCode02,
+        title: 'Clean Code – Meaningful Names'
+      }
     ]
   },
 ];

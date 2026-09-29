@@ -12,9 +12,12 @@
                     class="tab-link">
                     Css Battle
                 </a>
-                <a [class.active_link]="activeTab() === 'problem-solving'" (click)="changeTab('problem-solving')" role="button"
-                    class="tab-link">
+                <a [class.active_link]="activeTab() === 'problem-solving'" (click)="changeTab('problem-solving')"
+                    role="button" class="tab-link">
                     Problem Solving
+                </a>
+                <a role="button" class="tab-link" [class.active]="activeTab() === 'clean-code'" (click)="changeTab('clean-code')">
+                    Clean Code
                 </a>
             </nav>
         </div>
@@ -26,7 +29,8 @@
             <app-shared-card [date]="project.date" [isItCssBattle]="project?.isItCssBattle"
                 [isNavigationOnTheWebsite]="project.navigationState" [projectUrl]="project.projectUrl"
                 [description]="project.description" [title]="project.title" [videoSrc]="project.videoSrc"
-                [tags]="project.tags" [oppositeSideBorder]="index % 2 === 0" [isItLeetCodeProblemSolving]="project.isItProblemSolving">
+                [tags]="project.tags" [oppositeSideBorder]="index % 2 === 0"
+                [isItLeetCodeProblemSolving]="project.isItProblemSolving">
             </app-shared-card>
         </div>
         }

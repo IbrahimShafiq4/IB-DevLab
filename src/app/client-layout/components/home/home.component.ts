@@ -46,7 +46,7 @@ import { trigger, transition, style, animate, query, stagger } from '@angular/an
   ]
 })
 export class HomeComponent {
-  activeTab = signal<'all' | 'cssbattle' | 'problem-solving'>('all');
+  activeTab = signal<'all' | 'cssbattle' | 'problem-solving' | 'clean-code'>('all');
 
   filteredProjects: any[] = [];
 
@@ -61,6 +61,7 @@ export class HomeComponent {
     oppositeSideBorder?: boolean;
     isItCssBattle?: boolean;
     isItProblemSolving?: boolean;
+    isItCleanCode?: boolean;
   }[] = [
       {
         videoSrc: './../../../../assets/video-samples/Tabs.mp4',
@@ -1018,6 +1019,34 @@ Just CSS creativity and geometry control.`,
         projectUrl: '/problem-solving/remove-element',
         isItProblemSolving: true
       },
+      {
+        videoSrc: './../../../../assets/video-samples/clean-code/clean-code-basics.png',
+        navigationState: false,
+        title: 'Clean Code – From Messy to Maintainable',
+        description: `A practical walkthrough of Clean Code principles inspired by Uncle Bob's book.
+
+      Covers: Meaningful Names, Small Functions, Single Responsibility, DRY,
+      Error Handling, and the Boy Scout Rule — with Bad vs Good examples for each.`,
+        date: 'September 29, 2026',
+        tags: ['Clean Code', 'Software Engineering', 'Best Practices', 'Uncle Bob'],
+        projectUrl: '/clean-code-01',
+        isItCleanCode: true,
+        isItProblemSolving: true
+      },
+      {
+        videoSrc: './../../../../assets/video-samples/clean-code/clean-code-02.jpg',
+        navigationState: false,
+        title: 'الأسماء المعبّرة – أول خطوة نحو كود نظيف',
+        description: `رحلة عملية مع فصل "Meaningful Names" من كتاب Clean Code لـ Uncle Bob.
+
+  هنمشي خطوة بخطوة على 5 قواعد أساسية لاختيار الأسماء،
+  مع أمثلة حقيقية من pull request حقيقي.`,
+        date: 'September 29, 2026',
+        tags: ['Clean Code', 'Software Engineering', 'Best Practices', 'Uncle Bob'],
+        projectUrl: '/clean-code-02',
+        isItCleanCode: true,
+        isItProblemSolving: true
+      },
     ];
 
   paginatedProjects: any[] = [];
@@ -1047,10 +1076,11 @@ Just CSS creativity and geometry control.`,
     if (
       savedTab === 'cssbattle' ||
       savedTab === 'problem-solving' ||
+      savedTab === 'clean-code' ||
       savedTab === 'all'
     ) {
       this.activeTab.set(
-        savedTab as 'all' | 'cssbattle' | 'problem-solving'
+        savedTab as 'all' | 'cssbattle' | 'problem-solving' | 'clean-code'
       );
     }
   }
@@ -1077,6 +1107,10 @@ Just CSS creativity and geometry control.`,
       this.filteredProjects = this.projects.filter(
         project => project.isItProblemSolving === true
       );
+    } else if (this.activeTab() === 'clean-code') {
+      this.filteredProjects = this.projects.filter(
+        project => project.isItCleanCode === true
+      )
     } else {
       this.filteredProjects = this.projects;
     }
@@ -1097,7 +1131,7 @@ Just CSS creativity and geometry control.`,
     this.totalPages = Math.ceil(this.filteredProjects.length / itemsPerPage);
   }
 
-  changeTab(tab: 'all' | 'cssbattle' | 'problem-solving'): void {
+  changeTab(tab: 'all' | 'cssbattle' | 'problem-solving' | 'clean-code'): void {
     if (this.activeTab() === tab) return;
 
     if (document.startViewTransition) {
@@ -1110,7 +1144,7 @@ Just CSS creativity and geometry control.`,
   }
 
   private performTabChange(
-    tab: 'all' | 'cssbattle' | 'problem-solving'
+    tab: 'all' | 'cssbattle' | 'problem-solving' | 'clean-code'
   ): void {
     this.activeTab.set(tab);
     sessionStorage.setItem('activeTab', tab);

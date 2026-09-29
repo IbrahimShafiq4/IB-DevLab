@@ -38,6 +38,35 @@ export interface IProblemSolvingContent {
   learned: string[];
 }
 
+export interface ICleanCodePrinciple {
+  title: string;
+  icon: string;
+  description: string;
+  badExample: {
+    title: string;
+    code: string;
+  };
+  goodExample: {
+    title: string;
+    code: string;
+  };
+  explanation: string;
+  tips?: string[];
+}
+
+export interface ICleanCodeContent {
+  introduction: string;
+  story: string;
+  principles: ICleanCodePrinciple[];
+  quote?: {
+    text: string;
+    author: string;
+  };
+  keyTakeaways: string[];
+  references?: string[];
+  hashtags?: string[];
+}
+
 @Component({
   selector: 'app-shared-code',
   standalone: true,
@@ -64,8 +93,10 @@ export class SharedCodeComponent implements AfterViewInit {
 
   @Input() isItCssBattle: boolean = false;
   @Input() isItProblemSolving: boolean = false;
+  @Input() isItCleanCode: boolean = false;
 
   @Input() problemSolvingContent: IProblemSolvingContent | null = null;
+  @Input() cleanCodeContent: ICleanCodeContent | null = null;
 
   @Input() tags: string[] = [
     'Web Development',
@@ -76,6 +107,7 @@ export class SharedCodeComponent implements AfterViewInit {
   ];
 
   isItCopied: boolean = false;
+  copiedIndex: number | null = null;
 
   private _ComponentFactoryResolver = inject(ComponentFactoryResolver);
 
@@ -111,73 +143,41 @@ export class SharedCodeComponent implements AfterViewInit {
         type: 'solid' | 'brands';
       }
     } = {
-      'Web Development': {
-        icon: 'desktop',
-        type: 'solid'
-      },
-      'HTML': {
-        icon: 'html5',
-        type: 'brands'
-      },
-      'CSS': {
-        icon: 'css3-alt',
-        type: 'brands'
-      },
-      'JS': {
-        icon: 'js',
-        type: 'brands'
-      },
-      'Angular': {
-        icon: 'angular',
-        type: 'brands'
-      },
-      'React': {
-        icon: 'react',
-        type: 'brands'
-      },
-      'Database': {
-        icon: 'database',
-        type: 'solid'
-      },
-      'API': {
-        icon: 'server',
-        type: 'solid'
-      },
-      'Problem Solving': {
-        icon: 'brain',
-        type: 'solid'
-      },
-      'LeetCode': {
-        icon: 'code',
-        type: 'solid'
-      },
-      'TypeScript': {
-        icon: 'code',
-        type: 'brands'
-      },
-      'JavaScript': {
-        icon: 'js',
-        type: 'brands'
-      }
+      'Web Development': { icon: 'desktop', type: 'solid' },
+      'HTML': { icon: 'html5', type: 'brands' },
+      'CSS': { icon: 'css3-alt', type: 'brands' },
+      'JS': { icon: 'js', type: 'brands' },
+      'Angular': { icon: 'angular', type: 'brands' },
+      'React': { icon: 'react', type: 'brands' },
+      'Database': { icon: 'database', type: 'solid' },
+      'API': { icon: 'server', type: 'solid' },
+      'Problem Solving': { icon: 'brain', type: 'solid' },
+      'LeetCode': { icon: 'code', type: 'solid' },
+      'TypeScript': { icon: 'code', type: 'brands' },
+      'JavaScript': { icon: 'js', type: 'brands' },
+      'Clean Code': { icon: 'broom', type: 'solid' },
+      'CleanCode': { icon: 'broom', type: 'solid' },
+      'Software Engineering': { icon: 'gears', type: 'solid' },
+      'Best Practices': { icon: 'star', type: 'solid' },
+      'Refactoring': { icon: 'wrench', type: 'solid' },
+      'Design Patterns': { icon: 'shapes', type: 'solid' },
+      'Uncle Bob': { icon: 'book', type: 'solid' }
     };
 
-    const defaultIcon = {
-      icon: 'tag',
-      type: 'solid'
-    };
-
+    const defaultIcon = { icon: 'tag', type: 'solid' };
     const selected = iconMap[tag] || defaultIcon;
 
     return `fa-${selected.type} fa-${selected.icon}`;
   }
 
-  onCopy(text: string): void {
-    this.isItCopied = !this.isItCopied;
-
-    setTimeout(() => {
+  onCopy(text: string, index?: number): void {
+    if (index !== undefined) {
+      this.copiedIndex = index;
+      setTimeout(() => { this.copiedIndex = null; }, 2000);
+    } else {
       this.isItCopied = !this.isItCopied;
-    }, 3000);
-
+      setTimeout(() => { this.isItCopied = !this.isItCopied; }, 3000);
+    }
     navigator.clipboard.writeText(text);
   }
 
@@ -198,7 +198,6 @@ export class SharedCodeComponent implements AfterViewInit {
       link.download = `${this.projectName.replace(/\s+/g, '_')}.rar`;
 
       document.body.appendChild(link);
-
       link.click();
 
       setTimeout(() => {
