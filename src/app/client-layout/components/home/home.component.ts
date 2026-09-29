@@ -1008,6 +1008,16 @@ Just CSS creativity and geometry control.`,
         projectUrl: '/css_battle_p26',
         isItCssBattle: true,
       },
+      {
+        videoSrc: '../../../../assets/video-samples/problem solving/remove_element.png',
+        navigationState: false,
+        title: 'Remove Element',
+        description: 'Remove all occurrences of a given value in-place from an array using two pointers.',
+        date: 'September 29, 2026',
+        tags: ['Problem Solving', 'TypeScript', 'LeetCode', 'Two Pointers'],
+        projectUrl: '/problem-solving/remove-element',
+        isItProblemSolving: true
+      },
     ];
 
   paginatedProjects: any[] = [];
