@@ -78,6 +78,7 @@ import { CleanCode01 } from './components/structured-components/clean-code-01/cl
 import { CleanCode02 } from './components/structured-components/clean-code-02/clean-code-02';
 import { LeetCode9 } from './components/structured-components/leet-code-9/leet-code-9';
 import { CssBattleP27 } from './components/structured-components/css-battle-p27/css-battle-p27';
+import { CleanCode03 } from './components/structured-components/clean-code-03/clean-code-03';
 
 
 const routes: Routes = [
@@ -338,6 +339,11 @@ const routes: Routes = [
         path: 'clean-code-02',
         component: CleanCode02,
         title: 'Clean Code – Meaningful Names'
+      },
+      {
+        path: 'clean-code-03',
+        component: CleanCode03,
+        title: 'Clean Code – Class & Method Names'
       }
     ]
   },
