@@ -1098,6 +1098,7 @@ Just CSS creativity and geometry control.`,
         tags: ['Clean Code', 'Software Engineering', 'Best Practices', 'Uncle Bob'],
         projectUrl: '/clean-code-03',
         isItCleanCode: true,
+        isItProblemSolving: true
       },
     ];
 
