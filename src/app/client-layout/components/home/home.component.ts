@@ -1031,7 +1031,6 @@ Just CSS creativity and geometry control.`,
         tags: ['Clean Code', 'Software Engineering', 'Best Practices', 'Uncle Bob'],
         projectUrl: '/clean-code-01',
         isItCleanCode: true,
-        isItProblemSolving: true
       },
       {
         videoSrc: './../../../../assets/video-samples/clean-code/clean-code-02.jpg',
@@ -1045,7 +1044,6 @@ Just CSS creativity and geometry control.`,
         tags: ['Clean Code', 'Software Engineering', 'Best Practices', 'Uncle Bob'],
         projectUrl: '/clean-code-02',
         isItCleanCode: true,
-        isItProblemSolving: true
       },
       {
         videoSrc: './../../../../assets/video-samples/cssbattle/geometric-u-shape.png',
@@ -1098,7 +1096,6 @@ Just CSS creativity and geometry control.`,
         tags: ['Clean Code', 'Software Engineering', 'Best Practices', 'Uncle Bob'],
         projectUrl: '/clean-code-03',
         isItCleanCode: true,
-        isItProblemSolving: true
       },
     ];
 
