@@ -76,6 +76,8 @@ import { CssBattleP26 } from './components/structured-components/css-battle-p26/
 import { LeetCode8 } from './components/structured-components/leet-code-8/leet-code-8';
 import { CleanCode01 } from './components/structured-components/clean-code-01/clean-code-01';
 import { CleanCode02 } from './components/structured-components/clean-code-02/clean-code-02';
+import { LeetCode9 } from './components/structured-components/leet-code-9/leet-code-9';
+import { CssBattleP27 } from './components/structured-components/css-battle-p27/css-battle-p27';
 
 
 const routes: Routes = [
@@ -311,6 +313,7 @@ const routes: Routes = [
       { path: 'css_battle_p24', component: CssBattleP24, title: 'Css Battle Project 24' },
       { path: 'css_battle_p25', component: CssBattleP25, title: 'Css Battle Project 25' },
       { path: 'css_battle_p26', component: CssBattleP26, title: 'Css Battle Project 26' },
+      { path: 'css_battle_p27', component: CssBattleP27, title: 'Css Battle Project 27' },
 
 
       // ---------------------- PROBLEM SOLVING -------------------------- //
@@ -322,6 +325,7 @@ const routes: Routes = [
       { path: 'problem-solving/merge-two-sorted-lists', component: LeetCode6, title: 'Merge Two Sorted Lists' },
       { path: 'problem-solving/remove-duplicates-from-sorted-array', component: LeetCode7, title: 'Remove duplicates from sorted array' },
       { path: 'problem-solving/remove-element', component: LeetCode8, title: 'Remove Element' },
+      { path: 'problem-solving/find-the-index-of-the-first-occurrence', component: LeetCode9, title: 'Find the Index of the First Occurrence' },
 
 
       // ----------------------- CLEAN CODE ------------------------------

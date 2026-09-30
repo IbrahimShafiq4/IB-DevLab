@@ -1047,6 +1047,58 @@ Just CSS creativity and geometry control.`,
         isItCleanCode: true,
         isItProblemSolving: true
       },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/geometric-u-shape.png',
+        navigationState: false,
+        title: 'CSS Battle – Geometric U Shape',
+        description: `CSS recreation of a geometric U-shaped design using pure CSS.
+
+  The design uses:
+  - CSS pseudo-elements
+  - Border-radius
+  - CSS box-reflect
+  - Layered shapes
+  - Precise positioning
+
+  The composition consists of:
+  - A large U-shaped outline
+  - A pink inner section
+  - Symmetrical vertical sides
+  - Rounded bottom sections`,
+        date: 'September 30, 2026',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_p27',
+        isItCssBattle: true,
+      },
+      {
+        videoSrc: '../../../../assets/video-samples/problem solving/find_the_index_of_the_first_occurrence.png',
+        navigationState: false,
+        title: 'Find the Index of the First Occurrence',
+        description: 'Find the first occurrence of one string inside another string.',
+        date: 'September 30, 2026',
+        tags: ['Problem Solving', 'JavaScript', 'LeetCode', 'String'],
+        projectUrl: '/problem-solving/find-the-index-of-the-first-occurrence',
+        isItProblemSolving: true
+      },
+      {
+        videoSrc: './../../../../assets/video-samples/clean-code/clean-code-03.png',
+        navigationState: false,
+        title: 'أسامي الكلاسات والدوال – النصف التاني من الحكاية',
+        description: `بعد ما خلّصنا أساسيات الأسماء، هنكمّل الرحلة مع 6 قواعد أعمق
+  لاختيار أسماء الكلاسات والدوال والمتغيرات.
+
+  القواعد:
+  - الكلاس اسم، والدالة فعل
+  - متكنش ظريف (Don't Be Cute)
+  - كلمة واحدة لكل مفهوم
+  - متستخدمش نفس الكلمة لمعنيين
+  - استخدم مصطلحات الدومين
+  - ضيف سياق معبّر`,
+        date: 'September 30, 2026',
+        tags: ['Clean Code', 'Software Engineering', 'Best Practices', 'Uncle Bob'],
+        projectUrl: '/clean-code-03',
+        isItCleanCode: true,
+      },
     ];
 
   paginatedProjects: any[] = [];
