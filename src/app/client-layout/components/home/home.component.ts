@@ -1097,6 +1097,56 @@ Just CSS creativity and geometry control.`,
         projectUrl: '/clean-code-03',
         isItCleanCode: true,
       },
+      {
+        videoSrc: './../../../../assets/video-samples/cssbattle/cassette-tape.png',
+        navigationState: false,
+        title: 'CSS Battle – Cassette Tape',
+        description: `CSS recreation of a cassette tape using pure HTML and CSS.
+
+  The design uses:
+  - CSS pseudo-elements
+  - Absolute positioning
+  - Border-radius
+  - CSS box-reflect
+  - Layered geometric shapes`,
+        date: 'October 1, 2026',
+        tags: ['HTML', 'CSS', 'CSS Battle'],
+        projectUrl: '/css_battle_p28',
+        isItCssBattle: true,
+      },
+      {
+        videoSrc: '../../../../assets/video-samples/problem solving/search_insert_position.png',
+        navigationState: false,
+        title: 'Search Insert Position',
+        description: 'Find the index where the target exists or should be inserted in a sorted array.',
+        date: 'October 1, 2026',
+        tags: ['Problem Solving', 'JavaScript', 'LeetCode', 'Binary Search'],
+        projectUrl: '/problem-solving/search-insert-position',
+        isItProblemSolving: true
+      },
+      {
+        videoSrc: './../../../../assets/video-samples/clean-code/clean-code-04.png',
+        navigationState: false,
+        title: 'الدوال – الأساس لأي كود نظيف',
+        description: `أهم فصل في كتاب Clean Code — لأن الدوال هي الأساس اللي بيتبني بيه أي كود.
+
+  9 قواعد عملية لكتابة دوال نظيفة، مع أمثلة حقيقية من مشروع Chat حقيقي.
+
+  القواعد:
+  - Small! (خليها صغيرة)
+  - Do One Thing (اعمل حاجة واحدة)
+  - One Level of Abstraction
+  - Switch Statements
+  - Descriptive Names
+  - Function Arguments
+  - Avoid Flag Arguments
+  - Command Query Separation
+  - Prefer Exceptions`,
+        date: 'October 1, 2026',
+        tags: ['Clean Code', 'Software Engineering', 'Best Practices', 'Uncle Bob'],
+        projectUrl: '/clean-code-04',
+        isItCleanCode: true,
+      },
     ];
 
   paginatedProjects: any[] = [];

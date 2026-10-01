@@ -79,6 +79,9 @@ import { CleanCode02 } from './components/structured-components/clean-code-02/cl
 import { LeetCode9 } from './components/structured-components/leet-code-9/leet-code-9';
 import { CssBattleP27 } from './components/structured-components/css-battle-p27/css-battle-p27';
 import { CleanCode03 } from './components/structured-components/clean-code-03/clean-code-03';
+import { LeetCode10 } from './components/structured-components/leet-code-10/leet-code-10';
+import { CssBattleP28 } from './components/structured-components/css-battle-p28/css-battle-p28';
+import { CleanCode04 } from './components/structured-components/clean-code-04/clean-code-04';
 
 
 const routes: Routes = [
@@ -315,6 +318,7 @@ const routes: Routes = [
       { path: 'css_battle_p25', component: CssBattleP25, title: 'Css Battle Project 25' },
       { path: 'css_battle_p26', component: CssBattleP26, title: 'Css Battle Project 26' },
       { path: 'css_battle_p27', component: CssBattleP27, title: 'Css Battle Project 27' },
+      { path: 'css_battle_p28', component: CssBattleP28, title: 'Css Battle Project 28' },
 
 
       // ---------------------- PROBLEM SOLVING -------------------------- //
@@ -327,6 +331,7 @@ const routes: Routes = [
       { path: 'problem-solving/remove-duplicates-from-sorted-array', component: LeetCode7, title: 'Remove duplicates from sorted array' },
       { path: 'problem-solving/remove-element', component: LeetCode8, title: 'Remove Element' },
       { path: 'problem-solving/find-the-index-of-the-first-occurrence', component: LeetCode9, title: 'Find the Index of the First Occurrence' },
+      { path: 'problem-solving/search-insert-position', component: LeetCode10, title: 'Search Insert Position' },
 
 
       // ----------------------- CLEAN CODE ------------------------------
@@ -344,6 +349,11 @@ const routes: Routes = [
         path: 'clean-code-03',
         component: CleanCode03,
         title: 'Clean Code – Class & Method Names'
+      },
+      {
+        path: 'clean-code-04',
+        component: CleanCode04,
+        title: 'Clean Code – Functions'
       }
     ]
   },
