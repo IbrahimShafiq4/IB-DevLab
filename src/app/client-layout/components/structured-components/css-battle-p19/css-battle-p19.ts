@@ -18,7 +18,7 @@ import {
       [isItCssBattle]="true"
       [projectOnYoutube]="projectVideoOnYoutube"
       [zipFile]="zipFile"
-      [projectVideoSrc]="projectVideSrc"
+      
     />
   `,
   styles: ``
@@ -58,9 +58,6 @@ export class CssBattleP19 {
     'CSS Shapes',
     'CSS Battle'
   ];
-
-  projectVideSrc: string =
-    './../../../../../assets/video-samples/cssbattle/geometric-b.png';
 
   projectVideoOnYoutube: string = 'https://cssbattle.dev/';
 

@@ -1,105 +1,126 @@
-<div class="profile-container">
-    <aside class="main-background profile-card">
-        <figure>
-            <img src="./../../../../assets/images/profile.jpg" alt="Ibrahim Shafiq">
-        </figure>
-        <div class="profile-content">
-            <div class="profile-details">
-                <h4>إبراهيم شفيق</h4>
-                <p class="age">25 سنة</p>
-                <p class="title">FullStack | Angular , .Net</p>
-                <p class="bio">Full-Stack .NET Developer with 3+ years of experience building scalable web applications using Angular, ASP.NET Core, and modern web technologies.</p>
+<div class="lab-info" dir="rtl">
+
+    <section class="lab-info__block" aria-labelledby="info-author">
+        <header class="lab-info__header">
+            <span class="lab-info__index" dir="ltr" aria-hidden="true">§00</span>
+            <h2 id="info-author" class="lab-info__title">المُعِدّ</h2>
+            <span class="lab-info__rule" aria-hidden="true"></span>
+        </header>
+
+        <div class="author">
+            <figure class="author__avatar">
+                <img src="./../../../../assets/images/profile.jpg" alt="صورة إبراهيم شفيق" loading="lazy">
+            </figure>
+
+            <div class="author__body">
+                <h3 class="author__name">إبراهيم شفيق</h3>
+                <p class="author__role" dir="ltr">
+                    <span class="author__role-dot" aria-hidden="true"></span>
+                    Full-Stack Engineer
+                </p>
+                <p class="author__stack" dir="ltr">Angular · .NET · SQL Server</p>
+                <p class="author__bio">
+                    مهندس برمجيات متكامل بخبرة تزيد عن 3 سنوات في بناء تطبيقات ويب قابلة للتوسّع
+                    باستخدام Angular و ASP.NET Core.
+                </p>
             </div>
 
-            <div class="social-links">
-                <a href="https://wa.me/01128467654?text=Hi Ibrahim, I really liked your Angular profile and I'd love to connect with you for a job opportunity or any questions."
-                    target="_blank" class="whatsapp" aria-label="WhatsApp">
-                    <i class="fab fa-whatsapp"></i>
-                </a>
-
-                <a href="https://www.linkedin.com/in/ibrahim-shafiq/" target="_blank" class="linkedin"
-                    aria-label="LinkedIn">
-                    <i class="fab fa-linkedin"></i>
-                </a>
-                <a href="https://github.com/IbrahimShafiq4" class="github" aria-label="GitHub">
-                    <i class="fab fa-github"></i>
-                </a>
-            </div>
+            <ul class="author__social" dir="ltr" aria-label="روابط التواصل">
+                <li>
+                    <a href="https://wa.me/01128467654?text=Hi%20Ibrahim" target="_blank" rel="noopener noreferrer"
+                        class="social-link social-link--wa" aria-label="WhatsApp">
+                        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.linkedin.com/in/ibrahim-shafiq/" target="_blank" rel="noopener noreferrer"
+                        class="social-link social-link--li" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://github.com/IbrahimShafiq4" target="_blank" rel="noopener noreferrer"
+                        class="social-link social-link--gh" aria-label="GitHub">
+                        <i class="fab fa-github" aria-hidden="true"></i>
+                    </a>
+                </li>
+            </ul>
         </div>
-    </aside>
+    </section>
 
-    <aside class="main-background skills-card">
-        <h5>Technical Skills</h5>
-        <div class="skills-grid">
-            <span class="skill-tag">C++</span>
-            <span class="skill-tag">JavaScript</span>
-            <span class="skill-tag">TypeScript</span>
-            <span class="skill-tag">OOP</span>
-            <span class="skill-tag">Algorithms</span>
-            <span class="skill-tag">Data Structures</span>
-            <span class="skill-tag">Git</span>
-            <span class="skill-tag">HTML/HTML5</span>
-            <span class="skill-tag">CSS/CSS3</span>
-            <span class="skill-tag">Bootstrap</span>
-            <span class="skill-tag">AJAX</span>
-            <span class="skill-tag">ES6</span>
-            <span class="skill-tag">jQuery</span>
-            <span class="skill-tag">Angular</span>
-            <span class="skill-tag">SCSS</span>
-            <span class="skill-tag">Angular Material</span>
-            <span class="skill-tag">PrimeNG</span>
-            <span class="skill-tag">NgBootstrap</span>
-            <span class="skill-tag">GSAP</span>
-            <span class="skill-tag">Anime.js</span>
-            <span class="skill-tag">SSR</span>
-            <span class="skill-tag">Design Pattern</span>
-            <span class="skill-tag">SOLID Principles</span>
-            <span class="skill-tag">NgRx</span>
-        </div>
-    </aside>
+    <section class="lab-info__block" aria-labelledby="info-repos">
+        <header class="lab-info__header">
+            <span class="lab-info__index" dir="ltr" aria-hidden="true">§01</span>
+            <h2 id="info-repos" class="lab-info__title">أعمال متكاملة</h2>
+            <span class="lab-info__rule" aria-hidden="true"></span>
+        </header>
 
-    @if (isPaginationActive) {
-    <aside class="main-background pagination-card" dir="ltr">
-        <div class="pagination-container">
-            <button class="pagination-arrow" aria-label="Previous page" (click)="prevPage()"
-                [disabled]="currentPage === 1">
-                <i class="fa-solid fa-chevron-left"></i>
-            </button>
+        <ul class="repo-list">
+            <li>
+                <a class="repo" href="https://github.com/IbrahimShafiq4/FullStackProjects" target="_blank"
+                    rel="noopener noreferrer">
+                    <span class="repo__meta" dir="ltr">fullstack</span>
+                    <span class="repo__name">Full-Stack Projects</span>
+                    <span class="repo__desc">Angular + ASP.NET Core</span>
+                    <i class="fa-solid fa-arrow-up-left" aria-hidden="true"></i>
+                </a>
+            </li>
+            <li>
+                <a class="repo" href="https://github.com/IbrahimShafiq4/SignalRProjects" target="_blank"
+                    rel="noopener noreferrer">
+                    <span class="repo__meta" dir="ltr">realtime</span>
+                    <span class="repo__name">SignalR Projects</span>
+                    <span class="repo__desc">WebSockets · Live messaging</span>
+                    <i class="fa-solid fa-arrow-up-left" aria-hidden="true"></i>
+                </a>
+            </li>
+            <li>
+                <a class="repo" href="https://github.com/IbrahimShafiq4/MVCProjects" target="_blank"
+                    rel="noopener noreferrer">
+                    <span class="repo__meta" dir="ltr">mvc</span>
+                    <span class="repo__name">MVC Projects</span>
+                    <span class="repo__desc">Razor Views · EF Core</span>
+                    <i class="fa-solid fa-arrow-up-left" aria-hidden="true"></i>
+                </a>
+            </li>
+            <li>
+                <a class="repo repo--portfolio" href="https://ib-portfolio-indol.vercel.app/workspace" target="_blank"
+                    rel="noopener noreferrer">
+                    <span class="repo__meta" dir="ltr">portfolio</span>
+                    <span class="repo__name">ملف الأعمال الكامل</span>
+                    <span class="repo__desc">كل المشاريع في مكان واحد</span>
+                    <i class="fa-solid fa-arrow-up-left" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </section>
 
-            <div class="pagination-numbers">
-                @if (getPageNumbers()[0] > 1) {
-                <button class="page-number" (click)="goToPage(1)">1</button>
-                @if (getPageNumbers()[0] > 2) {
-                <span class="page-dots">...</span>
-                }
-                }
+    <section class="lab-info__block" aria-labelledby="info-stack">
+        <header class="lab-info__header">
+            <span class="lab-info__index" dir="ltr" aria-hidden="true">§02</span>
+            <h2 id="info-stack" class="lab-info__title">التقنيات</h2>
+            <span class="lab-info__rule" aria-hidden="true"></span>
+        </header>
 
-                @for (page of getPageNumbers(); track page) {
-                <button class="page-number" [class.active]="page === currentPage" (click)="goToPage(page)">
-                    {{ page }}
-                </button>
-                }
-
-                @if (getPageNumbers()[getPageNumbers().length - 1] < totalPages) { @if
-                    (getPageNumbers()[getPageNumbers().length - 1] < totalPages - 1) { <span class="page-dots">
-                    ...</span>
+        <div class="stack">
+            @for (group of stack; track group.group) {
+            <div class="stack__group">
+                <span class="stack__label" dir="ltr">{{ group.group }}</span>
+                <ul class="stack__tags" dir="ltr">
+                    @for (tag of group.tags; track tag) {
+                    <li class="stack__tag">{{ tag }}</li>
                     }
-                    <button class="page-number" (click)="goToPage(totalPages)">
-                        {{ totalPages }}
-                    </button>
-                    }
+                </ul>
             </div>
-
-            <button class="pagination-arrow" aria-label="Next page" (click)="nextPage()"
-                [disabled]="currentPage === totalPages">
-                <i class="fa-solid fa-chevron-right"></i>
-            </button>
+            }
         </div>
-    </aside>
-    @if(visitorCount) {
-    <aside class="text-center">
-        <span class="visitors-count">عدد الزوار : {{ visitorCount }}</span>
-    </aside>
+    </section>
+
+    @if (visitorCount > 0) {
+    <div class="visitors" dir="ltr">
+        <span class="visitors__label">visitors</span>
+        <span class="visitors__value">{{ visitorCount | number }}</span>
+    </div>
     }
-    }
+
 </div>

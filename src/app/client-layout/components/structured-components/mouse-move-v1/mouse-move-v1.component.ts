@@ -4,27 +4,50 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../shared-componen
 @Component({
   selector: 'app-mouse-move-v1',
   imports: [SharedCodeComponent],
-  templateUrl: './mouse-move-v1.component.html',
-  styleUrl: './mouse-move-v1.component.scss'
+  template: `
+  <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [JSCodeSnippet]="JSCodeSnippets" [projectDate]="projectDate" [projectDescription]="projectDescription"
+    [projectVersion]="projectVersion" [projectName]="projectName" [zipFile]="zipFile"   />
+  `
 })
 export class MouseMoveV1Component {
   projectName: string = '🌀 Interactive Rotating Arrows Animation with CSS & JavaScript';
   projectDescription: string = `
-An engaging animation featuring 50 randomly placed arrows that dynamically rotate to follow the user's mouse position. Built with HTML, CSS, and vanilla JavaScript, this effect combines real-time geometry calculations (Math.atan2) with CSS transformations to create an immersive, responsive experience.
-Key Features:
-<ul>
-  <li>50 animated arrows generated dynamically on page load</li>
-  <li>Real-time rotation based on mouse position using getBoundingClientRect() and Math.atan2()</li>
-  <li>Custom styling with hue-rotate, grayscale, and contrast filters based on random values</li>
-  <li>Infinite color-cycling background using CSS keyframe animation</li>
-  <li>Responsive design without external libraries.</li>
-</ul>  
-Perfect for interactive backgrounds, creative websites, or visual demos to demonstrate JavaScript event handling and DOM manipulation.
+An engaging animation featuring arrows that follow the mouse position. Built with HTML, CSS, and vanilla JavaScript.
 `;
   projectDate: string = 'Last updated: May 2025';
   projectVersion: string = 'v1.0.0';
   projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/mouse mvoe v1.mp4';
+
+  liveHtml: string = ``;
+
+  get liveCss(): string {
+    return this.CSSCodeSnippets[0]?.code ?? '';
+  }
+
+  liveJs: string = `
+const spark = (event) => {
+    let i = document.createElement('i');
+    i.style.left = (event.pageX) + 'px';
+    i.style.top = (event.pageY) + 'px';
+
+    i.style.scale = \`\${Math.random() * 2 + 1}\`;
+    i.style.setProperty('--x', getTransition());
+    i.style.setProperty('--y', getTransition());
+
+    document.body.appendChild(i);
+
+    setTimeout(() => {
+        document.body.removeChild(i);
+    }, 2000)
+}
+
+const getTransition = () => {
+    return \`\${Math.random() * 400 - 200}px\`
+}
+
+document.addEventListener('mousemove', spark)
+  `;
 
   HTMLCodeSnippets: ICodeStructure[] = [
     {
@@ -92,7 +115,7 @@ const spark = (event) => {
     i.style.left = (event.pageX) + 'px';
     i.style.top = (event.pageY) + 'px';
 
-    i.style.scale = \`${Math.random() * 2 + 1}\`;
+    i.style.scale = \`\${Math.random() * 2 + 1}\`;
     i.style.setProperty('--x', getTransition());
     i.style.setProperty('--y', getTransition());
 
@@ -104,7 +127,7 @@ const spark = (event) => {
 }
 
 const getTransition = () => {
-    return \`${Math.random() * 400 - 200}px\`
+    return \`\${Math.random() * 400 - 200}px\`
 }
 
 document.addEventListener('mousemove', spark)

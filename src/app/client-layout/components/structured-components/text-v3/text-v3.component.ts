@@ -2,23 +2,25 @@ import { Component } from '@angular/core';
 import { ICodeStructure, SharedCodeComponent } from '../../../../shared-components/shared-code/shared-code.component';
 
 @Component({
-  selector: 'app-text-v3',
-  imports: [SharedCodeComponent],
-  templateUrl: './text-v3.component.html',
-  styleUrl: './text-v3.component.scss'
+    selector: 'app-text-v3',
+    imports: [SharedCodeComponent],
+    template: `
+    <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [JSCodeSnippet]="JSCodeSnippets" [projectDate]="projectDate" [projectDescription]="projectDescription"
+    [projectVersion]="projectVersion" [projectName]="projectName" [zipFile]="zipFile" />
+    `
 })
 export class TextV3Component {
-  projectName: string = 'Native Dynamic Typing Animation with JavaScript';
-  projectDescription: string = `
+    projectName: string = 'Native Dynamic Typing Animation with JavaScript';
+    projectDescription: string = `
 This animated typing effect dynamically types and erases a set of descriptive words next to the word “JavaScript” using vanilla JavaScript. The design features a vibrant gradient background and a blinking cursor for a classic typing experience. Perfect for landing pages, portfolios, or banners to add personality and motion.`;
-  projectDate: string = 'Last updated: May 2025';
-  projectVersion: string = 'v1.3.0';
-  projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/text v3.mp4';
+    projectDate: string = 'Last updated: May 2025';
+    projectVersion: string = 'v1.3.0';
+    projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
 
-  HTMLCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
+    HTMLCodeSnippets: ICodeStructure[] = [
+        {
+            code: `
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,13 +41,13 @@ This animated typing effect dynamically types and erases a set of descriptive wo
 
 </html>
     `,
-      codeTitle: 'index.html'
-    }
-  ];
+            codeTitle: 'index.html'
+        }
+    ];
 
-  CSSCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
+    CSSCodeSnippets: ICodeStructure[] = [
+        {
+            code: `
 * {
     margin: 0;
     padding: 0;
@@ -75,13 +77,13 @@ p {
     background-color: #a574d5;
 }
     `,
-      codeTitle: 'style.css'
-    }
-  ];
+            codeTitle: 'style.css'
+        }
+    ];
 
-  JSCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
+    JSCodeSnippets: ICodeStructure[] = [
+        {
+            code: `
 const typedText = document.querySelector('.typed-text');
 const cursor = document.querySelector('.cursor');
 
@@ -123,9 +125,9 @@ function erasing() {
     }
 }
       `,
-      codeTitle: 'main.js'
-    },
-  ];
+            codeTitle: 'main.js'
+        },
+    ];
 
-  zipFile: string = 'assets/zip-files/native typing text.rar';
+    zipFile: string = 'assets/zip-files/native typing text.rar';
 }

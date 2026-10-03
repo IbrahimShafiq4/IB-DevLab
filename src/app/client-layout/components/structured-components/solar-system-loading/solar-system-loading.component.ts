@@ -2,31 +2,40 @@ import { Component } from '@angular/core';
 import { ICodeStructure, SharedCodeComponent } from '../../../../shared-components/shared-code/shared-code.component';
 
 @Component({
-  selector: 'app-solar-system-loading',
-  imports: [SharedCodeComponent],
-  templateUrl: './solar-system-loading.component.html',
-  styleUrl: './solar-system-loading.component.scss'
+    selector: 'app-solar-system-loading',
+    imports: [SharedCodeComponent],
+    template: `
+    <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [projectDate]="projectDate" [projectDescription]="projectDescription" [projectVersion]="projectVersion"
+    [projectName]="projectName" [zipFile]="zipFile"  />
+    `
 })
 export class SolarSystemLoadingComponent {
-  projectName: string = '<span>🌍🌙</span> Interactive Solar System Animation with CSS';
-  projectDescription: string = `
-  This project demonstrates a miniature animated solar system built using only HTML and CSS. It features:
-  <ul>
-    <li>A glowing sun at the center</li>
-    <li>An orbiting Earth with its own elliptical rotation</li>
-    <li>A moon revolving around the Earth</li>
-    <li>Smooth animations using CSS @keyframes</li>
-    <li>A dark space-themed background to enhance visibility of planetary orbits</li>
-  </ul>
-`;
-  projectDate: string = 'Last updated: May 2025';
-  projectVersion: string = 'v1.0.0';
-  projectTags: string[] = ['Web Development', 'HTML', 'CSS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/animated popup.mp4';
+    projectName: string = '🌍🌙 Interactive Solar System Animation with CSS';
+    projectDescription: string = `
+    This project demonstrates a miniature animated solar system built using only HTML and CSS.`;
+    projectDate: string = 'Last updated: May 2025';
+    projectVersion: string = 'v1.0.0';
+    projectTags: string[] = ['Web Development', 'HTML', 'CSS'];
 
-  HTMLCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
+    /* ─── LIVE PREVIEW ─────────────────────────────────────── */
+    liveHtml: string = `
+<div class="solar-system">
+    <div class="earth-circle"></div>
+    <div class="sun"></div>
+    <div class="earth">
+        <div class="moon-circle"></div>
+        <div class="moon"></div>
+    </div>
+</div>
+  `;
+
+    get liveCss(): string { return this.CSSCodeSnippets[0]?.code ?? ''; }
+
+    /* ─── ORIGINAL SNIPPETS ────────────────────────────────── */
+    HTMLCodeSnippets: ICodeStructure[] = [
+        {
+            code: `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,18 +56,14 @@ export class SolarSystemLoadingComponent {
 </body>
 </html>
     `,
-      codeTitle: 'index.html'
-    }
-  ];
+            codeTitle: 'index.html'
+        }
+    ];
 
-  CSSCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+    CSSCodeSnippets: ICodeStructure[] = [
+        {
+            code: `
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
     background-color: #222;
@@ -97,7 +102,7 @@ body {
     top: -10px;
     width: 45px;
     height: 45px;
-    background-color: green; 
+    background-color: green;
     border-radius: 50%;
     animation: 18s rotateEarth linear infinite;
     transform-origin: 30px 215px;
@@ -129,14 +134,14 @@ body {
 }
 
 @keyframes increaseBoxShadow {
-    0% { box-shadow: 0 0 50px #ff0; }
-    50% { box-shadow: 0 0 100px #ff0; }
+    0%   { box-shadow: 0 0 50px #ff0; }
+    50%  { box-shadow: 0 0 100px #ff0; }
     100% { box-shadow: 0 0 50px #ff0; }
 }
     `,
-      codeTitle: 'style.css'
-    }
-  ];
+            codeTitle: 'style.css'
+        }
+    ];
 
-  zipFile: string = 'assets/zip-files/solar system.rar';
+    zipFile: string = 'assets/zip-files/solar system.rar';
 }

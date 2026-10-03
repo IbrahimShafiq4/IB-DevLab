@@ -18,7 +18,7 @@ import {
       [isItCssBattle]="true"
       [projectOnYoutube]="projectVideoOnYoutube"
       [zipFile]="zipFile"
-      [projectVideoSrc]="projectVideSrc"
+      
     />
   `,
   styles: ``
@@ -61,9 +61,6 @@ export class CssBattleP28 {
     'CSS Box Reflect',
     'CSS Battle'
   ];
-
-  projectVideSrc: string =
-    './../../../../../assets/video-samples/cssbattle/cassette-tape.png';
 
   projectVideoOnYoutube: string = '';
 

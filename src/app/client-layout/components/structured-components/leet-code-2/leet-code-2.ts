@@ -4,8 +4,18 @@ import { IProblemSolvingContent, SharedCodeComponent } from '../../../../shared-
 @Component({
   selector: 'app-leet-code-2',
   imports: [SharedCodeComponent],
-  templateUrl: './leet-code-2.html',
-  styles: ``
+  template: `
+<app-shared-code
+  [projectName]="'Longest Substring'"
+  [projectDescription]="'Find the longest substring without repeating characters.'"
+  [projectDate]="'September 13, 2026'"
+  [projectVersion]="'LeetCode #3'"
+  [tags]="['Problem Solving', 'JavaScript', 'LeetCode']"
+  [isItProblemSolving]="true"
+  [isProjectHasNotAssists]="false"
+  [problemSolvingContent]="problemSolvingContent"
+/>
+  `
 })
 export class LeetCode2 {
 

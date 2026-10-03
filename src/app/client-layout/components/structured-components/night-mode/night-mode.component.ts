@@ -7,6 +7,4 @@ import { RouterModule } from "@angular/router";
     template: '<router-outlet />'
 })
 
-export class NightModeComponent {
-
-}
+export class NightModeComponent { }

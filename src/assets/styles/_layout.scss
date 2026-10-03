@@ -1,3 +1,3 @@
-@import './base/variables';
-@import './base/button';
-@import './base/global';
+@forward "./base/variables";
+@forward "./base/button";
+@forward "./base/global";

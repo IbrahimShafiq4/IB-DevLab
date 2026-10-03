@@ -4,33 +4,50 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../shared-componen
 @Component({
   selector: 'app-mouse-move-v2',
   imports: [SharedCodeComponent],
-  templateUrl: './mouse-move-v2.component.html',
-  styleUrl: './mouse-move-v2.component.scss'
+  template: `
+  <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [JSCodeSnippet]="JSCodeSnippets" [projectDate]="projectDate" [projectDescription]="projectDescription"
+    [projectVersion]="projectVersion" [projectName]="projectName" [zipFile]="zipFile"   />
+  `
 })
 export class MouseMoveV2Component {
   projectName: string = '🧨 Mouse Trail Spark Effect with JavaScript and CSS';
   projectDescription: string = `
-A visually striking, interactive mouse trail effect that generates glowing green sparks at the cursor's location. Each spark fades and moves in a random direction using CSS variables and keyframe animations.
-Highlights:
-<ul>
-  <li>Sparks are <i> elements positioned at the cursor</li>
-  <li>Randomized direction using --x and --y CSS variables</li>
-  <li>Dynamic scaling for each spark for visual variety</li>
-  <li>Fades out and is removed after 2 seconds to maintain performance</li>
-  <li>Fully implemented with vanilla JavaScript and CSS only</li>
-</ul>  
-Use Cases
-
-<ul>
-  <li>Creative cursor effects for games or portfolio websites</li>
-  <li>Interactive backgrounds for landing pages</li>
-  <li>Minimal yet effective UI enhancements</li>
-</ul>
+A visually striking, interactive mouse trail effect that generates glowing green sparks at the cursor's location.
 `;
   projectDate: string = 'Last updated: May 2025';
   projectVersion: string = 'v1.0.0';
   projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/mouse move v2.mp4';
+
+  liveHtml: string = ``;
+
+  get liveCss(): string {
+    return this.CSSCodeSnippets[0]?.code ?? '';
+  }
+
+  liveJs: string = `
+const spark = (event) => {
+    let i = document.createElement('i');
+    i.style.left = (event.pageX) + 'px';
+    i.style.top = (event.pageY) + 'px';
+
+    i.style.scale = \`\${Math.random() * 2 + 1}\`;
+    i.style.setProperty('--x', getTransition());
+    i.style.setProperty('--y', getTransition());
+
+    document.body.appendChild(i);
+
+    setTimeout(() => {
+        document.body.removeChild(i);
+    }, 2000)
+}
+
+const getTransition = () => {
+    return \`\${Math.random() * 400 - 200}px\`
+}
+
+document.addEventListener('mousemove', spark)
+  `;
 
   HTMLCodeSnippets: ICodeStructure[] = [
     {
@@ -98,7 +115,7 @@ const spark = (event) => {
     i.style.left = (event.pageX) + 'px';
     i.style.top = (event.pageY) + 'px';
 
-    i.style.scale = \`${Math.random() * 2 + 1}\`;
+    i.style.scale = \`\${Math.random() * 2 + 1}\`;
     i.style.setProperty('--x', getTransition());
     i.style.setProperty('--y', getTransition());
 
@@ -110,7 +127,7 @@ const spark = (event) => {
 }
 
 const getTransition = () => {
-    return \`${Math.random() * 400 - 200}px\`
+    return \`\${Math.random() * 400 - 200}px\`
 }
 
 document.addEventListener('mousemove', spark)

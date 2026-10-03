@@ -1,45 +1,53 @@
 import { Component } from '@angular/core';
-import { ICodeStructure, SharedCodeComponent } from '../../../../../../shared-components/shared-code/shared-code.component';
+import { SharedCodeComponent, ICodeStructure } from '../../../../../../shared-components/shared-code/shared-code.component';
 
 @Component({
   selector: 'app-loading-v1',
   imports: [SharedCodeComponent],
-  templateUrl: './loading-v1.html',
-  styleUrl: './loading-v1.scss'
+  template: `
+<app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+  [projectDate]="projectDate" [projectDescription]="projectDescription"
+  [projectVersion]="projectVersion" [projectName]="projectName" [zipFile]="zipFile"
+/>
+  `
 })
 export class LoadingV1 {
-  projectName: string = 'Creative CSS Blob Loader Animation – Version 1 💫';
+  projectName: string = '🌈 Animated Neon Glow Loading Spinner';
   projectDescription: string = `
-    This stylish loader animation features three rotating organic blob shapes 🌐 created using clever CSS border-radius tricks. Each span spins at different speeds and directions 🔃 to create a smooth, hypnotic, and fluid motion 🌀. In the center, a bold "Loading" text ⏳ clearly communicates the state to users.
-Perfect for dark-themed interfaces 🌑, this animation is ideal for splash screens or data-fetching loaders, offering a modern look without any JavaScript ⚡. Lightweight, responsive, and visually appealing – just plug and play! 💻✨
-    `;
+    A visually captivating, circular loading animation built entirely with HTML and CSS.
+Highlights:
+<ul>
+  <li>Pure CSS animation (no JavaScript)</li>
+  <li>Circular conic-gradient spinner with rotating effect</li>
+  <li>Hue-rotate background animation for color cycling</li>
+  <li>Smooth hover transitions for interactive feedback</li>
+</ul>
+This spinner is perfect for loading screens, preloaders, or futuristic UIs.
+`;
   projectDate: string = 'Last updated: May 2025';
   projectVersion: string = 'v1.0.0';
   projectTags: string[] = ['Web Development', 'HTML', 'CSS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/loading/01 - loading.mp4';
+
+  liveHtml: string = `<div></div>`;
+
+  get liveCss(): string {
+    return this.CSSCodeSnippets[0]?.code ?? '';
+  }
 
   HTMLCodeSnippets: ICodeStructure[] = [
     {
       code: `
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Loading 01</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Animation</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <div class="loader">
-      <span></span>
-      <span></span>
-      <span></span>
-      <h2>Loading</h2>
-  </div>
+    <div></div>
 </body>
-
 </html>
     `,
       codeTitle: 'index.html'
@@ -50,72 +58,87 @@ Perfect for dark-themed interfaces 🌑, this animation is ideal for splash scre
     {
       code: `
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  background-color: #111;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #181818;
+    animation: hue-rotate 3.5s linear infinite;
 }
 
-.loader {
-  position: relative;
-  width: 200px;
-  height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  span {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      border: 1px solid #fff;
-      pointer-events: none;
-      animation: animate 5s linear infinite;
-  }
-
-  span:nth-child(1) {
-      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-  }
-
-  span:nth-child(2) {
-      animation-direction: reverse;
-      border-radius: 30% 70% 6% 94% / 70% 30% 70% 30%;
-  }
-
-  span:nth-child(3) {
-      animation-duration: 3s;
-      border-radius: 56% 44% 59% 41% / 70% 66% 34% 30%;
-  }
-
-  h2 {
-      font-weight: 600;
-      font-family: Consolas;
-      color: #fff;
-  }
+div {
+    width: 200px;
+    height: 200px;
+    box-shadow: 16px 14px 20px #0000008c;
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: 0.3s linear;
 }
 
-@keyframes animate {
-  0% {
-      transform: rotate(0deg);
-  }
+div:hover {
+    box-shadow: 0 0 10px #0000008c;
+}
 
-  100% {
-      transform: rotate(360deg);
-  }
+div::before {
+    content: "";
+    position: absolute;
+    background-image: conic-gradient(#ff0052 20deg, transparent 120deg);
+    width: 150%;
+    height: 150%;
+    animation: rotate 3s linear infinite;
+}
+
+div::after {
+    content: "Loading";
+    width: 190px;
+    height: 190px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    background-color: #2e2e2e;
+    position: absolute;
+    border-radius: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ff0052;
+    font-size: larger;
+    font-family: cursive;
+    letter-spacing: 5px;
+    box-shadow:
+        inset 20px 20px 20px #0000008c,
+        inset -20px -20px 20px #0000008c;
+    font-weight: 900;
+    transition: 0.3s linear;
+}
+
+div:hover::after {
+    letter-spacing: -2px;
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes hue-rotate {
+    0%, 100% { filter: hue-rotate(0deg); }
+    50% { filter: hue-rotate(360deg); }
 }
     `,
       codeTitle: 'style.css'
     }
   ];
 
-  zipFile: string = 'assets/zip-files/loading/01 - loading.rar';
+  zipFile: string = 'assets/zip-files/border.rar';
 }

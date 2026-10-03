@@ -4,8 +4,11 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../shared-componen
 @Component({
   selector: 'app-css-battle-p3',
   imports: [SharedCodeComponent],
-  templateUrl: './css-battle-p3.html',
-  styleUrl: './css-battle-p3.scss'
+  template: `
+    <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [projectDate]="projectDate" [projectDescription]="projectDescription" [projectVersion]="projectVersion"
+    [projectName]="projectName" [isItCssBattle]="true" [projectOnYoutube]="projectVideoOnYoutube" [zipFile]="zipFile"  />
+  `
 })
 export class CssBattleP3 {
   projectName: string = 'CSS Battle – Percentage Symbol Challenge';
@@ -21,7 +24,6 @@ All shapes are styled without images, SVGs, or JavaScript.
   projectDate: string = 'Last updated: Jan 2026';
   projectVersion: string = 'v1.1.0';
   projectTags: string[] = ['Web Development', 'HTML', 'CSS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/cssbattle/percentage.png';
   projectVideoOnYoutube: string = 'https://cssbattle.dev/play/128CkPR5NAg3Cx2nUEYj';
 
   HTMLCodeSnippets: ICodeStructure[] = [

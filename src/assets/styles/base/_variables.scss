@@ -1,20 +1,30 @@
-$primary-color: #1b1b1b;
-$secondary-color: #2c2c2c;
-$warning-color: #F05866;
-$warning-color-100: #EC454F;
-$bs-blue: #0d6efd;
-$white-color: #FFFFFF;
-$grey-color: #808080;
-$grey-color-30: #4C4C4D;
-$grey-color-500: #F2F2F2;
-$default-span-font-size: 1rem;
-$default-p-font-size: 1rem;
-$default-h1-font-size: 2.5rem;
-$default-h2-font-size: 2rem;
-$default-h3-font-size: 1.8rem;
-$default-h4-font-size: 1.6rem;
-$default-h5-font-size: 1.4rem;
-$default-h6-font-size: 1.2rem;
-$main-transition: 0.3s linear;
-$main-box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.6);
-$main-border: 1px solid #2c2c2c;
+@use "../tokens/tokens" as t;
+
+$primary-color: var(--bg-void);
+$secondary-color: var(--bg-surface);
+$white-color: var(--ink-primary);
+$grey-color: var(--ink-secondary);
+$grey-color-30: var(--ink-tertiary);
+$grey-color-500: var(--ink-secondary);
+$bs-blue: var(--accent-reference);
+$warning-color: var(--accent-critical);
+$warning-color-100: var(--accent-critical);
+
+$main-transition: t.$dur-base t.$ease-inout;
+$main-box-shadow: 0 1px 2px rgb(0 0 0 / 0.3);
+$main-border: 1px solid var(--rule-hairline);
+
+$default-p-font-size: t.$fs-body;
+$default-h1-font-size: t.$fs-h1;
+$default-h2-font-size: t.$fs-h2;
+$default-h3-font-size: t.$fs-h3;
+$default-h4-font-size: t.$fs-h4;
+$default-h5-font-size: t.$fs-h4;
+$default-h6-font-size: t.$fs-h4;
+
+@forward "../tokens/tokens" show $font-sans, $font-mono, $fs-display, $fs-h1, $fs-h2, $fs-h3, $fs-h4, $fs-body,
+    $fs-small, $fs-micro, $fs-nano, $lh-tight, $lh-snug, $lh-normal, $lh-relaxed, $tracking-tight, $tracking-normal,
+    $tracking-wide, $tracking-wider, $tracking-widest, $sp-0, $sp-1, $sp-2, $sp-3, $sp-4, $sp-5, $sp-6, $sp-7, $sp-8,
+    $sp-10, $sp-12, $r-none, $r-sm, $r-md, $r-full, $ease-out, $ease-in, $ease-inout, $ease-spring, $dur-instant,
+    $dur-fast, $dur-base, $dur-slow, $dur-slower, $z-base, $z-sticky, $z-stage, $z-drawer, $z-modal, $z-toast, $bp-sm,
+    $bp-md, $bp-lg, $bp-xl, $bp-2xl;

@@ -1,23 +1,46 @@
 <!doctype html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 
 <head>
   <meta charset="utf-8">
-  <title>IBDevLab – Interactive UI Components & Web Experiments</title>
+  <title>IBDevLab — معمل التجارب البرمجية</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description"
-    content="IBDevLab is a personal front-end design lab showcasing creative UI components, smooth animations, and interactive web experiments.">
+    content="IBDevLab — معمل شخصي لتجارب الواجهات الأمامية، حلول المشكلات البرمجية، ودروس الكود النظيف.">
+  <meta name="theme-color" content="#0E151D">
 
-  <meta property="og:title" content="IBDevLab – Interactive UI Components & Web Experiments">
-  <meta property="og:description"
-    content="Explore creative front-end projects, animated UI components, and reusable design patterns built for modern web interfaces.">
+  <meta property="og:title" content="IBDevLab — Interactive Front-End Lab">
+  <meta property="og:description" content="تجارب تفاعلية، حلول مشكلات، ودروس كود نظيف بالعربية والإنجليزية.">
   <meta property="og:image" content="assets/preview.jpg">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://ib-dev-lab.vercel.app/">
 
   <link rel="icon" type="image/x-icon" href="./assets/images/ib.png">
+
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('ibdl-theme');
+        if (stored === 'archive') stored = 'night';
+        else if (stored === 'reference') stored = 'light';
+
+        var theme;
+        if (stored === 'night' || stored === 'light') {
+          theme = stored;
+        } else {
+          theme = window.matchMedia &&
+            window.matchMedia('(prefers-color-scheme: light)').matches
+            ? 'light'
+            : 'night';
+        }
+
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('ibdl-theme', theme);
+      } catch (e) {
+      }
+    })();
+  </script>
 </head>
 
 <body>

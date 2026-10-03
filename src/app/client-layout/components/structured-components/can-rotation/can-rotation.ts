@@ -4,8 +4,11 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../shared-componen
 @Component({
   selector: 'app-can-rotation',
   imports: [SharedCodeComponent],
-  templateUrl: './can-rotation.html',
-  styleUrl: './can-rotation.scss'
+  template: `
+    <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [projectDate]="projectDate" [projectDescription]="projectDescription" [projectVersion]="projectVersion"
+    [projectName]="projectName" [zipFile]="zipFile"  />
+  `
 })
 export class CanRotation {
   projectName: string = 'Rotational Image Pack Reveal Animation';
@@ -15,7 +18,6 @@ The effect combines background blending, mask-image, and background-position tra
   projectDate: string = 'Last updated: June 2025';
   projectVersion: string = 'v1.0.0';
   projectTags: string[] = ['Web Development', 'HTML', 'CSS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/can rotation.mp4';
 
   HTMLCodeSnippets: ICodeStructure[] = [
     {

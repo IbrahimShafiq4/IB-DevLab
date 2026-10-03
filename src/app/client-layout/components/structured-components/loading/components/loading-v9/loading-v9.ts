@@ -2,14 +2,17 @@ import { Component } from '@angular/core';
 import { ICodeStructure, SharedCodeComponent } from '../../../../../../shared-components/shared-code/shared-code.component';
 
 @Component({
-  selector: 'app-loading-v9',
-  imports: [SharedCodeComponent],
-  templateUrl: './loading-v9.html',
-  styleUrl: './loading-v9.scss'
+    selector: 'app-loading-v9',
+    imports: [SharedCodeComponent],
+    template: `
+<app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [projectDate]="projectDate" [JSCodeSnippet]="JSCodeSnippets" [projectDescription]="projectDescription"
+    [projectVersion]="projectVersion" [projectName]="projectName" [zipFile]="zipFile" />
+`
 })
 export class LoadingV9 {
-  projectName: string = 'Compact Rotating Spiral Loader – Version 9';
-  projectDescription: string = `
+    projectName: string = 'Compact Rotating Spiral Loader – Version 9';
+    projectDescription: string = `
 This version introduces a scaled-down spiral loader using scale(0.75) combined with four 90°-rotated layers (rotate(calc(90deg * var(--j)))), creating a tighter, crisper animation that is both minimal and futuristic 🌌.
       <ul>
         <li>🔄 4-layer rotation forming a symmetrical spiral cross 🧭</li>
@@ -32,14 +35,13 @@ Try transform: scale(0.75) rotateZ(...deg) for layered depth!
 🧬 A compact, neon-powered animation that feels alive and techy—perfect for fast, professional-looking loaders!
 
 `;
-  projectDate: string = 'Last updated: June 2025';
-  projectVersion: string = 'v1.8.0';
-  projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/loading/09 - loading.mp4';
+    projectDate: string = 'Last updated: June 2025';
+    projectVersion: string = 'v1.8.0';
+    projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
 
-  HTMLCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
+    HTMLCodeSnippets: ICodeStructure[] = [
+        {
+            code: `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,13 +56,13 @@ Try transform: scale(0.75) rotateZ(...deg) for layered depth!
 </body>
 </html>
     `,
-      codeTitle: 'index.html'
-    }
-  ];
+            codeTitle: 'index.html'
+        }
+    ];
 
-  CSSCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
+    CSSCodeSnippets: ICodeStructure[] = [
+        {
+            code: `
 * {
     margin: 0;
     padding: 0;
@@ -129,14 +131,14 @@ body {
     }
 }
     `,
-      codeTitle: 'style.css'
-    }
-  ];
+            codeTitle: 'style.css'
+        }
+    ];
 
-  JSCodeSnippets: ICodeStructure[] = [
-    {
-      codeTitle: 'main.js',
-      code: `
+    JSCodeSnippets: ICodeStructure[] = [
+        {
+            codeTitle: 'main.js',
+            code: `
 const body = document.body;
 let loader;
 
@@ -160,8 +162,8 @@ function loaderSpan() {
     }
 }
       `
-    }
-  ]
+        }
+    ]
 
-  zipFile: string = 'assets/zip-files/loading/09 - loading.rar';
+    zipFile: string = 'assets/zip-files/loading/09 - loading.rar';
 }

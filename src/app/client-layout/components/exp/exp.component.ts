@@ -5,8 +5,17 @@ import { PaginationService } from '../../services/pagination.service';
 @Component({
   selector: 'app-exp',
   imports: [SharedCardComponent],
-  templateUrl: './exp.component.html',
-  styleUrl: './exp.component.scss'
+  template: `
+<section class="row g-1">
+  @for (project of paginatedProjects; track $index) {
+  <div class="col-md-6 col-12">
+      <app-shared-card [date]="project.date" [projectUrl]="project.projectUrl" [description]="project.description"
+          [title]="project.title" [videoSrc]="project.thumbnail" [tags]="project.tags"
+          [project_demo]="project.projectRouting" />
+  </div>
+  }
+</section>
+  `
 })
 export class ExpComponent {
 

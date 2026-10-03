@@ -4,8 +4,11 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../shared-componen
 @Component({
   selector: 'app-css-battle-p8',
   imports: [SharedCodeComponent],
-  templateUrl: './css-battle-p8.html',
-  styleUrl: './css-battle-p8.scss'
+  template: `
+    <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets"
+    [projectDate]="projectDate" [projectDescription]="projectDescription" [projectVersion]="projectVersion"
+    [projectName]="projectName" [isItCssBattle]="true" [projectOnYoutube]="projectVideoOnYoutube" [zipFile]="zipFile"  />
+  `
 })
 export class CssBattleP8 {
 
@@ -28,9 +31,6 @@ Just CSS creativity and precision.
   projectDate: string = 'Last updated: Feb 2026';
   projectVersion: string = 'v1.0.0';
   projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'Border', 'CSS Battle'];
-
-  projectVideSrc: string =
-    './../../../../../assets/video-samples/cssbattle/p8.png';
 
   projectVideoOnYoutube: string =
     'https://cssbattle.dev/play/6NrSWJ0sN3E4OGFcbeun';

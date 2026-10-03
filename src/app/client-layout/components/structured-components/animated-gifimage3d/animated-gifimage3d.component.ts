@@ -4,8 +4,11 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../shared-componen
 @Component({
   selector: 'app-animated-gifimage3d',
   imports: [SharedCodeComponent],
-  templateUrl: './animated-gifimage3d.component.html',
-  styleUrl: './animated-gifimage3d.component.scss'
+  template: `
+    <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [JSCodeSnippet]="JSCodeSnippets" [projectDate]="projectDate" [projectDescription]="projectDescription"
+    [projectVersion]="projectVersion" [projectName]="projectName" [zipFile]="zipFile"  />
+  `
 })
 export class AnimatedGIFImage3dComponent {
   projectName: string = '🧩 Animated Grid Image Reveal with Hover Effect';
@@ -13,7 +16,6 @@ export class AnimatedGIFImage3dComponent {
   projectDate: string = 'Last updated: May 2025';
   projectVersion: string = 'v1.0.0';
   projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/animated popup.mp4';
 
   HTMLCodeSnippets: ICodeStructure[] = [
     {

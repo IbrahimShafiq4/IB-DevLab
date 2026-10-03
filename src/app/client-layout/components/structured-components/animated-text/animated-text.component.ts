@@ -4,8 +4,12 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../shared-componen
 @Component({
   selector: 'app-animated-text',
   imports: [SharedCodeComponent],
-  templateUrl: './animated-text.component.html',
-  styleUrl: './animated-text.component.scss'
+  template: `
+    <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [JSCodeSnippet]="JSCodeSnippets" [projectDate]="projectDate" [projectDescription]="projectDescription"
+    [projectVersion]="projectVersion" [projectName]="projectName" [zipFile]="zipFile"
+    [liveHtml]="liveHtml" [liveCss]="liveCss" [liveJs]="liveJs" />
+  `
 })
 export class AnimatedTextComponent {
   projectName: string = 'Animated Typing Text Effect';
@@ -13,8 +17,24 @@ export class AnimatedTextComponent {
   projectDate: string = 'Last updated: May 2025';
   projectVersion: string = 'v1.0.0';
   projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/text animation.mp4';
 
+  /* ─── LIVE PREVIEW ─────────────────────────────────────── */
+  liveHtml: string = `
+<div class="container">
+    <span class="txt first-txt">I'm a</span>
+    <span class="txt second-txt"></span>
+</div>
+  `;
+
+  get liveCss(): string {
+    return this.CSSCodeSnippets[0]?.code ?? '';
+  }
+
+  get liveJs(): string {
+    return this.JSCodeSnippets[0]?.code ?? '';
+  }
+
+  /* ─── ORIGINAL SNIPPETS ────────────────────────────────── */
   HTMLCodeSnippets: ICodeStructure[] = [
     {
       code: `
@@ -86,7 +106,7 @@ body {
   40%, 60% {
     left: calc(100% + 4px);
   }
-  
+
   100% {
     left: 0%;
   }

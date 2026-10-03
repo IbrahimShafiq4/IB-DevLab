@@ -18,7 +18,7 @@ import {
       [isItCssBattle]="true"
       [projectOnYoutube]="projectVideoOnYoutube"
       [zipFile]="zipFile"
-      [projectVideoSrc]="projectVideSrc"
+      
     />
   `,
   styles: ``
@@ -56,9 +56,6 @@ export class CssBattleP17 {
     'CSS Shapes',
     'CSS Battle'
   ];
-
-  projectVideSrc: string =
-    './../../../../../assets/video-samples/cssbattle/envelope-icon.png';
 
   projectVideoOnYoutube: string = 'https://cssbattle.dev/play/LXVlYbdUHfOS5mrqkEh0';
 

@@ -1,0 +1,88 @@
+<section class="editor" aria-label="محرر الكود">
+
+    <header class="editor__head">
+
+        <nav class="editor__tabs" role="tablist" aria-label="ملفات الكود" dir="ltr">
+            @for (file of files; track file.language; let i = $index) {
+            <button type="button" role="tab" class="editor__tab" [class.is-active]="activeIndex() === i"
+                [attr.aria-selected]="activeIndex() === i" [attr.tabindex]="activeIndex() === i ? 0 : -1"
+                (click)="selectTab(i)">
+                <span class="editor__tab-dot" aria-hidden="true"></span>
+                <span class="editor__tab-label">
+                    {{ file.language === 'markup' ? 'HTML'
+                    : file.language === 'javascript' ? 'JS'
+                    : 'CSS' }}
+                </span>
+            </button>
+            }
+        </nav>
+
+        <div class="editor__actions">
+
+            @if (!editing()) {
+            <button type="button" class="editor__action" (click)="toggleEdit()" aria-label="تعديل الكود">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                    aria-hidden="true">
+                    <path d="M12 20h9" />
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z" />
+                </svg>
+                <span>تعديل</span>
+            </button>
+            } @else {
+
+            <button type="button" class="editor__action is-active" (click)="toggleEdit()" aria-label="العودة للمعاينة">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                    aria-hidden="true">
+                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                    <circle cx="12" cy="12" r="3" />
+                </svg>
+                <span>معاينة</span>
+            </button>
+
+            <button type="button" class="editor__action" (click)="onReset()" aria-label="إعادة الضبط">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                    aria-hidden="true">
+                    <path d="M3 12a9 9 0 1 0 3-6.7L3 8" />
+                    <path d="M3 3v5h5" />
+                </svg>
+                <span>إعادة</span>
+            </button>
+            }
+
+            <button type="button" class="editor__action editor__action--copy" (click)="copy()"
+                [attr.aria-label]="copied() ? 'تم النسخ' : 'نسخ الكود'">
+                @if (copied()) {
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    aria-hidden="true">
+                    <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span>تم النسخ</span>
+                } @else {
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                    aria-hidden="true">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                </svg>
+                <span>نسخ</span>
+                }
+            </button>
+
+        </div>
+    </header>
+
+    <div class="editor__body" dir="ltr">
+        @if (activeFile(); as file) {
+        @if (editing()) {
+        <textarea class="editor__textarea" [value]="formattedCode()" (input)="onCodeInput($event)" spellcheck="false"
+            autocomplete="off" autocapitalize="off" autocorrect="off" wrap="off"
+            [attr.aria-label]="'محرر: ' + file.filename"></textarea>
+        } @else {
+        <pre class="editor__pre"><code class="language-{{ file.language }}"
+                [innerHTML]="highlighted()"></code></pre>
+        }
+        } @else {
+        <p class="editor__empty">لا يوجد كود لعرضه.</p>
+        }
+    </div>
+
+</section>

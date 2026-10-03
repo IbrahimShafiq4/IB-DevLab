@@ -1,0 +1,155 @@
+@use "./../../../assets/styles/tokens/tokens" as t;
+
+:host {
+    display: block;
+}
+
+.register {
+    position: relative;
+    background-color: var(--bg-void);
+    border-bottom: 1px solid var(--rule-hairline);
+
+    &--sticky {
+        position: sticky;
+        top: 56px;
+        z-index: t.$z-sticky;
+        backdrop-filter: saturate(140%) blur(6px);
+        background-color: color-mix(in oklab, var(--bg-void) 88%, transparent);
+    }
+}
+
+/* Progress bar */
+.register__track {
+    position: relative;
+    height: 2px;
+    background-color: var(--rule-hairline);
+    overflow: hidden;
+}
+
+.register__progress {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    background-color: var(--accent-primary);
+    transition: width 120ms linear;
+}
+
+/* Ticks */
+.register__list {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    &::-webkit-scrollbar {
+        height: 0;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.register__item {
+    position: relative;
+    flex: 0 0 auto;
+
+    &::after {
+        content: "";
+        position: absolute;
+        inset-block: 0;
+        inset-inline-end: 0;
+        width: 1px;
+        background-color: var(--rule-hairline);
+        opacity: 0.6;
+    }
+
+    &:last-child::after {
+        display: none;
+    }
+}
+
+.register__tick {
+    display: inline-flex;
+    align-items: baseline;
+    gap: t.$sp-2;
+    padding: t.$sp-3 t.$sp-4;
+    background: transparent;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    color: var(--ink-tertiary);
+    transition:
+        color t.$dur-fast t.$ease-out,
+        background-color t.$dur-fast t.$ease-out;
+    white-space: nowrap;
+    position: relative;
+
+    /* Tick mark on the bottom edge */
+    &::before {
+        content: "";
+        position: absolute;
+        inset-inline-start: 50%;
+        bottom: -1px;
+        width: 1px;
+        height: 5px;
+        background-color: var(--rule-solid);
+        transform: translateX(50%);
+        transition:
+            background-color t.$dur-fast t.$ease-out,
+            height t.$dur-base t.$ease-out;
+    }
+
+    &:hover {
+        color: var(--ink-secondary);
+        background-color: var(--bg-surface);
+    }
+
+    &.is-active {
+        color: var(--ink-primary);
+
+        &::before {
+            background-color: var(--accent-primary);
+            height: 9px;
+        }
+
+        .register__index {
+            color: var(--accent-primary);
+        }
+    }
+}
+
+.register__index {
+    font-family: t.$font-mono;
+    font-size: t.$fs-nano;
+    font-weight: 500;
+    letter-spacing: t.$tracking-wider;
+    color: var(--ink-tertiary);
+    transition: color t.$dur-fast t.$ease-out;
+}
+
+.register__label {
+    font-size: t.$fs-small;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+}
+
+/* Mobile: tighter ticks, hide label after 3rd */
+@media (max-width: 640px) {
+    .register__tick {
+        padding: t.$sp-2 t.$sp-3;
+    }
+
+    .register__label {
+        font-size: t.$fs-micro;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .register__progress {
+        transition: none;
+    }
+}

@@ -4,8 +4,12 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../shared-componen
 @Component({
   selector: 'app-css-battle',
   imports: [SharedCodeComponent],
-  templateUrl: './css-battle.html',
-  styles: ``
+  template: `
+    <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [projectDate]="projectDate"
+      [projectDescription]="projectDescription" [projectVersion]="projectVersion" [projectName]="projectName"
+      [isItCssBattle]="true" [projectOnYoutube]="projectVideoOnYoutube" [zipFile]="zipFile"
+    />
+  `
 })
 export class CssBattle {
 
@@ -50,9 +54,6 @@ export class CssBattle {
     'CSS Reflection',
     'CSS Battle'
   ];
-
-  projectVideSrc: string =
-    './../../../../../assets/video-samples/cssbattle/cross-circle.png';
 
   projectVideoOnYoutube: string =
     'https://cssbattle.dev/play/9sCBYHjLMHJ372p55cz7';

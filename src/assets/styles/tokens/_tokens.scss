@@ -1,0 +1,280 @@
+$sp-0: 0;
+$sp-1: 4px;
+$sp-2: 8px;
+$sp-3: 12px;
+$sp-4: 16px;
+$sp-5: 20px;
+$sp-6: 24px;
+$sp-7: 28px;
+$sp-8: 32px;
+$sp-10: 40px;
+$sp-12: 48px;
+$sp-16: 64px;
+$sp-24: 96px;
+$sp-32: 128px;
+
+$r-none: 0;
+$r-sm: 2px;
+$r-md: 4px;
+$r-lg: 6px;
+$r-full: 999px;
+
+$font-display: "Alexandria", system-ui, "Segoe UI", Tahoma, sans-serif;
+$font-ui: "IBM Plex Sans Arabic", system-ui, "Segoe UI", Tahoma, sans-serif;
+$font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+$font-sans: $font-ui;
+
+$fs-nano: 0.6875rem;
+$fs-micro: 0.75rem;
+$fs-small: 0.875rem;
+$fs-body: 1rem;
+$fs-lead: 1.25rem;
+$fs-h4: 1.125rem;
+$fs-h3: 1.25rem;
+$fs-h2: 1.75rem;
+$fs-h1: 2.5rem;
+$fs-display: clamp(2.75rem, 6vw, 5.25rem);
+
+$lh-tight: 1.15;
+$lh-snug: 1.35;
+$lh-normal: 1.5;
+$lh-relaxed: 1.8;
+
+$tracking-tight: -0.01em;
+$tracking-normal: 0;
+$tracking-wide: 0.04em;
+$tracking-wider: 0.08em;
+$tracking-widest: 0.12em;
+
+$dur-instant: 90ms;
+$dur-fast: 160ms;
+$dur-base: 240ms;
+$dur-slow: 400ms;
+$dur-signature: 600ms;
+$ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+$ease-in: cubic-bezier(0.4, 0, 1, 1);
+$ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+$ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+$z-base: 1;
+$z-sticky: 100;
+$z-stage: 50;
+$z-drawer: 900;
+$z-modal: 1000;
+$z-toast: 2000;
+
+$content-max: 1360px;
+$reading-max: 68ch;
+$gutter-phone: 16px;
+$gutter-tablet: 24px;
+$gutter-desktop: 40px;
+
+$bp-sm: 640px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1280px;
+$bp-2xl: 1536px;
+
+@mixin theme-night {
+    color-scheme: dark;
+
+    --bg-main: #1e1e1e;
+    --bg-void: #1e1e1e;
+    --bg-lift: #2a2a2a;
+    --bg-secondary: #2a2a2a;
+    --bg-elevated: #333333;
+    --surface: #3b3b3b;
+    --surface-raised: #4a4a4a;
+    --bg-surface: #3b3b3b;
+    --bg-recessed: #141414;
+
+    --stage-dark: #2c3e50;
+    --stage-light: #f8fafb;
+    --stage-grid: rgba(26, 188, 156, 0.06);
+
+    --border: #4a4a4a;
+    --border-strong: #616161;
+    --rule-hairline: #3b3b3b;
+    --rule-solid: #4a4a4a;
+
+    --text-primary: #ecf0f1;
+    --text-secondary: #b2b2b2;
+    --text-muted: #8f9499;
+    --ink-primary: #ecf0f1;
+    --ink-secondary: #b2b2b2;
+    --ink-tertiary: #8f9499;
+    --ink-inverse: #2c3e50;
+
+    --accent-primary: #1dd1a1;
+    --accent-brass: #1dd1a1;
+    --accent-brass-text: #1dd1a1;
+    --accent-reference: #16a085;
+    --accent-success: #1dd1a1;
+    --accent-critical: #e74c3c;
+    --on-brass: #2c3e50;
+    --on-teal: #2c3e50;
+
+    --focus-ring: #1dd1a1;
+    --selection: rgba(29, 209, 161, 0.32);
+    --selection-bg: rgba(29, 209, 161, 0.32);
+    --selection-fg: #ecf0f1;
+    --overlay: rgba(30, 30, 30, 0.88);
+
+    --success: #1dd1a1;
+    --warning: #e67e22;
+    --error: #e74c3c;
+    --info: #3498db;
+
+    --code-text: #ecf0f1;
+    --code-bg: #2c3e50;
+    --code-border: #34495e;
+    --syntax-keyword: #1dd1a1;
+    --syntax-string: #a8d5ba;
+    --syntax-number: #f4d35e;
+    --syntax-function: #7fb8d9;
+    --syntax-comment: #7f8c8d;
+
+    --shadow-popover: 0 12px 32px rgba(0, 0, 0, 0.5);
+
+    --grid-1: rgba(255, 255, 255, 0.1);
+    --grid-2: rgba(255, 255, 255, 0.16);
+}
+
+@mixin theme-light {
+    color-scheme: light;
+
+    --bg-main: #ecf0f1;
+    --bg-void: #ecf0f1;
+    --bg-lift: #ffffff;
+    --bg-secondary: #e3e8ea;
+    --bg-elevated: #ffffff;
+    --surface: #ffffff;
+    --surface-raised: #ffffff;
+    --bg-surface: #e3e8ea;
+    --bg-recessed: #f8fafb;
+
+    --stage-dark: #2c3e50;
+    --stage-light: #f8fafb;
+    --stage-grid: rgba(44, 62, 80, 0.05);
+
+    --border: #c5c9cc;
+    --border-strong: #8f9499;
+    --rule-hairline: #d8dde0;
+    --rule-solid: #8f9499;
+
+    --text-primary: #2c3e50;
+    --text-secondary: #34495e;
+    --text-muted: #616161;
+    --ink-primary: #2c3e50;
+    --ink-secondary: #34495e;
+    --ink-tertiary: #616161;
+    --ink-inverse: #ffffff;
+
+    --accent-primary: #0d6e58;
+    --accent-brass: #0d6e58;
+    --accent-brass-text: #0d6e58;
+    --accent-reference: #16a085;
+    --accent-success: #0d6e58;
+    --accent-critical: #c0392b;
+    --on-brass: #ffffff;
+    --on-teal: #ffffff;
+
+    --focus-ring: #0d6e58;
+    --selection: rgba(13, 110, 88, 0.2);
+    --selection-bg: rgba(13, 110, 88, 0.2);
+    --selection-fg: #2c3e50;
+    --overlay: rgba(236, 240, 241, 0.9);
+
+    --success: #0d6e58;
+    --warning: #b35a00;
+    --error: #c0392b;
+    --info: #1f5fa8;
+
+    --code-text: #2c3e50;
+    --code-bg: #f8fafb;
+    --code-border: #dde3e5;
+    --syntax-keyword: #0d6e58;
+    --syntax-string: #1d7a47;
+    --syntax-number: #a87500;
+    --syntax-function: #2c3e50;
+    --syntax-comment: #7f8c8d;
+
+    --shadow-popover: 0 12px 32px rgba(44, 62, 80, 0.12);
+
+    --grid-1: rgba(44, 62, 80, 0.1);
+    --grid-2: rgba(44, 62, 80, 0.16);
+}
+
+:root {
+    --sp-0: #{$sp-0};
+    --sp-1: #{$sp-1};
+    --sp-2: #{$sp-2};
+    --sp-3: #{$sp-3};
+    --sp-4: #{$sp-4};
+    --sp-5: #{$sp-5};
+    --sp-6: #{$sp-6};
+    --sp-8: #{$sp-8};
+    --sp-10: #{$sp-10};
+    --sp-12: #{$sp-12};
+    --sp-16: #{$sp-16};
+    --sp-24: #{$sp-24};
+    --sp-32: #{$sp-32};
+
+    --r-0: #{$r-none};
+    --r-1: #{$r-sm};
+    --r-2: #{$r-md};
+    --r-3: #{$r-lg};
+    --r-full: #{$r-full};
+
+    --dur-instant: #{$dur-instant};
+    --dur-fast: #{$dur-fast};
+    --dur-base: #{$dur-base};
+    --dur-slow: #{$dur-slow};
+    --dur-signature: #{$dur-signature};
+    --ease-out: #{$ease-out};
+    --ease-in: #{$ease-in};
+    --ease-in-out: #{$ease-inout};
+    --ease-spring: #{$ease-spring};
+
+    --content-max: #{$content-max};
+    --reading-max: #{$reading-max};
+    --gutter: #{$gutter-phone};
+
+    --z-base: #{$z-base};
+    --z-sticky: #{$z-sticky};
+    --z-stage: #{$z-stage};
+    --z-drawer: #{$z-drawer};
+    --z-modal: #{$z-modal};
+    --z-toast: #{$z-toast};
+
+    --font-display: #{$font-display};
+    --font-ui: #{$font-ui};
+    --font-code: #{$font-mono};
+}
+
+@media (min-width: 640px) {
+    :root {
+        --gutter: #{$gutter-tablet};
+    }
+}
+
+@media (min-width: 1024px) {
+    :root {
+        --gutter: #{$gutter-desktop};
+    }
+}
+
+:root,
+:root[data-theme="night"] {
+    @include theme-night;
+}
+
+:root[data-theme="light"] {
+    @include theme-light;
+}
+
+@media (prefers-color-scheme: light) {
+    :root:not([data-theme]) {
+        @include theme-light;
+    }
+}

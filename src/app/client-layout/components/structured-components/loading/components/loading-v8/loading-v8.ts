@@ -2,14 +2,17 @@ import { Component } from '@angular/core';
 import { ICodeStructure, SharedCodeComponent } from '../../../../../../shared-components/shared-code/shared-code.component';
 
 @Component({
-  selector: 'app-loading-v8',
-  imports: [SharedCodeComponent],
-  templateUrl: './loading-v8.html',
-  styleUrl: './loading-v8.scss'
+    selector: 'app-loading-v8',
+    imports: [SharedCodeComponent],
+    template: `
+<app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [projectDate]="projectDate" [JSCodeSnippet]="JSCodeSnippets" [projectDescription]="projectDescription"
+    [projectVersion]="projectVersion" [projectName]="projectName" [zipFile]="zipFile" />
+`
 })
 export class LoadingV8 {
-  projectName: string = 'Tilted Spiral Neon Loader – Version 8️⃣';
-  projectDescription: string = `
+    projectName: string = 'Tilted Spiral Neon Loader – Version 8️⃣';
+    projectDescription: string = `
 This futuristic loader features a tilted spiral layout created using rotate(calc(90deg * var(--j) / 2)) 🌀. Unlike traditional right-angle symmetry, the / 2 factor gives the loader layers a diagonal twist 🧭—resulting in a smoother, off-axis rotation that feels dynamic and alive!
       <ul>
         <li>⚙️ 4 loader layers, each rotated at a diagonal using custom property --j</li>
@@ -32,14 +35,13 @@ Replace dots with emojis or icons (e.g. 🚀, 💥) for extra flair
 <br />
 💡 Pro Tip: Combine this loader with a subtle zoom-in animation or fading background elements for a next-level immersive effect!
 `;
-  projectDate: string = 'Last updated: June 2025';
-  projectVersion: string = 'v1.7.0';
-  projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/loading/08 - loading.mp4';
+    projectDate: string = 'Last updated: June 2025';
+    projectVersion: string = 'v1.7.0';
+    projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
 
-  HTMLCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
+    HTMLCodeSnippets: ICodeStructure[] = [
+        {
+            code: `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,13 +56,13 @@ Replace dots with emojis or icons (e.g. 🚀, 💥) for extra flair
 </body>
 </html>
     `,
-      codeTitle: 'index.html'
-    }
-  ];
+            codeTitle: 'index.html'
+        }
+    ];
 
-  CSSCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
+    CSSCodeSnippets: ICodeStructure[] = [
+        {
+            code: `
 * {
     margin: 0;
     padding: 0;
@@ -129,14 +131,14 @@ body {
     }
 }
     `,
-      codeTitle: 'style.css'
-    }
-  ];
+            codeTitle: 'style.css'
+        }
+    ];
 
-  JSCodeSnippets: ICodeStructure[] = [
-    {
-      codeTitle: 'main.js',
-      code: `
+    JSCodeSnippets: ICodeStructure[] = [
+        {
+            codeTitle: 'main.js',
+            code: `
 const body = document.body;
 let loader;
 
@@ -160,8 +162,8 @@ function loaderSpan() {
     }
 }
       `
-    }
-  ]
+        }
+    ]
 
-  zipFile: string = 'assets/zip-files/loading/08 - loading.rar';
+    zipFile: string = 'assets/zip-files/loading/08 - loading.rar';
 }

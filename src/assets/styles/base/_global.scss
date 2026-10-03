@@ -1,83 +1,178 @@
-@import './variables';
+@use "../tokens/tokens" as t;
 
-ul {
-    list-style: none;
+// ============================================================
+// Global resets & primitives — token-driven
+// ============================================================
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
     padding: 0;
 }
 
-a {
-    text-decoration: none;
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
 }
 
-a,
-ul,
-li,
-p,
+body {
+    font-family: t.$font-sans;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--ink-primary);
+    background-color: var(--bg-void);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
 h1,
 h2,
 h3,
 h4,
 h5,
-h6,
-figure {
-    margin: 0;
+h6 {
+    font-family: t.$font-sans;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--ink-primary);
+    letter-spacing: -0.01em;
 }
 
+h1 {
+    font-size: t.$fs-h1;
+    font-weight: 700;
+}
+h2 {
+    font-size: t.$fs-h2;
+}
+h3 {
+    font-size: t.$fs-h3;
+}
+h4 {
+    font-size: t.$fs-h4;
+}
+h5 {
+    font-size: t.$fs-h4;
+}
+h6 {
+    font-size: t.$fs-h4;
+}
+
+p {
+    font-size: t.$fs-body;
+    color: var(--ink-secondary);
+    line-height: t.$lh-relaxed;
+}
+
+a {
+    color: var(--accent-reference);
+    text-decoration: none;
+    transition: color t.$dur-fast t.$ease-out;
+
+    &:hover {
+        color: var(--accent-primary);
+    }
+}
+
+ul {
+    list-style: none;
+}
+
+img,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+    color: inherit;
+}
+
+::selection {
+    background-color: var(--selection-bg);
+    color: var(--selection-fg);
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-void);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--rule-solid);
+    border-radius: t.$r-sm;
+
+    &:hover {
+        background: var(--ink-tertiary);
+    }
+}
+
+:focus {
+    outline: none;
+}
+
+:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+// ---- Utility classes ----
 .font-weight-400 {
     font-weight: 400;
 }
-
 .font-weight-500 {
     font-weight: 500;
 }
-
 .font-weight-600 {
     font-weight: 600;
 }
-
 .font-weight-700 {
     font-weight: 700;
 }
-
 .font-weight-800 {
     font-weight: 800;
 }
-
 .font-weight-900 {
     font-weight: 900;
 }
-
 .font-size-inherit {
     font-size: inherit;
 }
-
 .w-fit-content {
     width: fit-content;
 }
-
 .rtl-dir {
     direction: rtl;
 }
-
 .ltr-dir {
     direction: ltr;
 }
 
 .main-background {
-    background-color: $primary-color;
-    background-image: repeating-linear-gradient(45deg,
-            rgba(255, 255, 255, 0.04),
-            rgba(255, 255, 255, 0.04) 1px,
-            transparent 1px,
-            transparent 30px,
-        ),
-        repeating-linear-gradient(-45deg,
-            rgba(255, 255, 255, 0.04),
-            rgba(255, 255, 255, 0.04) 1px,
-            transparent 1px,
-            transparent 30px,
-        );
-
-    border: $main-border;
-    box-shadow: $main-box-shadow;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--rule-hairline);
 }

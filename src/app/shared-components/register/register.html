@@ -1,0 +1,18 @@
+<nav class="register" [class.register--sticky]="sticky" aria-label="فهرس الصفحة">
+
+    <div class="register__track" aria-hidden="true">
+        <span class="register__progress" [style.width.%]="progress() * 100"></span>
+    </div>
+
+    <ul class="register__list">
+        @for (s of sections; track s.id) {
+        <li class="register__item">
+            <button #tick type="button" class="register__tick" [class.is-active]="activeId() === s.id"
+                (click)="scrollTo(s.id)" [attr.aria-current]="activeId() === s.id ? 'true' : null">
+                <span class="register__index" dir="ltr">{{ s.index }}</span>
+                <span class="register__label">{{ s.label }}</span>
+            </button>
+        </li>
+        }
+    </ul>
+</nav>

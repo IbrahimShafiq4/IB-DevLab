@@ -1,15 +1,18 @@
 import { Component } from '@angular/core';
-import { ICodeStructure } from '../../../../../../shared-components/shared-code/shared-code.component';
+import { ICodeStructure, SharedCodeComponent } from '../../../../../../shared-components/shared-code/shared-code.component';
 
 @Component({
-  selector: 'app-loading-v6',
-  imports: [],
-  templateUrl: './loading-v6.html',
-  styleUrl: './loading-v6.scss'
+    selector: 'app-loading-v6',
+    imports: [SharedCodeComponent],
+    template: `
+<app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [projectDate]="projectDate" [JSCodeSnippet]="JSCodeSnippets" [projectDescription]="projectDescription"
+    [projectVersion]="projectVersion" [projectName]="projectName" [zipFile]="zipFile" />
+    `
 })
 export class LoadingV6 {
-  projectName: string = 'Diagonal Burst Spiral Loader – Version 6️⃣';
-  projectDescription: string = `
+    projectName: string = 'Diagonal Burst Spiral Loader – Version 6️⃣';
+    projectDescription: string = `
 This sleek and luminous loader introduces a diagonal spiral animation ✨ using rotate(calc(45deg * var(--i))), giving it a striking starburst-like appearance 🌠. Powered by JavaScript and CSS, each loader dynamically generates 20 glowing orbs 💠 that animate inwards with a trailing, light pulse.      
       <ul>
         <li>🌀 Spiraled layout with 45° rotation increments</li>
@@ -32,14 +35,13 @@ Visual intros for portfolios or creative sites 🎨
 <br />
 💬 Pro Tip: Try animating the --j value dynamically for a pulsating spiral that expands/contracts over time!
 `;
-  projectDate: string = 'Last updated: June 2025';
-  projectVersion: string = 'v1.5.0';
-  projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/loading/06 - loading.mp4';
+    projectDate: string = 'Last updated: June 2025';
+    projectVersion: string = 'v1.5.0';
+    projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
 
-  HTMLCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
+    HTMLCodeSnippets: ICodeStructure[] = [
+        {
+            code: `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,13 +56,13 @@ Visual intros for portfolios or creative sites 🎨
 </body>
 </html>
     `,
-      codeTitle: 'index.html'
-    }
-  ];
+            codeTitle: 'index.html'
+        }
+    ];
 
-  CSSCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
+    CSSCodeSnippets: ICodeStructure[] = [
+        {
+            code: `
 * {
     margin: 0;
     padding: 0;
@@ -128,14 +130,14 @@ body {
     }
 }
     `,
-      codeTitle: 'style.css'
-    }
-  ];
+            codeTitle: 'style.css'
+        }
+    ];
 
-  JSCodeSnippets: ICodeStructure[] = [
-    {
-      codeTitle: 'main.js',
-      code: `
+    JSCodeSnippets: ICodeStructure[] = [
+        {
+            codeTitle: 'main.js',
+            code: `
 const body = document.body;
 let loader;
 
@@ -159,8 +161,8 @@ function loaderSpan() {
     }
 }
       `
-    }
-  ]
+        }
+    ]
 
-  zipFile: string = 'assets/zip-files/loading/06 - loading.rar';
+    zipFile: string = 'assets/zip-files/loading/06 - loading.rar';
 }

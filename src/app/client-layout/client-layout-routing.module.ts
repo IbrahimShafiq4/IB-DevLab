@@ -2,10 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ClientLayoutComponent } from './client-layout.component';
 import { HomeComponent } from './components/home/home.component';
-import { ProjectsComponent } from './components/projects/projects.component';
 import { ExpComponent } from './components/exp/exp.component';
 import { TabsComponent } from './components/structured-components/tabs/tabs.component';
-import { CustomVideoComponent } from './components/structured-components/custom-video/custom-video.component';
 import { BackgroundGeneratorComponent } from './components/structured-components/background-generator/background-generator.component';
 import { AnimatedTextComponent } from './components/structured-components/animated-text/animated-text.component';
 import { PasswordGeneratorComponent } from './components/structured-components/password-generator/password-generator.component';
@@ -25,7 +23,7 @@ import { NewsAppComponent } from './components/structured-components/news-app/ne
 import { PieChartComponent } from './components/structured-components/pie-chart/pie-chart.component';
 import { TextV4Component } from './components/structured-components/text-v4/text-v4.component';
 import { RainsComponent } from './components/structured-components/rains/rains.component';
-import { LoadingV2Component } from './components/structured-components/loading-v2/loading-v2.component';
+import { LoadingV2Component } from './components/structured-components/loading/components/loading-v2/loading-v2.component';
 import { TextV5Component } from './components/structured-components/text-v5/text-v5.component';
 import { MouseMoveV3Component } from './components/structured-components/mouse-move-v3/mouse-move-v3.component';
 import { TextV3Component } from './components/structured-components/text-v3/text-v3.component';
@@ -35,7 +33,6 @@ import { TiltV1Component } from './components/structured-components/tilt-v1/tilt
 import { TiltV2Component } from './components/structured-components/tilt-v2/tilt-v2.component';
 import { TiltV3Component } from './components/structured-components/tilt-v3/tilt-v3.component';
 import { MouseMoveV1Component } from './components/structured-components/mouse-move-v1/mouse-move-v1.component';
-import { LoadingV1Component } from './components/structured-components/loading-v1/loading-v1.component';
 import { CubeComponent } from './components/structured-components/cube/cube.component';
 import { DropOfWater } from './components/structured-components/drop-of-water/drop-of-water';
 import { CanRotation } from './components/structured-components/can-rotation/can-rotation';
@@ -82,6 +79,9 @@ import { CleanCode03 } from './components/structured-components/clean-code-03/cl
 import { LeetCode10 } from './components/structured-components/leet-code-10/leet-code-10';
 import { CssBattleP28 } from './components/structured-components/css-battle-p28/css-battle-p28';
 import { CleanCode04 } from './components/structured-components/clean-code-04/clean-code-04';
+import { LeetCode11 } from './components/structured-components/leet-code-11/leet-code-11';
+import { CleanCode05 } from './components/structured-components/clean-code-05/clean-code-05';
+import { LabComponent } from './components/lab/lab';
 
 
 const routes: Routes = [
@@ -98,11 +98,6 @@ const routes: Routes = [
         title: 'Home page'
       },
       {
-        path: 'projects',
-        component: ProjectsComponent,
-        title: 'Projects Page'
-      },
-      {
         path: "exp",
         component: ExpComponent,
         title: "Explanation Page"
@@ -111,11 +106,6 @@ const routes: Routes = [
         path: 'tabs',
         component: TabsComponent,
         title: 'Tabs Component'
-      },
-      {
-        path: 'video',
-        component: CustomVideoComponent,
-        title: 'Video Component'
       },
       {
         path: 'blocks',
@@ -263,11 +253,6 @@ const routes: Routes = [
         title: 'Mouse Move Animation V1'
       },
       {
-        path: 'loading-v1',
-        component: LoadingV1Component,
-        title: 'Loading Animation V1'
-      },
-      {
         path: 'cube',
         component: CubeComponent,
         title: 'Cube Animation'
@@ -284,7 +269,6 @@ const routes: Routes = [
       },
       { path: 'layers', loadChildren: () => import('./components/structured-components/layers/layers-module').then(m => m.LayersModule) },
       { path: 'loading', loadChildren: () => import('./components/structured-components/loading/loading-module').then(m => m.LoadingModule) },
-      { path: 'button', loadChildren: () => import('./components/structured-components/button/button-module').then(m => m.ButtonModule) },
       { path: 'drop-of-water', component: DropOfWater, title: 'Drop of Water Animation' },
       { path: 'can-rotation', component: CanRotation, title: 'Can Rotation Animation' },
       { path: 'circular-logo', component: CircularLogo, title: 'Circular Logo Animation' },
@@ -332,6 +316,7 @@ const routes: Routes = [
       { path: 'problem-solving/remove-element', component: LeetCode8, title: 'Remove Element' },
       { path: 'problem-solving/find-the-index-of-the-first-occurrence', component: LeetCode9, title: 'Find the Index of the First Occurrence' },
       { path: 'problem-solving/search-insert-position', component: LeetCode10, title: 'Search Insert Position' },
+      { path: 'problem-solving/length-of-last-word', component: LeetCode11, title: 'Length of Last Word' },
 
 
       // ----------------------- CLEAN CODE ------------------------------
@@ -354,7 +339,19 @@ const routes: Routes = [
         path: 'clean-code-04',
         component: CleanCode04,
         title: 'Clean Code – Functions'
-      }
+      },
+      {
+        path: 'clean-code-05',
+        component: CleanCode05,
+        title: 'Clean Code – Comments'
+      },
+
+
+      {
+        path: 'lab',
+        component: LabComponent,
+        title: 'المعمل الحيّ — IBDevLab'
+      },
     ]
   },
 ];

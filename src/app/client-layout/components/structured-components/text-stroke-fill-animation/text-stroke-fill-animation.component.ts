@@ -4,8 +4,11 @@ import { ICodeStructure, SharedCodeComponent } from "../../../../shared-componen
 @Component({
   selector: 'app-text-stroke-fill-animation',
   imports: [SharedCodeComponent],
-  templateUrl: './text-stroke-fill-animation.component.html',
-  styleUrl: './text-stroke-fill-animation.component.scss'
+  template: `
+  <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [projectDate]="projectDate" [projectDescription]="projectDescription" [projectVersion]="projectVersion"
+    [projectName]="projectName" [zipFile]="zipFile" />
+  `
 })
 export class TextStrokeFillAnimationComponent {
   projectName: string = '🎨 Animated Text Stroke Reveal with Sliding Cursor Effect';
@@ -13,7 +16,6 @@ export class TextStrokeFillAnimationComponent {
   projectDate: string = 'Last updated: May 2025';
   projectVersion: string = 'v1.1.0';
   projectTags: string[] = ['Web Development', 'HTML', 'CSS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/text animation v2.mp4';
 
   HTMLCodeSnippets: ICodeStructure[] = [
     {

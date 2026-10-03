@@ -2,23 +2,26 @@ import { Component } from '@angular/core';
 import { ICodeStructure, SharedCodeComponent } from '../../../../../../shared-components/shared-code/shared-code.component';
 
 @Component({
-  selector: 'app-loading-v3',
-  imports: [SharedCodeComponent],
-  templateUrl: './loading-v3.html',
-  styleUrl: './loading-v3.scss'
+    selector: 'app-loading-v3',
+    imports: [SharedCodeComponent],
+    template: `
+<app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [projectDate]="projectDate" [JSCodeSnippet]="JSCodeSnippets" [projectDescription]="projectDescription"
+    [projectVersion]="projectVersion" [projectName]="projectName" [zipFile]="zipFile" />
+    `
 })
 export class LoadingV3 {
-  projectName: string = 'Advanced Neon Spiral Loader – Version 3.0 ✨';
-  projectDescription: string = `
+    projectName: string = 'Advanced Neon Spiral Loader – Version 3.0 ✨';
+    projectDescription: string = `
 This enhanced loading animation takes a creative twist on the spiral effect 🌀. Built with pure JavaScript and CSS, it dynamically generates multiple layered loaders, each composed of 20 glowing orbs 💎. The orbs rotate around a center point, giving a sense of depth and motion, like a cyberpunk vortex 🌌.
-      <ul>
+    <ul>
         <li>✅ Uses custom properties --i and --j for fine-tuned rotation control</li>
         <li>🧮 The rotation angle dynamically changes using:
 transform: rotate(calc(18deg * var(--i) / calc(var(--j))))
 — this creates more dynamic, variable spirals</li>
         <li>🌈 Each glowing orb emits multi-layered neon shadows</li>
         <li>⏱️ Animation delay is staggered for a smooth trailing effect</li>
-      </ul>
+    </ul>
 
 🎯 Perfect for:
 <br />
@@ -26,14 +29,13 @@ Futuristic UIs 🧬
 AI/data-driven dashboards 📊
 Preloaders in high-tech apps ⚙️
 Digital portfolios or creative landing pages 🎨    `;
-  projectDate: string = 'Last updated: June 2025';
-  projectVersion: string = 'v1.2.0';
-  projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/loading/03 - loading.mp4';
+    projectDate: string = 'Last updated: June 2025';
+    projectVersion: string = 'v1.2.0';
+    projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
 
-  HTMLCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
+    HTMLCodeSnippets: ICodeStructure[] = [
+        {
+            code: `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,13 +50,13 @@ Digital portfolios or creative landing pages 🎨    `;
 </body>
 </html>
     `,
-      codeTitle: 'index.html'
-    }
-  ];
+            codeTitle: 'index.html'
+        }
+    ];
 
-  CSSCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
+    CSSCodeSnippets: ICodeStructure[] = [
+        {
+            code: `
 * {
     margin: 0;
     padding: 0;
@@ -122,14 +124,14 @@ body {
     }
 }
     `,
-      codeTitle: 'style.css'
-    }
-  ];
+            codeTitle: 'style.css'
+        }
+    ];
 
-  JSCodeSnippets: ICodeStructure[] = [
-    {
-      codeTitle: 'main.js',
-      code: `
+    JSCodeSnippets: ICodeStructure[] = [
+        {
+            codeTitle: 'main.js',
+            code: `
 const body = document.body;
 let loader;
 
@@ -153,8 +155,8 @@ function loaderSpan() {
     }
 }
       `
-    }
-  ]
+        }
+    ]
 
-  zipFile: string = 'assets/zip-files/loading/03 - loading.rar';
+    zipFile: string = 'assets/zip-files/loading/03 - loading.rar';
 }

@@ -1,0 +1,29 @@
+<div class="preview" #host [attr.data-tone]="resolvedTone()">
+    @if (mounted() && !error()) {
+    <iframe class="preview__frame" [srcdoc]="srcdoc()" sandbox="allow-scripts" referrerpolicy="no-referrer"
+        loading="lazy" [attr.title]="title ? (title + ' — معاينة') : 'معاينة حيّة'"
+        [attr.tabindex]="interactive ? 0 : -1"></iframe>
+    } @else if (!mounted()) {
+    <div class="preview__skeleton" aria-hidden="true">
+        <span></span><span></span><span></span>
+    </div>
+    }
+
+    @if (error()) {
+    <div class="preview__error" role="alert" dir="rtl">
+        <p class="preview__error-text">تعذّر تشغيل المعاينة</p>
+        <p class="preview__error-detail" dir="ltr">{{ error() }}</p>
+        <button type="button" class="preview__retry" (click)="retry()">حاول تاني</button>
+    </div>
+    }
+
+    @if (reducedMotion() && !playing() && !error()) {
+    <button type="button" class="preview__play" (click)="play()" aria-label="تشغيل المعاينة">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+            aria-hidden="true">
+            <polygon points="6 4 20 12 6 20 6 4" fill="currentColor" stroke="none" />
+        </svg>
+        <span>تشغيل</span>
+    </button>
+    }
+</div>

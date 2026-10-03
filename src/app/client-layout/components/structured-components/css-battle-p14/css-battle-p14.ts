@@ -7,7 +7,7 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../shared-componen
   template: `
 <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets"
     [projectDate]="projectDate" [projectDescription]="projectDescription" [projectVersion]="projectVersion"
-    [projectName]="projectName" [isItCssBattle]="true" [projectOnYoutube]="projectVideoOnYoutube" [zipFile]="zipFile" [projectVideoSrc]="projectVideSrc" />
+    [projectName]="projectName" [isItCssBattle]="true" [projectOnYoutube]="projectVideoOnYoutube" [zipFile]="zipFile"  />
   `,
   styles: ``
 })
@@ -44,9 +44,6 @@ export class CssBattleP14 {
     'CSS Shapes',
     'CSS Battle'
   ];
-
-  projectVideSrc: string =
-    './../../../../../assets/video-samples/cssbattle/geometric-arch.png';
 
   projectVideoOnYoutube: string = 'https://cssbattle.dev/play/4p0BAlG4T8ddxGUbcOhn';
 

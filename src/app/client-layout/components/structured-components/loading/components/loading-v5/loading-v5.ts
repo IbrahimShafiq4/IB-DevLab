@@ -2,22 +2,25 @@ import { Component } from '@angular/core';
 import { ICodeStructure, SharedCodeComponent } from '../../../../../../shared-components/shared-code/shared-code.component';
 
 @Component({
-  selector: 'app-loading-v5',
-  imports: [SharedCodeComponent],
-  templateUrl: './loading-v5.html',
-  styleUrl: './loading-v5.scss'
+    selector: 'app-loading-v5',
+    imports: [SharedCodeComponent],
+    template: `
+<app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [projectDate]="projectDate" [JSCodeSnippet]="JSCodeSnippets" [projectDescription]="projectDescription"
+    [projectVersion]="projectVersion" [projectName]="projectName" [zipFile]="zipFile" />
+    `
 })
 export class LoadingV5 {
-  projectName: string = 'Emoji Pulse Spiral Loader – Version 5️.0 🌟';
-  projectDescription: string = `
+    projectName: string = 'Emoji Pulse Spiral Loader – Version 5️.0 🌟';
+    projectDescription: string = `
 This fun and creative loader brings a playful twist to animation by using emojis as moving particles 🎉. Each loader layer is made up of 20 rotating spans, with each span::before containing an emoji (👌) wrapped in a glowing white circle 💡. The emoji trails inward with a ripple effect, creating a vibrant spiral motion that’s both eye-catching and unique.
-      <ul>
-        <li>🔁 Pure HTML, CSS, and JavaScript – no libraries needed</li>
-        <li>✨ Emojis replace traditional shapes for a friendly and expressive touch</li>
-        <li>💫 Multi-layer glow effect adds depth and brightness</li>
-        <li>🕓 Staggered animation for smooth, fluid motion</li>
-        <li>🎨 Customizable: Replace 👌 with any emoji for themed loaders (e.g. ❤️, 🛸, 🐱‍👓)</li>
-      </ul>
+        <ul>
+            <li>🔁 Pure HTML, CSS, and JavaScript – no libraries needed</li>
+            <li>✨ Emojis replace traditional shapes for a friendly and expressive touch</li>
+            <li>💫 Multi-layer glow effect adds depth and brightness</li>
+            <li>🕓 Staggered animation for smooth, fluid motion</li>
+            <li>🎨 Customizable: Replace 👌 with any emoji for themed loaders (e.g. ❤️, 🛸, 🐱‍👓)</li>
+        </ul>
 🎯 Best For:
 <br />
 Light-hearted or playful web projects 🎮
@@ -26,14 +29,13 @@ Splash/loading screens that want to add some personality 😎
 <br />
 🔧 Pro Tip: Adjust translateX, font-size, or emoji type to tailor the loader to your brand’s vibe!
 `;
-  projectDate: string = 'Last updated: June 2025';
-  projectVersion: string = 'v1.4.0';
-  projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/loading/05 - loading.mp4';
+    projectDate: string = 'Last updated: June 2025';
+    projectVersion: string = 'v1.4.0';
+    projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
 
-  HTMLCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
+    HTMLCodeSnippets: ICodeStructure[] = [
+        {
+            code: `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,13 +50,13 @@ Splash/loading screens that want to add some personality 😎
 </body>
 </html>
     `,
-      codeTitle: 'index.html'
-    }
-  ];
+            codeTitle: 'index.html'
+        }
+    ];
 
-  CSSCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
+    CSSCodeSnippets: ICodeStructure[] = [
+        {
+            code: `
 * {
     margin: 0;
     padding: 0;
@@ -125,14 +127,14 @@ body {
     }
 }
     `,
-      codeTitle: 'style.css'
-    }
-  ];
+            codeTitle: 'style.css'
+        }
+    ];
 
-  JSCodeSnippets: ICodeStructure[] = [
-    {
-      codeTitle: 'main.js',
-      code: `
+    JSCodeSnippets: ICodeStructure[] = [
+        {
+            codeTitle: 'main.js',
+            code: `
 const body = document.body;
 let loader;
 
@@ -156,8 +158,8 @@ function loaderSpan() {
     }
 }
       `
-    }
-  ]
+        }
+    ]
 
-  zipFile: string = 'assets/zip-files/loading/05 - loading.rar';
+    zipFile: string = 'assets/zip-files/loading/05 - loading.rar';
 }

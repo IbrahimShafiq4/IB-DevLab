@@ -4,8 +4,11 @@ import { ICodeStructure, SharedCodeComponent } from "../../../../shared-componen
 @Component({
   selector: 'app-circular-logo',
   imports: [SharedCodeComponent],
-  templateUrl: './circular-logo.html',
-  styleUrl: './circular-logo.scss'
+  template: `
+    <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [projectDate]="projectDate" [projectDescription]="projectDescription" [projectVersion]="projectVersion"
+    [projectName]="projectName" [zipFile]="zipFile"  />
+  `
 })
 export class CircularLogo {
   projectName: string = 'Conic Gradient Hover Buttons with Social Icons – Pure CSS 🎨';
@@ -22,7 +25,6 @@ A sleek, modern button set featuring social media icons (LinkedIn, GitHub, Faceb
   projectDate: string = 'Last updated: June 2025';
   projectVersion: string = 'v1.0.0';
   projectTags: string[] = ['Web Development', 'HTML', 'CSS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/circular logo.mp4';
 
   HTMLCodeSnippets: ICodeStructure[] = [
     {

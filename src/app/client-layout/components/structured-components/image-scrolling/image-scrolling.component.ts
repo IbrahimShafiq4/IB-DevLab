@@ -4,31 +4,79 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../shared-componen
 @Component({
   selector: 'app-image-scrolling',
   imports: [SharedCodeComponent],
-  templateUrl: './image-scrolling.component.html',
-  styleUrl: './image-scrolling.component.scss'
+  template: `
+<app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [JSCodeSnippet]="JSCodeSnippets" [projectDate]="projectDate" [projectDescription]="projectDescription"
+    [projectVersion]="projectVersion" [projectName]="projectName" [zipFile]="zipFile"   />
+  `
 })
 export class ImageScrollingComponent {
   projectName: string = 'Scroll-Reveal Pixel Explosion Effect';
   projectDescription: string = `
-This creative scroll animation disassembles an image into 400 pixel slices using JavaScript and CSS, scattering them randomly across the viewport. As the user scrolls down the page, each piece smoothly transitions back into its correct place, revealing the full image. This engaging effect is perfect for landing pages, intros, or interactive portfolios.`;
+This creative scroll animation disassembles an image into 400 pixel slices using JavaScript and CSS, scattering them randomly across the viewport.`;
   projectDate: string = 'Last updated: May 2025';
   projectVersion: string = 'v1.1.0';
   projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/image scrolling.mp4';
+
+  liveHtml: string = `
+<section>
+    <h2>Scroll Down To see the full image</h2>
+    <div class="image-container"></div>
+</section>
+  `;
+
+  get liveCss(): string { return this.CSSCodeSnippets[0]?.code ?? ''; }
+
+  liveJs: string = `
+let image = "https://picsum.photos/id/1039/400/400";
+let container = document.querySelector(".image-container");
+let sliceWidth = 20;
+let sliceHeight = 20;
+
+let rows = 20;
+let columns = 20;
+let slices = [];
+
+for (let row = 0; row < rows; row++) {
+  for (let col = 0; col < columns; col++) {
+    let span = document.createElement("span");
+    span.classList.add("image-slice");
+    span.style.top = (row * sliceHeight) + 'px';
+    span.style.left = (col * sliceWidth) + 'px';
+    span.style.width = sliceWidth + 'px';
+    span.style.height = sliceHeight + 'px';
+    span.style.backgroundImage = 'url(' + image + ')';
+    span.style.backgroundPosition = '-' + (col * sliceWidth) + 'px -' + (row * sliceHeight) + 'px';
+    container.appendChild(span);
+    slices.push(span);
+  }
+}
+
+window.addEventListener('scroll', () => {
+  let scrollPosition = window.scrollY;
+  slices.forEach((slice, index) => {
+      if (scrollPosition >= index) {
+        slice.style.transform = 'translate(0, 0) rotate(0deg)'
+      } else {
+        slice.style.transform = 'translate(' + (Math.random() * 100 - 50) + 'vw, ' + (Math.random() * 100 - 50) + 'vh) rotate(' + (Math.random() * 360) + 'deg)';
+      }
+  })
+})
+
+window.dispatchEvent(new Event('scroll'));
+  `;
 
   HTMLCodeSnippets: ICodeStructure[] = [
     {
       code: `
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
   <section>
       <h2>Scroll Down To see the full image</h2>
@@ -36,8 +84,6 @@ This creative scroll animation disassembles an image into 400 pixel slices using
   </section>
   <script src="./main.js"></script>
 </body>
-
-</html>
 </html>
     `,
       codeTitle: 'index.html'
@@ -54,13 +100,11 @@ This creative scroll animation disassembles an image into 400 pixel slices using
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
-
-body { 
+body {
   min-height: 250vh;
   background-color: #363a3b;
   overflow-x: hidden;
 }
-
 section {
   position: relative;
   width: 100%;
@@ -68,7 +112,6 @@ section {
   display: flex;
   justify-content: center;
 }
-
 h2 {
   position: absolute;
   top: 100px;
@@ -80,7 +123,6 @@ h2 {
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-
 .image-container {
   position: absolute;
   top: 60vh;
@@ -88,7 +130,6 @@ h2 {
   height: 400px;
   background-color: #3f4445;
 }
-
 .image-slice {
   position: absolute;
   transition: all 1s ease-in-out;
@@ -114,12 +155,12 @@ for (let row = 0; row < rows; row++) {
   for (let col = 0; col < columns; col++) {
     let span = document.createElement("span");
     span.classList.add("image-slice");
-    span.style.top = \`\${ row * sliceHeight}px\`;
-    span.style.left = \`\${ col * sliceWidth}px\`;
-    span.style.width = \`\${ sliceWidth }px\`;
-    span.style.height = \`\${ sliceHeight }px\`;
-    span.style.backgroundImage = \`url(\${ image })\`;
-    span.style.backgroundPosition = \`- \${ col * sliceWidth}px - \${row * sliceHeight}px\`;
+    span.style.top = \\\`\\\${ row * sliceHeight}px\\\`;
+    span.style.left = \\\`\\\${ col * sliceWidth}px\\\`;
+    span.style.width = \\\`\\\${ sliceWidth }px\\\`;
+    span.style.height = \\\`\\\${ sliceHeight }px\\\`;
+    span.style.backgroundImage = \\\`url(\\\${ image })\\\`;
+    span.style.backgroundPosition = \\\`- \\\${ col * sliceWidth}px - \\\${row * sliceHeight}px\\\`;
     container.appendChild(span);
     slices.push(span);
   }
@@ -129,17 +170,17 @@ window.addEventListener('scroll', () => {
   let scrollPosition = window.scrollY;
   slices.forEach((slice, index) => {
       if (scrollPosition >= index) {
-        slice.style.transform = \`translate(0, 0) rotate(0deg)\`
+        slice.style.transform = \\\`translate(0, 0) rotate(0deg)\\\`
       } else {
-        slice.style.transform = \`translate(${Math.random() * 100 - 50}vw, ${Math.random() * 100 - 50}vh) rotate(${Math.random() * 360}deg)\`
+        slice.style.transform = \\\`translate(\\\${Math.random() * 100 - 50}vw, \\\${Math.random() * 100 - 50}vh) rotate(\\\${Math.random() * 360}deg)\\\`
       }
   })
 })
 
-window.dispatchEvent(new Event('scroll'))});
-      `,
+window.dispatchEvent(new Event('scroll'));
+    `,
       codeTitle: 'main.js'
-    },
+    }
   ];
 
   zipFile: string = 'assets/zip-files/image-scroll.rar';

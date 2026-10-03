@@ -4,8 +4,11 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../shared-componen
 @Component({
     selector: 'app-css-battle-p5',
     imports: [SharedCodeComponent],
-    templateUrl: './css-battle-p5.html',
-    styleUrl: './css-battle-p5.scss'
+    template: `
+        <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [projectDate]="projectDate" [projectDescription]="projectDescription" [projectVersion]="projectVersion"
+    [projectName]="projectName" [isItCssBattle]="true" [projectOnYoutube]="projectVideoOnYoutube" [zipFile]="zipFile"  />
+    `
 })
 export class CssBattleP5 {
     projectName: string = 'CSS Battle – Sticks Reflection Challenge';
@@ -21,7 +24,6 @@ All visuals are built using pure CSS only.
     projectDate: string = 'Last updated: Jan 2026';
     projectVersion: string = 'v1.1.0';
     projectTags: string[] = ['Web Development', 'HTML', 'CSS'];
-    projectVideSrc: string = './../../../../../assets/video-samples/cssbattle/reflect_2.png';
     projectVideoOnYoutube: string = 'https://cssbattle.dev/play/IelG3AfXdK0yZrjmfuVV';
 
 

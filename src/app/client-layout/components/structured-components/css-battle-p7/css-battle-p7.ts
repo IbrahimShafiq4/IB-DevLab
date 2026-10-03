@@ -4,8 +4,11 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../shared-componen
 @Component({
   selector: 'app-css-battle-p7',
   imports: [SharedCodeComponent],
-  templateUrl: './css-battle-p7.html',
-  styleUrl: './css-battle-p7.scss'
+  template: `
+    <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets"
+    [projectDate]="projectDate" [projectDescription]="projectDescription" [projectVersion]="projectVersion"
+    [projectName]="projectName" [isItCssBattle]="true" [projectOnYoutube]="projectVideoOnYoutube" [zipFile]="zipFile"  />
+  `
 })
 export class CssBattleP7 {
 
@@ -27,9 +30,6 @@ No images. No extra elements. Just CSS precision.
   projectDate: string = 'Last updated: Feb 2026';
   projectVersion: string = 'v1.0.0';
   projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'Box-Shadow', 'CSS Battle'];
-
-  projectVideSrc: string =
-    './../../../../../assets/video-samples/cssbattle/p7.png';
 
   projectVideoOnYoutube: string =
     'https://cssbattle.dev/play/mnsHaKqrtDHd7cphTh0c';

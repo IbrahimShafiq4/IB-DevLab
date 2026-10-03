@@ -4,8 +4,11 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../shared-componen
 @Component({
   selector: 'app-css-battle-p1',
   imports: [SharedCodeComponent],
-  templateUrl: './css-battle-p1.html',
-  styleUrl: './css-battle-p1.scss'
+  template: `
+    <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [projectDate]="projectDate" [projectDescription]="projectDescription" [projectVersion]="projectVersion"
+    [projectName]="projectName" [projectOnYoutube]="projectVideoOnYoutube" [isItCssBattle]="true" [zipFile]="zipFile"  />
+  `
 })
 export class CssBattleP1 {
   projectName: string = 'CSS Battle – Layout Blocks Challenge';
@@ -21,7 +24,6 @@ SVGs, or JavaScript, following CSS Battle best practices.
   projectDate: string = 'Last updated: Jan 2026';
   projectVersion: string = 'v1.0.0';
   projectTags: string[] = ['Web Development', 'HTML', 'CSS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/cssbattle/Piano.png';
   projectVideoOnYoutube: string = 'https://cssbattle.dev/play/jcZG5eWb8eLqs2AmUCz4';
   HTMLCodeSnippets: ICodeStructure[] = [
     {

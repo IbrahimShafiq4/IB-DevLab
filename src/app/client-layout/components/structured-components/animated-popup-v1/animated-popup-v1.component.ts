@@ -4,17 +4,42 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../shared-componen
 @Component({
   selector: 'app-animated-popup-v1',
   imports: [SharedCodeComponent],
-  templateUrl: './animated-popup-v1.component.html',
-  styleUrl: './animated-popup-v1.component.scss'
+  template: `
+    <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [JSCodeSnippet]="JSCodeSnippets" [projectDate]="projectDate" [projectDescription]="projectDescription"
+    [projectVersion]="projectVersion" [projectName]="projectName" [zipFile]="zipFile"
+    [liveHtml]="liveHtml" [liveCss]="liveCss" [liveJs]="liveJs" />
+  `
 })
 export class AnimatedPopupV1Component {
   projectName: string = '🎛️ Interactive Expandable Card UI';
-  projectDescription: string = `A stylish, animated expandable card built using HTML, CSS, and JavaScript. Click the toggle button to smoothly reveal or hide content with beautiful scaling and transitions. Perfect for modern UI sections like tooltips, info cards, or onboarding guides. Fully responsive and customizable with sleek visuals and smooth user experience.`;
+  projectDescription: string = `A stylish, animated expandable card built using HTML, CSS, and JavaScript. Click the toggle button to smoothly reveal or hide content with beautiful scaling and transitions. Perfect for modern UI sections like tooltips, info cards, or onboarding guides.`;
   projectDate: string = 'Last updated: May 2025';
   projectVersion: string = 'v1.0.0';
   projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/animated popup.mp4';
 
+  /* ─── LIVE PREVIEW ─────────────────────────────────────── */
+  liveHtml: string = `
+<div class="container">
+    <div class="content">
+        <h2>Heading...</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis ullam, libero maiores possimus
+            perferendis enim harum, fugiat esse laboriosam amet recusandae dolores hic tempore laudantium velit
+            eligendi, quia quisquam rerum!</p>
+    </div>
+    <div class="toggleBtn"></div>
+</div>
+  `;
+
+  get liveCss(): string {
+    return this.CSSCodeSnippets[0]?.code ?? '';
+  }
+
+  get liveJs(): string {
+    return this.JSCodeSnippets[0]?.code ?? '';
+  }
+
+  /* ─── ORIGINAL SNIPPETS ────────────────────────────────── */
   HTMLCodeSnippets: ICodeStructure[] = [
     {
       code: `

@@ -4,8 +4,12 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../shared-componen
 @Component({
   selector: 'app-interactive-box3-d',
   imports: [SharedCodeComponent],
-  templateUrl: './interactive-box3-d.component.html',
-  styleUrl: './interactive-box3-d.component.scss'
+  template: `
+<app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [JSCodeSnippet]="JSCodeSnippets" [projectDate]="projectDate" [projectDescription]="projectDescription"
+    [projectVersion]="projectVersion" [projectName]="projectName" [zipFile]="zipFile"
+    />
+  `
 })
 export class InteractiveBox3DComponent {
   projectName: string = '🧊 Interactive 3D Cube Grid Animation Using HTML, CSS & JavaScript';
@@ -13,7 +17,6 @@ export class InteractiveBox3DComponent {
   projectDate: string = 'Last updated: May 2025';
   projectVersion: string = 'v1.0.0';
   projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/animated popup.mp4';
 
   HTMLCodeSnippets: ICodeStructure[] = [
     {

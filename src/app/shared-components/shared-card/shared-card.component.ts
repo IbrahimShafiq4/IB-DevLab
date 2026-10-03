@@ -1,82 +1,60 @@
-import { CommonModule, DatePipe } from '@angular/common';
-import { Component, Input, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  ChangeDetectionStrategy
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { LivePreviewComponent, StageTone } from '../live-preview/live-preview';
+
+export type SpecimenKind =
+  | 'component'
+  | 'css-battle'
+  | 'problem-solving'
+  | 'clean-code'
+  | 'fullstack';
 
 @Component({
   selector: 'app-shared-card',
   standalone: true,
-  imports: [DatePipe, CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, LivePreviewComponent],
   templateUrl: './shared-card.component.html',
-  styleUrls: ['./shared-card.component.scss']
+  styleUrl: './shared-card.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SharedCardComponent {
-  @ViewChild('videoPlayer') videoPlayer!: ElementRef<HTMLVideoElement>;
 
-  @Input() videoSrc: string = '';
-  @Input() title: string = '';
-  @Input() description: string = '';
-  @Input() date: string = '';
+  @Input() id = '';
+  @Input() kind: SpecimenKind | '' = '';
+  @Input() index = 0;
+
+  @Input() title = '';
+  @Input() description = '';
+  @Input() date = '';
   @Input() tags: string[] = [];
-  @Input() visitText: string = 'Visit Project';
-  @Input() projectUrl: string = '#';
-  @Input() showShare: boolean = true;
-  @Input() oppositeSideBorder: boolean | undefined = false;
-  @Input() isNavigationOnTheWebsite: boolean = false;
-  @Input() project_demo: string = '';
-  @Input() project_id: string = '';
-  @Input() isItCssBattle: boolean = false;
-  @Input() isItLeetCodeProblemSolving: boolean = false;
-  @Input() isItCleanCode: boolean = false;
+  @Input() projectUrl = '#';
+  @Input() project_demo = '';
 
-  sharePlatforms: string[] = ['twitter', 'facebook', 'linkedin', 'whatsapp'];
+  @Input() liveHtml = '';
+  @Input() liveCss = '';
+  @Input() liveJs = '';
+  @Input() stage: StageTone = 'auto';
 
-  getTagIcon(tag: string): string {
-    const iconMap: { [key: string]: { icon: string; type: 'solid' | 'brands' } } = {
-      'Web Development': { icon: 'desktop', type: 'solid' },
-      'HTML': { icon: 'html5', type: 'brands' },
-      'CSS': { icon: 'css3-alt', type: 'brands' },
-      'JS': { icon: 'js', type: 'brands' },
-      'Angular': { icon: 'angular', type: 'brands' },
-      'React': { icon: 'react', type: 'brands' },
-      'Database': { icon: 'database', type: 'solid' },
-      'API': { icon: 'server', type: 'solid' }
-    };
+  @Input() videoSrc = '';
+  @Input() previewSrc = '';
+  @Input() visitText = 'افتح';
 
-    const defaultIcon = { icon: 'tag', type: 'solid' };
-    const selected = iconMap[tag] || defaultIcon;
-
-    return `fa-${selected.type} fa-${selected.icon}`;
+  get hasLivePreview(): boolean {
+    return !!(this.liveHtml || this.liveCss || this.liveJs);
   }
 
-  playVideo(): void {
-    this.videoPlayer.nativeElement.play();
+  get internalHref(): string | null {
+    return this.project_demo || null;
   }
 
-  pauseVideo(): void {
-    this.videoPlayer.nativeElement.pause();
-  }
-
-  shareProject(platform: string): void {
-    const shareUrl = encodeURIComponent(window.location.href + this.projectUrl.slice(1,));
-    const shareText = encodeURIComponent(`Check out this project: ${this.title}`);
-
-    const urls: { [key: string]: string } = {
-      twitter: `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`,
-      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`,
-      whatsapp: `https://wa.me/?text=${shareText}%20${shareUrl}`
-    };
-
-    window.open(urls[platform], '_blank', 'width=600,height=400');
-  }
-
-  ngAfterViewInit() {
-    if (this.videoPlayer) {
-      this.videoPlayer.nativeElement.muted = true;
-      this.videoPlayer.nativeElement.playsInline = true;
-      this.videoPlayer.nativeElement.play().catch(e => {
-        console.warn('Autoplay blocked:', e);
-      });
-    }
+  get externalHref(): string | null {
+    if (this.project_demo) return null;
+    if (!this.projectUrl || this.projectUrl === '#') return null;
+    return this.projectUrl;
   }
 }

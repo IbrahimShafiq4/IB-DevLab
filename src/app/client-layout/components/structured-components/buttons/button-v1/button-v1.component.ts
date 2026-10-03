@@ -4,8 +4,10 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../../shared-compo
 @Component({
   selector: 'app-button-v1',
   imports: [SharedCodeComponent],
-  templateUrl: './button-v1.component.html',
-  styleUrl: './button-v1.component.scss'
+  template: `
+    <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets" [projectDate]="projectDate" [projectDescription]="projectDescription"
+    [projectVersion]="projectVersion" [projectName]="projectName" [zipFile]="zipFile"   />
+  `
 })
 export class ButtonV1Component {
 
@@ -16,7 +18,6 @@ This project demonstrates a sleek and modern hover animation for anchor tags usi
   projectDate: string = 'Last updated: May 2025';
   projectVersion: string = 'v1.0.0';
   projectTags: string[] = ['Web Development', 'HTML', 'CSS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/buttons/button-v1';
 
   HTMLCodeSnippets: ICodeStructure[] = [
     {

@@ -4,8 +4,11 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../shared-componen
 @Component({
   selector: 'app-css-battle-p10',
   imports: [SharedCodeComponent],
-  templateUrl: './css-battle-p10.html',
-  styleUrl: './css-battle-p10.scss'
+  template: `
+    <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets"
+      [projectDate]="projectDate" [projectDescription]="projectDescription" [projectVersion]="projectVersion"
+      [projectName]="projectName" [isItCssBattle]="true" [projectOnYoutube]="projectVideoOnYoutube" [zipFile]="zipFile"  />
+  `
 })
 export class CssBattleP10 {
 
@@ -38,9 +41,6 @@ export class CssBattleP10 {
     'Layout Design',
     'CSS Battle'
   ];
-
-  projectVideSrc: string =
-    './../../../../../assets/video-samples/cssbattle/p10.png';
 
   projectVideoOnYoutube: string = 'https://cssbattle.dev/play/FpqYKVfnMOUDjVocqaVf';
 

@@ -2,22 +2,25 @@ import { Component } from '@angular/core';
 import { ICodeStructure, SharedCodeComponent } from '../../../../shared-components/shared-code/shared-code.component';
 
 @Component({
-  selector: 'app-news-app',
-  imports: [SharedCodeComponent],
-  templateUrl: './news-app.component.html',
-  styleUrl: './news-app.component.scss'
+    selector: 'app-news-app',
+    imports: [SharedCodeComponent],
+    template: `
+<app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [JSCodeSnippet]="JSCodeSnippets" [projectDate]="projectDate" [projectDescription]="projectDescription"
+    [projectVersion]="projectVersion" [projectName]="projectName" [zipFile]="zipFile" [projectOnYoutube]="projectVideoOnYoutube" />
+`
 })
 export class NewsAppComponent {
-  projectName: string = '📰 NEWS APP';
-  projectDescription: string = `A news application built with modern frontend technologies. It fetches real-time news from an API and displays it in a clean and responsive layout. Key features include categorized news sections, search functionality, and embedded videos. Ideal for learning API integration and UI design.`;
-  projectDate: string = 'Last updated: May 2025';
-  projectVersion: string = 'v1.0.0';
-  projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS', 'API'];
-  projectVideoOnYoutube: string = 'https://www.youtube.com/watch?v=9IXZ_qEvF-w&list=PL7S9lp7CuORbIPgqN7TrnlaboZ_Mos9TD';
+    projectName: string = '📰 NEWS APP';
+    projectDescription: string = `A news application built with modern frontend technologies. It fetches real-time news from an API and displays it in a clean and responsive layout. Key features include categorized news sections, search functionality, and embedded videos. Ideal for learning API integration and UI design.`;
+    projectDate: string = 'Last updated: May 2025';
+    projectVersion: string = 'v1.0.0';
+    projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS', 'API'];
+    projectVideoOnYoutube: string = 'https://www.youtube.com/watch?v=9IXZ_qEvF-w&list=PL7S9lp7CuORbIPgqN7TrnlaboZ_Mos9TD';
 
-  HTMLCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
+    HTMLCodeSnippets: ICodeStructure[] = [
+        {
+            code: `
 <!DOCTYPE html>
 <html lang="en">
 
@@ -58,13 +61,13 @@ export class NewsAppComponent {
 
 </html>
     `,
-      codeTitle: 'index.html'
-    }
-  ];
+            codeTitle: 'index.html'
+        }
+    ];
 
-  CSSCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
+    CSSCodeSnippets: ICodeStructure[] = [
+        {
+            code: `
 :root {
     --primary-color: #ff6b6b;
     --secondary-color: #5e5757;
@@ -387,13 +390,13 @@ aside h5 {
     color: #666;
 }
     `,
-      codeTitle: 'style.css'
-    }
-  ];
+            codeTitle: 'style.css'
+        }
+    ];
 
-  JSCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
+    JSCodeSnippets: ICodeStructure[] = [
+        {
+            code: `
 export const CONFIG = {
     API_KEY: 'e990c9bc6e654be2a9ee1e00147fd083',
     DEFAULT_IMAGE: './../images/loading-img.webp',
@@ -414,10 +417,10 @@ export const CONFIG = {
     }
 };
     `,
-      codeTitle: 'CONFIG.js'
-    },
-    {
-      code: `
+            codeTitle: 'CONFIG.js'
+        },
+        {
+            code: `
 import { CONFIG } from './config.js';
 
 export class NewsAPI {
@@ -455,10 +458,10 @@ export class NewsAPI {
     }
 }
     `,
-      codeTitle: 'API.js'
-    },
-{
-  code: `
+            codeTitle: 'API.js'
+        },
+        {
+            code: `
 import { CONFIG } from './config.js';
 
 export class NewsUI {
@@ -595,10 +598,10 @@ export class NewsUI {
     }
 }
   `,
-  codeTitle: 'UI.js'
-},
-    {
-      code: `
+            codeTitle: 'UI.js'
+        },
+        {
+            code: `
 import { NewsAPI } from './api.js';
 import { NewsUI } from './ui.js';
 
@@ -646,9 +649,9 @@ document.addEventListener('DOMContentLoaded', () => {
     new NewsApp();
 });
     `,
-      codeTitle: 'main.js'
-    },
-  ];
+            codeTitle: 'main.js'
+        },
+    ];
 
-  zipFile: string = 'assets/zip-files/Latest news.rar';
+    zipFile: string = 'assets/zip-files/Latest news.rar';
 }

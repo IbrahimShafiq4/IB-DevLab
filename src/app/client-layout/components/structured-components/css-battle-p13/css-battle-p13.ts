@@ -7,7 +7,7 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../shared-componen
   template: `
 <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets"
     [projectDate]="projectDate" [projectDescription]="projectDescription" [projectVersion]="projectVersion"
-    [projectName]="projectName" [isItCssBattle]="true" [projectOnYoutube]="projectVideoOnYoutube" [zipFile]="zipFile" [projectVideoSrc]="projectVideSrc" />
+    [projectName]="projectName" [isItCssBattle]="true" [projectOnYoutube]="projectVideoOnYoutube" [zipFile]="zipFile"  />
   `,
   styles: ``
 })
@@ -46,9 +46,6 @@ export class CssBattleP13 {
     'CSS Shapes',
     'CSS Battle'
   ];
-
-  projectVideSrc: string =
-    './../../../../../assets/video-samples/cssbattle/Four Leaf Shape.png';
 
   projectVideoOnYoutube: string = 'https://cssbattle.dev/play/5ZezM7kuEUF3qoAOjCIx';
 

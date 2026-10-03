@@ -4,8 +4,11 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../shared-componen
 @Component({
   selector: 'app-text-v4',
   imports: [SharedCodeComponent],
-  templateUrl: './text-v4.component.html',
-  styleUrl: './text-v4.component.scss'
+  template: `
+    <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [JSCodeSnippet]="JSCodeSnippets" [projectDate]="projectDate" [projectDescription]="projectDescription"
+    [projectVersion]="projectVersion" [projectName]="projectName" [zipFile]="zipFile" />
+  `
 })
 export class TextV4Component {
   projectName: string = '🔤 Scroll-Reveal Text Animation with JavaScript and CSS';
@@ -14,7 +17,6 @@ This interactive scroll animation showcases a glowing text effect where each cha
   projectDate: string = 'Last updated: May 2025';
   projectVersion: string = 'v1.5.0';
   projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/text v4.mp4';
 
   HTMLCodeSnippets: ICodeStructure[] = [
     {

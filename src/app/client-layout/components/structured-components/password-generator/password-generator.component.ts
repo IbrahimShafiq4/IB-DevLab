@@ -4,18 +4,300 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../shared-componen
 @Component({
     selector: 'app-password-generator',
     imports: [SharedCodeComponent],
-    templateUrl: './password-generator.component.html',
-    styleUrl: './password-generator.component.scss',
+    template: `
+        <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [JSCodeSnippet]="JSCodeSnippets" [projectDate]="projectDate" [projectDescription]="projectDescription"
+    [projectVersion]="projectVersion" [projectName]="projectName" [zipFile]="zipFile"
+    [liveHtml]="liveHtml" [liveCss]="liveCss" [liveJs]="liveJs" />
+    `
 })
 export class PasswordGeneratorComponent {
     projectName: string = 'Password Generator – Create Strong & Secure Passwords Instantly';
-    projectDescription: string = `A modern and interactive password generator built with HTML, CSS, and JavaScript. Easily customize your password with adjustable length and toggle options for uppercase letters, lowercase letters, numbers, and symbols. With a sleek UI and instant copy-to-clipboard functionality, this tool ensures you generate secure passwords tailored to your needs. Ideal for improving account security with just one click!`;
+    projectDescription: string = `A modern and interactive password generator built with HTML, CSS, and JavaScript. Easily customize your password with adjustable length and toggle options for uppercase letters, lowercase letters, numbers, and symbols. With a sleek UI and instant copy-to-clipboard functionality, this tool ensures you generate secure passwords tailored to your needs.`;
     projectDate: string = 'Last updated: May 2025';
     projectVersion: string = 'v1.0.0';
     projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
-    projectVideSrc: string =
-        './../../../../../assets/video-samples/password generator.mp4';
 
+    /* ─── LIVE PREVIEW ─────────────────────────────────────── */
+    liveHtml: string = `
+<div class="container">
+    <div class="password-box">
+        <h2 class="heading">Password Generator</h2>
+        <div class="box">
+            <input type="text" placeholder="Password Generator" class="result-input">
+            <button type="button" class="copy-btn" title="Copy">📋</button>
+        </div>
+        <h4 class="pass-length">Password Length</h4>
+        <div class="range-box">
+            <input type="range" min="1" max="40" value="10" class="range-btn">
+            <p class="range-num">10</p>
+        </div>
+        <div class="include-input-box">
+            <input type="checkbox" class="checkbox-input" checked id="uppercase">
+            <label for="uppercase">Include Uppercase Letters</label>
+        </div>
+        <div class="include-input-box">
+            <input type="checkbox" class="checkbox-input" id="lowercase">
+            <label for="lowercase">Include Lowercase Letters</label>
+        </div>
+        <div class="include-input-box">
+            <input type="checkbox" class="checkbox-input" id="numbers">
+            <label for="numbers">Include Numbers</label>
+        </div>
+        <div class="include-input-box">
+            <input type="checkbox" class="checkbox-input" id="symbols">
+            <label for="symbols">Include Symbols</label>
+        </div>
+        <button class="generate-btn">Generate Password</button>
+    </div>
+    <div class="alert">
+        <div class="popup">
+            <p>Please Select </p>
+        </div>
+    </div>
+</div>
+  `;
+
+    liveCss: string = `
+* {
+    font-family: system-ui, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    overflow-y: auto;
+}
+
+.container {
+    background-color: #eef0f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 10px;
+}
+
+.password-box {
+    padding: 20px;
+    background-color: #1c2136;
+    color: #fff;
+    border-radius: 20px;
+    max-width: 400px;
+    width: 100%;
+}
+
+.heading {
+    border-left: 6px solid #5d33f8;
+    padding-left: 10px;
+    margin: 10px 0 30px;
+    font-size: 1.3rem;
+}
+
+.box {
+    display: flex;
+    align-items: center;
+    border: 2px solid #5d33f8;
+    height: 50px;
+    padding: 0 15px;
+    border-radius: 6px;
+}
+
+.box .result-input {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    outline: none;
+    font-size: 1rem;
+}
+
+.box .copy-btn {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.pass-length { margin-block: 20px 10px; font-size: 1rem; }
+
+.range-box {
+    display: flex;
+    align-items: center;
+    margin-block: 10px 20px;
+}
+
+.range-box .range-btn {
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    accent-color: #5d33f8;
+}
+
+.range-box .range-num { margin-left: 10px; }
+
+.include-input-box {
+    display: flex;
+    align-items: center;
+    transition: 0.3s linear;
+    font-size: 0.9rem;
+}
+
+.include-input-box .checkbox-input {
+    width: 15px;
+    height: 15px;
+    margin: 10px 0;
+    margin-right: 10px;
+}
+
+.generate-btn {
+    width: 100%;
+    height: 40px;
+    background-color: #5d33f8;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.alert {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.alert.active { display: flex; }
+
+.alert .popup {
+    width: 300px;
+    background-color: #fff;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.alert .popup p {
+    background-color: #1c2136;
+    padding: 20px;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+}
+  `;
+
+    liveJs: string = `
+let rangeBtn = document.querySelector('.range-btn');
+let rangeNum = document.querySelector(".range-num");
+let resultInput = document.querySelector('.result-input');
+let copyBtn = document.querySelector('.copy-btn');
+let generateBtn = document.querySelector('.generate-btn');
+let alertBx = document.querySelector('.alert');
+let alertContent = document.querySelector('.alert p');
+
+let uppercaseCheckbox = document.querySelector('#uppercase');
+let lowercaseCheckbox = document.querySelector('#lowercase');
+let numbersCheckbox = document.querySelector('#numbers');
+let symbolsCheckbox = document.querySelector('#symbols');
+
+let uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+let lowercase = 'abcdefghijklmnopqrstuvwxyz';
+let numbers = '1234567890';
+let symbols = '!@#$%^&*()_+=';
+
+rangeBtn.addEventListener('input', (event) => {
+    rangeNum.innerHTML = event.target.value;
+});
+
+generateBtn.addEventListener('click', () => {
+    let alphabets = '';
+    let generatedPassword = resultInput.value;
+
+    alphabets += uppercaseCheckbox.checked ? uppercase : '';
+    alphabets += lowercaseCheckbox.checked ? lowercase : '';
+    alphabets += numbersCheckbox.checked ? numbers : '';
+    alphabets += symbolsCheckbox.checked ? symbols : '';
+
+    if (alphabets === '') {
+        alertBx.classList.add('active');
+        alertContent.innerHTML = 'Please Select One Checkbox';
+    } else {
+        let attempts = 0;
+        do {
+            generatedPassword = generatePassword(alphabets, rangeBtn.value);
+            attempts++;
+        } while (!isValidPassword(generatedPassword) && attempts < 100);
+
+        resultInput.value = generatedPassword;
+        logCheckedParents();
+    }
+});
+
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('alert')) {
+        alertBx.classList.remove('active');
+    }
+});
+
+function generatePassword(alphabets, length) {
+    let password = '';
+    for (let i = 0; i < length; i++) {
+        let randomIndex = Math.floor(Math.random() * alphabets.length);
+        password += alphabets[randomIndex];
+    }
+    return password;
+}
+
+function isValidPassword(password) {
+    let hasUppercase = !uppercaseCheckbox.checked || /[A-Z]/.test(password);
+    let hasLowercase = !lowercaseCheckbox.checked || /[a-z]/.test(password);
+    let hasNumbers = !numbersCheckbox.checked || /[0-9]/.test(password);
+    let hasSymbols = !symbolsCheckbox.checked || /[!@#$%^&*()_=+]/.test(password);
+    return hasUppercase && hasLowercase && hasNumbers && hasSymbols;
+}
+
+function logCheckedParents() {
+    let checkboxes = [uppercaseCheckbox, lowercaseCheckbox, numbersCheckbox, symbolsCheckbox];
+    checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            checkbox.parentElement.style.textDecoration = 'line-through';
+            checkbox.nextElementSibling.style.color = '#f00';
+        } else {
+            checkbox.parentElement.style.textDecoration = 'none';
+            checkbox.nextElementSibling.style.color = '#fff';
+        }
+    });
+}
+
+copyBtn.addEventListener('click', () => {
+    if (resultInput.value.length == 0) {
+        alertBx.classList.add('active');
+        alertContent.innerHTML = 'Please click on Generate Password Button';
+    } else {
+        resultInput.select();
+        resultInput.setSelectionRange(0, 99999);
+        try { navigator.clipboard.writeText(resultInput.value); } catch (e) {}
+        copyBtn.innerHTML = '✓';
+        setTimeout(() => { copyBtn.innerHTML = '📋'; }, 1500);
+    }
+});
+  `;
+
+    /* ─── ORIGINAL SNIPPETS ────────────────────────────────── */
     HTMLCodeSnippets: ICodeStructure[] = [
         {
             code: `
@@ -107,8 +389,7 @@ export class PasswordGeneratorComponent {
 .heading {
     border-left: 6px solid #5d33f8;
     padding-left: 10px;
-    margin: 10px 0;
-    margin-bottom: 30px;
+    margin: 10px 0 30px;
 }
 
 .box {
@@ -138,24 +419,15 @@ export class PasswordGeneratorComponent {
     }
 }
 
-.pass-length {
-    margin-block: 20px 10px;
-}
+.pass-length { margin-block: 20px 10px; }
 
 .range-box {
     display: flex;
     align-items: center;
     margin-block: 10px 20px;
 
-    .range-btn {
-        width: 100%;
-        height: 2px;
-        cursor: pointer;
-    }
-
-    .range-num {
-        margin-left: 10px;
-    }
+    .range-btn { width: 100%; height: 2px; cursor: pointer; }
+    .range-num { margin-left: 10px; }
 }
 
 .include-input-box {
@@ -167,7 +439,7 @@ export class PasswordGeneratorComponent {
         width: 15px;
         height: 15px;
         margin: 10px 0;
-        margin-right: 10px;;
+        margin-right: 10px;
     }
 }
 
@@ -186,19 +458,14 @@ export class PasswordGeneratorComponent {
 
 .alert {
     position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    top: 0; left: 0; right: 0; bottom: 0;
     background-color: rgba(0, 0, 0, 0.8);
     display: none;
     justify-content: center;
     align-items: center;
     height: 100vh;
 
-    &.active {
-        display: flex;
-    }
+    &.active { display: flex; }
 
     .popup {
         width: 400px;
@@ -302,7 +569,6 @@ function isValidPassword(password) {
 
 function logCheckedParents() {
     let checkboxes = [uppercaseCheckbox, lowercaseCheckbox, numbersCheckbox, symbolsCheckbox];
-
     checkboxes.forEach(checkbox => {
         if (checkbox.checked) {
             checkbox.parentElement.style.textDecoration = 'line-through';
@@ -350,7 +616,6 @@ copyBtn.addEventListener('click', () => {
         }, 1500);
     }
 });
-
     `,
             codeTitle: 'main.js',
         },

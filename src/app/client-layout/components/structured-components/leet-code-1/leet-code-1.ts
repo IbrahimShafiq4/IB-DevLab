@@ -4,8 +4,18 @@ import { IProblemSolvingContent, SharedCodeComponent } from '../../../../shared-
 @Component({
   selector: 'app-leet-code-1',
   imports: [SharedCodeComponent],
-  templateUrl: './leet-code-1.html',
-  styles: ``
+  template: `
+<app-shared-code
+  [projectName]="'Roman to Integer'"
+  [projectDescription]="'Convert a Roman numeral into an integer using a single-pass approach.'"
+  [projectDate]="'September 13, 2026'"
+  [projectVersion]="'LeetCode #13'"
+  [tags]="['Problem Solving', 'JavaScript', 'LeetCode']"
+  [isItProblemSolving]="true"
+  [isProjectHasNotAssists]="false"
+  [problemSolvingContent]="problemSolvingContent"
+/>
+  `
 })
 export class LeetCode1 {
 

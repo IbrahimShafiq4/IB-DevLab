@@ -1,45 +1,162 @@
-<section class="row">
-    <header class="p-0">
-        <div class="nav-wrap">
-            <div class="bubble active"></div>
-            <div class="bubble hover"></div>
-            <nav class="nav main-background">
-                <a [class.active_link]="activeTab() === 'all'" (click)="changeTab('all')" role="button"
-                    class="tab-link">
-                    All
-                </a>
-                <a [class.active_link]="activeTab() === 'cssbattle'" (click)="changeTab('cssbattle')" role="button"
-                    class="tab-link">
-                    Css Battle
-                </a>
-                <a [class.active_link]="activeTab() === 'problem-solving'" (click)="changeTab('problem-solving')"
-                    role="button" class="tab-link">
-                    Problem Solving
-                </a>
-                <a role="button" class="tab-link" [class.active]="activeTab() === 'clean-code'" (click)="changeTab('clean-code')">
-                    Clean Code
-                </a>
-            </nav>
+<article class="hero" aria-labelledby="hero-title">
+
+    <div class="hero__id">
+        <span class="hero__tick" aria-hidden="true">§00</span>
+        <span class="hero__label">معمل حيّ · IBDevLab</span>
+    </div>
+
+    <h1 id="hero-title" class="hero__title">
+        Ib-Devlab
+        <span class="hero__title-accent">Frontend</span>
+    </h1>
+
+    <p class="hero__lead">
+        كل عيّنة كود حقيقي بيشتغل قدامك. تشوفه، تجرّبه، تعدّله، وتاخده.
+        من التبويبات لـ CSS Battles لحل مسائل الـ LeetCode — كلها في مكان واحد.
+    </p>
+
+    <!-- <ul class="hero__stats">
+        <li class="hero__stat">
+            <span class="hero__stat-num">{{ fmt(allSpecimens.length) }}</span>
+            <span class="hero__stat-lbl">عيّنة</span>
+        </li>
+        <li class="hero__stat">
+            <span class="hero__stat-num">{{ fmt(stageSpecimens().length) }}</span>
+            <span class="hero__stat-lbl">حيّة</span>
+        </li>
+        <li class="hero__stat">
+            <span class="hero__stat-num">{{ fmt(categories.length) }}</span>
+            <span class="hero__stat-lbl">فئة</span>
+        </li>
+    </ul> -->
+
+</article>
+
+<!-- <app-specimen-stage [specimens]="stageSpecimens()" /> -->
+
+<section id="catalog" class="home-section">
+
+    <header class="section-head">
+        <div class="section-head__id">
+            <span class="section-head__tick" aria-hidden="true">§01</span>
+            <h2 class="section-head__title">السِّجل الكامل</h2>
+        </div>
+        <span class="section-head__count">{{ fmt(filtered().length) }} عيّنة</span>
+    </header>
+
+    <nav class="filters" aria-label="تصفية الفئات">
+        <ul class="filters__list">
+            @for (c of categories; track c.key) {
+            <li>
+                <button type="button" class="chip" [class.is-active]="activeCategory() === c.key"
+                    [attr.aria-pressed]="activeCategory() === c.key" (click)="setCategory(c.key)">
+                    <span class="chip__label">{{ c.label }}</span>
+                    <span class="chip__count">{{ fmt(c.count) }}</span>
+                </button>
+            </li>
+            }
+        </ul>
+    </nav>
+
+    <div class="search">
+        <label class="search__field">
+            <span class="search__icon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                    <circle cx="11" cy="11" r="7" />
+                    <line x1="20" y1="20" x2="16.65" y2="16.65" />
+                </svg>
+            </span>
+            <input type="search" placeholder="ابحث عن مكوّن أو نمط أو فئة…" [value]="searchQuery()"
+                (input)="onSearch($event)" aria-label="بحث في السجل">
+            @if (searchQuery()) {
+            <button type="button" class="search__clear" (click)="resetFilters()" aria-label="امسح البحث">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+            </button>
+            }
+        </label>
+    </div>
+
+    @if (paged().length) {
+
+    <div class="grid">
+        @for (s of paged(); track s.id) {
+        <app-shared-card [id]="s.id" [kind]="s.kind" [title]="s.title" [description]="s.description" [tags]="s.tags"
+            [project_demo]="s.href" [projectUrl]="s.external || '#'" [liveHtml]="s.liveHtml || ''"
+            [liveCss]="s.liveCss || ''" [liveJs]="s.liveJs || ''" [stage]="s.stage" />
+        }
+    </div>
+
+    @if (totalPages() > 1) {
+    <nav class="pager" aria-label="التنقل بين الصفحات">
+
+        <button type="button" class="pager__arrow" (click)="prevPage()" [disabled]="currentPage() === 1"
+            aria-label="السابق">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                <polyline points="15 18 9 12 15 6" />
+            </svg>
+        </button>
+
+        <ul class="pager__list">
+            @for (p of pageNumbers(); track p) {
+            <li>
+                <button type="button" class="pager__num" [class.is-active]="p === currentPage()"
+                    [attr.aria-current]="p === currentPage() ? 'page' : null" (click)="goToPage(p)">
+                    {{ fmt(p) }}
+                </button>
+            </li>
+            }
+        </ul>
+
+        <button type="button" class="pager__arrow" (click)="nextPage()" [disabled]="currentPage() === totalPages()"
+            aria-label="التالي">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                <polyline points="9 18 15 12 9 6" />
+            </svg>
+        </button>
+
+    </nav>
+    }
+
+    } @else {
+
+    <div class="empty" role="status">
+        <p class="empty__msg">مفيش نتايج مطابقة.</p>
+        <button type="button" class="empty__reset" (click)="resetFilters()">
+            امسح الفلتر
+        </button>
+    </div>
+
+    }
+
+</section>
+
+<section id="about" class="home-section">
+
+    <header class="section-head">
+        <div class="section-head__id">
+            <span class="section-head__tick" aria-hidden="true">§02</span>
+            <h2 class="section-head__title">عن المعمل</h2>
         </div>
     </header>
 
-    <div class="projects-container row" [@tabAnimation]="activeTab()">
-        @for (project of paginatedProjects; track $index; let index = $index) {
-        <div class="col-md-6 col-12 p-1 project-item">
-            <app-shared-card [date]="project.date" [isItCssBattle]="project?.isItCssBattle"
-                [isNavigationOnTheWebsite]="project.navigationState" [projectUrl]="project.projectUrl"
-                [description]="project.description" [title]="project.title" [videoSrc]="project.videoSrc"
-                [tags]="project.tags" [oppositeSideBorder]="index % 2 === 0"
-                [isItLeetCodeProblemSolving]="project.isItProblemSolving" [isItCleanCode]="project.isItCleanCode">
-            </app-shared-card>
-        </div>
-        }
-
-        @if (paginatedProjects.length === 0) {
-        <div class="col-12 text-center py-5">
-            <h3>No projects found in this category</h3>
-            <p>Try selecting a different filter</p>
-        </div>
-        }
+    <div class="about">
+        <p>
+            <strong>IBDevLab</strong> معمل شخصي بأوثّق فيه تجارب الواجهات الأمامية،
+            حلول المشاكل البرمجية، وملاحظات الكود النظيف.
+        </p>
+        <p>
+            كل عيّنة مستقلة: <strong>معاينة حيّة</strong> بتشتغل من كودها الحقيقي،
+            وكود جاهز للنسخ والتعديل.
+        </p>
+        <p>
+            <a href="https://ib-portfolio-indol.vercel.app/workspace" target="_blank" rel="noopener noreferrer">
+                ملف الأعمال الكامل
+                <i class="fa-solid fa-arrow-up-left" aria-hidden="true"></i>
+            </a>
+        </p>
     </div>
+
 </section>

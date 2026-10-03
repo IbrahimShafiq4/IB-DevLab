@@ -5,8 +5,22 @@ import { SharedCardComponent } from "../../../../shared-components/shared-card/s
 @Component({
   selector: 'app-html-css-js',
   imports: [SharedCodeComponent, SharedCodeComponent, SharedCardComponent],
-  templateUrl: './html-css-js.component.html',
-  styleUrl: './html-css-js.component.scss'
+  template: `
+<section class="d-flex flex-column gap-1">
+  <app-shared-code [isProjectHasNotAssists]="false" [projectName]="'{ HTML, CSS, JS } PROJECTS SHOWCASE'"
+    projectDescription="A curated playlist of mini-projects built using HTML, CSS, and JavaScript. These projects range from beginner to intermediate level and demonstrate various UI/UX patterns, animations, and interactive elements. Perfect for sharpening core frontend skills."
+    [projectOnYoutube]="'https://www.youtube.com/watch?v=9IXZ_qEvF-w&list=PL7S9lp7CuORZGO8goXg2462Cc3dWpisPI'" />
+
+  <div class="row g-1">
+    @for (project of projectsExplanations; track $index) {
+    <div class="col-md-6 col-12">
+        <app-shared-card [date]="project.date" [projectUrl]="project.projectUrl" [description]="project.description"
+          [title]="project.title" [videoSrc]="project.thumbnail" [tags]="project.tags" />
+    </div>
+    }
+  </div>
+</section>
+  `
 })
 export class HtmlCssJsComponent {
   projectsExplanations: {

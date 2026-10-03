@@ -4,8 +4,11 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../../../shared-co
 @Component({
   selector: 'app-loading-v7',
   imports: [SharedCodeComponent],
-  templateUrl: './loading-v7.html',
-  styleUrl: './loading-v7.scss'
+  template: `
+<app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [projectDate]="projectDate" [JSCodeSnippet]="JSCodeSnippets" [projectDescription]="projectDescription"
+    [projectVersion]="projectVersion" [projectName]="projectName" [zipFile]="zipFile" />
+    `
 })
 export class LoadingV7 {
   projectName: string = 'Rotational Cross Spiral Loader – Version 6 Enhanced 🧊';
@@ -34,7 +37,6 @@ Web projects that need a unique & eye-catching loader ⚡
   projectDate: string = 'Last updated: June 2025';
   projectVersion: string = 'v1.6.0';
   projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/loading/07 - loading.mp4';
 
   HTMLCodeSnippets: ICodeStructure[] = [
     {

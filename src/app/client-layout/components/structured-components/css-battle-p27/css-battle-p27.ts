@@ -18,7 +18,7 @@ import {
       [isItCssBattle]="true"
       [projectOnYoutube]="projectVideoOnYoutube"
       [zipFile]="zipFile"
-      [projectVideoSrc]="projectVideSrc"
+      
     />
   `,
   styles: ``
@@ -61,9 +61,6 @@ export class CssBattleP27 {
     'CSS Box Reflect',
     'CSS Battle'
   ];
-
-  projectVideSrc: string =
-    './../../../../../assets/video-samples/cssbattle/geometric-u-shape.png';
 
   projectVideoOnYoutube: string =
     'https://cssbattle.dev/play/F8dyF0XEp3g1Ff4mG90c';

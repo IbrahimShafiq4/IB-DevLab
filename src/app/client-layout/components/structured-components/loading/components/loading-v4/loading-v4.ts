@@ -2,14 +2,17 @@ import { Component } from '@angular/core';
 import { ICodeStructure, SharedCodeComponent } from '../../../../../../shared-components/shared-code/shared-code.component';
 
 @Component({
-  selector: 'app-loading-v4',
-  imports: [SharedCodeComponent],
-  templateUrl: './loading-v4.html',
-  styleUrl: './loading-v4.scss'
+    selector: 'app-loading-v4',
+    imports: [SharedCodeComponent],
+    template: `
+<app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
+    [projectDate]="projectDate" [JSCodeSnippet]="JSCodeSnippets" [projectDescription]="projectDescription"
+    [projectVersion]="projectVersion" [projectName]="projectName" [zipFile]="zipFile" />
+    `
 })
 export class LoadingV4 {
-  projectName: string = 'Neon Spiral Loader – Version 4.0 💠';
-  projectDescription: string = `
+    projectName: string = 'Neon Spiral Loader – Version 4.0 💠';
+    projectDescription: string = `
 This glowing neon spiral loader is built with pure JavaScript and CSS, dynamically generating a circular formation of 20 radiant orbs ✨ for each loader instance. Each orb rotates around a center point using the formula rotate(calc(18deg * var(--i) / 2)), forming a hypnotic half-density spiral 🌀 with smooth, trailing motion.      <ul>
         <li>✅ Dynamically generated DOM elements (<div class="loader"> with multiple <span>)</li>
         <li>💡 Each span::before is a glowing neon dot using layered box shadows</li>
@@ -27,14 +30,13 @@ Interactive waiting screens ⏳
 Change the glow color via background-color and box-shadow
 Adjust the spiral density by tweaking the rotate() formula
 Add more loader layers by increasing the loop count (j)`;
-  projectDate: string = 'Last updated: June 2025';
-  projectVersion: string = 'v1.3.0';
-  projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
-  projectVideSrc: string = './../../../../../assets/video-samples/loading/04 - loading.mp4';
+    projectDate: string = 'Last updated: June 2025';
+    projectVersion: string = 'v1.3.0';
+    projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
 
-  HTMLCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
+    HTMLCodeSnippets: ICodeStructure[] = [
+        {
+            code: `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,13 +51,13 @@ Add more loader layers by increasing the loop count (j)`;
 </body>
 </html>
     `,
-      codeTitle: 'index.html'
-    }
-  ];
+            codeTitle: 'index.html'
+        }
+    ];
 
-  CSSCodeSnippets: ICodeStructure[] = [
-    {
-      code: `
+    CSSCodeSnippets: ICodeStructure[] = [
+        {
+            code: `
 * {
     margin: 0;
     padding: 0;
@@ -123,14 +125,14 @@ body {
     }
 }
     `,
-      codeTitle: 'style.css'
-    }
-  ];
+            codeTitle: 'style.css'
+        }
+    ];
 
-  JSCodeSnippets: ICodeStructure[] = [
-    {
-      codeTitle: 'main.js',
-      code: `
+    JSCodeSnippets: ICodeStructure[] = [
+        {
+            codeTitle: 'main.js',
+            code: `
 const body = document.body;
 let loader;
 
@@ -154,8 +156,8 @@ function loaderSpan() {
     }
 }
       `
-    }
-  ]
+        }
+    ]
 
-  zipFile: string = 'assets/zip-files/loading/04 - loading.rar';
+    zipFile: string = 'assets/zip-files/loading/04 - loading.rar';
 }
