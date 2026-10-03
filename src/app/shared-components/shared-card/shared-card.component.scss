@@ -10,15 +10,12 @@
     flex-direction: column;
     height: 100%;
     background-color: var(--surface);
-    border: 1px solid var(--rule-hairline);
-    border-radius: t.$r-sm;
+    border: 1px solid var(--border);
+    border-radius: 6px;
     overflow: hidden;
     transition: border-color var(--dur-fast) var(--ease-out);
 
-    &:hover {
-        border-color: var(--rule-solid);
-    }
-
+    &:hover,
     &:focus-within {
         border-color: var(--accent-primary);
     }
@@ -27,9 +24,9 @@
 .card__stage {
     position: relative;
     width: 100%;
-    aspect-ratio: 5 / 4;
+    aspect-ratio: 16 / 10;
     background-color: var(--stage-dark);
-    border-bottom: 1px solid var(--rule-hairline);
+    border-bottom: 1px solid var(--border);
     overflow: hidden;
 
     app-live-preview {

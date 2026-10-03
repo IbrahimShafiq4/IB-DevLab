@@ -15,7 +15,7 @@
         من التبويبات لـ CSS Battles لحل مسائل الـ LeetCode — كلها في مكان واحد.
     </p>
 
-    <!-- <ul class="hero__stats">
+    <ul class="hero__stats">
         <li class="hero__stat">
             <span class="hero__stat-num">{{ fmt(allSpecimens.length) }}</span>
             <span class="hero__stat-lbl">عيّنة</span>
@@ -28,11 +28,50 @@
             <span class="hero__stat-num">{{ fmt(categories.length) }}</span>
             <span class="hero__stat-lbl">فئة</span>
         </li>
-    </ul> -->
+    </ul>
 
 </article>
 
-<!-- <app-specimen-stage [specimens]="stageSpecimens()" /> -->
+<section class="live-strip-section" aria-label="الشريط الحي المعروض">
+    <header class="live-strip__head">
+        <span class="live-strip__tag">تجارب مميزة</span>
+        <h2 class="live-strip__title">شريط المعاينة التفاعلي</h2>
+    </header>
+    <div class="live-strip__container">
+        <div class="live-strip__track">
+            @for (s of stripSpecimens(); track s.id) {
+            <div class="live-strip__tile">
+                <app-shared-card [id]="s.id" [kind]="s.kind" [title]="s.title" [description]="s.description" [tags]="s.tags"
+                    [project_demo]="s.href" [projectUrl]="s.external || '#'" [liveHtml]="s.liveHtml || ''"
+                    [liveCss]="s.liveCss || ''" [liveJs]="s.liveJs || ''" [stage]="s.stage" />
+            </div>
+            }
+        </div>
+    </div>
+</section>
+
+<nav class="marquee" aria-label="فئات المعمل الرئيسية">
+    <div class="marquee__track">
+        <div class="marquee__group">
+            @for (cat of marqueeCategories(); track $index) {
+            <a routerLink="/" fragment="catalog" (click)="setCategory(cat.key)" class="marquee__link">
+                <span class="marquee__name" dir="auto">{{ cat.label }}</span>
+                <span class="marquee__count" dir="ltr">{{ fmt(cat.count) }}</span>
+            </a>
+            <span class="marquee__divider" aria-hidden="true"></span>
+            }
+        </div>
+        <div class="marquee__group" aria-hidden="true">
+            @for (cat of marqueeCategories(); track $index + '-dup') {
+            <a routerLink="/" fragment="catalog" (click)="setCategory(cat.key)" class="marquee__link" tabindex="-1">
+                <span class="marquee__name" dir="auto">{{ cat.label }}</span>
+                <span class="marquee__count" dir="ltr">{{ fmt(cat.count) }}</span>
+            </a>
+            <span class="marquee__divider" aria-hidden="true"></span>
+            }
+        </div>
+    </div>
+</nav>
 
 <section id="catalog" class="home-section">
 

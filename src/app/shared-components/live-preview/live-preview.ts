@@ -38,13 +38,14 @@ export class LivePreviewComponent implements AfterViewInit, OnDestroy, OnChanges
   @Input() tone: StageTone = 'auto';
   @Input() interactive = false;
 
-  @ViewChild('host', { static: true }) hostRef!: ElementRef<HTMLElement>;
+  @ViewChild('iframeHost') iframeHost?: ElementRef<HTMLIFrameElement>;
 
   readonly mounted = signal(false);
   readonly error = signal<string | null>(null);
   readonly reducedMotion = signal(false);
   readonly playing = signal(true);
 
+  private readonly elRef = inject(ElementRef);
   private readonly sanitizer = inject(DomSanitizer);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly themeService = inject(ThemeService);
@@ -66,18 +67,23 @@ export class LivePreviewComponent implements AfterViewInit, OnDestroy, OnChanges
   });
 
   constructor() {
+    // Zero-rebuild theme switch: Update tone attribute via postMessage without re-rendering the iframe
     effect(() => {
-      this.themeService.theme();
-      if (this.mounted()) this.rebuild();
+      const tone = this.resolvedTone();
+      if (this.mounted()) {
+        this.sendToneToFrame(tone);
+      }
     }, { injector: this.injector });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const relevant =
-      changes['html'] || changes['css'] || changes['js'] || changes['tone'];
-    if (relevant && this.mounted()) {
+    // Rebuild srcdoc ONLY when HTML, CSS, or JS source change (not on theme change)
+    const sourceChanged = changes['html'] || changes['css'] || changes['js'];
+    if (sourceChanged && this.mounted()) {
       this.error.set(null);
       this.rebuild();
+    } else if (changes['tone'] && this.mounted()) {
+      this.sendToneToFrame(this.resolvedTone());
     }
   }
 
@@ -107,7 +113,7 @@ export class LivePreviewComponent implements AfterViewInit, OnDestroy, OnChanges
       { rootMargin: '200px 0px', threshold: [0, 0.01] }
     );
 
-    this.observer.observe(this.hostRef.nativeElement);
+    this.observer.observe(this.elRef.nativeElement);
     window.addEventListener('message', this.onMessage);
   }
 
@@ -167,6 +173,12 @@ export class LivePreviewComponent implements AfterViewInit, OnDestroy, OnChanges
     return s.trim();
   }
 
+  private sendToneToFrame(tone: string): void {
+    try {
+      this.iframeHost?.nativeElement?.contentWindow?.postMessage({ type: 'set-tone', tone }, '*');
+    } catch (_) {}
+  }
+
   private rebuild(): void {
     if (!isPlatformBrowser(this.platformId)) return;
     const tone = this.resolvedTone();
@@ -185,11 +197,6 @@ export class LivePreviewComponent implements AfterViewInit, OnDestroy, OnChanges
   private buildDocument(opts: { tone: 'light' | 'dark'; tokens: string }): string {
     const { tone, tokens } = opts;
     const paused = this.reducedMotion() && !this.playing();
-    const isDark = tone === 'dark';
-
-    const scrollTrack = isDark ? '#1E1E1E' : '#ECF0F1';
-    const scrollThumb = isDark ? '#4A4A4A' : '#C5C9CC';
-    const scrollThumbHover = isDark ? '#616161' : '#8F9499';
 
     const csp =
       "default-src 'none'; " +
@@ -215,9 +222,20 @@ html {
 
 ${tokens}
 
-:root {
-  --stage-bg: ${isDark ? 'var(--stage-dark)' : 'var(--stage-light)'};
+:root, :root[data-tone="dark"] {
+  --stage-bg: var(--stage-dark, #1E1E1E);
   --preview-scale: 0.5;
+  --scroll-track: #1E1E1E;
+  --scroll-thumb: #4A4A4A;
+  --scroll-thumb-hover: #616161;
+}
+
+:root[data-tone="light"] {
+  --stage-bg: var(--stage-light, #ECF0F1);
+  --preview-scale: 0.5;
+  --scroll-track: #ECF0F1;
+  --scroll-thumb: #C5C9CC;
+  --scroll-thumb-hover: #8F9499;
 }
 
 html {
@@ -225,6 +243,7 @@ html {
   height: 100%;
   overflow: hidden;
   background-color: var(--stage-bg);
+  transition: background-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 body {
@@ -234,11 +253,12 @@ body {
   color: var(--text-primary);
   overflow-x: hidden;
   background-color: var(--stage-bg);
+  transition: background-color 160ms cubic-bezier(0.2, 0.8, 0.2, 1), color 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: ${scrollThumb} ${scrollTrack};
+  scrollbar-color: var(--scroll-thumb) var(--scroll-track);
 }
 
 *::-webkit-scrollbar {
@@ -247,24 +267,24 @@ body {
 }
 
 *::-webkit-scrollbar-track {
-  background: ${scrollTrack};
+  background: var(--scroll-track);
 }
 
 *::-webkit-scrollbar-thumb {
-  background: ${scrollThumb};
+  background: var(--scroll-thumb);
   border-radius: 2px;
-  border: 2px solid ${scrollTrack};
+  border: 2px solid var(--scroll-track);
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background: ${scrollThumbHover};
+  background: var(--scroll-thumb-hover);
 }
 
 *::-webkit-scrollbar-corner {
-  background: ${scrollTrack};
+  background: var(--scroll-track);
 }
 
-${paused ? `*, *::before, *::after { animation-play-state: paused; transition: none; }` : ''}
+${paused ? `*, *::before, *::after { animation-play-state: paused !important; transition: none !important; }` : ''}
 
 ${this.css}
 
@@ -293,6 +313,12 @@ ${cleanHtml}
       parent.postMessage({ __pv: INSTANCE, type: 'error', message: String(message) }, '*');
     } catch (_) {}
   }
+
+  window.addEventListener('message', function (e) {
+    if (e && e.data && e.data.type === 'set-tone') {
+      document.documentElement.setAttribute('data-tone', e.data.tone);
+    }
+  });
 
   window.addEventListener('error', function (e) {
     report(e.message || 'Script error');
