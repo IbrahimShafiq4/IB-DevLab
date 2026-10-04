@@ -82,6 +82,7 @@ import { CleanCode04 } from './components/structured-components/clean-code-04/cl
 import { LeetCode11 } from './components/structured-components/leet-code-11/leet-code-11';
 import { CleanCode05 } from './components/structured-components/clean-code-05/clean-code-05';
 import { LabComponent } from './components/lab/lab';
+import { CssBattleP29 } from './components/structured-components/css-battle-p29/css-battle-p29';
 
 
 const routes: Routes = [
@@ -303,6 +304,7 @@ const routes: Routes = [
       { path: 'css_battle_p26', component: CssBattleP26, title: 'Css Battle Project 26' },
       { path: 'css_battle_p27', component: CssBattleP27, title: 'Css Battle Project 27' },
       { path: 'css_battle_p28', component: CssBattleP28, title: 'Css Battle Project 28' },
+      { path: 'css_battle_p29', component: CssBattleP29, title: 'Css Battle Project 29' },
 
 
       // ---------------------- PROBLEM SOLVING -------------------------- //
