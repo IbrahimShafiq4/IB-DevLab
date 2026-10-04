@@ -7,6 +7,9 @@ export type SpecimenKind =
     | 'clean-code'
     | 'fullstack';
 
+export type LineKey = 'algo' | 'ds' | 'api';
+export type LevelKey = 'beginner' | 'intermediate' | 'advanced';
+
 export interface SpecimenSource {
     html: string;
     css?: string;
@@ -27,6 +30,24 @@ export interface ExtractedSource {
     scriptJs: string;
 }
 
+export interface QuizQuestion {
+    question: string;
+    options: string[];
+    correct: number;
+    explanation: string;
+}
+
+export interface ComplexityInfo {
+    time: string;
+    space: string;
+    explanation: string;
+}
+
+export interface PracticeInfo {
+    prompt: string;
+    hint?: string;
+}
+
 export interface Specimen {
     id: string;
     kind: SpecimenKind;
@@ -42,6 +63,15 @@ export interface Specimen {
     liveHtml?: string;
     liveCss?: string;
     liveJs?: string;
+
+    line?: LineKey;
+    level?: LevelKey;
+    story?: string;
+    complexity?: ComplexityInfo;
+    practice?: PracticeInfo;
+    quiz?: QuizQuestion[];
+    next?: string;
+    requires?: string[];
 }
 
 const VOID_TAGS = new Set([

@@ -956,7 +956,8 @@ const BASE_SPECIMENS: Specimen[] = [
     href: '/clean-code-05',
     stage: 'dark',
     sortKey: 304
-  }
+  },
+
 ];
 
 export const SPECIMENS: Specimen[] = BASE_SPECIMENS.map(s => {

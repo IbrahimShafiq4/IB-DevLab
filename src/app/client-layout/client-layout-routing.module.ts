@@ -83,6 +83,7 @@ import { LeetCode11 } from './components/structured-components/leet-code-11/leet
 import { CleanCode05 } from './components/structured-components/clean-code-05/clean-code-05';
 import { LabComponent } from './components/lab/lab';
 import { CssBattleP29 } from './components/structured-components/css-battle-p29/css-battle-p29';
+import { StationPageComponent } from '../features/station-page/station-page';
 
 
 const routes: Routes = [
@@ -354,6 +355,13 @@ const routes: Routes = [
         component: LabComponent,
         title: 'المعمل الحيّ — IBDevLab'
       },
+
+      {
+        path: 'algorithms/binary-search',
+        component: StationPageComponent,
+        title: 'Binary Search - IBDevLab',
+        data: { stationId: 'A-001' }
+      }
     ]
   },
 ];

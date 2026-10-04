@@ -1,0 +1,269 @@
+@if (station(); as s) {
+
+<main class="station" [attr.data-line]="s.line">
+
+    <!-- ═════ Hero ═════ -->
+    <header class="hero">
+        <div class="hero__id">
+            <span class="hero__dot" aria-hidden="true"></span>
+            <span class="hero__line">{{ lineLabel(s.line) }}</span>
+            <span class="hero__sep" aria-hidden="true">·</span>
+            <span class="hero__level">{{ levelLabel(s.level) }}</span>
+        </div>
+
+        <h1 class="hero__title">{{ s.title }}</h1>
+        <p class="hero__title-en ltr">{{ s.titleEn }}</p>
+        <p class="hero__summary">{{ s.summary }}</p>
+
+        <ul class="hero__tags ltr" aria-label="tags">
+            @for (tag of s.tags; track tag) {
+            <li class="hero__tag">{{ tag }}</li>
+            }
+        </ul>
+    </header>
+
+    <!-- ═════ بيعمل إيه ═════ -->
+    <section class="sect">
+        <header class="sect__head">
+            <span class="sect__dot" aria-hidden="true"></span>
+            <h2 class="sect__title">بيعمل إيه</h2>
+            <span class="sect__rule" aria-hidden="true"></span>
+        </header>
+        <p class="sect__text">{{ s.whatItDoes }}</p>
+    </section>
+
+    <!-- ═════ الشرح التفصيلي ═════ -->
+    <section class="sect">
+        <header class="sect__head">
+            <span class="sect__dot" aria-hidden="true"></span>
+            <h2 class="sect__title">الشرح التفصيلي</h2>
+            <span class="sect__rule" aria-hidden="true"></span>
+        </header>
+        <div class="prose">
+            @for (p of s.explanation.split('\n\n'); track $index) {
+            <p>{{ p }}</p>
+            }
+        </div>
+    </section>
+
+    <!-- ═════ تفكيك الكود ═════ -->
+    <section class="sect">
+        <header class="sect__head">
+            <span class="sect__dot" aria-hidden="true"></span>
+            <h2 class="sect__title">تفكيك الكود سطر سطر</h2>
+            <span class="sect__rule" aria-hidden="true"></span>
+        </header>
+
+        <ul class="breakdown">
+            @for (item of s.codeBreakdown; track $index) {
+            <li class="breakdown__item">
+                <pre class="breakdown__code ltr"><code>{{ item.line }}</code></pre>
+                <p class="breakdown__note">{{ item.note }}</p>
+            </li>
+            }
+        </ul>
+    </section>
+
+    <!-- ═════ شغّل بنفسك ═════ -->
+    <section class="sect">
+        <header class="sect__head">
+            <span class="sect__dot" aria-hidden="true"></span>
+            <h2 class="sect__title">شغّل بنفسك</h2>
+            <span class="sect__rule" aria-hidden="true"></span>
+        </header>
+
+        <div class="runner">
+            <iframe class="runner__frame" [srcdoc]="runnableSrcdoc()" sandbox="allow-scripts"
+                referrerpolicy="no-referrer" loading="lazy" title="Visualizer"></iframe>
+        </div>
+    </section>
+
+    <!-- ═════ اكتب الكود بنفسك ═════ -->
+    <section class="sect">
+        <header class="sect__head">
+            <span class="sect__dot" aria-hidden="true"></span>
+            <h2 class="sect__title">اكتب الكود بنفسك</h2>
+            <span class="sect__rule" aria-hidden="true"></span>
+        </header>
+
+        <p class="practice__prompt">{{ s.practice.prompt }}</p>
+
+        <div class="editor">
+            <header class="editor__head">
+                <span class="editor__label ltr">solution.js</span>
+                <span class="editor__timer" [class.is-running]="timerRunning()">
+                    <span class="editor__timer-dot"></span>
+                    <span class="ltr">{{ formatElapsed() }}</span>
+                </span>
+            </header>
+
+            <textarea class="editor__area ltr" [value]="userCode()" (input)="onCodeInput($event)" spellcheck="false"
+                autocomplete="off" autocapitalize="off" autocorrect="off" [attr.aria-label]="'محرر الكود'"></textarea>
+        </div>
+
+        <div class="actions">
+            <button type="button" class="btn btn--primary" (click)="runTests()" [disabled]="isTesting()">
+                <span>{{ isTesting() ? 'بنشغّل…' : 'شغّل الاختبارات' }}</span>
+            </button>
+            <button type="button" class="btn" (click)="reset()">
+                <span>رجّع</span>
+            </button>
+            <button type="button" class="btn" (click)="restartTimer()">
+                <span>ابدأ التوقيت من جديد</span>
+            </button>
+            <button type="button" class="btn" (click)="toggleSolution()">
+                <span>{{ showSolution() ? 'اخفي الحل' : 'شوف الحل' }}</span>
+            </button>
+        </div>
+
+        @if (showSolution()) {
+        <pre class="editor__solution ltr"><code>{{ s.practice.solution }}</code></pre>
+        }
+
+        @if (testError()) {
+        <div class="results results--error">
+            <p>{{ testError() }}</p>
+        </div>
+        }
+
+        @if (testResults(); as results) {
+        <ul class="results">
+            @for (r of results; track r.id) {
+            <li class="results__row" [class.is-pass]="r.pass" [class.is-fail]="!r.pass">
+                <span class="results__status">{{ r.pass ? '✓' : '✕' }}</span>
+                <span class="results__desc">
+                    {{ s.practice.tests[$index].description }}
+                </span>
+                <span class="results__detail ltr">
+                    @if (r.pass) {
+                    pass
+                    } @else if (r.error) {
+                    {{ r.error }}
+                    } @else {
+                    expected {{ r.expected }} · got {{ r.actual }}
+                    }
+                </span>
+            </li>
+            }
+        </ul>
+        }
+    </section>
+
+    <!-- ═════ اختبار سريع ═════ -->
+    <section class="sect">
+        <header class="sect__head">
+            <span class="sect__dot" aria-hidden="true"></span>
+            <h2 class="sect__title">اختبار سريع</h2>
+            <span class="sect__rule" aria-hidden="true"></span>
+        </header>
+
+        <ol class="quiz">
+            @for (q of s.quizzes; track $index; let qi = $index) {
+            <li class="quiz__item">
+                <p class="quiz__question">{{ q.question }}</p>
+                <ul class="quiz__options">
+                    @for (opt of q.options; track $index; let oi = $index) {
+                    <li>
+                        <button type="button" class="quiz__option" [class.is-selected]="quizAnswers()[qi] === oi"
+                            [class.is-correct]="quizRevealed()[qi] && oi === q.correct"
+                            [class.is-wrong]="quizRevealed()[qi] && quizAnswers()[qi] === oi && oi !== q.correct"
+                            [disabled]="quizRevealed()[qi] || false" (click)="pickAnswer(qi, oi)">
+                            <span class="quiz__marker ltr">{{ ['A','B','C','D'][oi] }}</span>
+                            <span class="quiz__text">{{ opt }}</span>
+                        </button>
+                    </li>
+                    }
+                </ul>
+                @if (quizRevealed()[qi]) {
+                <div class="quiz__explain" [class.is-correct]="isCorrect(qi)">
+                    <strong>{{ isCorrect(qi) ? '✓ صح' : '✕ غلط' }}</strong>
+                    <p>{{ q.explanation }}</p>
+                </div>
+                }
+            </li>
+            }
+        </ol>
+    </section>
+
+    <!-- ═════ بنستخدمه في إيه ═════ -->
+    <section class="sect">
+        <header class="sect__head">
+            <span class="sect__dot" aria-hidden="true"></span>
+            <h2 class="sect__title">بنستخدمه في إيه</h2>
+            <span class="sect__rule" aria-hidden="true"></span>
+        </header>
+        <ul class="list">
+            @for (item of s.useCases; track $index) {
+            <li class="list__item">
+                <span class="list__bullet" aria-hidden="true"></span>
+                <span>{{ item }}</span>
+            </li>
+            }
+        </ul>
+    </section>
+
+    <!-- ═════ ليه هو كويس هنا ═════ -->
+    <section class="sect">
+        <header class="sect__head">
+            <span class="sect__dot" aria-hidden="true"></span>
+            <h2 class="sect__title">ليه هو كويس هنا</h2>
+            <span class="sect__rule" aria-hidden="true"></span>
+        </header>
+        <p class="sect__text">{{ s.whyItsGoodHere }}</p>
+    </section>
+
+    <!-- ═════ أفكار مرتبطة ═════ -->
+    <section class="sect">
+        <header class="sect__head">
+            <span class="sect__dot" aria-hidden="true"></span>
+            <h2 class="sect__title">أفكار مرتبطة</h2>
+            <span class="sect__rule" aria-hidden="true"></span>
+        </header>
+        <ul class="list">
+            @for (idea of s.relatedIdeas; track $index) {
+            <li class="list__item">
+                <span class="list__bullet" aria-hidden="true"></span>
+                <span>{{ idea }}</span>
+            </li>
+            }
+        </ul>
+    </section>
+
+    <!-- ═════ مسائل رياضية ═════ -->
+    @if (s.mathProblems.length) {
+    <section class="sect">
+        <header class="sect__head">
+            <span class="sect__dot" aria-hidden="true"></span>
+            <h2 class="sect__title">مسائل رياضية</h2>
+            <span class="sect__rule" aria-hidden="true"></span>
+        </header>
+        <ol class="math">
+            @for (p of s.mathProblems; track $index) {
+            <li class="math__item">
+                <span class="math__num ltr">{{ $index + 1 }}</span>
+                <span>{{ p }}</span>
+            </li>
+            }
+        </ol>
+    </section>
+    }
+
+    <!-- ═════ المحطة الجاية ═════ -->
+    @if (s.next) {
+    <nav class="next" aria-label="المحطة الجاية">
+        <span class="next__label">المحطة الجاية</span>
+        <a class="next__link" [routerLink]="nextStationHref()">
+            <span>{{ nextStationTitle() }}</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                aria-hidden="true">
+                <polyline points="15 18 9 12 15 6" />
+            </svg>
+        </a>
+    </nav>
+    }
+
+</main>
+
+} @else {
+<p class="empty">المحطة غير موجودة.</p>
+}

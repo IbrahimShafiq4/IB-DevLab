@@ -2,7 +2,7 @@ import {
     Component,
     ChangeDetectionStrategy,
     signal,
-    HostListener
+    HostListener,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ThemeToggleComponent } from '../../../shared-components/theme-toggle/theme-toggle';
@@ -15,6 +15,7 @@ import { ThemeToggleComponent } from '../../../shared-components/theme-toggle/th
 <header class="topbar" role="banner">
 
     <a class="brand" routerLink="/" aria-label="IBDevLab — الرئيسية">
+        <span class="brand__dot" aria-hidden="true"></span>
         <span class="brand__mark">IB</span>
         <span class="brand__slash" aria-hidden="true">/</span>
         <span class="brand__name">Dev.Lab</span>
@@ -27,34 +28,30 @@ import { ThemeToggleComponent } from '../../../shared-components/theme-toggle/th
            [routerLinkActiveOptions]="{ exact: true }">
             الرئيسية
         </a>
-
         <a class="nav__link"
            routerLink="/lab"
            routerLinkActive="is-active">
             المعمل
         </a>
-
         <a class="nav__link"
            routerLink="/exp"
            routerLinkActive="is-active">
             الشروحات
         </a>
-
         <a class="nav__link nav__link--ext"
            href="https://ib-portfolio-indol.vercel.app/workspace"
            target="_blank"
            rel="noopener noreferrer">
-            الأعمال
+            <span>الأعمال</span>
             <i class="fa-solid fa-arrow-up-left" aria-hidden="true"></i>
         </a>
     </nav>
 
     <div class="actions">
-
         <app-theme-toggle />
 
         <button type="button"
-                class="icon-btn icon-btn--menu"
+                class="menu-btn"
                 (click)="toggleMenu()"
                 [attr.aria-expanded]="isMenuOpen()"
                 aria-label="القائمة">
@@ -80,18 +77,21 @@ import { ThemeToggleComponent } from '../../../shared-components/theme-toggle/th
            routerLinkActive="is-active"
            [routerLinkActiveOptions]="{ exact: true }"
            (click)="closeMenu()">
+            <span class="drawer__dot" data-line="algo" aria-hidden="true"></span>
             الرئيسية
         </a>
         <a class="drawer__link"
            routerLink="/lab"
            routerLinkActive="is-active"
            (click)="closeMenu()">
+            <span class="drawer__dot" data-line="algo" aria-hidden="true"></span>
             المعمل
         </a>
         <a class="drawer__link"
            routerLink="/exp"
            routerLinkActive="is-active"
            (click)="closeMenu()">
+            <span class="drawer__dot" data-line="algo" aria-hidden="true"></span>
             الشروحات
         </a>
         <a class="drawer__link drawer__link--ext"
@@ -99,6 +99,7 @@ import { ThemeToggleComponent } from '../../../shared-components/theme-toggle/th
            target="_blank"
            rel="noopener noreferrer"
            (click)="closeMenu()">
+            <span class="drawer__dot" data-line="api" aria-hidden="true"></span>
             الأعمال
             <i class="fa-solid fa-arrow-up-left" aria-hidden="true"></i>
         </a>
@@ -114,7 +115,7 @@ import { ThemeToggleComponent } from '../../../shared-components/theme-toggle/th
     display: block;
     position: sticky;
     top: 0;
-    z-index: var(--z-sticky, 100);
+    z-index: var(--z-sticky);
 }
 
 .topbar {
@@ -122,53 +123,59 @@ import { ThemeToggleComponent } from '../../../shared-components/theme-toggle/th
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
-    gap: 1.5rem;
-    height: 52px;
-    padding-inline: clamp(1rem, 3vw, 1.5rem);
-    background-color: color-mix(in oklab, var(--bg-void) 88%, transparent);
-    backdrop-filter: saturate(140%) blur(12px);
-    -webkit-backdrop-filter: saturate(140%) blur(12px);
-    border-bottom: 1px solid var(--rule-hairline);
+    gap: t.$sp-6;
+    height: 56px;
+    padding-inline: var(--gutter);
+    background-color: var(--bg-void);
+    border-block-end: 1px solid var(--rule-hairline);
 }
 
 .brand {
     display: inline-flex;
-    align-items: baseline;
-    gap: 2px;
-    font-family: var(--font-code);
-    font-size: 0.95rem;
-    font-weight: 600;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-ui);
+    font-size: 0.9375rem;
     color: var(--ink-primary);
-    letter-spacing: -0.02em;
-    padding: 4px 0;
+    transition: color var(--dur-fast) var(--ease-out);
+}
 
-    &__mark {
-        color: var(--accent-primary);
-        font-weight: 700;
-    }
+.brand__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--line-algo);
+    flex-shrink: 0;
+}
 
-    &__slash {
-        color: var(--ink-tertiary);
-        font-weight: 300;
-        margin-inline: 2px;
-    }
+.brand__mark {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--line-algo);
+    letter-spacing: 0.02em;
+}
 
-    &__name {
-        font-family: var(--font-ui);
-        font-weight: 500;
-        color: var(--ink-primary);
-    }
+.brand__slash {
+    color: var(--ink-tertiary);
+    font-weight: 300;
+}
 
-    &:hover .brand__mark {
-        color: var(--accent-reference);
-    }
+.brand__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--ink-primary);
+}
+
+.brand:hover .brand__mark {
+    color: var(--signal);
 }
 
 .nav {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: clamp(1rem, 2.5vw, 1.75rem);
+    gap: t.$sp-6;
+    min-width: 0;
 }
 
 .nav__link {
@@ -176,26 +183,21 @@ import { ThemeToggleComponent } from '../../../shared-components/theme-toggle/th
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    padding: 6px 0;
+    padding-block: 4px;
     font-family: var(--font-ui);
-    font-size: 0.9rem;
+    font-size: 0.875rem;
     font-weight: 500;
     color: var(--ink-secondary);
-    transition: color var(--dur-fast) var(--ease-out);
     white-space: nowrap;
-
-    i {
-        font-size: 0.65rem;
-        opacity: 0.7;
-    }
+    transition: color var(--dur-fast) var(--ease-out);
 
     &::after {
         content: "";
         position: absolute;
         inset-inline: 0;
-        bottom: -18px;
-        height: 2px;
-        background-color: var(--accent-primary);
+        bottom: -1px;
+        height: 1px;
+        background-color: var(--line-algo);
         transform: scaleX(0);
         transform-origin: center;
         transition: transform var(--dur-base) var(--ease-out);
@@ -213,92 +215,69 @@ import { ThemeToggleComponent } from '../../../shared-components/theme-toggle/th
         }
     }
 
-    &--ext:hover {
-        color: var(--accent-primary);
+    &--ext {
+        color: var(--ink-tertiary);
+
+        i {
+            font-size: 0.65em;
+            opacity: 0.7;
+        }
+
+        &:hover {
+            color: var(--line-api);
+
+            &::after {
+                background-color: var(--line-api);
+            }
+        }
     }
 }
 
 .actions {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: t.$sp-2;
 }
 
-.icon-btn {
-    display: inline-flex;
+.menu-btn {
+    display: none;
     align-items: center;
     justify-content: center;
-    width: 34px;
-    height: 34px;
-    background: transparent;
+    width: 36px;
+    height: 36px;
+    background-color: transparent;
     border: 1px solid var(--rule-hairline);
     border-radius: t.$r-sm;
     color: var(--ink-secondary);
-    cursor: pointer;
     transition:
         border-color var(--dur-fast) var(--ease-out),
         color var(--dur-fast) var(--ease-out);
 
     &:hover {
-        border-color: var(--accent-reference);
-        color: var(--accent-reference);
-    }
-
-    &--menu {
-        display: none;
+        border-color: var(--rule-solid);
+        color: var(--ink-primary);
     }
 }
 
 .drawer {
     position: absolute;
-    top: 100%;
     inset-inline: 0;
-    background-color: var(--surface-raised);
-    border-bottom: 1px solid var(--rule-hairline);
-    box-shadow: var(--shadow-popover);
-    padding: t.$sp-3 t.$sp-4;
+    top: 100%;
+    background-color: var(--bg-elevated);
+    border-block-end: 1px solid var(--rule-hairline);
+    box-shadow: var(--ticket-shadow);
+    padding: t.$sp-3 var(--gutter);
     display: flex;
     flex-direction: column;
     gap: 2px;
-    z-index: 200;
-    animation: drawerSlide var(--dur-base) var(--ease-out);
+    z-index: var(--z-drawer);
+    animation: drawer-slide var(--dur-base) var(--ease-out);
 }
 
-.drawer__link {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: t.$sp-3;
-    padding: t.$sp-3;
-    border-radius: t.$r-sm;
-    font-family: var(--font-ui);
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: var(--ink-secondary);
-    transition:
-        background-color var(--dur-fast) var(--ease-out),
-        color var(--dur-fast) var(--ease-out);
-
-    i {
-        font-size: 0.7rem;
-        opacity: 0.7;
-    }
-
-    &:hover,
-    &.is-active {
-        background-color: color-mix(in oklab, var(--accent-primary) 8%, transparent);
-        color: var(--accent-primary);
-    }
-
-    &--ext {
-        color: var(--ink-tertiary);
-    }
-}
-
-@keyframes drawerSlide {
+@keyframes drawer-slide {
     from {
         opacity: 0;
-        transform: translateY(-8px);
+        transform: translateY(-6px);
     }
     to {
         opacity: 1;
@@ -306,37 +285,59 @@ import { ThemeToggleComponent } from '../../../shared-components/theme-toggle/th
     }
 }
 
-@media (max-width: 720px) {
-    .topbar {
-        gap: 0.75rem;
-        padding-inline: 1rem;
+.drawer__link {
+    display: flex;
+    align-items: center;
+    gap: t.$sp-3;
+    padding: t.$sp-3;
+    border-radius: t.$r-sm;
+    font-family: var(--font-ui);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--ink-secondary);
+    transition:
+        background-color var(--dur-fast) var(--ease-out),
+        color var(--dur-fast) var(--ease-out);
+
+    i {
+        font-size: 0.7em;
+        opacity: 0.7;
     }
 
-    .brand__name,
-    .brand__slash {
-        display: none;
+    &:hover,
+    &.is-active {
+        background-color: var(--bg-surface);
+        color: var(--ink-primary);
     }
 
-    .nav {
-        gap: 0.875rem;
-    }
-
-    .nav__link {
-        font-size: 0.825rem;
-    }
-
-    .icon-btn--menu {
-        display: inline-flex;
+    &--ext {
+        color: var(--ink-tertiary);
     }
 }
 
-@media (max-width: 480px) {
+.drawer__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+
+    &[data-line="algo"] { background-color: var(--line-algo); }
+    &[data-line="ds"]   { background-color: var(--line-ds); }
+    &[data-line="api"]  { background-color: var(--line-api); }
+}
+
+@media (max-width: 720px) {
+    .topbar {
+        gap: t.$sp-3;
+        padding-inline: 16px;
+    }
+
     .nav {
         display: none;
     }
 
-    .actions {
-        justify-self: end;
+    .menu-btn {
+        display: inline-flex;
     }
 }
 
@@ -346,7 +347,7 @@ import { ThemeToggleComponent } from '../../../shared-components/theme-toggle/th
     }
 }
   `],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
 
@@ -363,7 +364,7 @@ export class HeaderComponent {
     @HostListener('document:click', ['$event'])
     onDocumentClick(event: MouseEvent): void {
         const el = event.target as HTMLElement;
-        if (el.closest('.drawer') || el.closest('.icon-btn--menu')) return;
+        if (el.closest('.drawer') || el.closest('.menu-btn')) return;
         this.isMenuOpen.set(false);
     }
 

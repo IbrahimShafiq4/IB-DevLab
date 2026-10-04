@@ -1,62 +1,31 @@
-<article class="card" [attr.data-kind]="kind || 'component'">
+<article class="card">
 
-    <!-- ── Preview stage ── -->
     <div class="card__stage">
-
-        <!-- Kind badge (appears on hover) -->
-        <span class="card__kind" aria-hidden="true">{{ kind || 'component' }}</span>
-
         @if (hasLivePreview) {
         <app-live-preview [html]="liveHtml" [css]="liveCss" [js]="liveJs" [title]="title" [tone]="stage"
             [interactive]="false" />
         } @else {
-        <div class="card__placeholder" aria-hidden="true">
-            <span class="card__placeholder-mark"></span>
-        </div>
-        }
-
-        <!-- Hover overlay actions (21st.dev style) -->
-        @if (internalHref || externalHref) {
-        <div class="card__actions" aria-hidden="true">
-            @if (internalHref) {
-            <a class="card__action-btn" [routerLink]="internalHref" tabindex="-1">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <polyline points="16 18 22 12 16 6" />
-                    <polyline points="8 6 2 12 8 18" />
-                </svg>
-                كود
-            </a>
-            } @else if (externalHref) {
-            <a class="card__action-btn" [href]="externalHref" target="_blank" rel="noopener noreferrer" tabindex="-1">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <line x1="7" y1="17" x2="17" y2="7" />
-                    <polyline points="7 7 17 7 17 17" />
-                </svg>
-                افتح
-            </a>
-            }
-        </div>
+        <div class="card__placeholder" aria-hidden="true"></div>
         }
     </div>
 
-    <!-- ── Caption ── -->
-    <div class="card__caption">
-        <h3 class="card__title">
-            @if (internalHref) {
-            <a class="card__title-link" [routerLink]="internalHref">{{ title }}</a>
-            } @else if (externalHref) {
-            <a class="card__title-link" [href]="externalHref" target="_blank" rel="noopener noreferrer">{{ title }}</a>
-            } @else {
-            {{ title }}
+    <footer class="card__foot">
+        <div class="card__meta">
+            @if (kind) {
+            <span class="card__kind" [attr.data-kind]="kind">{{ kind }}</span>
             }
-        </h3>
+            <span class="card__title">{{ title }}</span>
+        </div>
 
         @if (internalHref) {
-        <a class="card__open" [routerLink]="internalHref" [attr.aria-label]="'عرض الكود: ' + title">
-            <span class="card__open-icon" aria-hidden="true">&lt;/&gt;</span>
-            <span class="card__open-label">الكود</span>
+        <a class="card__cta" [routerLink]="internalHref">
+            {{ visitText }}
+        </a>
+        } @else if (externalHref) {
+        <a class="card__cta" [href]="externalHref" target="_blank" rel="noopener noreferrer">
+            {{ visitText }}
         </a>
         }
-    </div>
+    </footer>
 
 </article>

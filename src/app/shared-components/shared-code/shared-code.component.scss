@@ -13,12 +13,13 @@
     padding-block: t.$sp-4;
 }
 
+/* ─── Head ─────────────────────────────────────────────────── */
 .specimen__head {
     display: flex;
     flex-direction: column;
     gap: t.$sp-4;
-    padding-bottom: t.$sp-6;
-    border-bottom: 1px solid var(--rule-hairline);
+    padding-block-end: t.$sp-6;
+    border-block-end: 1px solid var(--rule-hairline);
 }
 
 .specimen__id {
@@ -26,28 +27,31 @@
     align-items: center;
     gap: t.$sp-2;
     flex-wrap: wrap;
-    font-family: t.$font-mono;
-    font-size: t.$fs-nano;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
     letter-spacing: t.$tracking-wide;
     color: var(--ink-tertiary);
+}
 
-    .specimen__tick {
-        color: var(--accent-primary);
-        font-weight: 500;
-    }
+.specimen__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--line-algo);
+    flex-shrink: 0;
+}
 
-    .specimen__label {
-        color: var(--ink-secondary);
-        text-transform: lowercase;
-    }
+.specimen__label {
+    color: var(--ink-secondary);
+    text-transform: lowercase;
+}
 
-    .specimen__sep {
-        color: var(--rule-solid);
-    }
+.specimen__sep {
+    color: var(--rule-solid);
+}
 
-    .specimen__version {
-        color: var(--accent-reference);
-    }
+.specimen__version {
+    color: var(--line-api);
 }
 
 .specimen__title {
@@ -62,7 +66,7 @@
 }
 
 .specimen__desc {
-    font-family: t.$font-ui;
+    font-family: var(--font-ui);
     font-size: 1.05rem;
     line-height: t.$lh-relaxed;
     color: var(--ink-secondary);
@@ -84,15 +88,15 @@
     align-items: center;
     gap: 5px;
     padding: 4px t.$sp-3;
-    font-family: t.$font-mono;
-    font-size: t.$fs-nano;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
     color: var(--ink-secondary);
     border: 1px solid var(--rule-hairline);
     border-radius: t.$r-sm;
 
     i {
         font-size: 0.75em;
-        color: var(--accent-reference);
+        color: var(--line-algo);
     }
 }
 
@@ -100,7 +104,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: t.$sp-2;
-    padding-top: t.$sp-2;
+    padding-block-start: t.$sp-2;
 }
 
 .spec-btn {
@@ -108,8 +112,8 @@
     align-items: center;
     gap: t.$sp-2;
     padding: t.$sp-2 t.$sp-4;
-    font-family: t.$font-ui;
-    font-size: t.$fs-small;
+    font-family: var(--font-ui);
+    font-size: 0.875rem;
     font-weight: 500;
     border: 1px solid var(--rule-hairline);
     border-radius: t.$r-sm;
@@ -125,13 +129,13 @@
     }
 
     &--primary {
-        background-color: var(--accent-primary);
-        border-color: var(--accent-primary);
-        color: var(--on-brass);
+        background-color: var(--signal);
+        border-color: var(--signal);
+        color: var(--ink-inverse);
 
         &:hover {
             opacity: 0.9;
-            color: var(--on-brass);
+            color: var(--ink-inverse);
         }
     }
 
@@ -140,23 +144,17 @@
         color: var(--ink-secondary);
 
         &:hover {
-            border-color: var(--accent-primary);
-            color: var(--accent-primary);
+            border-color: var(--ink-primary);
+            color: var(--ink-primary);
         }
     }
 }
 
+/* ─── Sections ─────────────────────────────────────────────── */
 .specimen__body {
     display: flex;
     flex-direction: column;
     gap: t.$sp-10;
-}
-
-.specimen__foot {
-    display: flex;
-    justify-content: flex-end;
-    padding-top: t.$sp-6;
-    border-top: 1px solid var(--rule-hairline);
 }
 
 .sect {
@@ -169,37 +167,50 @@
     display: flex;
     align-items: center;
     gap: t.$sp-3;
+}
 
-    .sect__tick {
-        font-family: t.$font-mono;
-        font-size: t.$fs-micro;
-        color: var(--accent-primary);
-        letter-spacing: t.$tracking-wider;
-        font-weight: 500;
+.sect__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+
+    &[data-line="algo"] {
+        background-color: var(--line-algo);
     }
-
-    .sect__title {
-        font-size: t.$fs-h3;
-        font-weight: 600;
-        color: var(--ink-primary);
-        margin: 0;
-        white-space: nowrap;
+    &[data-line="ds"] {
+        background-color: var(--line-ds);
     }
-
-    .sect__rule {
-        flex: 1;
-        height: 1px;
-        background-color: var(--rule-hairline);
+    &[data-line="api"] {
+        background-color: var(--line-api);
     }
 }
 
+.sect__title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--ink-primary);
+    margin: 0;
+    white-space: nowrap;
+}
+
+.sect__rule {
+    flex: 1;
+    height: 1px;
+    background-color: var(--rule-hairline);
+}
+
 .sect__text {
+    font-family: var(--font-ui);
     font-size: 1.05rem;
     line-height: 2;
     color: var(--ink-secondary);
     margin: 0;
+    max-width: 72ch;
 }
 
+/* ─── Steps ────────────────────────────────────────────────── */
 .steps {
     display: flex;
     flex-direction: column;
@@ -219,7 +230,7 @@
     transition: border-color var(--dur-fast) var(--ease-out);
 
     &:hover {
-        border-color: var(--accent-primary);
+        border-color: var(--rule-solid);
     }
 }
 
@@ -231,20 +242,22 @@
     min-width: 28px;
     height: 28px;
     padding: 0 6px;
-    font-family: t.$font-mono;
-    font-size: t.$fs-nano;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
     font-weight: 600;
-    color: var(--accent-primary);
-    background-color: color-mix(in oklab, var(--accent-primary) 12%, transparent);
+    color: var(--line-algo);
+    background-color: color-mix(in oklab, var(--line-algo) 12%, transparent);
     border-radius: t.$r-sm;
 }
 
 .steps__text {
-    font-size: 1.02rem;
+    font-family: var(--font-ui);
+    font-size: 1rem;
     line-height: t.$lh-relaxed;
     color: var(--ink-secondary);
 }
 
+/* ─── Example ──────────────────────────────────────────────── */
 .example {
     display: flex;
     flex-direction: column;
@@ -252,7 +265,7 @@
     padding: t.$sp-5;
     border: 1px solid var(--rule-hairline);
     border-radius: t.$r-sm;
-    background-color: var(--surface);
+    background-color: var(--bg-surface);
 }
 
 .example__row {
@@ -264,8 +277,8 @@
 
 .example__label {
     min-width: 80px;
-    font-family: t.$font-mono;
-    font-size: t.$fs-nano;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
     letter-spacing: t.$tracking-wide;
     color: var(--ink-tertiary);
     text-transform: uppercase;
@@ -274,22 +287,23 @@
 .example__code {
     display: inline-block;
     padding: 4px t.$sp-3;
-    background-color: color-mix(in oklab, var(--accent-reference) 10%, transparent);
-    color: var(--accent-reference);
-    font-family: t.$font-mono;
+    background-color: color-mix(in oklab, var(--line-algo) 10%, transparent);
+    color: var(--line-algo);
+    font-family: var(--font-mono);
     font-size: 0.9rem;
     border-radius: t.$r-sm;
 }
 
 .example__explain {
-    padding-top: t.$sp-3;
-    border-top: 1px solid var(--rule-hairline);
+    padding-block-start: t.$sp-3;
+    border-block-start: 1px solid var(--rule-hairline);
 
     strong {
         display: block;
-        margin-bottom: t.$sp-2;
+        margin-block-end: t.$sp-2;
         color: var(--ink-primary);
-        font-size: t.$fs-small;
+        font-family: var(--font-ui);
+        font-size: 0.875rem;
         font-weight: 600;
     }
 
@@ -297,10 +311,11 @@
         margin: 0;
         line-height: t.$lh-relaxed;
         color: var(--ink-secondary);
-        font-size: t.$fs-body;
+        font-size: 1rem;
     }
 }
 
+/* ─── Complexity ───────────────────────────────────────────── */
 .complexity {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -318,24 +333,26 @@
     padding: t.$sp-4;
     border: 1px solid var(--rule-hairline);
     border-radius: t.$r-sm;
+    background-color: var(--bg-surface);
 }
 
 .complexity__label {
-    font-family: t.$font-mono;
-    font-size: t.$fs-nano;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
     letter-spacing: t.$tracking-wide;
     text-transform: uppercase;
     color: var(--ink-tertiary);
 }
 
 .complexity__value {
-    font-family: t.$font-mono;
+    font-family: var(--font-mono);
     font-size: 1.4rem;
     font-weight: 600;
-    color: var(--accent-primary);
+    color: var(--line-algo);
     letter-spacing: -0.01em;
 }
 
+/* ─── Code Panel ───────────────────────────────────────────── */
 .code-panel {
     background-color: var(--code-bg);
     border: 1px solid var(--code-border);
@@ -350,40 +367,24 @@
     align-items: center;
     gap: t.$sp-3;
     padding: t.$sp-3 t.$sp-4;
-    background-color: var(--surface);
-    border-bottom: 1px solid var(--code-border);
-    font-family: t.$font-mono;
-    font-size: t.$fs-nano;
+    background-color: var(--bg-surface);
+    border-block-end: 1px solid var(--code-border);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
     letter-spacing: t.$tracking-wide;
     text-transform: lowercase;
 
     > i {
         font-size: 0.75rem;
     }
-
-    .code-panel__file {
-        color: var(--ink-primary);
-    }
-
-    .code-panel__lang {
-        color: var(--accent-reference);
-    }
 }
 
-.code-panel--bad .code-panel__head {
-    background-color: color-mix(in oklab, var(--accent-critical) 8%, var(--surface));
-
-    > i {
-        color: var(--accent-critical);
-    }
+.code-panel__file {
+    color: var(--ink-primary);
 }
 
-.code-panel--good .code-panel__head {
-    background-color: color-mix(in oklab, var(--accent-success) 8%, var(--surface));
-
-    > i {
-        color: var(--accent-success);
-    }
+.code-panel__lang {
+    color: var(--line-algo);
 }
 
 .code-panel__copy {
@@ -404,8 +405,8 @@
         color var(--dur-fast) var(--ease-out);
 
     &:hover {
-        border-color: var(--accent-primary);
-        color: var(--accent-primary);
+        border-color: var(--ink-primary);
+        color: var(--ink-primary);
     }
 }
 
@@ -415,10 +416,10 @@
     overflow-x: auto;
     overflow-y: auto;
     max-height: 520px;
-    font-family: t.$font-mono;
+    font-family: var(--font-mono);
     font-size: 0.825rem;
     line-height: 1.75;
-    color: var(--ink-primary);
+    color: var(--code-text);
     tab-size: 2;
     -moz-tab-size: 2;
 
@@ -437,10 +438,6 @@
         border: 2px solid var(--code-bg);
     }
 
-    &::-webkit-scrollbar-thumb:hover {
-        background: var(--border-strong);
-    }
-
     code {
         font-family: inherit;
         font-size: inherit;
@@ -450,13 +447,24 @@
     }
 }
 
-:not(pre) > code[class*="language-"],
-pre[class*="language-"] {
-    background: transparent !important;
+.code-panel--bad .code-panel__head {
+    background-color: color-mix(in oklab, var(--line-ds) 8%, var(--bg-surface));
+
+    > i {
+        color: var(--line-ds);
+    }
 }
 
-.learned,
-.tips {
+.code-panel--good .code-panel__head {
+    background-color: color-mix(in oklab, var(--line-api) 8%, var(--bg-surface));
+
+    > i {
+        color: var(--line-api);
+    }
+}
+
+/* ─── Learned ──────────────────────────────────────────────── */
+.learned {
     display: flex;
     flex-direction: column;
     gap: t.$sp-2;
@@ -465,8 +473,7 @@ pre[class*="language-"] {
     list-style: none;
 }
 
-.learned__item,
-.tips__item {
+.learned__item {
     display: flex;
     align-items: flex-start;
     gap: t.$sp-3;
@@ -474,35 +481,28 @@ pre[class*="language-"] {
     border: 1px solid var(--rule-hairline);
     border-radius: t.$r-sm;
     color: var(--ink-secondary);
-    font-size: t.$fs-body;
+    font-size: 1rem;
     line-height: t.$lh-relaxed;
     transition: border-color var(--dur-fast) var(--ease-out);
 
     &:hover {
-        border-color: var(--accent-primary);
+        border-color: var(--rule-solid);
     }
 
     i {
         flex-shrink: 0;
-        color: var(--accent-success);
+        color: var(--line-api);
         font-size: 0.85rem;
-        margin-top: 5px;
+        margin-block-start: 5px;
     }
 }
 
-.tips__item i {
-    color: var(--accent-success);
-}
-
-.learned--refs .learned__item i {
-    color: var(--accent-reference);
-}
-
-.story {
+/* ─── Clean Code ───────────────────────────────────────────── */
+.story-quote {
     margin: 0;
     padding: t.$sp-5;
-    border-inline-start: 3px solid var(--accent-primary);
-    background-color: color-mix(in oklab, var(--accent-primary) 5%, transparent);
+    border-inline-start: 3px solid var(--line-algo);
+    background-color: color-mix(in oklab, var(--line-algo) 5%, transparent);
     border-radius: 0 t.$r-sm t.$r-sm 0;
 
     p {
@@ -521,15 +521,15 @@ pre[class*="language-"] {
     padding: t.$sp-5;
     border: 1px solid var(--rule-hairline);
     border-radius: t.$r-sm;
-    background-color: var(--surface);
+    background-color: var(--bg-surface);
 }
 
 .principle__head {
     display: flex;
     align-items: center;
     gap: t.$sp-4;
-    padding-bottom: t.$sp-4;
-    border-bottom: 1px dashed var(--rule-solid);
+    padding-block-end: t.$sp-4;
+    border-block-end: 1px dashed var(--rule-solid);
 }
 
 .principle__icon {
@@ -539,29 +539,16 @@ pre[class*="language-"] {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: color-mix(in oklab, var(--accent-primary) 12%, transparent);
-    color: var(--accent-primary);
+    background-color: color-mix(in oklab, var(--line-algo) 12%, transparent);
+    color: var(--line-algo);
     border-radius: t.$r-sm;
     font-size: 1.1rem;
 }
 
-.principle__title-wrap {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    min-width: 0;
-}
-
-.principle__num {
-    font-family: t.$font-mono;
-    font-size: t.$fs-nano;
-    letter-spacing: t.$tracking-widest;
-    color: var(--accent-primary);
-}
-
 .principle__title {
     margin: 0;
-    font-size: t.$fs-h3;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
     font-weight: 700;
     color: var(--ink-primary);
     line-height: 1.35;
@@ -588,14 +575,14 @@ pre[class*="language-"] {
     display: flex;
     gap: t.$sp-3;
     padding: t.$sp-4;
-    border-inline-start: 3px solid var(--accent-primary);
-    background-color: color-mix(in oklab, var(--accent-primary) 5%, transparent);
+    border-inline-start: 3px solid var(--line-api);
+    background-color: color-mix(in oklab, var(--line-api) 5%, transparent);
     border-radius: 0 t.$r-sm t.$r-sm 0;
 
     i {
-        color: var(--accent-primary);
+        color: var(--line-api);
         font-size: 1rem;
-        margin-top: 4px;
+        margin-block-start: 4px;
         flex-shrink: 0;
     }
 
@@ -603,7 +590,7 @@ pre[class*="language-"] {
         margin: 0;
         color: var(--ink-secondary);
         line-height: t.$lh-relaxed;
-        font-size: t.$fs-body;
+        font-size: 1rem;
     }
 }
 
@@ -613,15 +600,15 @@ pre[class*="language-"] {
     align-items: center;
     gap: t.$sp-3;
     padding: t.$sp-8 t.$sp-5;
-    border: 1px solid color-mix(in oklab, var(--accent-primary) 25%, transparent);
-    background-color: color-mix(in oklab, var(--accent-primary) 4%, transparent);
+    border: 1px solid color-mix(in oklab, var(--line-algo) 25%, transparent);
+    background-color: color-mix(in oklab, var(--line-algo) 4%, transparent);
     border-radius: t.$r-sm;
     text-align: center;
     margin: 0;
 
     > i {
         font-size: 1.5rem;
-        color: var(--accent-primary);
+        color: var(--line-algo);
         opacity: 0.5;
     }
 
@@ -636,79 +623,23 @@ pre[class*="language-"] {
     }
 
     .quote__author {
-        color: var(--accent-primary);
+        color: var(--line-algo);
+        font-family: var(--font-ui);
         font-size: 0.9rem;
         font-weight: 600;
         font-style: normal;
     }
 }
 
-.hashtags {
+/* ─── Foot ─────────────────────────────────────────────────── */
+.specimen__foot {
     display: flex;
-    flex-wrap: wrap;
-    gap: t.$sp-3;
-    justify-content: center;
-    padding: t.$sp-4 0;
+    justify-content: flex-end;
+    padding-block-start: t.$sp-6;
+    border-block-start: 1px solid var(--rule-hairline);
 }
 
-.hashtags__tag {
-    color: var(--accent-reference);
-    font-family: t.$font-mono;
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: color var(--dur-fast) var(--ease-out);
-
-    &:hover {
-        color: var(--accent-primary);
-    }
-}
-
-.zip {
-    display: flex;
-    align-items: center;
-    gap: t.$sp-4;
-    padding: t.$sp-5;
-    border: 1px solid var(--rule-hairline);
-    border-radius: t.$r-sm;
-    background-color: var(--surface);
-    flex-wrap: wrap;
-}
-
-.zip__icon {
-    flex-shrink: 0;
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: color-mix(in oklab, var(--accent-reference) 12%, transparent);
-    color: var(--accent-reference);
-    border-radius: t.$r-sm;
-    font-size: 1.1rem;
-}
-
-.zip__info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    flex: 1;
-    min-width: 0;
-
-    .zip__title {
-        font-size: t.$fs-small;
-        font-weight: 600;
-        color: var(--ink-primary);
-    }
-
-    .zip__sub {
-        font-family: t.$font-mono;
-        font-size: t.$fs-nano;
-        color: var(--ink-tertiary);
-        letter-spacing: t.$tracking-wide;
-        text-transform: lowercase;
-    }
-}
-
+/* ─── Live Stage ───────────────────────────────────────────── */
 .specimen__live {
     --specimen-live-height: clamp(460px, 44vw, 620px);
 
@@ -718,7 +649,7 @@ pre[class*="language-"] {
     height: var(--specimen-live-height);
     align-items: stretch;
     padding-block: t.$sp-6;
-    border-bottom: 1px solid var(--rule-hairline);
+    border-block-end: 1px solid var(--rule-hairline);
 }
 
 .specimen__live-preview {
@@ -736,7 +667,7 @@ pre[class*="language-"] {
     border: 1px solid var(--rule-hairline);
     border-radius: t.$r-sm;
     overflow: hidden;
-    background-color: var(--stage-dark);
+    background-color: var(--bg-void);
 
     app-live-preview {
         display: block;
@@ -753,8 +684,8 @@ pre[class*="language-"] {
 }
 
 .specimen__tone-label {
-    font-family: t.$font-mono;
-    font-size: t.$fs-nano;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
     color: var(--ink-tertiary);
     letter-spacing: t.$tracking-wide;
 }
@@ -768,11 +699,11 @@ pre[class*="language-"] {
 
 .specimen__tone-btn {
     padding: 6px 14px;
-    background: transparent;
+    background-color: transparent;
     border: none;
     border-inline-end: 1px solid var(--rule-hairline);
-    font-family: t.$font-ui;
-    font-size: t.$fs-micro;
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
     color: var(--ink-secondary);
     cursor: pointer;
     transition:
@@ -784,13 +715,13 @@ pre[class*="language-"] {
     }
 
     &:hover:not(.is-active) {
-        background-color: var(--bg-elevated);
+        background-color: var(--bg-surface);
         color: var(--ink-primary);
     }
 
     &.is-active {
-        background-color: var(--accent-primary);
-        color: var(--on-brass);
+        background-color: var(--ink-primary);
+        color: var(--ink-inverse);
         font-weight: 600;
     }
 }
@@ -843,8 +774,8 @@ pre[class*="language-"] {
     .sect__text,
     .principle__desc,
     .explain p,
-    .story p {
-        font-size: t.$fs-body;
+    .story-quote p {
+        font-size: 1rem;
     }
 
     .principle {
@@ -880,7 +811,7 @@ pre[class*="language-"] {
     }
 
     .quote .quote__text {
-        font-size: t.$fs-body;
+        font-size: 1rem;
     }
 }
 

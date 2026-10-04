@@ -21,6 +21,7 @@
     "@angular/router": "^19.2.0",
     "@firebase/analytics": "^0.10.16",
     "@fontsource/alexandria": "^5.3.0",
+    "@fontsource/cairo": "^5.3.0",
     "@fontsource/ibm-plex-mono": "^5.3.0",
     "@fontsource/ibm-plex-sans-arabic": "^5.3.0",
     "@fortawesome/fontawesome-free": "^6.7.2",

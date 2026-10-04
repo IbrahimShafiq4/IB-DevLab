@@ -1,0 +1,62 @@
+<div class="metro-wrap" #metroWrap (mouseleave)="onMapLeave($event)">
+
+    <svg class="metro" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img"
+        [attr.aria-label]="'خريطة المترو التفاعلية: ' + stations().length + ' محطة على 3 خطوط'">
+
+        @for (line of lines; track line.key; let idx = $index) {
+        <g class="metro__line" [attr.data-line]="line.key" [class.is-visible]="mapVisible()">
+
+            <path [attr.d]="buildPath(line.key)" pathLength="1" [style.animation-delay]="(idx * 400) + 'ms'"></path>
+
+            @for (station of groupedStations()[line.key]; track station.id) {
+            <g class="station" [attr.data-line]="station.line" [attr.data-station]="station.id"
+                [class.is-active]="activeStation()?.id === station.id"
+                [attr.transform]="'translate(' + station.x + ' ' + station.y + ')'" tabindex="0" role="button"
+                [attr.aria-label]="'محطة ' + station.num + ': ' + station.title"
+                (mouseenter)="onStationEnter(station, $any($event.currentTarget))"
+                (focus)="onStationEnter(station, $any($event.currentTarget))"
+                (keydown)="onStationKeydown($event, station, $any($event.currentTarget))">
+
+                <circle class="station__outer" r="14"></circle>
+                <circle class="station__inner" r="7"></circle>
+
+                <text class="station__label" y="-22" text-anchor="middle" [attr.x]="0">{{ station.num }}</text>
+            </g>
+            }
+        </g>
+        }
+    </svg>
+
+    @if (activeStation(); as station) {
+    <aside class="ticket" [class.is-visible]="ticketVisible()" [style.left.px]="ticketX()" [style.top.px]="ticketY()"
+        role="dialog" aria-label="تفاصيل المحطة" (mouseenter)="ticketVisible.set(true)">
+
+        <header class="ticket__head">
+            <span class="ticket__dot" [attr.data-line]="station.line"></span>
+            <span>{{ lineLabel(station.line) }}</span>
+            <span class="ticket__num ltr">{{ station.num }}</span>
+        </header>
+
+        <div class="ticket__titles">
+            <span class="ticket__title">{{ station.title }}</span>
+            <span class="ticket__title-en">{{ station.titleEn }}</span>
+        </div>
+
+        @if (station.live) {
+        <div class="ticket__preview">
+            <app-live-preview [html]="station.live.html" [css]="station.live.css" [js]="station.live.js"
+                [title]="station.title" tone="dark" [interactive]="false" />
+        </div>
+        }
+
+        <footer class="ticket__foot">
+            <span class="ticket__level">{{ station.level }}</span>
+            <a class="ticket__link" [routerLink]="station.href" (click)="hideTicket()">
+                <span>اركب</span>
+            </a>
+        </footer>
+
+    </aside>
+    }
+
+</div>

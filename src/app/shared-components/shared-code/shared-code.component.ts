@@ -21,11 +21,15 @@ import {
   CodeLanguage
 } from '../editable-code-panel/editable-code-panel';
 import { EscapeHtmlPipe } from '../../client-layout/pipes/EscapeHtml.pipe';
+import { StationStoryComponent } from '../station-story/station-story';
 import {
   Specimen,
   SpecimenSource,
   extractSource,
-  ExtractedSource
+  ExtractedSource,
+  QuizQuestion,
+  ComplexityInfo,
+  PracticeInfo
 } from '../../core/specimen-registry';
 import { SPECIMENS } from '../../client-layout/components/home/specimens.data';
 
@@ -73,7 +77,8 @@ export interface ICleanCodeContent {
     RouterModule,
     EscapeHtmlPipe,
     LivePreviewComponent,
-    EditableCodePanelComponent
+    EditableCodePanelComponent,
+    StationStoryComponent,
   ],
   templateUrl: './shared-code.component.html',
   styleUrls: ['./shared-code.component.scss'],
@@ -128,11 +133,11 @@ export class SharedCodeComponent implements OnInit, AfterViewInit {
 
   @ViewChild('sourceElement') sourceElement?: ElementRef;
 
+  readonly currentSpecimen = signal<Specimen | null>(null);
+
   readonly extracted = computed<ExtractedSource>(() => {
     const src = this.activeSource();
-    if (!src) {
-      return { bodyHtml: '', styleCss: '', scriptJs: '' };
-    }
+    if (!src) return { bodyHtml: '', styleCss: '', scriptJs: '' };
     return extractSource(src);
   });
 
@@ -151,6 +156,19 @@ export class SharedCodeComponent implements OnInit, AfterViewInit {
     () => this.editedFiles().find(f => f.language === 'javascript')?.code ?? ''
   );
 
+  readonly storyData = computed(() => {
+    const s = this.currentSpecimen();
+    if (!s) return null;
+    return {
+      story: s.story ?? '',
+      complexity: s.complexity,
+      practice: s.practice,
+      quiz: s.quiz,
+      next: s.next ?? '',
+      nextLabel: this.resolveNextLabel(s.next ?? ''),
+    };
+  });
+
   get hasYoutubePreview(): boolean {
     return !!this.projectOnYoutube && !this.isItProblemSolving && !this.isItCleanCode;
   }
@@ -168,6 +186,10 @@ export class SharedCodeComponent implements OnInit, AfterViewInit {
     const url = this._router.url.split('?')[0].split('#')[0];
     const spec = SPECIMENS.find(s => s.href === url) as Specimen | undefined;
 
+    if (spec) {
+      this.currentSpecimen.set(spec);
+    }
+
     if (spec?.source) {
       this.activeSource.set(spec.source);
       this.tone.set(spec.source.stage ?? this.initialTone);
@@ -183,6 +205,12 @@ export class SharedCodeComponent implements OnInit, AfterViewInit {
     if (this.HTMLCodeSnippet.length || this.CSSCodeSnippet.length || this.JSCodeSnippet.length) {
       this.rebuildFromSnippets();
     }
+  }
+
+  private resolveNextLabel(nextId: string): string {
+    if (!nextId) return '';
+    const nextSpec = SPECIMENS.find(s => s.id === nextId);
+    return nextSpec?.title ?? nextId;
   }
 
   private reconstructHtml(extracted: ExtractedSource): string {
@@ -304,44 +332,14 @@ export class SharedCodeComponent implements OnInit, AfterViewInit {
       'CSS': { icon: 'css3-alt', type: 'brands' },
       'JS': { icon: 'js', type: 'brands' },
       'Angular': { icon: 'angular', type: 'brands' },
-      'React': { icon: 'react', type: 'brands' },
       'Database': { icon: 'database', type: 'solid' },
-      'API': { icon: 'server', type: 'solid' },
       'Problem Solving': { icon: 'brain', type: 'solid' },
       'LeetCode': { icon: 'code', type: 'solid' },
       'TypeScript': { icon: 'code', type: 'brands' },
-      'JavaScript': { icon: 'js', type: 'brands' },
       'Clean Code': { icon: 'broom', type: 'solid' },
-      'CleanCode': { icon: 'broom', type: 'solid' },
       'Software Engineering': { icon: 'gears', type: 'solid' },
       'Best Practices': { icon: 'star', type: 'solid' },
       'Refactoring': { icon: 'wrench', type: 'solid' },
-      'Design Patterns': { icon: 'shapes', type: 'solid' },
-      'Uncle Bob': { icon: 'book', type: 'solid' },
-      'MeaningfulNames': { icon: 'tag', type: 'solid' },
-      'DomainDrivenDesign': { icon: 'landmark', type: 'solid' },
-      'DDD': { icon: 'landmark', type: 'solid' },
-      'Domain': { icon: 'landmark', type: 'solid' },
-      'Functions': { icon: 'code', type: 'solid' },
-      'Comments': { icon: 'comment-slash', type: 'solid' },
-      'Documentation': { icon: 'file-lines', type: 'solid' },
-      'CSharp': { icon: 'microsoft', type: 'brands' },
-      'C#': { icon: 'microsoft', type: 'brands' },
-      'DotNet': { icon: 'microsoft', type: 'brands' },
-      'ChatterHub': { icon: 'comments', type: 'solid' },
-      'SOLID': { icon: 'cubes-stacked', type: 'solid' },
-      'ASP.NET': { icon: 'microsoft', type: 'brands' },
-      'Battle': { icon: 'palette', type: 'solid' },
-      'UI': { icon: 'palette', type: 'solid' },
-      'Text': { icon: 'font', type: 'solid' },
-      'Animation': { icon: 'wand-magic-sparkles', type: 'solid' },
-      'Hover': { icon: 'hand-pointer', type: 'solid' },
-      '3D': { icon: 'cube', type: 'solid' },
-      'Scroll': { icon: 'arrows-up-down', type: 'solid' },
-      'SVG': { icon: 'bezier-curve', type: 'solid' },
-      'Mask': { icon: 'mask', type: 'solid' },
-      'Utility': { icon: 'toolbox', type: 'solid' },
-      'Tool': { icon: 'wrench', type: 'solid' },
       'Linked List': { icon: 'link', type: 'solid' },
       'Two Pointers': { icon: 'arrow-pointer', type: 'solid' },
       'String': { icon: 'font', type: 'solid' },

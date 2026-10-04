@@ -41,15 +41,15 @@ import {
 
     <header class="stage__head">
         <div class="stage__id">
-            <span class="stage__tick" aria-hidden="true">§00</span>
+            <span class="stage__dot" aria-hidden="true"></span>
             <span class="stage__label">عيّنة حيّة</span>
         </div>
 
         @if (total() > 0) {
         <div class="stage__counter" aria-live="polite">
-            <span>{{ activeIndex() + 1 }}</span>
+            <span>{{ pad(activeIndex() + 1) }}</span>
             <span class="stage__counter-sep">/</span>
-            <span>{{ total() }}</span>
+            <span>{{ pad(total()) }}</span>
         </div>
         }
     </header>
@@ -141,7 +141,7 @@ import {
 
 </section>
   `,
-    styles: `
+    styles: [`
 @use "../../../assets/styles/tokens/tokens" as t;
 
 :host {
@@ -153,37 +153,37 @@ import {
     flex-direction: column;
     gap: t.$sp-6;
     padding-block: t.$sp-6;
-    border-bottom: 1px solid var(--rule-hairline);
+    border-block-end: 1px solid var(--rule-hairline);
 }
 
 .stage__head {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     gap: t.$sp-4;
-    padding-bottom: t.$sp-3;
-    border-bottom: 1px solid var(--rule-hairline);
+    padding-block-end: t.$sp-3;
+    border-block-end: 1px solid var(--rule-hairline);
 }
 
 .stage__id {
     display: inline-flex;
     align-items: center;
-    gap: t.$sp-3;
+    gap: t.$sp-2;
 }
 
-.stage__tick {
-    font-family: t.$font-mono;
-    font-size: t.$fs-nano;
-    font-weight: 500;
-    letter-spacing: t.$tracking-wider;
-    color: var(--accent-primary);
+.stage__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--line-algo);
+    flex-shrink: 0;
 }
 
 .stage__label {
-    font-family: t.$font-ui;
-    font-size: t.$fs-micro;
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: t.$tracking-widest;
+    letter-spacing: t.$tracking-wider;
     text-transform: uppercase;
     color: var(--ink-primary);
 }
@@ -195,8 +195,8 @@ import {
     padding: 4px 10px;
     border: 1px solid var(--rule-hairline);
     border-radius: t.$r-sm;
-    font-family: t.$font-mono;
-    font-size: t.$fs-micro;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
     color: var(--ink-secondary);
     direction: ltr;
     unicode-bidi: isolate;
@@ -232,7 +232,7 @@ import {
     border: 1px solid var(--rule-hairline);
     border-radius: t.$r-sm;
     overflow: hidden;
-    background-color: var(--stage-dark);
+    background-color: var(--bg-void);
 }
 
 .stage__viewport app-live-preview {
@@ -249,8 +249,8 @@ import {
 }
 
 .stage__tone-label {
-    font-family: t.$font-ui;
-    font-size: t.$fs-micro;
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
     color: var(--ink-tertiary);
 }
 
@@ -263,11 +263,11 @@ import {
 
 .stage__tone-btn {
     padding: 5px 12px;
-    background: transparent;
+    background-color: transparent;
     border: none;
     border-inline-end: 1px solid var(--rule-hairline);
-    font-family: t.$font-ui;
-    font-size: t.$fs-micro;
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
     color: var(--ink-secondary);
     cursor: pointer;
     transition:
@@ -279,13 +279,13 @@ import {
     }
 
     &:hover:not(.is-active) {
-        background-color: var(--surface);
+        background-color: var(--bg-surface);
         color: var(--ink-primary);
     }
 
     &.is-active {
-        background-color: var(--accent-primary);
-        color: var(--on-brass);
+        background-color: var(--ink-primary);
+        color: var(--ink-inverse);
         font-weight: 600;
     }
 }
@@ -307,8 +307,8 @@ import {
     justify-content: space-between;
     gap: t.$sp-6;
     flex-wrap: wrap;
-    padding-top: t.$sp-5;
-    border-top: 1px solid var(--rule-hairline);
+    padding-block-start: t.$sp-5;
+    border-block-start: 1px solid var(--rule-hairline);
 }
 
 .stage__meta {
@@ -322,15 +322,15 @@ import {
 .stage__title {
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(1.1rem, 1.6vw, 1.35rem);
-    font-weight: 600;
+    font-size: 1.25rem;
+    font-weight: 700;
     color: var(--ink-primary);
 }
 
 .stage__desc {
     margin: 0;
-    font-family: t.$font-ui;
-    font-size: t.$fs-small;
+    font-family: var(--font-ui);
+    font-size: 0.875rem;
     line-height: t.$lh-relaxed;
     color: var(--ink-secondary);
 }
@@ -346,26 +346,25 @@ import {
     align-items: center;
     gap: 6px;
     padding: 8px 14px;
-    background: transparent;
+    background-color: transparent;
     border: 1px solid var(--rule-hairline);
     border-radius: t.$r-sm;
-    font-family: t.$font-ui;
-    font-size: t.$fs-small;
+    font-family: var(--font-ui);
+    font-size: 0.875rem;
     color: var(--ink-secondary);
     cursor: pointer;
     text-decoration: none;
     transition:
         border-color var(--dur-fast) var(--ease-out),
-        color var(--dur-fast) var(--ease-out),
-        background-color var(--dur-fast) var(--ease-out);
+        color var(--dur-fast) var(--ease-out);
 
     svg {
         flex-shrink: 0;
     }
 
     &:hover:not(:disabled) {
-        border-color: var(--accent-primary);
-        color: var(--accent-primary);
+        border-color: var(--ink-primary);
+        color: var(--ink-primary);
     }
 
     &:disabled {
@@ -374,14 +373,14 @@ import {
     }
 
     &--primary {
-        background-color: var(--accent-primary);
-        border-color: var(--accent-primary);
-        color: var(--on-brass);
-        font-weight: 500;
+        background-color: var(--signal);
+        border-color: var(--signal);
+        color: var(--ink-inverse);
+        font-weight: 600;
 
         &:hover {
-            opacity: 0.92;
-            color: var(--on-brass);
+            opacity: 0.9;
+            color: var(--ink-inverse);
         }
     }
 }
@@ -391,7 +390,7 @@ import {
     padding: t.$sp-16;
     text-align: center;
     color: var(--ink-tertiary);
-    font-family: t.$font-ui;
+    font-family: var(--font-ui);
     border: 1px dashed var(--rule-solid);
     border-radius: t.$r-sm;
 }
@@ -439,7 +438,7 @@ import {
         transition: none;
     }
 }
-    `,
+  `],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpecimenStageComponent implements OnInit, OnChanges {
@@ -573,6 +572,10 @@ export class SpecimenStageComponent implements OnInit, OnChanges {
 
     setTone(t: StageTone): void {
         this.tone.set(t);
+    }
+
+    pad(n: number): string {
+        return n < 10 ? `0${n}` : String(n);
     }
 
     onCodeChange(evt: { language: CodeLanguage; code: string }): void {

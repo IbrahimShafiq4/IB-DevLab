@@ -1,4 +1,10 @@
 import { SpecimenSource } from "./specimens.data";
+const humonsterGif = './../../../../assets/images/animated-gif/humonster.gif';
+const clipPathOne = './../../../../assets/images/clip-path/(1).jpg';
+const clipPathTwo = './../../../../assets/images/clip-path/(2).jpg';
+const clipPathThree = './../../../../assets/images/clip-path/(3).jpg';
+const clipPathFour = './../../../../assets/images/clip-path/(4).jpg';
+const clipPathFive = './../../../../assets/images/clip-path/(5).jpg';
 
 export const SPECIMEN_SOURCES: Record<string, SpecimenSource> = {
 
@@ -1426,7 +1432,8 @@ applyTilt(document.querySelector('.box'), { max: 20 });`
 
     'S-014': {
         stage: 'dark',
-        html: `<!DOCTYPE html>
+        html: `
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -1436,7 +1443,7 @@ applyTilt(document.querySelector('.box'), { max: 20 });`
 </head>
 <body style="transform: scale(0.5);">
     <div class="container">
-        <button onclick="generate()">Generate</button>
+        <button>Generate</button>
     </div>
     <script src="main.js"></script>
 </body>
@@ -1496,7 +1503,9 @@ button {
 .block:nth-child(3n + 3) {
     background-color: #ff9213;
 }`,
-        js: `const container = document.querySelector('.container');
+        js: `
+const container = document.querySelector('.container');
+const button = document.querySelector('button');
 
 for (var i = 1; i <= 200; i++) {
     const blocks = document.createElement('div');
@@ -1512,8 +1521,11 @@ function generate() {
         const opacity = Math.random();
         block.style.transform = 'translate(' + tx + 'px, ' + ty + 'px) scale(' + scale + ')';
         block.style.opacity = opacity;
+        block.style.transition = '0.3s linear';
     });
-}`,
+}
+
+button.addEventListener('click', generate);`,
     },
 
     'S-015': {
@@ -2599,31 +2611,33 @@ body {
     <link rel="stylesheet" href="style.css">
 </head>
 <body style="transform: scale(0.5);">
-    <section data-start="0" data-end="1000">
-        <figure>
-            <img src="https://picsum.photos/id/1015/1200/800" alt="">
-        </figure>
-    </section>
-    <section data-start="1000" data-end="2000">
-        <figure>
-            <img src="https://picsum.photos/id/1016/1200/800" alt="">
-        </figure>
-    </section>
-    <section data-start="2000" data-end="3000">
-        <figure>
-            <img src="https://picsum.photos/id/1018/1200/800" alt="">
-        </figure>
-    </section>
-    <section data-start="3000" data-end="4000">
-        <figure>
-            <img src="https://picsum.photos/id/1019/1200/800" alt="">
-        </figure>
-    </section>
-    <section data-start="4000" data-end="5000">
-        <figure>
-            <img src="https://picsum.photos/id/1024/1200/800" alt="">
-        </figure>
-    </section>
+    <div class="scroll-track">
+        <section data-start="0" data-end="1000">
+            <figure>
+                <img src="${clipPathOne}" alt="">
+            </figure>
+        </section>
+        <section data-start="1000" data-end="2000">
+            <figure>
+                <img src="${clipPathTwo}" alt="">
+            </figure>
+        </section>
+        <section data-start="2000" data-end="3000">
+            <figure>
+                <img src="${clipPathThree}" alt="">
+            </figure>
+        </section>
+        <section data-start="3000" data-end="4000">
+            <figure>
+                <img src="${clipPathFour}" alt="">
+            </figure>
+        </section>
+        <section data-start="4000" data-end="5000">
+            <figure>
+                <img src="${clipPathFive}" alt="">
+            </figure>
+        </section>
+    </div>
     <script src="./main.js"></script>
 </body>
 </html>`,
@@ -2633,7 +2647,8 @@ body {
   box-sizing: border-box;
 }
 
-body {
+.scroll-track {
+  position: relative;
   min-height: 6000px;
 }
 
@@ -2652,16 +2667,21 @@ img {
   height: 100%;
   object-fit: cover;
 }`,
-        js: `document.addEventListener('scroll', () => {
-    let sections = document.querySelectorAll('section');
-    let scrollPosition = window.scrollY;
+        js: `function updateSections() {
+    const scrollPosition =
+        window.scrollY ||
+        document.body.scrollTop ||
+        document.documentElement.scrollTop ||
+        0;
+
+    const sections = document.querySelectorAll('section');
     sections.forEach((section) => {
-        let start = parseInt(section.getAttribute('data-start'));
-        let end = parseInt(section.getAttribute('data-end'));
+        const start = parseInt(section.getAttribute('data-start'));
+        const end = parseInt(section.getAttribute('data-end'));
 
         if (scrollPosition >= start && scrollPosition <= end) {
-            let progress = (scrollPosition - start) / (end - start);
-            let clipPathSize = Math.max(0, 1000 * progress);
+            const progress = (scrollPosition - start) / (end - start);
+            const clipPathSize = Math.max(0, 1000 * progress);
             section.style.clipPath = \`circle(\${clipPathSize}px at center)\`;
         } else if (scrollPosition < start) {
             section.style.clipPath = \`circle(0px at center)\`;
@@ -2669,7 +2689,13 @@ img {
             section.style.clipPath = \`circle(1000px at center)\`;
         }
     });
-});`
+}
+
+window.addEventListener('scroll', updateSections);
+document.body.addEventListener('scroll', updateSections);
+document.documentElement.addEventListener('scroll', updateSections);
+
+updateSections();`
     },
 
     'S-021': {
@@ -2721,7 +2747,7 @@ body {
 .box {
   width: 125px;
   height: 125px;
-  background-image: url(./humonster.gif);
+  background-image: url(${humonsterGif});
   background-repeat: no-repeat;
   background-size: 500px 500px;
   transition: 0.5s ease-out;
@@ -8648,3 +8674,4 @@ btns.forEach(b => b.addEventListener('click', () => setCode(b.dataset.t)));
 setCode('bad');`
     }
 };
+

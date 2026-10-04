@@ -1,7 +1,7 @@
 import {
-  Component,
-  ChangeDetectionStrategy,
-  computed
+    Component,
+    ChangeDetectionStrategy,
+    computed
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -10,19 +10,19 @@ import { SpecimenStageComponent } from '../../../shared-components/specimen-stag
 import { SPECIMENS } from '../home/specimens.data';
 
 @Component({
-  selector: 'app-lab',
-  standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    SpecimenStageComponent
-  ],
-  template: `
+    selector: 'app-lab',
+    standalone: true,
+    imports: [
+        CommonModule,
+        RouterModule,
+        SpecimenStageComponent
+    ],
+    template: `
 <main class="lab">
 
     <header class="lab__head">
         <div class="lab__id">
-            <span class="lab__tick" aria-hidden="true">§00</span>
+            <span class="lab__dot" aria-hidden="true"></span>
             <h1 class="lab__title">المعمل الحيّ</h1>
         </div>
         <p class="lab__lead">
@@ -34,8 +34,8 @@ import { SPECIMENS } from '../home/specimens.data';
 
 </main>
   `,
-  styles: `
-    @use "../../../../assets/styles/tokens/tokens" as t;
+    styles: [`
+@use "../../../../assets/styles/tokens/tokens" as t;
 
 :host {
     display: block;
@@ -46,30 +46,31 @@ import { SPECIMENS } from '../home/specimens.data';
 .lab {
     display: flex;
     flex-direction: column;
-    gap: t.$sp-6;
-    padding-block: t.$sp-6 t.$sp-12;
+    gap: t.$sp-8;
+    padding-block: t.$sp-8 t.$sp-12;
+    padding-inline: var(--gutter);
 }
 
 .lab__head {
     display: flex;
     flex-direction: column;
     gap: t.$sp-3;
-    padding-bottom: t.$sp-5;
-    border-bottom: 1px solid var(--rule-hairline);
+    padding-block-end: t.$sp-5;
+    border-block-end: 1px solid var(--rule-hairline);
 }
 
 .lab__id {
     display: inline-flex;
-    align-items: baseline;
+    align-items: center;
     gap: t.$sp-3;
 }
 
-.lab__tick {
-    font-family: t.$font-mono;
-    font-size: t.$fs-nano;
-    font-weight: 500;
-    letter-spacing: t.$tracking-wider;
-    color: var(--accent-primary);
+.lab__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--line-algo);
+    flex-shrink: 0;
 }
 
 .lab__title {
@@ -84,17 +85,17 @@ import { SPECIMENS } from '../home/specimens.data';
 
 .lab__lead {
     margin: 0;
-    font-family: t.$font-ui;
-    font-size: t.$fs-body;
+    font-family: var(--font-ui);
+    font-size: 1rem;
     line-height: t.$lh-relaxed;
     color: var(--ink-secondary);
     max-width: 62ch;
 }
-  `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  `],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LabComponent {
-  readonly liveSpecimens = computed(() =>
-    SPECIMENS.filter(s => !!s.source)
-  );
+    readonly liveSpecimens = computed(() =>
+        SPECIMENS.filter(s => !!s.source)
+    );
 }

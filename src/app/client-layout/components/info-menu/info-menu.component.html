@@ -1,10 +1,10 @@
-<div class="lab-info" dir="rtl">
+<div class="info" dir="rtl">
 
-    <section class="lab-info__block" aria-labelledby="info-author">
-        <header class="lab-info__header">
-            <span class="lab-info__index" dir="ltr" aria-hidden="true">§00</span>
-            <h2 id="info-author" class="lab-info__title">المُعِدّ</h2>
-            <span class="lab-info__rule" aria-hidden="true"></span>
+    <section class="info__block" aria-labelledby="info-author">
+        <header class="info__head">
+            <span class="info__dot" data-line="algo" aria-hidden="true"></span>
+            <h2 id="info-author" class="info__title">المُعِدّ</h2>
+            <span class="info__rule" aria-hidden="true"></span>
         </header>
 
         <div class="author">
@@ -12,102 +12,63 @@
                 <img src="./../../../../assets/images/profile.jpg" alt="صورة إبراهيم شفيق" loading="lazy">
             </figure>
 
-            <div class="author__body">
-                <h3 class="author__name">إبراهيم شفيق</h3>
-                <p class="author__role" dir="ltr">
-                    <span class="author__role-dot" aria-hidden="true"></span>
-                    Full-Stack Engineer
-                </p>
-                <p class="author__stack" dir="ltr">Angular · .NET · SQL Server</p>
-                <p class="author__bio">
-                    مهندس برمجيات متكامل بخبرة تزيد عن 3 سنوات في بناء تطبيقات ويب قابلة للتوسّع
-                    باستخدام Angular و ASP.NET Core.
-                </p>
-            </div>
+            <h3 class="author__name">{{ author.name }}</h3>
 
-            <ul class="author__social" dir="ltr" aria-label="روابط التواصل">
+            <p class="author__role ltr">{{ author.role }}</p>
+            <p class="author__stack ltr">{{ author.stack }}</p>
+
+            <p class="author__bio">{{ author.bio }}</p>
+
+            <ul class="social" aria-label="روابط التواصل">
+                @for (s of author.social; track s.label) {
                 <li>
-                    <a href="https://wa.me/01128467654?text=Hi%20Ibrahim" target="_blank" rel="noopener noreferrer"
-                        class="social-link social-link--wa" aria-label="WhatsApp">
-                        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                    <a class="social__link" [href]="s.href" target="_blank" rel="noopener noreferrer"
+                        [attr.aria-label]="s.label" [attr.data-line]="s.tone">
+                        <i [class]="s.icon" aria-hidden="true"></i>
                     </a>
                 </li>
-                <li>
-                    <a href="https://www.linkedin.com/in/ibrahim-shafiq/" target="_blank" rel="noopener noreferrer"
-                        class="social-link social-link--li" aria-label="LinkedIn">
-                        <i class="fab fa-linkedin-in" aria-hidden="true"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://github.com/IbrahimShafiq4" target="_blank" rel="noopener noreferrer"
-                        class="social-link social-link--gh" aria-label="GitHub">
-                        <i class="fab fa-github" aria-hidden="true"></i>
-                    </a>
-                </li>
+                }
             </ul>
         </div>
     </section>
 
-    <section class="lab-info__block" aria-labelledby="info-repos">
-        <header class="lab-info__header">
-            <span class="lab-info__index" dir="ltr" aria-hidden="true">§01</span>
-            <h2 id="info-repos" class="lab-info__title">أعمال متكاملة</h2>
-            <span class="lab-info__rule" aria-hidden="true"></span>
+    <section class="info__block" aria-labelledby="info-repos">
+        <header class="info__head">
+            <span class="info__dot" data-line="ds" aria-hidden="true"></span>
+            <h2 id="info-repos" class="info__title">أعمال متكاملة</h2>
+            <span class="info__rule" aria-hidden="true"></span>
         </header>
 
-        <ul class="repo-list">
+        <ul class="repos">
+            @for (r of repos; track r.href) {
             <li>
-                <a class="repo" href="https://github.com/IbrahimShafiq4/FullStackProjects" target="_blank"
-                    rel="noopener noreferrer">
-                    <span class="repo__meta" dir="ltr">fullstack</span>
-                    <span class="repo__name">Full-Stack Projects</span>
-                    <span class="repo__desc">Angular + ASP.NET Core</span>
-                    <i class="fa-solid fa-arrow-up-left" aria-hidden="true"></i>
+                <a class="repo" [href]="r.href" target="_blank" rel="noopener noreferrer" [attr.data-line]="r.line">
+                    <span class="repo__dot" aria-hidden="true"></span>
+                    <span class="repo__meta ltr">{{ r.meta }}</span>
+                    <span class="repo__name">{{ r.name }}</span>
+                    <span class="repo__desc ltr">{{ r.desc }}</span>
                 </a>
             </li>
-            <li>
-                <a class="repo" href="https://github.com/IbrahimShafiq4/SignalRProjects" target="_blank"
-                    rel="noopener noreferrer">
-                    <span class="repo__meta" dir="ltr">realtime</span>
-                    <span class="repo__name">SignalR Projects</span>
-                    <span class="repo__desc">WebSockets · Live messaging</span>
-                    <i class="fa-solid fa-arrow-up-left" aria-hidden="true"></i>
-                </a>
-            </li>
-            <li>
-                <a class="repo" href="https://github.com/IbrahimShafiq4/MVCProjects" target="_blank"
-                    rel="noopener noreferrer">
-                    <span class="repo__meta" dir="ltr">mvc</span>
-                    <span class="repo__name">MVC Projects</span>
-                    <span class="repo__desc">Razor Views · EF Core</span>
-                    <i class="fa-solid fa-arrow-up-left" aria-hidden="true"></i>
-                </a>
-            </li>
-            <li>
-                <a class="repo repo--portfolio" href="https://ib-portfolio-indol.vercel.app/workspace" target="_blank"
-                    rel="noopener noreferrer">
-                    <span class="repo__meta" dir="ltr">portfolio</span>
-                    <span class="repo__name">ملف الأعمال الكامل</span>
-                    <span class="repo__desc">كل المشاريع في مكان واحد</span>
-                    <i class="fa-solid fa-arrow-up-left" aria-hidden="true"></i>
-                </a>
-            </li>
+            }
         </ul>
     </section>
 
-    <section class="lab-info__block" aria-labelledby="info-stack">
-        <header class="lab-info__header">
-            <span class="lab-info__index" dir="ltr" aria-hidden="true">§02</span>
-            <h2 id="info-stack" class="lab-info__title">التقنيات</h2>
-            <span class="lab-info__rule" aria-hidden="true"></span>
+    <section class="info__block" aria-labelledby="info-stack">
+        <header class="info__head">
+            <span class="info__dot" data-line="api" aria-hidden="true"></span>
+            <h2 id="info-stack" class="info__title">التقنيات</h2>
+            <span class="info__rule" aria-hidden="true"></span>
         </header>
 
         <div class="stack">
-            @for (group of stack; track group.group) {
+            @for (g of stack; track g.group) {
             <div class="stack__group">
-                <span class="stack__label" dir="ltr">{{ group.group }}</span>
+                <span class="stack__label ltr" [attr.data-line]="g.line">
+                    <span class="stack__dot" aria-hidden="true"></span>
+                    {{ g.group }}
+                </span>
                 <ul class="stack__tags" dir="ltr">
-                    @for (tag of group.tags; track tag) {
+                    @for (tag of g.tags; track tag) {
                     <li class="stack__tag">{{ tag }}</li>
                     }
                 </ul>
@@ -115,12 +76,5 @@
             }
         </div>
     </section>
-
-    @if (visitorCount > 0) {
-    <div class="visitors" dir="ltr">
-        <span class="visitors__label">visitors</span>
-        <span class="visitors__value">{{ visitorCount | number }}</span>
-    </div>
-    }
 
 </div>

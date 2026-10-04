@@ -67,7 +67,6 @@ export class LivePreviewComponent implements AfterViewInit, OnDestroy, OnChanges
   });
 
   constructor() {
-    // Zero-rebuild theme switch: Update tone attribute via postMessage without re-rendering the iframe
     effect(() => {
       const tone = this.resolvedTone();
       if (this.mounted()) {
@@ -77,7 +76,6 @@ export class LivePreviewComponent implements AfterViewInit, OnDestroy, OnChanges
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // Rebuild srcdoc ONLY when HTML, CSS, or JS source change (not on theme change)
     const sourceChanged = changes['html'] || changes['css'] || changes['js'];
     if (sourceChanged && this.mounted()) {
       this.error.set(null);
@@ -176,7 +174,7 @@ export class LivePreviewComponent implements AfterViewInit, OnDestroy, OnChanges
   private sendToneToFrame(tone: string): void {
     try {
       this.iframeHost?.nativeElement?.contentWindow?.postMessage({ type: 'set-tone', tone }, '*');
-    } catch (_) {}
+    } catch (_) { }
   }
 
   private rebuild(): void {
@@ -200,18 +198,21 @@ export class LivePreviewComponent implements AfterViewInit, OnDestroy, OnChanges
 
     const csp =
       "default-src 'none'; " +
+      "base-uri http: https:; " +
       "img-src data: blob: https: http://localhost:* http://127.0.0.1:*; " +
       "style-src 'unsafe-inline' https: http://localhost:* http://127.0.0.1:*; " +
       "script-src 'unsafe-inline'; " +
       "font-src data: https: http://localhost:* http://127.0.0.1:*; " +
       "connect-src 'none';";
 
+    const origin = typeof window !== 'undefined' ? window.location.origin : '';
     const cleanHtml = this.sanitizeForPreview(this.html);
 
     return `<!doctype html>
 <html lang="en" dir="ltr" data-tone="${tone}">
 <head>
 <meta charset="utf-8">
+<base href="${origin}/">
 <meta http-equiv="Content-Security-Policy" content="${csp}">
 <style>
 html {
@@ -292,7 +293,6 @@ body {
   transform: scale(var(--preview-scale));
   transform-origin: 0 0;
   width: calc(100% / var(--preview-scale));
-  height: calc(100vh / var(--preview-scale));
   min-height: calc(100vh / var(--preview-scale));
   max-height: none;
   max-width: none;

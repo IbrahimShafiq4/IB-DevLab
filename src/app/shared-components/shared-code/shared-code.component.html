@@ -3,8 +3,8 @@
     <header class="specimen__head">
 
         <div class="specimen__id">
-            <span class="specimen__tick" aria-hidden="true">§00</span>
-            <span class="specimen__label" dir="ltr">
+            <span class="specimen__dot" aria-hidden="true"></span>
+            <span class="specimen__label ltr">
                 {{ isItProblemSolving ? 'problem-solving'
                 : isItCleanCode ? 'clean-code'
                 : isItCssBattle ? 'css-battle'
@@ -12,11 +12,11 @@
             </span>
             @if (projectDate) {
             <span class="specimen__sep" aria-hidden="true">·</span>
-            <time class="specimen__date" dir="ltr">{{ projectDate }}</time>
+            <time class="specimen__date ltr">{{ projectDate }}</time>
             }
             @if (projectVersion) {
             <span class="specimen__sep" aria-hidden="true">·</span>
-            <span class="specimen__version" dir="ltr">{{ projectVersion }}</span>
+            <span class="specimen__version ltr">{{ projectVersion }}</span>
             }
         </div>
 
@@ -36,29 +36,14 @@
         }
 
         <div class="specimen__actions">
-
-            @if (!isItProblemSolving && !isItCleanCode && !hasLive() && projectOnYoutube) {
+            @if (hasYoutubePreview) {
             <a class="spec-btn spec-btn--primary" [href]="projectOnYoutube" target="_blank" rel="noopener noreferrer">
                 <i class="fa-solid fa-eye" aria-hidden="true"></i>
                 <span>معاينة على المنصة</span>
             </a>
             }
 
-            @if (isItProblemSolving) {
-            <button type="button" class="spec-btn spec-btn--ghost" (click)="scrollToSource()">
-                <i class="fa-solid fa-brain" aria-hidden="true"></i>
-                <span>الحل</span>
-            </button>
-            }
-
-            @if (isItCleanCode) {
-            <button type="button" class="spec-btn spec-btn--ghost" (click)="scrollToSource()">
-                <i class="fa-solid fa-broom" aria-hidden="true"></i>
-                <span>الدليل</span>
-            </button>
-            }
-
-            @if (isProjectHasNotAssists && !isItProblemSolving && !isItCleanCode) {
+            @if (isItProblemSolving || isItCleanCode || isProjectHasNotAssists) {
             <button type="button" class="spec-btn spec-btn--ghost" (click)="scrollToSource()">
                 <i class="fa-solid fa-code" aria-hidden="true"></i>
                 <span>الكود</span>
@@ -74,7 +59,6 @@
 
     @if (hasLive() && !isItProblemSolving && !isItCleanCode) {
     <section class="specimen__live" aria-label="المعاينة الحيّة">
-
         <div class="specimen__live-preview">
             <div class="specimen__stage">
                 <app-live-preview [html]="liveHtmlSource()" [css]="liveCssSource()" [js]="liveJsSource()"
@@ -98,7 +82,6 @@
             <app-editable-code-panel [files]="editedFiles()" (codeChange)="onCodeChange($event)"
                 (resetRequested)="onResetCode()" />
         </div>
-
     </section>
     }
 
@@ -107,7 +90,7 @@
 
         <section class="sect">
             <header class="sect__head">
-                <span class="sect__tick" aria-hidden="true">§01</span>
+                <span class="sect__dot" data-line="algo" aria-hidden="true"></span>
                 <h2 class="sect__title">المسألة</h2>
                 <span class="sect__rule" aria-hidden="true"></span>
             </header>
@@ -116,7 +99,7 @@
 
         <section class="sect">
             <header class="sect__head">
-                <span class="sect__tick" aria-hidden="true">§02</span>
+                <span class="sect__dot" data-line="algo" aria-hidden="true"></span>
                 <h2 class="sect__title">الفكرة العامة</h2>
                 <span class="sect__rule" aria-hidden="true"></span>
             </header>
@@ -125,7 +108,7 @@
 
         <section class="sect">
             <header class="sect__head">
-                <span class="sect__tick" aria-hidden="true">§03</span>
+                <span class="sect__dot" data-line="algo" aria-hidden="true"></span>
                 <h2 class="sect__title">فكرة الحل</h2>
                 <span class="sect__rule" aria-hidden="true"></span>
             </header>
@@ -134,14 +117,14 @@
 
         <section class="sect">
             <header class="sect__head">
-                <span class="sect__tick" aria-hidden="true">§04</span>
+                <span class="sect__dot" data-line="ds" aria-hidden="true"></span>
                 <h2 class="sect__title">الخطوات</h2>
                 <span class="sect__rule" aria-hidden="true"></span>
             </header>
             <ol class="steps">
                 @for (step of problemSolvingContent.steps; track $index) {
                 <li class="steps__item">
-                    <span class="steps__num" dir="ltr">{{ $index + 1 }}</span>
+                    <span class="steps__num ltr">{{ $index + 1 }}</span>
                     <span class="steps__text">{{ step }}</span>
                 </li>
                 }
@@ -151,19 +134,18 @@
         @if (problemSolvingContent.example) {
         <section class="sect">
             <header class="sect__head">
-                <span class="sect__tick" aria-hidden="true">§05</span>
+                <span class="sect__dot" data-line="ds" aria-hidden="true"></span>
                 <h2 class="sect__title">مثال</h2>
                 <span class="sect__rule" aria-hidden="true"></span>
             </header>
-
             <div class="example">
                 <div class="example__row">
-                    <span class="example__label">Input</span>
-                    <code class="example__code" dir="ltr">{{ problemSolvingContent.example.input }}</code>
+                    <span class="example__label ltr">Input</span>
+                    <code class="example__code ltr">{{ problemSolvingContent.example.input }}</code>
                 </div>
                 <div class="example__row">
-                    <span class="example__label">output</span>
-                    <code class="example__code" dir="ltr">{{ problemSolvingContent.example.output }}</code>
+                    <span class="example__label ltr">Output</span>
+                    <code class="example__code ltr">{{ problemSolvingContent.example.output }}</code>
                 </div>
                 <div class="example__explain">
                     <strong>الشرح</strong>
@@ -175,26 +157,25 @@
 
         <section class="sect">
             <header class="sect__head">
-                <span class="sect__tick" aria-hidden="true">§06</span>
-                <h2 class="sect__title">Time Complexity</h2>
+                <span class="sect__dot" data-line="ds" aria-hidden="true"></span>
+                <h2 class="sect__title">التعقيد</h2>
                 <span class="sect__rule" aria-hidden="true"></span>
             </header>
-
             <div class="complexity">
                 <div class="complexity__card">
                     <span class="complexity__label">الوقت</span>
-                    <strong class="complexity__value" dir="ltr">{{ problemSolvingContent.complexity.time }}</strong>
+                    <strong class="complexity__value ltr">{{ problemSolvingContent.complexity.time }}</strong>
                 </div>
                 <div class="complexity__card">
                     <span class="complexity__label">المساحة</span>
-                    <strong class="complexity__value" dir="ltr">{{ problemSolvingContent.complexity.space }}</strong>
+                    <strong class="complexity__value ltr">{{ problemSolvingContent.complexity.space }}</strong>
                 </div>
             </div>
         </section>
 
         <section class="sect">
             <header class="sect__head">
-                <span class="sect__tick" aria-hidden="true">§07</span>
+                <span class="sect__dot" data-line="api" aria-hidden="true"></span>
                 <h2 class="sect__title">الكود</h2>
                 <span class="sect__rule" aria-hidden="true"></span>
             </header>
@@ -219,7 +200,7 @@
 
         <section class="sect">
             <header class="sect__head">
-                <span class="sect__tick" aria-hidden="true">§08</span>
+                <span class="sect__dot" data-line="api" aria-hidden="true"></span>
                 <h2 class="sect__title">ما تعلّمته</h2>
                 <span class="sect__rule" aria-hidden="true"></span>
             </header>
@@ -232,22 +213,14 @@
                 }
             </ul>
         </section>
-
-        <footer class="specimen__foot">
-            <button type="button" class="spec-btn spec-btn--ghost" (click)="onNavigateBack()">
-                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-                <span>رجوع</span>
-            </button>
-        </footer>
     </div>
     }
 
     @if (isItCleanCode && cleanCodeContent) {
     <div class="specimen__body" dir="rtl">
-
         <section class="sect">
             <header class="sect__head">
-                <span class="sect__tick" aria-hidden="true">§01</span>
+                <span class="sect__dot" data-line="algo" aria-hidden="true"></span>
                 <h2 class="sect__title">مقدمة</h2>
                 <span class="sect__rule" aria-hidden="true"></span>
             </header>
@@ -256,11 +229,11 @@
 
         <section class="sect">
             <header class="sect__head">
-                <span class="sect__tick" aria-hidden="true">§02</span>
+                <span class="sect__dot" data-line="algo" aria-hidden="true"></span>
                 <h2 class="sect__title">القصة</h2>
                 <span class="sect__rule" aria-hidden="true"></span>
             </header>
-            <blockquote class="story">
+            <blockquote class="story-quote">
                 <p>{{ cleanCodeContent.story }}</p>
             </blockquote>
         </section>
@@ -271,11 +244,7 @@
                 <div class="principle__icon" aria-hidden="true">
                     <i [class]="principle.icon"></i>
                 </div>
-                <div class="principle__title-wrap">
-                    <span class="principle__num" dir="ltr">
-                        §{{ ($index + 3) < 10 ? '0' + ($index + 3) : ($index + 3) }} </span>
-                            <h3 class="principle__title">{{ principle.title }}</h3>
-                </div>
+                <h3 class="principle__title">{{ principle.title }}</h3>
             </header>
 
             <p class="principle__desc">{{ principle.description }}</p>
@@ -285,13 +254,6 @@
                     <header class="code-panel__head" dir="ltr">
                         <i class="fa-solid fa-circle-xmark" aria-hidden="true"></i>
                         <span class="code-panel__file">{{ principle.badExample.title }}</span>
-                        <button type="button" class="code-panel__copy"
-                            (click)="onCopy(principle.badExample.code, $index * 2)"
-                            [attr.aria-label]="copiedIndex !== $index * 2 ? 'نسخ' : 'تم النسخ'">
-                            <i class="fa-solid" [class.fa-copy]="copiedIndex !== $index * 2"
-                                [class.fa-check]="copiedIndex === $index * 2" aria-hidden="true"></i>
-                            <span>{{ copiedIndex !== $index * 2 ? 'copy' : 'copied' }}</span>
-                        </button>
                     </header>
                     <pre class="code-panel__pre" dir="ltr"><code class="language-javascript"
                         [textContent]="principle.badExample.code"></code></pre>
@@ -301,13 +263,6 @@
                     <header class="code-panel__head" dir="ltr">
                         <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
                         <span class="code-panel__file">{{ principle.goodExample.title }}</span>
-                        <button type="button" class="code-panel__copy"
-                            (click)="onCopy(principle.goodExample.code, $index * 2 + 1)"
-                            [attr.aria-label]="copiedIndex !== $index * 2 + 1 ? 'نسخ' : 'تم النسخ'">
-                            <i class="fa-solid" [class.fa-copy]="copiedIndex !== $index * 2 + 1"
-                                [class.fa-check]="copiedIndex === $index * 2 + 1" aria-hidden="true"></i>
-                            <span>{{ copiedIndex !== $index * 2 + 1 ? 'copy' : 'copied' }}</span>
-                        </button>
                     </header>
                     <pre class="code-panel__pre" dir="ltr"><code class="language-javascript"
                         [textContent]="principle.goodExample.code"></code></pre>
@@ -318,17 +273,6 @@
                 <i class="fa-solid fa-lightbulb" aria-hidden="true"></i>
                 <p>{{ principle.explanation }}</p>
             </div>
-
-            @if (principle.tips && principle.tips.length) {
-            <ul class="tips">
-                @for (tip of principle.tips; track $index) {
-                <li class="tips__item">
-                    <i class="fa-solid fa-check-double" aria-hidden="true"></i>
-                    <span>{{ tip }}</span>
-                </li>
-                }
-            </ul>
-            }
         </section>
         }
 
@@ -342,7 +286,7 @@
 
         <section class="sect">
             <header class="sect__head">
-                <span class="sect__tick" aria-hidden="true">§K</span>
+                <span class="sect__dot" data-line="api" aria-hidden="true"></span>
                 <h2 class="sect__title">الخلاصات</h2>
                 <span class="sect__rule" aria-hidden="true"></span>
             </header>
@@ -355,53 +299,18 @@
                 }
             </ul>
         </section>
-
-        @if (cleanCodeContent.references?.length) {
-        <section class="sect">
-            <header class="sect__head">
-                <span class="sect__tick" aria-hidden="true">§R</span>
-                <h2 class="sect__title">المراجع</h2>
-                <span class="sect__rule" aria-hidden="true"></span>
-            </header>
-            <ul class="learned learned--refs">
-                @for (ref of cleanCodeContent.references!; track $index) {
-                <li class="learned__item">
-                    <i class="fa-solid fa-book" aria-hidden="true"></i>
-                    <span>{{ ref }}</span>
-                </li>
-                }
-            </ul>
-        </section>
-        }
-
-        @if (cleanCodeContent.hashtags?.length) {
-        <div class="hashtags" dir="ltr">
-            @for (tag of cleanCodeContent.hashtags!; track $index) {
-            <span class="hashtags__tag">#{{ tag }}</span>
-            }
-        </div>
-        }
-
-        <footer class="specimen__foot">
-            <button type="button" class="spec-btn spec-btn--ghost" (click)="onNavigateBack()">
-                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-                <span>رجوع</span>
-            </button>
-        </footer>
     </div>
     }
 
     @if (!isItProblemSolving && !isItCleanCode && !hasLive()) {
     <div class="specimen__body">
-
         @for (htmlCode of HTMLCodeSnippet; track $index) {
         <section class="sect">
             <header class="sect__head">
-                <span class="sect__tick" dir="ltr" aria-hidden="true">§H{{ $index + 1 }}</span>
+                <span class="sect__dot" data-line="algo" aria-hidden="true"></span>
                 <h2 class="sect__title">{{ htmlCode.codeTitle }}</h2>
                 <span class="sect__rule" aria-hidden="true"></span>
             </header>
-
             <div class="code-panel">
                 <header class="code-panel__head" dir="ltr">
                     <span class="code-panel__lang">html</span>
@@ -420,11 +329,10 @@
         @for (cssCode of CSSCodeSnippet; track $index) {
         <section class="sect">
             <header class="sect__head">
-                <span class="sect__tick" dir="ltr" aria-hidden="true">§S{{ $index + 1 }}</span>
+                <span class="sect__dot" data-line="ds" aria-hidden="true"></span>
                 <h2 class="sect__title">{{ cssCode.codeTitle }}</h2>
                 <span class="sect__rule" aria-hidden="true"></span>
             </header>
-
             <div class="code-panel">
                 <header class="code-panel__head" dir="ltr">
                     <span class="code-panel__lang">css</span>
@@ -443,11 +351,10 @@
         @for (jsCode of JSCodeSnippet; track $index) {
         <section class="sect">
             <header class="sect__head">
-                <span class="sect__tick" dir="ltr" aria-hidden="true">§J{{ $index + 1 }}</span>
+                <span class="sect__dot" data-line="api" aria-hidden="true"></span>
                 <h2 class="sect__title">{{ jsCode.codeTitle }}</h2>
                 <span class="sect__rule" aria-hidden="true"></span>
             </header>
-
             <div class="code-panel">
                 <header class="code-panel__head" dir="ltr">
                     <span class="code-panel__lang">javascript</span>
@@ -462,38 +369,19 @@
             </div>
         </section>
         }
-
-        @if (isProjectHasNotAssists) {
-        <section class="sect">
-            <header class="sect__head">
-                <span class="sect__tick" aria-hidden="true">§Z</span>
-                <h2 class="sect__title">ملفات المشروع</h2>
-                <span class="sect__rule" aria-hidden="true"></span>
-            </header>
-
-            <div class="zip">
-                <div class="zip__icon" aria-hidden="true">
-                    <i class="fa-solid fa-file-zipper"></i>
-                </div>
-                <div class="zip__info" dir="ltr">
-                    <span class="zip__title">Complete Project Files</span>
-                    <span class="zip__sub">Includes all source code and assets</span>
-                </div>
-                <button type="button" class="spec-btn spec-btn--primary" (click)="downloadZip()">
-                    <i class="fa-solid fa-download" aria-hidden="true"></i>
-                    <span>تحميل</span>
-                </button>
-            </div>
-        </section>
-        }
-
-        <footer class="specimen__foot">
-            <button type="button" class="spec-btn spec-btn--ghost" (click)="onNavigateBack()">
-                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-                <span>رجوع</span>
-            </button>
-        </footer>
     </div>
     }
+
+    @if (storyData(); as story) {
+    <app-station-story [story]="story.story" [complexity]="story.complexity" [practice]="story.practice"
+        [quiz]="story.quiz" [next]="story.next" [nextLabel]="story.nextLabel" />
+    }
+
+    <footer class="specimen__foot">
+        <button type="button" class="spec-btn spec-btn--ghost" (click)="onNavigateBack()">
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            <span>رجوع</span>
+        </button>
+    </footer>
 
 </main>

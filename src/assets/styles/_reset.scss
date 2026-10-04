@@ -4,6 +4,11 @@
     box-sizing: border-box;
 }
 
+* {
+    margin: 0;
+    padding: 0;
+}
+
 html {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
@@ -11,24 +16,17 @@ html {
 }
 
 body {
-    margin: 0;
     min-height: 100dvh;
     font-family: var(--font-ui);
-    color: var(--text-primary);
+    color: var(--ink-primary);
+    background-color: var(--bg-void);
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
 
-    background-color: var(--bg-main);
-    background-image:
-        repeating-linear-gradient(to bottom, var(--grid-1), var(--grid-1) 1px, transparent 1px, transparent 10px),
-        repeating-linear-gradient(to right, var(--grid-1), var(--grid-1) 1px, transparent 1px, transparent 10px),
-        repeating-linear-gradient(to bottom, var(--grid-2), var(--grid-2) 1px, transparent 1px, transparent 50px),
-        repeating-linear-gradient(to right, var(--grid-2), var(--grid-2) 1px, transparent 1px, transparent 50px),
-        radial-gradient(80% 60% at 50% 30%, var(--bg-lift) 0%, var(--bg-main) 100%);
 
-    background-attachment: fixed;
     transition:
         background-color var(--dur-base) var(--ease-out),
         color var(--dur-base) var(--ease-out);
@@ -64,7 +62,7 @@ textarea {
 button {
     cursor: pointer;
     background: none;
-    border: none;
+    border: 0;
     padding: 0;
 }
 
@@ -89,27 +87,30 @@ canvas {
 :focus-visible {
     outline: 2px solid var(--focus-ring);
     outline-offset: 2px;
-    border-radius: var(--r-1);
+    border-radius: var(--r-sm);
 }
 
 [lang="ar"],
-:root[lang="ar"] {
+:root {
+    font-feature-settings:
+        "kern" 1,
+        "liga" 1;
     letter-spacing: normal;
 }
 
 ::selection {
-    background-color: var(--selection);
-    color: var(--text-primary);
+    background-color: var(--selection-bg);
+    color: var(--ink-primary);
 }
 
 * {
     scrollbar-width: thin;
-    scrollbar-color: var(--border-strong) transparent;
+    scrollbar-color: var(--rule-solid) transparent;
 }
 
 *::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
 }
 
 *::-webkit-scrollbar-track {
@@ -117,30 +118,18 @@ canvas {
 }
 
 *::-webkit-scrollbar-thumb {
-    background: var(--border-strong);
-    border-radius: var(--r-1);
-    border: 2px solid transparent;
-    background-clip: padding-box;
+    background: var(--rule-solid);
+    border-radius: var(--r-sm);
 }
 
 *::-webkit-scrollbar-thumb:hover {
-    background: var(--text-muted);
-    background-clip: padding-box;
-    border: 2px solid transparent;
+    background: var(--ink-tertiary);
 }
 
-*::-webkit-scrollbar-corner {
-    background: transparent;
-}
-
-[dir="ltr"] {
-    unicode-bidi: isolate;
-}
-
+[dir="ltr"],
 code,
 pre,
 kbd,
 samp {
-    direction: ltr;
     unicode-bidi: isolate;
 }
