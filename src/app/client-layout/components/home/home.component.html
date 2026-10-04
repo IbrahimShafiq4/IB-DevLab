@@ -1,115 +1,148 @@
+<!-- ═══════════════════════════════════════════════
+     HERO
+     ═══════════════════════════════════════════════ -->
 <article class="hero" aria-labelledby="hero-title">
 
-    <div class="hero__id">
-        <span class="hero__tick" aria-hidden="true">§00</span>
-        <span class="hero__label">معمل حيّ · IBDevLab</span>
+    <!-- dot-grid pattern -->
+    <div class="hero__grid" aria-hidden="true"></div>
+
+    <!-- glow orbs -->
+    <div class="hero__orb hero__orb--a" aria-hidden="true"></div>
+    <div class="hero__orb hero__orb--b" aria-hidden="true"></div>
+
+    <div class="hero__inner">
+
+        <div class="hero__eyebrow">
+            <span class="hero__pulse" aria-hidden="true"></span>
+            <span class="hero__eyebrow-text" dir="ltr">IBDevLab · معمل حيّ</span>
+        </div>
+
+        <h1 id="hero-title" class="hero__title">
+            <span class="hero__title-line">مكتبة</span>
+            <span class="hero__title-accent">عيّنات الكود</span>
+        </h1>
+
+        <p class="hero__lead">
+            كل عيّنة كود حقيقي بيشتغل قدامك — تشوفه، تجرّبه، تعدّله، وتاخده.
+            <br>
+            من المكوّنات لـ&nbsp;<span dir="ltr">CSS Battles</span>&nbsp;لحل مسائل الـ&nbsp;<span dir="ltr">LeetCode</span>.
+        </p>
+
+        <div class="hero__actions">
+            <a routerLink="." fragment="catalog" class="hero__cta hero__cta--primary" id="hero-cta-catalog">
+                <span>تصفّح السجل</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <polyline points="9 18 15 12 9 6" />
+                </svg>
+            </a>
+            <a routerLink="." fragment="about" class="hero__cta hero__cta--ghost" id="hero-cta-about">
+                عن المعمل
+            </a>
+        </div>
+
+        <ul class="hero__stats" aria-label="إحصائيات المعمل">
+            <li class="hero__stat">
+                <span class="hero__stat-num" dir="ltr">{{ fmt(allSpecimens.length) }}</span>
+                <span class="hero__stat-lbl">عيّنة كود</span>
+            </li>
+            <li class="hero__stat-sep" aria-hidden="true"></li>
+            <li class="hero__stat">
+                <span class="hero__stat-num" dir="ltr">{{ fmt(stageSpecimens().length) }}</span>
+                <span class="hero__stat-lbl">معاينة حيّة</span>
+            </li>
+            <li class="hero__stat-sep" aria-hidden="true"></li>
+            <li class="hero__stat">
+                <span class="hero__stat-num" dir="ltr">{{ fmt(categories.length) }}</span>
+                <span class="hero__stat-lbl">فئة</span>
+            </li>
+        </ul>
+
     </div>
-
-    <h1 id="hero-title" class="hero__title">
-        Ib-Devlab
-        <span class="hero__title-accent">Frontend</span>
-    </h1>
-
-    <p class="hero__lead">
-        كل عيّنة كود حقيقي بيشتغل قدامك. تشوفه، تجرّبه، تعدّله، وتاخده.
-        من التبويبات لـ CSS Battles لحل مسائل الـ LeetCode — كلها في مكان واحد.
-    </p>
-
-    <ul class="hero__stats">
-        <li class="hero__stat">
-            <span class="hero__stat-num">{{ fmt(allSpecimens.length) }}</span>
-            <span class="hero__stat-lbl">عيّنة</span>
-        </li>
-        <li class="hero__stat">
-            <span class="hero__stat-num">{{ fmt(stageSpecimens().length) }}</span>
-            <span class="hero__stat-lbl">حيّة</span>
-        </li>
-        <li class="hero__stat">
-            <span class="hero__stat-num">{{ fmt(categories.length) }}</span>
-            <span class="hero__stat-lbl">فئة</span>
-        </li>
-    </ul>
-
 </article>
 
-<section class="live-strip-section" aria-label="الشريط الحي المعروض">
-    <header class="live-strip__head">
-        <span class="live-strip__tag">تجارب مميزة</span>
-        <h2 class="live-strip__title">شريط المعاينة التفاعلي</h2>
-    </header>
-    <div class="live-strip__container">
-        <div class="live-strip__track">
-            @for (s of stripSpecimens(); track s.id) {
-            <div class="live-strip__tile">
-                <app-shared-card [id]="s.id" [kind]="s.kind" [title]="s.title" [description]="s.description" [tags]="s.tags"
-                    [project_demo]="s.href" [projectUrl]="s.external || '#'" [liveHtml]="s.liveHtml || ''"
-                    [liveCss]="s.liveCss || ''" [liveJs]="s.liveJs || ''" [stage]="s.stage" />
-            </div>
-            }
-        </div>
-    </div>
-</section>
-
-<nav class="marquee" aria-label="فئات المعمل الرئيسية">
+<!-- ═══════════════════════════════════════════════
+     MARQUEE CATEGORY STRIP
+     ═══════════════════════════════════════════════ -->
+<nav class="marquee" aria-label="فئات المعمل">
     <div class="marquee__track">
+        <!-- Group 1: real links -->
         <div class="marquee__group">
-            @for (cat of marqueeCategories(); track $index) {
-            <a routerLink="/" fragment="catalog" (click)="setCategory(cat.key)" class="marquee__link">
-                <span class="marquee__name" dir="auto">{{ cat.label }}</span>
-                <span class="marquee__count" dir="ltr">{{ fmt(cat.count) }}</span>
+            @for (cat of marqueeCategories(); track cat.key + '-' + $index) {
+            <a routerLink="." fragment="catalog" (click)="setCategory(cat.key)" class="marquee__item">
+                <span class="marquee__item-dot" aria-hidden="true"></span>
+                <span class="marquee__item-name" dir="auto">{{ cat.label }}</span>
+                <span class="marquee__item-badge" dir="ltr">{{ fmt(cat.count) }}</span>
             </a>
-            <span class="marquee__divider" aria-hidden="true"></span>
             }
         </div>
+        <!-- Group 2: aria-hidden clone for seamless loop -->
         <div class="marquee__group" aria-hidden="true">
-            @for (cat of marqueeCategories(); track $index + '-dup') {
-            <a routerLink="/" fragment="catalog" (click)="setCategory(cat.key)" class="marquee__link" tabindex="-1">
-                <span class="marquee__name" dir="auto">{{ cat.label }}</span>
-                <span class="marquee__count" dir="ltr">{{ fmt(cat.count) }}</span>
+            @for (cat of marqueeCategories(); track cat.key + '-d-' + $index) {
+            <a routerLink="." fragment="catalog" (click)="setCategory(cat.key)" class="marquee__item" tabindex="-1">
+                <span class="marquee__item-dot" aria-hidden="true"></span>
+                <span class="marquee__item-name" dir="auto">{{ cat.label }}</span>
+                <span class="marquee__item-badge" dir="ltr">{{ fmt(cat.count) }}</span>
             </a>
-            <span class="marquee__divider" aria-hidden="true"></span>
             }
         </div>
     </div>
 </nav>
 
-<section id="catalog" class="home-section">
+<!-- ═══════════════════════════════════════════════
+     CATALOG
+     ═══════════════════════════════════════════════ -->
+<section id="catalog" class="catalog-section">
 
-    <header class="section-head">
-        <div class="section-head__id">
-            <span class="section-head__tick" aria-hidden="true">§01</span>
-            <h2 class="section-head__title">السِّجل الكامل</h2>
+    <header class="catalog-head">
+        <div class="catalog-head__left">
+            <span class="catalog-head__eyebrow" aria-hidden="true">§01</span>
+            <h2 class="catalog-head__title">السِّجل الكامل</h2>
         </div>
-        <span class="section-head__count">{{ fmt(filtered().length) }} عيّنة</span>
+        <span class="catalog-head__count" dir="ltr" aria-live="polite">
+            {{ fmt(filtered().length) }} عيّنة
+        </span>
     </header>
 
-    <nav class="filters" aria-label="تصفية الفئات">
-        <ul class="filters__list">
+    <!-- Filter chips -->
+    <nav class="filter-rail" aria-label="تصفية الفئات" id="filter-rail">
+        <ul class="filter-rail__list" role="list">
             @for (c of categories; track c.key) {
             <li>
-                <button type="button" class="chip" [class.is-active]="activeCategory() === c.key"
-                    [attr.aria-pressed]="activeCategory() === c.key" (click)="setCategory(c.key)">
-                    <span class="chip__label">{{ c.label }}</span>
-                    <span class="chip__count">{{ fmt(c.count) }}</span>
+                <button
+                    type="button"
+                    class="chip"
+                    [class.chip--active]="activeCategory() === c.key"
+                    [attr.aria-pressed]="activeCategory() === c.key"
+                    (click)="setCategory(c.key)"
+                    [id]="'chip-' + c.key">
+                    {{ c.label }}
+                    <span class="chip__count" dir="ltr">{{ fmt(c.count) }}</span>
                 </button>
             </li>
             }
         </ul>
     </nav>
 
-    <div class="search">
-        <label class="search__field">
-            <span class="search__icon" aria-hidden="true">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
-                    <circle cx="11" cy="11" r="7" />
-                    <line x1="20" y1="20" x2="16.65" y2="16.65" />
-                </svg>
-            </span>
-            <input type="search" placeholder="ابحث عن مكوّن أو نمط أو فئة…" [value]="searchQuery()"
-                (input)="onSearch($event)" aria-label="بحث في السجل">
+    <!-- Search -->
+    <div class="search-bar" role="search">
+        <label class="search-bar__field" for="catalog-search">
+            <svg class="search-bar__icon" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                <circle cx="11" cy="11" r="7" />
+                <line x1="20" y1="20" x2="16.65" y2="16.65" />
+            </svg>
+            <input
+                id="catalog-search"
+                type="search"
+                class="search-bar__input"
+                placeholder="ابحث عن مكوّن، نمط، أو فئة…"
+                [value]="searchQuery()"
+                (input)="onSearch($event)"
+                aria-label="بحث في سجل العيّنات"
+                autocomplete="off">
             @if (searchQuery()) {
-            <button type="button" class="search__clear" (click)="resetFilters()" aria-label="امسح البحث">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <button type="button" class="search-bar__clear" (click)="resetFilters()" aria-label="امسح البحث" id="search-clear-btn">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <line x1="18" y1="6" x2="6" y2="18" />
                     <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
@@ -118,40 +151,47 @@
         </label>
     </div>
 
+    <!-- Grid -->
     @if (paged().length) {
 
-    <div class="grid">
+    <div class="catalog-grid" role="list" aria-label="نتائج البحث">
         @for (s of paged(); track s.id) {
-        <app-shared-card [id]="s.id" [kind]="s.kind" [title]="s.title" [description]="s.description" [tags]="s.tags"
-            [project_demo]="s.href" [projectUrl]="s.external || '#'" [liveHtml]="s.liveHtml || ''"
-            [liveCss]="s.liveCss || ''" [liveJs]="s.liveJs || ''" [stage]="s.stage" />
+        <div role="listitem">
+            <app-shared-card
+                [id]="s.id" [kind]="s.kind" [title]="s.title" [description]="s.description" [tags]="s.tags"
+                [project_demo]="s.href" [projectUrl]="s.external || '#'"
+                [liveHtml]="s.liveHtml || ''" [liveCss]="s.liveCss || ''" [liveJs]="s.liveJs || ''"
+                [stage]="s.stage" />
+        </div>
         }
     </div>
 
+    <!-- Pagination -->
     @if (totalPages() > 1) {
-    <nav class="pager" aria-label="التنقل بين الصفحات">
+    <nav class="pager" aria-label="التنقل بين صفحات السجل">
 
-        <button type="button" class="pager__arrow" (click)="prevPage()" [disabled]="currentPage() === 1"
-            aria-label="السابق">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+        <button type="button" class="pager__step" (click)="prevPage()" [disabled]="currentPage() === 1"
+            aria-label="الصفحة السابقة" id="pager-prev">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="15 18 9 12 15 6" />
             </svg>
         </button>
 
-        <ul class="pager__list">
+        <ul class="pager__nums" role="list">
             @for (p of pageNumbers(); track p) {
             <li>
-                <button type="button" class="pager__num" [class.is-active]="p === currentPage()"
-                    [attr.aria-current]="p === currentPage() ? 'page' : null" (click)="goToPage(p)">
+                <button type="button" class="pager__num" [class.pager__num--active]="p === currentPage()"
+                    [attr.aria-current]="p === currentPage() ? 'page' : null"
+                    (click)="goToPage(p)" [id]="'pager-page-' + p">
                     {{ fmt(p) }}
                 </button>
             </li>
             }
         </ul>
 
-        <button type="button" class="pager__arrow" (click)="nextPage()" [disabled]="currentPage() === totalPages()"
-            aria-label="التالي">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+        <button type="button" class="pager__step" (click)="nextPage()" [disabled]="currentPage() === totalPages()"
+            aria-label="الصفحة التالية" id="pager-next">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="9 18 15 12 9 6" />
             </svg>
         </button>
@@ -161,10 +201,17 @@
 
     } @else {
 
-    <div class="empty" role="status">
-        <p class="empty__msg">مفيش نتايج مطابقة.</p>
-        <button type="button" class="empty__reset" (click)="resetFilters()">
-            امسح الفلتر
+    <div class="empty-state" role="status" aria-live="polite">
+        <div class="empty-state__icon" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25">
+                <circle cx="11" cy="11" r="7" />
+                <line x1="20" y1="20" x2="16.65" y2="16.65" />
+                <line x1="8" y1="11" x2="14" y2="11" />
+            </svg>
+        </div>
+        <p class="empty-state__msg">لا توجد عيّنات مطابقة لهذا البحث.</p>
+        <button type="button" class="empty-state__reset" (click)="resetFilters()" id="empty-reset-btn">
+            امسح الفلتر وأعِد الكل
         </button>
     </div>
 
@@ -172,30 +219,79 @@
 
 </section>
 
-<section id="about" class="home-section">
+<!-- ═══════════════════════════════════════════════
+     ABOUT
+     ═══════════════════════════════════════════════ -->
+<section id="about" class="about-section">
 
-    <header class="section-head">
-        <div class="section-head__id">
-            <span class="section-head__tick" aria-hidden="true">§02</span>
-            <h2 class="section-head__title">عن المعمل</h2>
+    <header class="catalog-head">
+        <div class="catalog-head__left">
+            <span class="catalog-head__eyebrow" aria-hidden="true">§02</span>
+            <h2 class="catalog-head__title">عن المعمل</h2>
         </div>
     </header>
 
-    <div class="about">
-        <p>
-            <strong>IBDevLab</strong> معمل شخصي بأوثّق فيه تجارب الواجهات الأمامية،
-            حلول المشاكل البرمجية، وملاحظات الكود النظيف.
-        </p>
-        <p>
-            كل عيّنة مستقلة: <strong>معاينة حيّة</strong> بتشتغل من كودها الحقيقي،
-            وكود جاهز للنسخ والتعديل.
-        </p>
-        <p>
-            <a href="https://ib-portfolio-indol.vercel.app/workspace" target="_blank" rel="noopener noreferrer">
-                ملف الأعمال الكامل
-                <i class="fa-solid fa-arrow-up-left" aria-hidden="true"></i>
+    <div class="about-grid">
+
+        <div class="about-card about-card--main">
+            <div class="about-card__icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <polyline points="16 18 22 12 16 6" />
+                    <polyline points="8 6 2 12 8 18" />
+                </svg>
+            </div>
+            <h3 class="about-card__title">ما هو IBDevLab؟</h3>
+            <p class="about-card__body">
+                معمل شخصي أوثّق فيه تجارب الواجهات الأمامية، حلول المشاكل البرمجية، وملاحظات الكود النظيف.
+                كل عيّنة مستقلة: <strong>معاينة حيّة</strong> بتشتغل من كودها الحقيقي، وكود جاهز للنسخ والتعديل.
+            </p>
+        </div>
+
+        <div class="about-card">
+            <div class="about-card__icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="3" y="3" width="7" height="7" rx="1" />
+                    <rect x="14" y="3" width="7" height="7" rx="1" />
+                    <rect x="3" y="14" width="7" height="7" rx="1" />
+                    <rect x="14" y="14" width="7" height="7" rx="1" />
+                </svg>
+            </div>
+            <h3 class="about-card__title">الفئات</h3>
+            <ul class="about-card__tags">
+                @for (c of categories; track c.key) {
+                <li>
+                    <button type="button" class="chip chip--sm" (click)="setCategory(c.key)"
+                        [class.chip--active]="activeCategory() === c.key">
+                        {{ c.label }}
+                        <span class="chip__count" dir="ltr">{{ fmt(c.count) }}</span>
+                    </button>
+                </li>
+                }
+            </ul>
+        </div>
+
+        <div class="about-card">
+            <div class="about-card__icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="2" y1="12" x2="22" y2="12" />
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                </svg>
+            </div>
+            <h3 class="about-card__title">ملف الأعمال</h3>
+            <p class="about-card__body">
+                شوف شغلي الكامل، مشاريعي، وخبرتي في تطوير الواجهات.
+            </p>
+            <a href="https://ib-portfolio-indol.vercel.app/workspace" target="_blank" rel="noopener noreferrer"
+                class="about-card__link" id="about-portfolio-link">
+                <span>ملف الأعمال الكامل</span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <line x1="7" y1="17" x2="17" y2="7" />
+                    <polyline points="7 7 17 7 17 17" />
+                </svg>
             </a>
-        </p>
+        </div>
+
     </div>
 
 </section>

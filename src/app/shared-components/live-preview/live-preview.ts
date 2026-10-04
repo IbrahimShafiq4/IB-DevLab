@@ -110,7 +110,7 @@ export class LivePreviewComponent implements AfterViewInit, OnDestroy, OnChanges
           }
         }
       },
-      { rootMargin: '200px 0px', threshold: [0, 0.01] }
+      { rootMargin: '80px 0px', threshold: [0, 0.01] }
     );
 
     this.observer.observe(this.elRef.nativeElement);

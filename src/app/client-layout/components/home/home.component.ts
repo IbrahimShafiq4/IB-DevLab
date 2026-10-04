@@ -42,13 +42,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   readonly allSpecimens = SPECIMENS;
 
-  readonly stageSpecimens = computed(() =>
-    SPECIMENS.filter(s => !!s.source)
-  );
-
-  readonly stripSpecimens = computed(() =>
-    SPECIMENS.filter(s => !!s.source).slice(0, 6)
-  );
+  // Static — SPECIMENS never mutates at runtime, no need for computed()
+  private readonly _liveSpecimens = SPECIMENS.filter(s => !!s.source);
+  readonly stageSpecimens = signal(this._liveSpecimens);
+  readonly stripSpecimens = signal(this._liveSpecimens.slice(0, 6));
 
   readonly activeCategory = signal<Category>('all');
   readonly searchQuery = signal('');
