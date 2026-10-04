@@ -62,12 +62,12 @@ export class HomeComponent {
     const kinds: Category[] = ['all', 'component', 'css-battle', 'problem-solving', 'clean-code', 'fullstack'];
 
     const labels: Record<Category, string> = {
-      'all': 'جميع العيّنات',
-      'component': 'مكوّنات الواجهة',
-      'css-battle': 'معارك CSS',
-      'problem-solving': 'حل مسائل',
-      'clean-code': 'الكود النظيف',
-      'fullstack': 'تطبيقات متكاملة'
+      'all': 'الكل',
+      'component': 'Custom components',
+      'css-battle': 'CSS Battle',
+      'problem-solving': 'Problem Solving',
+      'clean-code': 'Clean Code',
+      'fullstack': 'FullStack'
     };
 
     const result: { key: Category; label: string; count: number }[] = [];
