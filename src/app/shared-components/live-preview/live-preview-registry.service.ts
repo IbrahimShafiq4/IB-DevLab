@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class LivePreviewRegistry {
-  private readonly MAX_CONCURRENT = 12;
+  private readonly MAX_CONCURRENT = 6;
   private readonly mounted = new Set<string>();
   private readonly waiting: Array<() => void> = [];
 

@@ -1,6 +1,6 @@
 <div class="preview" #host [attr.data-tone]="resolvedTone()">
     @if (mounted() && !error()) {
-    <iframe class="preview__frame" [srcdoc]="srcdoc()" sandbox="allow-scripts" referrerpolicy="no-referrer"
+    <iframe #iframeHost class="preview__frame" [srcdoc]="srcdoc()" sandbox="allow-scripts" referrerpolicy="no-referrer"
         loading="lazy" [attr.title]="title ? (title + ' — معاينة') : 'معاينة حيّة'"
         [attr.tabindex]="interactive ? 0 : -1"></iframe>
     } @else if (!mounted()) {

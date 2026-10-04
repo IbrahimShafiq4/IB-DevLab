@@ -771,6 +771,17 @@ const BASE_SPECIMENS: Specimen[] = [
     sortKey: 127
   },
   {
+    id: 'CB-29',
+    kind: 'css-battle',
+    title: 'CSS Battle — Burger',
+    description: 'برجر هندسي بسيط معمول بـ CSS.',
+    date: 'أكتوبر 2026',
+    tags: ['CSS', 'Battle'],
+    href: '/css_battle_p29',
+    stage: 'light',
+    sortKey: 128
+  },
+  {
     id: 'PS-01',
     kind: 'problem-solving',
     title: 'Roman to Integer',

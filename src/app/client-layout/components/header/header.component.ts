@@ -50,16 +50,6 @@ import { ThemeToggleComponent } from '../../../shared-components/theme-toggle/th
     </nav>
 
     <div class="actions">
-        <button type="button"
-                class="icon-btn"
-                routerLink="/"
-                fragment="catalog"
-                aria-label="انتقل إلى البحث">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
-                <circle cx="11" cy="11" r="7" />
-                <line x1="20" y1="20" x2="16.65" y2="16.65" />
-            </svg>
-        </button>
 
         <app-theme-toggle />
 
