@@ -1513,7 +1513,7 @@ function generate() {
         block.style.transform = 'translate(' + tx + 'px, ' + ty + 'px) scale(' + scale + ')';
         block.style.opacity = opacity;
     });
-}`
+}`,
     },
 
     'S-015': {
@@ -6532,6 +6532,51 @@ body {
 </head>
 <body style="transform: scale(0.5);">
     <p><i></i></p>
+</body>
+</html>`
+    },
+
+    'CB-29': {
+        stage: 'light',
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Burger</title>
+<style>
+  body {
+    display: grid;
+    place-items: center;
+    background: #4C7A6F;
+  }
+
+  p {
+    width: 139px;
+    height: 30px;
+    background: #D6BA72;
+    position: relative;
+    border-radius: 50% 50% 100% 0% / 100% 100% 0% 0%;
+    transform: translateY(-30px);
+
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 20px;
+      background: #D9D9D9;
+      bottom: -30px;
+    }
+
+    &:after {
+      bottom: -60px;
+      background: #D6BA72;
+    }
+  }
+</style>
+</head>
+<body style="transform: scale(0.5);">
+    <p></p>
 </body>
 </html>`
     },

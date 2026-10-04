@@ -5,29 +5,46 @@
     height: 100%;
 }
 
+// ─── Card shell ───────────────────────────────────────────────────────────────
 .card {
     display: flex;
     flex-direction: column;
     height: 100%;
     background-color: var(--surface);
     border: 1px solid var(--rule-hairline);
-    border-radius: t.$r-sm;
+    border-radius: t.$r-lg;
     overflow: hidden;
-    transition: border-color var(--dur-fast) var(--ease-out);
+    position: relative;
+    transition:
+        border-color t.$dur-fast t.$ease-out,
+        box-shadow t.$dur-fast t.$ease-out,
+        transform t.$dur-fast t.$ease-out;
 
-    &:hover {
-        border-color: var(--rule-solid);
-    }
-
+    // Subtle glow on hover (magicui style)
+    &:hover,
     &:focus-within {
-        border-color: var(--accent-primary);
+        border-color: color-mix(in oklab, var(--accent-primary) 55%, var(--rule-hairline));
+        box-shadow:
+            0 0 0 1px color-mix(in oklab, var(--accent-primary) 12%, transparent),
+            0 8px 32px color-mix(in oklab, var(--accent-primary) 10%, transparent);
+        transform: translateY(-2px);
+
+        .card__actions {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card__kind {
+            opacity: 1;
+        }
     }
 }
 
+// ─── Stage / preview area ────────────────────────────────────────────────────
 .card__stage {
     position: relative;
     width: 100%;
-    aspect-ratio: 5 / 4;
+    aspect-ratio: 16 / 10;
     background-color: var(--stage-dark);
     border-bottom: 1px solid var(--rule-hairline);
     overflow: hidden;
@@ -39,33 +56,122 @@
     }
 }
 
+// Kind badge — top-left, appears on hover (shadcn style)
+.card__kind {
+    position: absolute;
+    top: t.$sp-2;
+    inset-inline-start: t.$sp-2;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 8px;
+    border-radius: t.$r-full;
+    font-family: t.$font-mono;
+    font-size: t.$fs-nano;
+    font-weight: 500;
+    letter-spacing: t.$tracking-wide;
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transition: opacity t.$dur-fast t.$ease-out;
+}
+
+// Kind colour variants
+.card[data-kind="component"]       .card__kind { background: rgba(29,209,161,0.18); color: #1dd1a1; border: 1px solid rgba(29,209,161,0.3); }
+.card[data-kind="css-battle"]      .card__kind { background: rgba(127,184,217,0.18); color: #7fb8d9; border: 1px solid rgba(127,184,217,0.3); }
+.card[data-kind="problem-solving"] .card__kind { background: rgba(244,211,94,0.18); color: #c8a800; border: 1px solid rgba(244,211,94,0.3); }
+.card[data-kind="clean-code"]      .card__kind { background: rgba(168,213,186,0.18); color: #3d9970; border: 1px solid rgba(168,213,186,0.3); }
+.card[data-kind="fullstack"]       .card__kind { background: rgba(231,76,60,0.12); color: #e74c3c; border: 1px solid rgba(231,76,60,0.25); }
+
+// Hover action overlay (21st.dev style — slides up from bottom)
+.card__actions {
+    position: absolute;
+    bottom: 0;
+    inset-inline: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: t.$sp-2;
+    padding: t.$sp-2;
+    background: linear-gradient(
+        to top,
+        color-mix(in oklab, var(--stage-dark) 90%, transparent) 0%,
+        transparent 100%
+    );
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+        opacity t.$dur-fast t.$ease-out,
+        transform t.$dur-fast t.$ease-out;
+}
+
+.card__action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border-radius: t.$r-sm;
+    font-family: t.$font-mono;
+    font-size: t.$fs-nano;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(0,0,0,0.45);
+    color: rgba(255,255,255,0.9);
+    backdrop-filter: blur(8px);
+    transition:
+        background-color t.$dur-fast t.$ease-out,
+        border-color t.$dur-fast t.$ease-out;
+
+    &:hover {
+        background: rgba(29,209,161,0.25);
+        border-color: rgba(29,209,161,0.45);
+        color: #1dd1a1;
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--accent-primary);
+        outline-offset: 2px;
+    }
+}
+
+// Placeholder for cards without live preview
 .card__placeholder {
     position: absolute;
     inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 10px,
+        color-mix(in oklab, var(--accent-primary) 3%, transparent) 10px,
+        color-mix(in oklab, var(--accent-primary) 3%, transparent) 11px
+    );
 }
 
 .card__placeholder-mark {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    background-color: var(--accent-primary);
+    background-color: color-mix(in oklab, var(--accent-primary) 60%, transparent);
     box-shadow:
-        -80px 0 0 0 var(--rule-solid),
-        80px 0 0 0 var(--rule-solid);
-    opacity: 0.7;
+        -72px 0 0 color-mix(in oklab, var(--rule-solid) 50%, transparent),
+         72px 0 0 color-mix(in oklab, var(--rule-solid) 50%, transparent);
 }
 
+// ─── Caption bar ─────────────────────────────────────────────────────────────
 .card__caption {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: t.$sp-3;
-    padding: 10px 12px;
-    background-color: var(--surface);
+    padding: 10px t.$sp-3;
     min-height: 44px;
+    background-color: var(--surface);
 }
 
 .card__title {
@@ -79,12 +185,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    flex: 1;
 }
 
 .card__title-link {
     color: inherit;
     text-decoration: none;
-    transition: color var(--dur-fast) var(--ease-out);
+    transition: color t.$dur-fast t.$ease-out;
     outline: none;
 
     &:hover,
@@ -97,19 +204,19 @@
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 5px 10px;
+    gap: 5px;
+    padding: 4px 10px;
     border: 1px solid var(--rule-hairline);
     border-radius: t.$r-sm;
     font-family: t.$font-mono;
     font-size: t.$fs-nano;
-    color: var(--ink-secondary);
+    color: var(--ink-tertiary);
     text-decoration: none;
     direction: ltr;
     transition:
-        border-color var(--dur-fast) var(--ease-out),
-        color var(--dur-fast) var(--ease-out),
-        background-color var(--dur-fast) var(--ease-out);
+        border-color t.$dur-fast t.$ease-out,
+        color t.$dur-fast t.$ease-out,
+        background-color t.$dur-fast t.$ease-out;
 
     &:hover,
     &:focus-visible {
@@ -120,9 +227,8 @@
 }
 
 .card__open-icon {
-    font-family: t.$font-mono;
     font-weight: 600;
-    font-size: t.$fs-micro;
+    font-size: t.$fs-nano;
 }
 
 .card__open-label {
@@ -130,8 +236,16 @@
     font-size: t.$fs-nano;
 }
 
+// ─── Reduced motion ───────────────────────────────────────────────────────────
 @media (prefers-reduced-motion: reduce) {
     .card {
         transition: none;
+        transform: none !important;
+    }
+
+    .card__actions {
+        transition: none;
+        opacity: 1;
+        transform: none;
     }
 }
