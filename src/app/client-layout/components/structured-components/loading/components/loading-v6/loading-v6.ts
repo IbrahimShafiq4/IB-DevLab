@@ -11,32 +11,20 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../../../shared-co
     `
 })
 export class LoadingV6 {
-    projectName: string = 'Diagonal Burst Spiral Loader – Version 6️⃣';
+    projectName: string = 'Rainbow Starburst Loader – Version 6.0 🌈';
     projectDescription: string = `
-This sleek and luminous loader introduces a diagonal spiral animation ✨ using rotate(calc(45deg * var(--i))), giving it a striking starburst-like appearance 🌠. Powered by JavaScript and CSS, each loader dynamically generates 20 glowing orbs 💠 that animate inwards with a trailing, light pulse.      
-      <ul>
-        <li>🌀 Spiraled layout with 45° rotation increments</li>
-        <li>💡 Neon blue glow using layered box shadows</li>
-        <li>⏱ Smooth trail motion using animation-delay</li>
-        <li>🔄 Multiple loader layers (--j) for added depth and complexity</li>
-        <li>🎯 Clean, futuristic aesthetic perfect for tech interfaces or loading dashboards</li>
-      </ul>
-🔧 Customization Ideas:
-<br />
-Change rotate(45deg) to a different angle for unique shapes (e.g. 30deg for more density)
-Replace orb color from #00ebff to any brand color
-Modify translateX distance to alter animation spread
-<br />
-🎯 Use Cases:
-<br />
-Preloaders for SaaS apps 💻
-Loading overlays for web tools 🛠
-Visual intros for portfolios or creative sites 🎨
-<br />
-💬 Pro Tip: Try animating the --j value dynamically for a pulsating spiral that expands/contracts over time!
-`;
+A starburst loader where every orb gets a unique random color from the HSL spectrum.
+Instead of a uniform cyan glow, each of the 80 orbs per loader instance shines with
+its own hue — creating a festive, rainbow-like effect.
+    <ul>
+        <li>🌈 Random HSL color per span</li>
+        <li>💡 Neon glow with matching box-shadow color</li>
+        <li>🌀 45° rotation increments for starburst pattern</li>
+        <li>⏱ Smooth staggered animation</li>
+    </ul>
+    `;
     projectDate: string = 'Last updated: June 2025';
-    projectVersion: string = 'v1.5.0';
+    projectVersion: string = 'v2.2.0';
     projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
 
     HTMLCodeSnippets: ICodeStructure[] = [
@@ -47,11 +35,10 @@ Visual intros for portfolios or creative sites 🎨
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading 06</title>
+    <title>Loading 06 — Rainbow Burst</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
     <script src="./main.js"></script>
 </body>
 </html>
@@ -75,6 +62,7 @@ body {
     align-items: center;
     min-height: 100vh;
     background-color: #001f25;
+    overflow: hidden;
 }
 
 .loader {
@@ -94,18 +82,17 @@ body {
             position: absolute;
             width: 15px;
             height: 15px;
-            background-color: #00ebff;
+            /* ── Color comes from JS via --clr ── */
+            background-color: var(--clr, #00ebff);
             border-radius: 50%;
-            box-shadow: 
-                        0 0 10px #00ebff,
-                        0 0 20px #00ebff,
-                        0 0 40px #00ebff,
-                        0 0 60px #00ebff,
-                        0 0 80px #00ebff,
-                        0 0 100px #00ebff;
+            box-shadow:
+                0 0 10px var(--clr, #00ebff),
+                0 0 20px var(--clr, #00ebff),
+                0 0 40px var(--clr, #00ebff),
+                0 0 60px var(--clr, #00ebff),
+                0 0 80px var(--clr, #00ebff);
             animation: animate 2s linear infinite;
             animation-delay: calc((-0.1s * var(--i)));
-
         }
     }
 }
@@ -115,15 +102,8 @@ body {
         transform: translateX(200px) scale(1);
         opacity: 0;
     }
-
-    10% {
-        opacity: 1;
-    }
-
-    80% {
-        opacity: 1;
-    }
-
+    10% { opacity: 1; }
+    80% { opacity: 1; }
     100% {
         transform: translateX(0px) scale(0);
         opacity: 0;
@@ -141,13 +121,19 @@ body {
 const body = document.body;
 let loader;
 
+// Warm + cool palette for variety
+function randomColor() {
+    const hue = Math.floor(Math.random() * 360);
+    return \`hsl(\${hue}, 100%, 60%)\`;
+}
+
 function loaderDiv() {
     for (let j = 0; j <= 3; j++) {
         loader = document.createElement('div');
         loader.classList.add('loader');
         loader.style.setProperty('--j', j);
         body.appendChild(loader);
-        loaderSpan()
+        loaderSpan();
     }
 }
 
@@ -157,12 +143,13 @@ function loaderSpan() {
     for (let i = 1; i <= 20; i++) {
         const span = document.createElement('span');
         span.style.setProperty('--i', i);
+        span.style.setProperty('--clr', randomColor());
         loader.appendChild(span);
     }
 }
       `
         }
-    ]
+    ];
 
     zipFile: string = 'assets/zip-files/loading/06 - loading.rar';
 }

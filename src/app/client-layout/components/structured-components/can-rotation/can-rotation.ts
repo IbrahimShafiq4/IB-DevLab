@@ -110,6 +110,5 @@ body{
     }
   ];
 
-  zipFile: string = 'assets/zip-files/circular logo.rar';
+  zipFile: string = './../../../../../assets/zip-files/can rotation.rar';
 }
-

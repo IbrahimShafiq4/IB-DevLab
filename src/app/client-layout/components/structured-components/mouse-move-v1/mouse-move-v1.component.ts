@@ -11,44 +11,28 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../shared-componen
   `
 })
 export class MouseMoveV1Component {
-  projectName: string = '🌀 Interactive Rotating Arrows Animation with CSS & JavaScript';
+  projectName: string = '🌀 Interactive Rotating Arrow Trail Following the Mouse';
   projectDescription: string = `
-An engaging animation featuring arrows that follow the mouse position. Built with HTML, CSS, and vanilla JavaScript.
-`;
+A glowing green arrow trail that follows the cursor in real time. Each arrow rotates
+based on the direction of mouse movement, creating a dynamic "flowing" effect.
+Built with vanilla JavaScript, HTML, and CSS — no libraries needed.
+  `;
   projectDate: string = 'Last updated: May 2025';
   projectVersion: string = 'v1.0.0';
   projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
 
+  /* ─── LIVE PREVIEW ─────────────────────────────────────── */
   liveHtml: string = ``;
 
   get liveCss(): string {
     return this.CSSCodeSnippets[0]?.code ?? '';
   }
 
-  liveJs: string = `
-const spark = (event) => {
-    let i = document.createElement('i');
-    i.style.left = (event.pageX) + 'px';
-    i.style.top = (event.pageY) + 'px';
+  get liveJs(): string {
+    return this.JSCodeSnippets[0]?.code ?? '';
+  }
 
-    i.style.scale = \`\${Math.random() * 2 + 1}\`;
-    i.style.setProperty('--x', getTransition());
-    i.style.setProperty('--y', getTransition());
-
-    document.body.appendChild(i);
-
-    setTimeout(() => {
-        document.body.removeChild(i);
-    }, 2000)
-}
-
-const getTransition = () => {
-    return \`\${Math.random() * 400 - 200}px\`
-}
-
-document.addEventListener('mousemove', spark)
-  `;
-
+  /* ─── ORIGINAL SNIPPETS ────────────────────────────────── */
   HTMLCodeSnippets: ICodeStructure[] = [
     {
       code: `
@@ -57,7 +41,7 @@ document.addEventListener('mousemove', spark)
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Rotating Arrow Trail</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -81,25 +65,40 @@ document.addEventListener('mousemove', spark)
 body {
     background-color: #222;
     overflow: hidden;
+    height: 100vh;
 }
 
 i {
     position: absolute;
-    width: 4px;
-    height: 4px;
+    width: 18px;
+    height: 18px;
     background-color: #0f0;
-    animation: animate 2s linear forwards;
+
+    /* Arrow shape via clip-path */
+    clip-path: polygon(0 0, 100% 50%, 0 100%, 25% 50%);
+
+    /* Center on cursor, rotate by --rot, scale by --scale */
+    transform: translate(-50%, -50%)
+               rotate(var(--rot, 0deg))
+               scale(var(--scale, 1));
+
+    /* Glowing effect */
+    filter: drop-shadow(0 0 6px #0f0)
+            drop-shadow(0 0 12px #0f0);
+
+    /* Fade out animation */
+    animation: fadeOut 0.8s linear forwards;
+
+    /* Don't intercept mouse events */
+    pointer-events: none;
 }
 
-@keyframes animate {
-    0% {
-        opacity: 1;
-        transform: translate(0, 0);
-    }
-
-    100% {
+@keyframes fadeOut {
+    to {
         opacity: 0;
-        transform: translate(var(--x), var(--y))
+        transform: translate(-50%, -50%)
+                   rotate(var(--rot, 0deg))
+                   scale(0);
     }
 }
     `,
@@ -110,27 +109,36 @@ i {
   JSCodeSnippets: ICodeStructure[] = [
     {
       code: `
-const spark = (event) => {
-    let i = document.createElement('i');
-    i.style.left = (event.pageX) + 'px';
-    i.style.top = (event.pageY) + 'px';
+let lastX = 0;
+let lastY = 0;
 
-    i.style.scale = \`\${Math.random() * 2 + 1}\`;
-    i.style.setProperty('--x', getTransition());
-    i.style.setProperty('--y', getTransition());
+const spawnArrow = (event) => {
+    const arrow = document.createElement('i');
+    arrow.style.left = event.pageX + 'px';
+    arrow.style.top = event.pageY + 'px';
 
-    document.body.appendChild(i);
+    // Direction of movement → rotation angle
+    const dx = event.pageX - lastX;
+    const dy = event.pageY - lastY;
+    const rot = Math.atan2(dy, dx) * 180 / Math.PI;
+    arrow.style.setProperty('--rot', rot + 'deg');
 
+    // Random scale for variety
+    const scale = 0.6 + Math.random() * 0.8;
+    arrow.style.setProperty('--scale', scale.toString());
+
+    document.body.appendChild(arrow);
+
+    // Clean up after animation ends
     setTimeout(() => {
-        document.body.removeChild(i);
-    }, 2000)
-}
+        document.body.removeChild(arrow);
+    }, 800);
 
-const getTransition = () => {
-    return \`\${Math.random() * 400 - 200}px\`
-}
+    lastX = event.pageX;
+    lastY = event.pageY;
+};
 
-document.addEventListener('mousemove', spark)
+document.addEventListener('mousemove', spawnArrow);
     `,
       codeTitle: 'main.js'
     }

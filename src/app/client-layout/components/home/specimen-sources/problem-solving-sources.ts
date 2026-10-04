@@ -1,0 +1,1492 @@
+import type { SpecimenSource } from './../../../../core/specimen-registry';
+
+export const PROBLEM_SOLVING_SOURCES: Record<string, SpecimenSource> = {
+
+    // ═══════════════════════════════════════════════════════════════
+    // PS-01 — Roman to Integer
+    // ═══════════════════════════════════════════════════════════════
+    'PS-01': {
+        stage: 'dark',
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roman to Integer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="demo">
+        <div class="row">
+            <label>roman numeral</label>
+            <input type="text" id="in" value="MCMXCIV" dir="ltr">
+        </div>
+        <button id="run">تحويل</button>
+        <div class="row">
+            <label>الناتج</label>
+            <output id="out">—</output>
+        </div>
+        <p class="hint">أمثلة: XIV · MCMXCIV · LVIII</p>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>`,
+        css: `* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #0A1017;
+    font-family: system-ui, sans-serif;
+    padding: 16px;
+    font-size: 16px;
+}
+
+.demo {
+    background: #131C26;
+    border: 1px solid #2A3846;
+    border-radius: 4px;
+    padding: 20px;
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: #E9EFF5;
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+label {
+    font-family: monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8394A5;
+}
+
+input {
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    padding: 8px 12px;
+    color: #E9EFF5;
+    font-family: monospace;
+    font-size: 14px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #E3A83A;
+}
+
+button {
+    padding: 10px 16px;
+    background: #E3A83A;
+    color: #101A24;
+    border: 0;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+output {
+    display: block;
+    padding: 12px;
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    color: #3CC4BE;
+    font-family: monospace;
+    font-size: 16px;
+    min-height: 44px;
+}
+
+.hint {
+    font-size: 11px;
+    color: #8394A5;
+    font-family: monospace;
+}`,
+        js: `function romanToInt(s) {
+    const m = { I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000 };
+    let r = 0;
+    for (let i = 0; i < s.length; i++) {
+        const c = m[s[i]], n = m[s[i + 1]];
+        r += c < n ? -c : c;
+    }
+    return r;
+}
+
+const inp = document.getElementById('in');
+const out = document.getElementById('out');
+
+function run() {
+    const v = inp.value.trim().toUpperCase();
+    if (!/^[IVXLCDM]+$/.test(v)) {
+        out.textContent = '✕ قيمة غير صحيحة';
+        out.style.color = '#F26B62';
+        return;
+    }
+    out.style.color = '#3CC4BE';
+    out.textContent = v + ' → ' + romanToInt(v);
+}
+
+document.getElementById('run').onclick = run;
+inp.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+run();`
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // PS-02 — Longest Substring
+    // ═══════════════════════════════════════════════════════════════
+    'PS-02': {
+        stage: 'dark',
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Longest Substring</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="demo">
+        <div class="row">
+            <label>string</label>
+            <input type="text" id="in" value="abcabcbb" dir="ltr">
+        </div>
+        <button id="run">ابحث</button>
+        <div class="row">
+            <label>الطول / النص</label>
+            <output id="out">—</output>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>`,
+        css: `* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #0A1017;
+    font-family: system-ui, sans-serif;
+    padding: 16px;
+    font-size: 16px;
+}
+
+.demo {
+    background: #131C26;
+    border: 1px solid #2A3846;
+    border-radius: 4px;
+    padding: 20px;
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: #E9EFF5;
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+label {
+    font-family: monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8394A5;
+}
+
+input {
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    padding: 8px 12px;
+    color: #E9EFF5;
+    font-family: monospace;
+    font-size: 14px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #E3A83A;
+}
+
+button {
+    padding: 10px 16px;
+    background: #E3A83A;
+    color: #101A24;
+    border: 0;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+output {
+    display: block;
+    padding: 12px;
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    color: #3CC4BE;
+    font-family: monospace;
+    font-size: 16px;
+    min-height: 44px;
+}`,
+        js: `function longest(s) {
+    let l = 0, best = 0, set = new Set(), start = 0, bestStart = 0;
+    for (let r = 0; r < s.length; r++) {
+        while (set.has(s[r])) {
+            set.delete(s[l]);
+            l++;
+        }
+        set.add(s[r]);
+        if (r - l + 1 > best) {
+            best = r - l + 1;
+            bestStart = l;
+        }
+    }
+    return { len: best, str: s.slice(bestStart, bestStart + best) };
+}
+
+const inp = document.getElementById('in');
+const out = document.getElementById('out');
+
+function run() {
+    const v = inp.value;
+    const r = longest(v);
+    out.textContent = r.len + ' → "' + r.str + '"';
+}
+
+document.getElementById('run').onclick = run;
+inp.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+run();`
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // PS-03 — Palindrome Number
+    // ═══════════════════════════════════════════════════════════════
+    'PS-03': {
+        stage: 'dark',
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palindrome Number</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="demo">
+        <div class="row">
+            <label>number</label>
+            <input type="text" id="in" value="121" dir="ltr">
+        </div>
+        <button id="run">تحقق</button>
+        <div class="row">
+            <label>النتيجة</label>
+            <output id="out">—</output>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>`,
+        css: `* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #0A1017;
+    font-family: system-ui, sans-serif;
+    padding: 16px;
+    font-size: 16px;
+}
+
+.demo {
+    background: #131C26;
+    border: 1px solid #2A3846;
+    border-radius: 4px;
+    padding: 20px;
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: #E9EFF5;
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+label {
+    font-family: monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8394A5;
+}
+
+input {
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    padding: 8px 12px;
+    color: #E9EFF5;
+    font-family: monospace;
+    font-size: 14px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #E3A83A;
+}
+
+button {
+    padding: 10px 16px;
+    background: #E3A83A;
+    color: #101A24;
+    border: 0;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+output {
+    display: block;
+    padding: 12px;
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    color: #3CC4BE;
+    font-family: monospace;
+    font-size: 16px;
+    min-height: 44px;
+}`,
+        js: `function isPal(x) {
+    if (x < 0) return false;
+    const s = String(x);
+    let i = 0, j = s.length - 1;
+    while (i < j) {
+        if (s[i] !== s[j]) return false;
+        i++;
+        j--;
+    }
+    return true;
+}
+
+const inp = document.getElementById('in');
+const out = document.getElementById('out');
+
+function run() {
+    const v = inp.value.trim();
+    const n = Number(v);
+    const r = isPal(n);
+    out.textContent = v + ' → ' + (r ? '✓ نعم Palindrome' : '✕ ليس Palindrome');
+    out.style.color = r ? '#4CC38A' : '#F26B62';
+}
+
+document.getElementById('run').onclick = run;
+inp.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+run();`
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // PS-04 — Longest Common Prefix
+    // ═══════════════════════════════════════════════════════════════
+    'PS-04': {
+        stage: 'dark',
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Longest Common Prefix</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="demo">
+        <div class="row">
+            <label>strings (comma-separated)</label>
+            <input type="text" id="in" value="flower,flow,flight" dir="ltr">
+        </div>
+        <button id="run">ابحث</button>
+        <div class="row">
+            <label>البادئة</label>
+            <output id="out">—</output>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>`,
+        css: `* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #0A1017;
+    font-family: system-ui, sans-serif;
+    padding: 16px;
+    font-size: 16px;
+}
+
+.demo {
+    background: #131C26;
+    border: 1px solid #2A3846;
+    border-radius: 4px;
+    padding: 20px;
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: #E9EFF5;
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+label {
+    font-family: monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8394A5;
+}
+
+input {
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    padding: 8px 12px;
+    color: #E9EFF5;
+    font-family: monospace;
+    font-size: 14px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #E3A83A;
+}
+
+button {
+    padding: 10px 16px;
+    background: #E3A83A;
+    color: #101A24;
+    border: 0;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+output {
+    display: block;
+    padding: 12px;
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    color: #3CC4BE;
+    font-family: monospace;
+    font-size: 16px;
+    min-height: 44px;
+}`,
+        js: `function lcp(arr) {
+    if (!arr.length) return '';
+    arr.sort();
+    const a = arr[0], b = arr[arr.length - 1];
+    let i = 0;
+    while (i < a.length && i < b.length && a[i] === b[i]) i++;
+    return a.slice(0, i);
+}
+
+const inp = document.getElementById('in');
+const out = document.getElementById('out');
+
+function run() {
+    const arr = inp.value.split(',').map(s => s.trim()).filter(Boolean);
+    const r = lcp(arr);
+    out.textContent = r ? '"' + r + '"' : '(لا توجد بادئة مشتركة)';
+}
+
+document.getElementById('run').onclick = run;
+inp.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+run();`
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // PS-05 — Valid Parentheses
+    // ═══════════════════════════════════════════════════════════════
+    'PS-05': {
+        stage: 'dark',
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valid Parentheses</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="demo">
+        <div class="row">
+            <label>string</label>
+            <input type="text" id="in" value="([])" dir="ltr">
+        </div>
+        <button id="run">تحقق</button>
+        <div class="row">
+            <label>النتيجة</label>
+            <output id="out">—</output>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>`,
+        css: `* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #0A1017;
+    font-family: system-ui, sans-serif;
+    padding: 16px;
+    font-size: 16px;
+}
+
+.demo {
+    background: #131C26;
+    border: 1px solid #2A3846;
+    border-radius: 4px;
+    padding: 20px;
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: #E9EFF5;
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+label {
+    font-family: monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8394A5;
+}
+
+input {
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    padding: 8px 12px;
+    color: #E9EFF5;
+    font-family: monospace;
+    font-size: 14px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #E3A83A;
+}
+
+button {
+    padding: 10px 16px;
+    background: #E3A83A;
+    color: #101A24;
+    border: 0;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+output {
+    display: block;
+    padding: 12px;
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    color: #3CC4BE;
+    font-family: monospace;
+    font-size: 16px;
+    min-height: 44px;
+}`,
+        js: `function isValid(s) {
+    const st = [], m = { ')': '(', ']': '[', '}': '{' };
+    for (const c of s) {
+        if (c === '(' || c === '[' || c === '{') st.push(c);
+        else if (m[c] !== st.pop()) return false;
+    }
+    return st.length === 0;
+}
+
+const inp = document.getElementById('in');
+const out = document.getElementById('out');
+
+function run() {
+    const r = isValid(inp.value);
+    out.textContent = inp.value + ' → ' + (r ? '✓ صحيح' : '✕ غير صحيح');
+    out.style.color = r ? '#4CC38A' : '#F26B62';
+}
+
+document.getElementById('run').onclick = run;
+inp.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+run();`
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // PS-06 — Merge Two Sorted Lists
+    // ═══════════════════════════════════════════════════════════════
+    'PS-06': {
+        stage: 'dark',
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merge Two Sorted Lists</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="demo">
+        <div class="row">
+            <label>list 1</label>
+            <input type="text" id="in1" value="1,2,4" dir="ltr">
+        </div>
+        <div class="row">
+            <label>list 2</label>
+            <input type="text" id="in2" value="1,3,4" dir="ltr">
+        </div>
+        <button id="run">دمج</button>
+        <div class="row">
+            <label>النتيجة</label>
+            <output id="out">—</output>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>`,
+        css: `* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #0A1017;
+    font-family: system-ui, sans-serif;
+    padding: 16px;
+    font-size: 16px;
+}
+
+.demo {
+    background: #131C26;
+    border: 1px solid #2A3846;
+    border-radius: 4px;
+    padding: 20px;
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: #E9EFF5;
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+label {
+    font-family: monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8394A5;
+}
+
+input {
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    padding: 8px 12px;
+    color: #E9EFF5;
+    font-family: monospace;
+    font-size: 14px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #E3A83A;
+}
+
+button {
+    padding: 10px 16px;
+    background: #E3A83A;
+    color: #101A24;
+    border: 0;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+output {
+    display: block;
+    padding: 12px;
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    color: #3CC4BE;
+    font-family: monospace;
+    font-size: 16px;
+    min-height: 44px;
+}`,
+        js: `function merge(a, b) {
+    const r = [];
+    let i = 0, j = 0;
+    while (i < a.length && j < b.length) r.push(a[i] <= b[j] ? a[i++] : b[j++]);
+    while (i < a.length) r.push(a[i++]);
+    while (j < b.length) r.push(b[j++]);
+    return r;
+}
+
+const i1 = document.getElementById('in1');
+const i2 = document.getElementById('in2');
+const out = document.getElementById('out');
+
+function run() {
+    const a = i1.value.split(',').map(Number).filter(n => !isNaN(n));
+    const b = i2.value.split(',').map(Number).filter(n => !isNaN(n));
+    out.textContent = '[' + merge(a, b).join(', ') + ']';
+}
+
+document.getElementById('run').onclick = run;
+i1.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+i2.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+run();`
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // PS-07 — Remove Duplicates
+    // ═══════════════════════════════════════════════════════════════
+    'PS-07': {
+        stage: 'dark',
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remove Duplicates</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="demo">
+        <div class="row">
+            <label>sorted array</label>
+            <input type="text" id="in" value="0,0,1,1,1,2,2,3,3,4" dir="ltr">
+        </div>
+        <button id="run">أزل التكرار</button>
+        <div class="row">
+            <label>النتيجة</label>
+            <output id="out">—</output>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>`,
+        css: `* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #0A1017;
+    font-family: system-ui, sans-serif;
+    padding: 16px;
+    font-size: 16px;
+}
+
+.demo {
+    background: #131C26;
+    border: 1px solid #2A3846;
+    border-radius: 4px;
+    padding: 20px;
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: #E9EFF5;
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+label {
+    font-family: monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8394A5;
+}
+
+input {
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    padding: 8px 12px;
+    color: #E9EFF5;
+    font-family: monospace;
+    font-size: 14px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #E3A83A;
+}
+
+button {
+    padding: 10px 16px;
+    background: #E3A83A;
+    color: #101A24;
+    border: 0;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+output {
+    display: block;
+    padding: 12px;
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    color: #3CC4BE;
+    font-family: monospace;
+    font-size: 14px;
+    min-height: 44px;
+}`,
+        js: `function removeDup(a) {
+    if (!a.length) return 0;
+    let k = 1;
+    for (let i = 1; i < a.length; i++) if (a[i] !== a[i - 1]) a[k++] = a[i];
+    return k;
+}
+
+const inp = document.getElementById('in');
+const out = document.getElementById('out');
+
+function run() {
+    const a = inp.value.split(',').map(Number).filter(n => !isNaN(n));
+    const k = removeDup(a);
+    out.textContent = 'k=' + k + ' → [' + a.slice(0, k).join(', ') + ']';
+}
+
+document.getElementById('run').onclick = run;
+inp.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+run();`
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // PS-08 — Remove Element
+    // ═══════════════════════════════════════════════════════════════
+    'PS-08': {
+        stage: 'dark',
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remove Element</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="demo">
+        <div class="row">
+            <label>array</label>
+            <input type="text" id="in" value="3,2,2,3" dir="ltr">
+        </div>
+        <div class="row">
+            <label>value to remove</label>
+            <input type="text" id="val" value="3" dir="ltr">
+        </div>
+        <button id="run">أزل</button>
+        <div class="row">
+            <label>النتيجة</label>
+            <output id="out">—</output>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>`,
+        css: `* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #0A1017;
+    font-family: system-ui, sans-serif;
+    padding: 16px;
+    font-size: 16px;
+}
+
+.demo {
+    background: #131C26;
+    border: 1px solid #2A3846;
+    border-radius: 4px;
+    padding: 20px;
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: #E9EFF5;
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+label {
+    font-family: monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8394A5;
+}
+
+input {
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    padding: 8px 12px;
+    color: #E9EFF5;
+    font-family: monospace;
+    font-size: 14px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #E3A83A;
+}
+
+button {
+    padding: 10px 16px;
+    background: #E3A83A;
+    color: #101A24;
+    border: 0;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+output {
+    display: block;
+    padding: 12px;
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    color: #3CC4BE;
+    font-family: monospace;
+    font-size: 14px;
+    min-height: 44px;
+}`,
+        js: `function removeEl(a, v) {
+    let k = 0;
+    for (let i = 0; i < a.length; i++) if (a[i] !== v) a[k++] = a[i];
+    return k;
+}
+
+const inp = document.getElementById('in');
+const val = document.getElementById('val');
+const out = document.getElementById('out');
+
+function run() {
+    const a = inp.value.split(',').map(Number).filter(n => !isNaN(n));
+    const v = Number(val.value);
+    const k = removeEl(a, v);
+    out.textContent = 'k=' + k + ' → [' + a.slice(0, k).join(', ') + ']';
+}
+
+document.getElementById('run').onclick = run;
+inp.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+val.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+run();`
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // PS-09 — Find the Index
+    // ═══════════════════════════════════════════════════════════════
+    'PS-09': {
+        stage: 'dark',
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find the Index</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="demo">
+        <div class="row">
+            <label>haystack</label>
+            <input type="text" id="h" value="sadbutsad" dir="ltr">
+        </div>
+        <div class="row">
+            <label>needle</label>
+            <input type="text" id="n" value="sad" dir="ltr">
+        </div>
+        <button id="run">ابحث</button>
+        <div class="row">
+            <label>النتيجة</label>
+            <output id="out">—</output>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>`,
+        css: `* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #0A1017;
+    font-family: system-ui, sans-serif;
+    padding: 16px;
+    font-size: 16px;
+}
+
+.demo {
+    background: #131C26;
+    border: 1px solid #2A3846;
+    border-radius: 4px;
+    padding: 20px;
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: #E9EFF5;
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+label {
+    font-family: monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8394A5;
+}
+
+input {
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    padding: 8px 12px;
+    color: #E9EFF5;
+    font-family: monospace;
+    font-size: 14px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #E3A83A;
+}
+
+button {
+    padding: 10px 16px;
+    background: #E3A83A;
+    color: #101A24;
+    border: 0;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+output {
+    display: block;
+    padding: 12px;
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    color: #3CC4BE;
+    font-family: monospace;
+    font-size: 16px;
+    min-height: 44px;
+}`,
+        js: `const h = document.getElementById('h');
+const n = document.getElementById('n');
+const out = document.getElementById('out');
+
+function run() {
+    const i = h.value.indexOf(n.value);
+    out.textContent = 'indexOf = ' + i + (i === -1 ? '  (غير موجود)' : '');
+}
+
+document.getElementById('run').onclick = run;
+h.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+n.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+run();`
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // PS-10 — Search Insert Position
+    // ═══════════════════════════════════════════════════════════════
+    'PS-10': {
+        stage: 'dark',
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Insert Position</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="demo">
+        <div class="row">
+            <label>sorted array</label>
+            <input type="text" id="in" value="1,3,5,6" dir="ltr">
+        </div>
+        <div class="row">
+            <label>target</label>
+            <input type="text" id="t" value="5" dir="ltr">
+        </div>
+        <button id="run">ابحث</button>
+        <div class="row">
+            <label>الموقع</label>
+            <output id="out">—</output>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>`,
+        css: `* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #0A1017;
+    font-family: system-ui, sans-serif;
+    padding: 16px;
+    font-size: 16px;
+}
+
+.demo {
+    background: #131C26;
+    border: 1px solid #2A3846;
+    border-radius: 4px;
+    padding: 20px;
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: #E9EFF5;
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+label {
+    font-family: monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8394A5;
+}
+
+input {
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    padding: 8px 12px;
+    color: #E9EFF5;
+    font-family: monospace;
+    font-size: 14px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #E3A83A;
+}
+
+button {
+    padding: 10px 16px;
+    background: #E3A83A;
+    color: #101A24;
+    border: 0;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+output {
+    display: block;
+    padding: 12px;
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    color: #3CC4BE;
+    font-family: monospace;
+    font-size: 16px;
+    min-height: 44px;
+}`,
+        js: `function search(nums, t) {
+    let l = 0, r = nums.length - 1;
+    while (l <= r) {
+        const m = Math.floor((l + r) / 2);
+        if (nums[m] === t) return m;
+        if (nums[m] < t) l = m + 1;
+        else r = m - 1;
+    }
+    return l;
+}
+
+const inp = document.getElementById('in');
+const t = document.getElementById('t');
+const out = document.getElementById('out');
+
+function run() {
+    const a = inp.value.split(',').map(Number).filter(n => !isNaN(n));
+    const target = Number(t.value);
+    out.textContent = 'index = ' + search(a, target);
+}
+
+document.getElementById('run').onclick = run;
+inp.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+t.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+run();`
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // PS-11 — Length of Last Word
+    // ═══════════════════════════════════════════════════════════════
+    'PS-11': {
+        stage: 'dark',
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Length of Last Word</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="demo">
+        <div class="row">
+            <label>string</label>
+            <input type="text" id="in" value="   fly me   to   the moon  " dir="ltr">
+        </div>
+        <button id="run">احسب</button>
+        <div class="row">
+            <label>طول آخر كلمة</label>
+            <output id="out">—</output>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>`,
+        css: `* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #0A1017;
+    font-family: system-ui, sans-serif;
+    padding: 16px;
+    font-size: 16px;
+}
+
+.demo {
+    background: #131C26;
+    border: 1px solid #2A3846;
+    border-radius: 4px;
+    padding: 20px;
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: #E9EFF5;
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+label {
+    font-family: monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8394A5;
+}
+
+input {
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    padding: 8px 12px;
+    color: #E9EFF5;
+    font-family: monospace;
+    font-size: 14px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #E3A83A;
+}
+
+button {
+    padding: 10px 16px;
+    background: #E3A83A;
+    color: #101A24;
+    border: 0;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+output {
+    display: block;
+    padding: 12px;
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    color: #3CC4BE;
+    font-family: monospace;
+    font-size: 16px;
+    min-height: 44px;
+}`,
+        js: `function lastLen(s) {
+    let i = s.length - 1, c = 0;
+    while (i >= 0 && s[i] === ' ') i--;
+    while (i >= 0 && s[i] !== ' ') {
+        c++;
+        i--;
+    }
+    return c;
+}
+
+const inp = document.getElementById('in');
+const out = document.getElementById('out');
+
+function run() {
+    out.textContent = 'length = ' + lastLen(inp.value);
+}
+
+document.getElementById('run').onclick = run;
+inp.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+run();`
+    }
+};

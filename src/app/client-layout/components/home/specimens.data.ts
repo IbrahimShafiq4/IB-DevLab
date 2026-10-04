@@ -1,4 +1,4 @@
-import { Specimen } from '../../../core/specimen-registry';
+import type { Specimen } from '../../../core/specimen-registry';
 import { SPECIMEN_SOURCES } from './specimen-sources';
 import { extractSource } from '../../../core/specimen-registry';
 
@@ -462,6 +462,8 @@ const BASE_SPECIMENS: Specimen[] = [
     stage: 'dark',
     sortKey: 40
   },
+
+  // ─── CSS Battle ───
   {
     id: 'CB-01',
     kind: 'css-battle',
@@ -781,6 +783,8 @@ const BASE_SPECIMENS: Specimen[] = [
     stage: 'light',
     sortKey: 128
   },
+
+  // ─── Problem Solving ───
   {
     id: 'PS-01',
     kind: 'problem-solving',
@@ -902,6 +906,8 @@ const BASE_SPECIMENS: Specimen[] = [
     stage: 'dark',
     sortKey: 210
   },
+
+  // ─── Clean Code ───
   {
     id: 'CC-01',
     kind: 'clean-code',
@@ -957,7 +963,6 @@ const BASE_SPECIMENS: Specimen[] = [
     stage: 'dark',
     sortKey: 304
   },
-
 ];
 
 export const SPECIMENS: Specimen[] = BASE_SPECIMENS.map(s => {

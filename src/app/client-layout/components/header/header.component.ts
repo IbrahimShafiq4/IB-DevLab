@@ -2,9 +2,17 @@ import {
     Component,
     ChangeDetectionStrategy,
     signal,
-    HostListener,
+    inject,
+    DestroyRef,
+    NgZone,
+    OnInit,
+    OnDestroy,
+    ElementRef,
+    ViewChild,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { fromEvent, merge, Subject, takeUntil, filter } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ThemeToggleComponent } from '../../../shared-components/theme-toggle/theme-toggle';
 
 @Component({
@@ -349,27 +357,61 @@ import { ThemeToggleComponent } from '../../../shared-components/theme-toggle/th
   `],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy {
 
     readonly isMenuOpen = signal(false);
+
+    private readonly destroyRef = inject(DestroyRef);
+    private readonly ngZone = inject(NgZone);
+
+    private readonly menuClosed$ = new Subject<void>();
+
+    ngOnInit(): void {
+        this.ngZone.runOutsideAngular(() => {
+            const click$ = fromEvent<MouseEvent>(document, 'click');
+            const escape$ = fromEvent<KeyboardEvent>(document, 'keydown').pipe(
+                filter((e: KeyboardEvent) => e.key === 'Escape')
+            );
+
+            merge(click$, escape$)
+                .pipe(takeUntilDestroyed(this.destroyRef))
+                .subscribe((event: Event) => this.onGlobalEvent(event));
+        });
+    }
+
+    ngOnDestroy(): void {
+        this.menuClosed$.complete();
+    }
 
     toggleMenu(): void {
         this.isMenuOpen.update(v => !v);
     }
 
     closeMenu(): void {
+        if (!this.isMenuOpen()) return;
         this.isMenuOpen.set(false);
     }
 
-    @HostListener('document:click', ['$event'])
-    onDocumentClick(event: MouseEvent): void {
-        const el = event.target as HTMLElement;
-        if (el.closest('.drawer') || el.closest('.menu-btn')) return;
-        this.isMenuOpen.set(false);
+
+    private onGlobalEvent(event: Event): void {
+        if (!this.isMenuOpen()) return;
+
+        if (event instanceof KeyboardEvent && event.key === 'Escape') {
+            this.closeInsideZone();
+            return;
+        }
+
+        if (event instanceof MouseEvent) {
+            const el = event.target as HTMLElement | null;
+            if (!el) return;
+
+            if (el.closest('.drawer') || el.closest('.menu-btn')) return;
+
+            this.closeInsideZone();
+        }
     }
 
-    @HostListener('document:keydown.escape')
-    onEscape(): void {
-        this.isMenuOpen.set(false);
+    private closeInsideZone(): void {
+        this.ngZone.run(() => this.isMenuOpen.set(false));
     }
 }

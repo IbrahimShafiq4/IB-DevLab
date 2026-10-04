@@ -11,23 +11,27 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../../../shared-co
     `
 })
 export class ImageLayer {
-    projectName: string = '🌗 Meme-Inspired Day/Night Mode Toggle';
+    projectName: string = '🖼️ 3D Layered Image Reveal on Hover';
     projectDescription: string = `
 This HTML & CSS project creates a visually engaging 3D image layering effect using multiple copies of the same image. When hovered, the images separate in 3D space, giving a stacked-paper or parallax-like visual using transform: translate3d() and rotateX() for depth and angle. Each image fades out gradually with different opacities, enhancing the layered illusion.
-    <br>🔧 Key Features:
-    <ul>
-        <li>3D perspective enabled via perspective on the body.</li>
-        <li>transform-style: preserve-3d for realistic 3D stacking.</li>
-        <li>Smooth hover animation with varying depth and opacity.</li>
-        <li>Fully responsive and centered layout with Flexbox</li>
-        <li>Uses SCSS nesting for cleaner and structured styling</li>
-    </ul>
+<br>
+🔧 Key Features:
+<ul>
+    <li>3D perspective enabled via perspective on the body.</li>
+    <li>transform-style: preserve-3d for realistic 3D stacking.</li>
+    <li>Smooth hover animation with varying depth and opacity.</li>
+    <li>Fully responsive and centered layout with Flexbox.</li>
+    <li>Uses SCSS nesting for cleaner and structured styling.</li>
+</ul>
 
 💡 Use Case Ideas:
-        Creative photo galleries
-        Portfolio image showcase
-        Interactive cover reveals    `;
-    projectDate: string = 'Last updated: JUNE 2025';
+<ul>
+    <li>Creative photo galleries</li>
+    <li>Portfolio image showcase</li>
+    <li>Interactive cover reveals</li>
+</ul>
+    `;
+    projectDate: string = 'Last updated: June 2025';
     projectVersion: string = 'v1.0.0';
     projectTags: string[] = ['Web Development', 'HTML', 'CSS'];
 

@@ -114,6 +114,7 @@ body {
   overflow: hidden;
 }
 
+/* ─── Sun mode (--sun-active: true) ─── */
 .night-mode[style*="--sun-active: true"] .sun-moon-toggler {
   width: 30px;
   height: 30px;
@@ -166,6 +167,7 @@ body {
   background-color: rgba(247, 240, 240, 0.2);
 }
 
+/* ─── Moon mode (--sun-active: false) ─── */
 .night-mode[style*="--sun-active: false"] .sun-moon-toggler {
   display: block;
   width: 1.8rem;
@@ -303,13 +305,15 @@ nightModeContainer.addEventListener('click', () => {
 body {
   transition: 0.3s linear;
   background-color: var(--main-background);
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .night-mode {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
   width: max-content;
   cursor: pointer;
   overflow: hidden;
@@ -337,7 +341,7 @@ body {
       inset 2px 2px 2px rgba(0, 0, 0, 0.4),
       inset -2px -2px 2px rgba(0, 0, 0, 0.3);
   overflow: hidden;
-  transition: backgroundImage 0.3s linear;
+  transition: background-color 0.3s linear;
   transition-delay: 0.3s;
 }
 
@@ -356,150 +360,120 @@ body {
   overflow: hidden;
 }
 
-@container style(--sun-active: true) {
-  .sun-moon-toggler {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      box-shadow:
-          inset -28px -2px 0 3px #f3d076,
-          0 0 5px #f3d076,
-          0 0 20px #f3d076,
-          0 0 50px #f3d076,
-          0 0 70px #f3d076;
-  }
-
-  .clouds-stars-bottom {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      border-radius: 20px;
-      overflow: hidden;
-      z-index: 9;
-      transition: 0.3s linear;
-
-      span {
-          position: absolute;
-          right: 0;
-          bottom: 0px;
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background-color: rgb(247, 240, 240);
-
-          &:nth-child(2) { right: 13px; bottom: -5px; }
-          &:nth-child(3) { right: 26px; bottom: -10px; }
-          &:nth-child(4) { right: 43px; bottom: -14px; }
-      }
-  }
-
-  .clouds-stars-top {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      transform: translateY(-49px) translateX(0px);
-      border-radius: 20px;
-      z-index: 1;
-      transition: 0.3s linear;
-
-      span {
-          position: absolute;
-          right: 0;
-          bottom: 0px;
-          width: 15px;
-          height: 15px;
-          border-radius: 50%;
-          background-color: rgb(247, 240, 240, 0.2);
-
-          &:nth-child(2) { right: 13px; bottom: -5px; }
-          &:nth-child(3) { right: 26px; bottom: -10px; }
-          &:nth-child(4) { right: 37px; bottom: -14px; }
-      }
-  }
+/* ─── Sun mode ─── */
+.night-mode[style*="--sun-active: true"] .sun-moon-toggler {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  box-shadow:
+      inset -28px -2px 0 3px #f3d076,
+      0 0 5px #f3d076,
+      0 0 20px #f3d076,
+      0 0 50px #f3d076,
+      0 0 70px #f3d076;
 }
 
-@container style(--sun-active: false) {
-  .night-mode-btn {
-      background-color: #0f172a;
-      background-image: radial-gradient(circle at 90% 50%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 15%, transparent 16%),
-          radial-gradient(circle at 80% 50%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.5) 25%, transparent 26%),
-          radial-gradient(circle at 70% 50%, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.4) 35%, transparent 36%),
-          radial-gradient(circle at 60% 50%, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.3) 45%, transparent 46%),
-          radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.2) 55%, transparent 56%),
-          radial-gradient(circle at 40% 50%, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 65%, transparent 66%),
-          radial-gradient(circle at 30% 50%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 75%, transparent 76%),
-          radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 85%, transparent 86%),
-          radial-gradient(circle at 10% 50%, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 95%, transparent 96%),
-          radial-gradient(circle at 0% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
-  }
+.night-mode[style*="--sun-active: true"] .clouds-stars-bottom {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  z-index: 9;
+  transition: 0.3s linear;
+}
 
-  .clouds-stars-bottom {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      border-radius: 20px;
-      overflow: hidden;
-      z-index: 9;
-      transition: 0.3s linear;
-      transform: translateY(10px);
+.night-mode[style*="--sun-active: true"] .clouds-stars-bottom span {
+  position: absolute;
+  right: 0;
+  bottom: 0px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: rgb(247, 240, 240);
+}
 
-      span {
-          position: absolute;
-          width: 5px;
-          height: 5px;
-          border-radius: 50%;
-          left: calc(var(--left) * 1%);
-          bottom: calc(var(--bottom) * 1%);
-          clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-          background-color: #f3d076;
-          box-shadow:
-              0 0 5px #f3d076,
-              0 0 20px #f3d076,
-              0 0 50px #f3d076,
-              0 0 70px #f3d076;
-      }
-  }
+.night-mode[style*="--sun-active: true"] .clouds-stars-top {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform: translateY(-49px);
+  border-radius: 20px;
+  z-index: 1;
+  transition: 0.3s linear;
+}
 
-  .clouds-stars-top {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      transform: translateY(-30px) translateX(0px);
-      border-radius: 20px;
-      z-index: 1;
-      transition: 0.3s linear;
+.night-mode[style*="--sun-active: true"] .clouds-stars-top span {
+  position: absolute;
+  right: 0;
+  bottom: 0px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: rgba(247, 240, 240, 0.2);
+}
 
-      span {
-          position: absolute;
-          left: calc(var(--left) * 1%);
-          bottom: calc(var(--bottom) * 1%);
-          width: 5px;
-          height: 5px;
-          border-radius: 50%;
-          clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-          background-color: #f3d076;
-          box-shadow:
-              0 0 5px #f3d076,
-              0 0 20px #f3d076,
-              0 0 50px #f3d076,
-              0 0 70px #f3d076;
-      }
-  }
+/* ─── Moon mode ─── */
+.night-mode[style*="--sun-active: false"] .sun-moon-toggler {
+  display: block;
+  width: 1.8rem;
+  height: 1.8rem;
+  background-color: transparent;
+  box-shadow:
+      inset -8px -2px 0 3px #adadad,
+      0 0 5px transparent,
+      0 0 20px transparent,
+      0 0 50px transparent,
+      0 0 70px transparent;
+  border-radius: 50%;
+  transform: translate(58px, 5px);
+}
 
-  .sun-moon-toggler {
-      display: block;
-      width: 1.8rem;
-      height: 1.8rem;
-      background-color: transparent;
-      box-shadow:
-          inset -8px -2px 0 3px #adadad,
-          0 0 5px transparent,
-          0 0 20px transparent,
-          0 0 50px transparent,
-          0 0 70px transparent;
-      border-radius: 50%;
-      transform: translate(58px, 5px);
-  }
+.night-mode[style*="--sun-active: false"] .clouds-stars-bottom {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  z-index: 9;
+  transform: translateY(10px);
+}
+
+.night-mode[style*="--sun-active: false"] .clouds-stars-bottom span {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  left: calc(var(--left) * 1%);
+  bottom: calc(var(--bottom) * 1%);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  background-color: #f3d076;
+  box-shadow:
+      0 0 5px #f3d076,
+      0 0 20px #f3d076,
+      0 0 50px #f3d076;
+}
+
+.night-mode[style*="--sun-active: false"] .clouds-stars-top {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform: translateY(-30px);
+  border-radius: 20px;
+  z-index: 1;
+}
+
+.night-mode[style*="--sun-active: false"] .clouds-stars-top span {
+  position: absolute;
+  left: calc(var(--left) * 1%);
+  bottom: calc(var(--bottom) * 1%);
+  width: 5px;
+  height: 5px;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  background-color: #f3d076;
+  box-shadow:
+      0 0 5px #f3d076,
+      0 0 20px #f3d076,
+      0 0 50px #f3d076;
 }
     `,
       codeTitle: 'style.css'

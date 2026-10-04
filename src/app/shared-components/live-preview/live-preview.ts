@@ -58,6 +58,10 @@ export class LivePreviewComponent implements AfterViewInit, OnDestroy, OnChanges
   private mqMotion?: MediaQueryList;
   private srcdocValue: SafeHtml = this.emptyDoc();
 
+  private cachedTokens: string | null = null;
+
+  private lastBuildHash: string | null = null;
+
   readonly srcdoc = signal<SafeHtml>(this.srcdocValue);
 
   readonly resolvedTone = computed<'light' | 'dark'>(() => {
@@ -69,6 +73,9 @@ export class LivePreviewComponent implements AfterViewInit, OnDestroy, OnChanges
   constructor() {
     effect(() => {
       const tone = this.resolvedTone();
+
+      this.cachedTokens = null;
+
       if (this.mounted()) {
         this.sendToneToFrame(tone);
       }
@@ -177,10 +184,35 @@ export class LivePreviewComponent implements AfterViewInit, OnDestroy, OnChanges
     } catch (_) { }
   }
 
+  private computeHash(parts: string[]): string {
+    const s = parts.join('\u0000');
+    let h = 5381;
+    for (let i = 0; i < s.length; i++) {
+      h = ((h << 5) + h + s.charCodeAt(i)) | 0;
+    }
+    return String(h);
+  }
+
+  private getTokensCached(): string {
+    if (this.cachedTokens !== null) return this.cachedTokens;
+    this.cachedTokens = this.readTokens();
+    return this.cachedTokens;
+  }
+
   private rebuild(): void {
     if (!isPlatformBrowser(this.platformId)) return;
+
     const tone = this.resolvedTone();
-    const tokens = this.readTokens();
+    const paused = this.reducedMotion() && !this.playing();
+
+    const hash = this.computeHash([
+      this.html, this.css, this.js, tone, paused ? '1' : '0'
+    ]);
+
+    if (hash === this.lastBuildHash) return;
+    this.lastBuildHash = hash;
+
+    const tokens = this.getTokensCached();
     const html = this.buildDocument({ tone, tokens });
     this.srcdocValue = this.sanitizer.bypassSecurityTrustHtml(html);
     this.srcdoc.set(this.srcdocValue);

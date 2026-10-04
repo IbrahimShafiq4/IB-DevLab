@@ -15,7 +15,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { LivePreviewComponent } from '../live-preview/live-preview';
-import { Station, LineKey, LINES } from '../../core/stations.data';
+import { Station, LineKey, LINES, STATIONS } from '../../core/stations.data';
 
 @Component({
   selector: 'app-metro-map',
@@ -32,7 +32,8 @@ export class MetroMapComponent implements AfterViewInit, OnDestroy {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  readonly stations = signal<Station[]>([]);
+  /** Stations list — pulled from the shared data file (already bundled). */
+  readonly stations = signal<Station[]>(STATIONS);
   readonly lines = LINES;
 
   readonly activeStation = signal<Station | null>(null);
@@ -52,12 +53,7 @@ export class MetroMapComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     if (!isPlatformBrowser(this.platformId)) return;
 
-    import('../../core/stations.data').then(({ STATIONS }) => {
-      this.stations.set(STATIONS);
-      this.cdr.markForCheck();
-
-      requestAnimationFrame(() => this.setupIntersectionObserver());
-    });
+    requestAnimationFrame(() => this.setupIntersectionObserver());
   }
 
   ngOnDestroy(): void {
@@ -76,7 +72,6 @@ export class MetroMapComponent implements AfterViewInit, OnDestroy {
         for (const entry of entries) {
           if (entry.isIntersecting) {
             this.mapVisible.set(true);
-            this.cdr.markForCheck();
             this.observer?.disconnect();
             break;
           }
@@ -118,6 +113,7 @@ export class MetroMapComponent implements AfterViewInit, OnDestroy {
     this.ticketX.set(safeX);
     this.ticketY.set(y);
     this.ticketVisible.set(true);
+
     this.cdr.markForCheck();
   }
 

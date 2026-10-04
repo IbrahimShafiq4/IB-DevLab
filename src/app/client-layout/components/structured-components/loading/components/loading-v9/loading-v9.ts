@@ -8,35 +8,23 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../../../shared-co
 <app-shared-code [tags]="projectTags" [HTMLCodeSnippet]="HTMLCodeSnippets" [CSSCodeSnippet]="CSSCodeSnippets"
     [projectDate]="projectDate" [JSCodeSnippet]="JSCodeSnippets" [projectDescription]="projectDescription"
     [projectVersion]="projectVersion" [projectName]="projectName" [zipFile]="zipFile" />
-`
+    `
 })
 export class LoadingV9 {
-    projectName: string = 'Compact Rotating Spiral Loader – Version 9';
+    projectName: string = 'Responsive Spiral Loader – Version 9.0 📐';
     projectDescription: string = `
-This version introduces a scaled-down spiral loader using scale(0.75) combined with four 90°-rotated layers (rotate(calc(90deg * var(--j)))), creating a tighter, crisper animation that is both minimal and futuristic 🌌.
-      <ul>
-        <li>🔄 4-layer rotation forming a symmetrical spiral cross 🧭</li>
-        <li>🔍 Scaled down with scale(0.75) for a more compact visual</li>
-        <li>💠 20 dynamically placed span elements per loader, radiating from center</li>
-        <li>💡 Each dot is a glowing blue orb with multi-layered shadows</li>
-        <li>🔁 Smooth inward ripple animation using keyframes and staggered delay</li>
-      </ul>
-🎨 Perfect For:
-<br />
-Splash screens with limited space 🖥
-Modern dashboard loaders 💼
-Interfaces that demand subtle motion without distraction 🧘‍♂️
-<br />
-🧪 Pro Tips:
-<br />
-Want a more intense effect? Increase scale to 1 or 1.2 🔍
-Swap blue glow (#00ebff) for your brand’s primary color 🎨
-Try transform: scale(0.75) rotateZ(...deg) for layered depth!
-🧬 A compact, neon-powered animation that feels alive and techy—perfect for fast, professional-looking loaders!
-
-`;
+The final version of the spiral loader — fully responsive and self-adjusting.
+It scales based on the viewport size and re-renders on resize, making it the most
+production-ready variant in the series. Works equally well on phones and desktops.
+    <ul>
+        <li>📱 Auto-scales with viewport (clamp-based)</li>
+        <li>🔄 Re-computes on window resize (debounced)</li>
+        <li>⚡ Uses ResizeObserver for smooth adaptation</li>
+        <li>🎯 Production-ready, drop-in ready</li>
+    </ul>
+    `;
     projectDate: string = 'Last updated: June 2025';
-    projectVersion: string = 'v1.8.0';
+    projectVersion: string = 'v2.5.0';
     projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
 
     HTMLCodeSnippets: ICodeStructure[] = [
@@ -47,11 +35,10 @@ Try transform: scale(0.75) rotateZ(...deg) for layered depth!
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading 09</title>
+    <title>Loading 09 — Responsive</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
     <script src="./main.js"></script>
 </body>
 </html>
@@ -75,16 +62,18 @@ body {
     align-items: center;
     min-height: 100vh;
     background-color: #001f25;
+    overflow: hidden;
 }
 
 .loader {
     position: relative;
-    transform: rotate(calc(90deg * var(--j))) scale(0.75);
+    /* ── Scaled by JS via --scale ── */
+    transform: rotate(calc(90deg * var(--j))) scale(var(--scale, 1));
 
     span {
         position: absolute;
         top: 0;
-        left: 0;
+        left: -200px;
         width: 200px;
         height: 2px;
         transform: rotate(calc(18deg * var(--i)));
@@ -97,16 +86,14 @@ body {
             height: 15px;
             background-color: #00ebff;
             border-radius: 50%;
-            box-shadow: 
-                        0 0 10px #00ebff,
-                        0 0 20px #00ebff,
-                        0 0 40px #00ebff,
-                        0 0 60px #00ebff,
-                        0 0 80px #00ebff,
-                        0 0 100px #00ebff;
+            box-shadow:
+                0 0 10px #00ebff,
+                0 0 20px #00ebff,
+                0 0 40px #00ebff,
+                0 0 60px #00ebff,
+                0 0 80px #00ebff;
             animation: animate 2s linear infinite;
             animation-delay: calc((-0.1s * var(--i)));
-
         }
     }
 }
@@ -116,15 +103,8 @@ body {
         transform: translateX(200px) scale(1);
         opacity: 0;
     }
-
-    10% {
-        opacity: 1;
-    }
-
-    80% {
-        opacity: 1;
-    }
-
+    10% { opacity: 1; }
+    80% { opacity: 1; }
     100% {
         transform: translateX(0px) scale(0);
         opacity: 0;
@@ -140,30 +120,63 @@ body {
             codeTitle: 'main.js',
             code: `
 const body = document.body;
-let loader;
 
 function loaderDiv() {
+    // Clear any existing loaders (for resize re-render)
+    document.querySelectorAll('.loader').forEach(el => el.remove());
+
     for (let j = 0; j <= 3; j++) {
-        loader = document.createElement('div');
+        const loader = document.createElement('div');
         loader.classList.add('loader');
         loader.style.setProperty('--j', j);
         body.appendChild(loader);
-        loaderSpan()
+        loaderSpan(loader);
     }
 }
 
-loaderDiv();
-
-function loaderSpan() {
+function loaderSpan(loader) {
     for (let i = 1; i <= 20; i++) {
         const span = document.createElement('span');
         span.style.setProperty('--i', i);
         loader.appendChild(span);
     }
 }
+
+// ─── Responsive scaling ───
+function computeScale() {
+    const minDim = Math.min(window.innerWidth, window.innerHeight);
+    // At 800px+ → scale 1. At 320px → scale ~0.5
+    const scale = Math.max(0.5, Math.min(1.2, minDim / 800));
+    return scale.toFixed(2);
+}
+
+function applyScale() {
+    const scale = computeScale();
+    document.querySelectorAll('.loader').forEach(loader => {
+        loader.style.setProperty('--scale', scale);
+    });
+}
+
+// ─── Debounced resize handler ───
+let resizeTimer;
+function handleResize() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(applyScale, 150);
+}
+
+// ─── Init ───
+loaderDiv();
+applyScale();
+
+window.addEventListener('resize', handleResize);
+
+// ─── ResizeObserver (for containers/iframes) ───
+if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(() => handleResize()).observe(document.body);
+}
       `
         }
-    ]
+    ];
 
     zipFile: string = 'assets/zip-files/loading/09 - loading.rar';
 }

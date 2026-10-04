@@ -398,7 +398,7 @@ aside h5 {
         {
             code: `
 export const CONFIG = {
-    API_KEY: 'e990c9bc6e654be2a9ee1e00147fd083',
+    API_KEY: 'YOUR_API_KEY_HERE',
     DEFAULT_IMAGE: './../images/loading-img.webp',
     PAGE_SIZE: 10,
     CATEGORIES: [
@@ -434,7 +434,7 @@ export class NewsAPI {
             const response = await fetch(url);
 
             if (!response.ok) {
-                throw new Error(HTTP error! status: \${response.status});
+                throw new Error(\`HTTP error! status: \${response.status}\`);
             }
 
             return await response.json();
@@ -446,7 +446,7 @@ export class NewsAPI {
 
     buildURL() {
         const { country, category } = this.settings;
-        return https://newsapi.org/v2/top-headlines?country=\${country}&category=\${category}&apiKey=\${CONFIG.API_KEY}&pageSize=\${CONFIG.PAGE_SIZE};
+        return \`https://newsapi.org/v2/top-headlines?country=\${country}&category=\${category}&apiKey=\${CONFIG.API_KEY}&pageSize=\${CONFIG.PAGE_SIZE}\`;
     }
 
     updateSettings(newSettings) {
@@ -632,7 +632,7 @@ class NewsApp {
             this.ui.displayNews(data.articles);
 
             const { category } = this.api.getCurrentSettings();
-            this.ui.updateHeader(News of \${category});
+            this.ui.updateHeader(\`News of \${category}\`);
         } catch (error) {
             this.ui.showError('Failed to fetch news. Please try again.');
             throw error;

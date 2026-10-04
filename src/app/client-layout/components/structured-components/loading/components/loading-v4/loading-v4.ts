@@ -11,27 +11,20 @@ import { ICodeStructure, SharedCodeComponent } from '../../../../../../shared-co
     `
 })
 export class LoadingV4 {
-    projectName: string = 'Neon Spiral Loader – Version 4.0 💠';
+    projectName: string = 'Neon Dual Spiral Loader – Version 4.0 💠';
     projectDescription: string = `
-This glowing neon spiral loader is built with pure JavaScript and CSS, dynamically generating a circular formation of 20 radiant orbs ✨ for each loader instance. Each orb rotates around a center point using the formula rotate(calc(18deg * var(--i) / 2)), forming a hypnotic half-density spiral 🌀 with smooth, trailing motion.      <ul>
-        <li>✅ Dynamically generated DOM elements (<div class="loader"> with multiple <span>)</li>
-        <li>💡 Each span::before is a glowing neon dot using layered box shadows</li>
-        <li>🔁 Smooth staggered animation using animation-delay</li>
-        <li>🌌 Ideal for dark-themed designs or futuristic UI</li>
-      </ul>
-🎯 Use Cases:
-<br />
-Preloaders for high-tech or data-driven apps 📡
-Portfolio intros with motion graphics 🧑‍🎨
-Interactive waiting screens ⏳
-<br />
-🛠 Customizable:
-<br />
-Change the glow color via background-color and box-shadow
-Adjust the spiral density by tweaking the rotate() formula
-Add more loader layers by increasing the loop count (j)`;
+A hypnotic dual-spiral loader where alternating layers rotate in opposite directions,
+creating an interleaved vortex effect. Each loader has 20 glowing orbs and 4 layers,
+with odd layers counter-rotating for a rich visual texture.
+    <ul>
+        <li>✅ Alternating layers rotate clockwise and counter-clockwise</li>
+        <li>💡 Neon blue glow via layered box-shadows</li>
+        <li>🔁 Staggered animation delays for a smooth trailing motion</li>
+        <li>🌌 Ideal for dark-themed designs and futuristic UIs</li>
+    </ul>
+    `;
     projectDate: string = 'Last updated: June 2025';
-    projectVersion: string = 'v1.3.0';
+    projectVersion: string = 'v2.0.0';
     projectTags: string[] = ['Web Development', 'HTML', 'CSS', 'JS'];
 
     HTMLCodeSnippets: ICodeStructure[] = [
@@ -42,11 +35,10 @@ Add more loader layers by increasing the loop count (j)`;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading 04</title>
+    <title>Loading 04 — Dual Spiral</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
     <script src="./main.js"></script>
 </body>
 </html>
@@ -70,6 +62,7 @@ body {
     align-items: center;
     min-height: 100vh;
     background-color: #001f25;
+    overflow: hidden;
 }
 
 .loader {
@@ -81,7 +74,7 @@ body {
         left: -200px;
         width: 200px;
         height: 2px;
-        transform: rotate(calc(18deg * var(--i) / 2));
+        transform: rotate(calc(18deg * var(--i)));
         transform-origin: right;
 
         &::before {
@@ -91,17 +84,32 @@ body {
             height: 15px;
             background-color: #00ebff;
             border-radius: 50%;
-            box-shadow: 
-                        0 0 10px #00ebff,
-                        0 0 20px #00ebff,
-                        0 0 40px #00ebff,
-                        0 0 60px #00ebff,
-                        0 0 80px #00ebff,
-                        0 0 100px #00ebff;
+            box-shadow:
+                0 0 10px #00ebff,
+                0 0 20px #00ebff,
+                0 0 40px #00ebff,
+                0 0 60px #00ebff,
+                0 0 80px #00ebff,
+                0 0 100px #00ebff;
             animation: animate 2s linear infinite;
             animation-delay: calc((-0.1s * var(--i)));
-
         }
+    }
+
+    /* ── Counter-rotating layers ── */
+    &.reverse span {
+        transform: rotate(calc(-18deg * var(--i)));
+    }
+
+    &.reverse span::before {
+        background-color: #ff44aa;
+        box-shadow:
+            0 0 10px #ff44aa,
+            0 0 20px #ff44aa,
+            0 0 40px #ff44aa,
+            0 0 60px #ff44aa,
+            0 0 80px #ff44aa,
+            0 0 100px #ff44aa;
     }
 }
 
@@ -110,15 +118,8 @@ body {
         transform: translateX(200px) scale(1);
         opacity: 0;
     }
-
-    10% {
-        opacity: 1;
-    }
-
-    80% {
-        opacity: 1;
-    }
-
+    10% { opacity: 1; }
+    80% { opacity: 1; }
     100% {
         transform: translateX(0px) scale(0);
         opacity: 0;
@@ -140,9 +141,13 @@ function loaderDiv() {
     for (let j = 0; j <= 3; j++) {
         loader = document.createElement('div');
         loader.classList.add('loader');
+
+        // Alternate layers rotate in opposite directions
+        if (j % 2 === 1) loader.classList.add('reverse');
+
         loader.style.setProperty('--j', j);
         body.appendChild(loader);
-        loaderSpan()
+        loaderSpan();
     }
 }
 
@@ -157,7 +162,7 @@ function loaderSpan() {
 }
       `
         }
-    ]
+    ];
 
     zipFile: string = 'assets/zip-files/loading/04 - loading.rar';
 }

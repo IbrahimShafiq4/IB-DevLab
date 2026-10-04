@@ -1,369 +1,548 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ClientLayoutComponent } from './client-layout.component';
-import { HomeComponent } from './components/home/home.component';
-import { ExpComponent } from './components/exp/exp.component';
-import { TabsComponent } from './components/structured-components/tabs/tabs.component';
-import { BackgroundGeneratorComponent } from './components/structured-components/background-generator/background-generator.component';
-import { AnimatedTextComponent } from './components/structured-components/animated-text/animated-text.component';
-import { PasswordGeneratorComponent } from './components/structured-components/password-generator/password-generator.component';
-import { AnimatedPopupV1Component } from './components/structured-components/animated-popup-v1/animated-popup-v1.component';
-import { ClipPathScrollingComponent } from './components/structured-components/clip-path-scrolling/clip-path-scrolling.component';
-import { ConicGradientGeneratorComponent } from './components/structured-components/conic-gradient-generator/conic-gradient-generator.component';
-import { GlassmorphismV1Component } from './components/structured-components/glassmorphism-v1/glassmorphism-v1.component';
-import { InteractiveBox3DComponent } from './components/structured-components/interactive-box3-d/interactive-box3-d.component';
-import { MenuIndicatorV1Component } from './components/structured-components/menu-indicator-v1/menu-indicator-v1.component';
-import { SliderV1Component } from './components/structured-components/slider-v1/slider-v1.component';
-import { SolarSystemLoadingComponent } from './components/structured-components/solar-system-loading/solar-system-loading.component';
-import { TextStrokeAnimationComponent } from './components/structured-components/text-stroke-animation/text-stroke-animation.component';
-import { TextStrokeFillAnimationComponent } from './components/structured-components/text-stroke-fill-animation/text-stroke-fill-animation.component';
-import { AnimatedGIFImage3dComponent } from './components/structured-components/animated-gifimage3d/animated-gifimage3d.component';
-import { HtmlCssJsComponent } from './components/structured-components/html-css-js/html-css-js.component';
-import { NewsAppComponent } from './components/structured-components/news-app/news-app.component';
-import { PieChartComponent } from './components/structured-components/pie-chart/pie-chart.component';
-import { TextV4Component } from './components/structured-components/text-v4/text-v4.component';
-import { RainsComponent } from './components/structured-components/rains/rains.component';
-import { LoadingV2Component } from './components/structured-components/loading/components/loading-v2/loading-v2.component';
-import { TextV5Component } from './components/structured-components/text-v5/text-v5.component';
-import { MouseMoveV3Component } from './components/structured-components/mouse-move-v3/mouse-move-v3.component';
-import { TextV3Component } from './components/structured-components/text-v3/text-v3.component';
-import { MouseMoveV2Component } from './components/structured-components/mouse-move-v2/mouse-move-v2.component';
-import { ImageScrollingComponent } from './components/structured-components/image-scrolling/image-scrolling.component';
-import { TiltV1Component } from './components/structured-components/tilt-v1/tilt-v1.component';
-import { TiltV2Component } from './components/structured-components/tilt-v2/tilt-v2.component';
-import { TiltV3Component } from './components/structured-components/tilt-v3/tilt-v3.component';
-import { MouseMoveV1Component } from './components/structured-components/mouse-move-v1/mouse-move-v1.component';
-import { CubeComponent } from './components/structured-components/cube/cube.component';
-import { DropOfWater } from './components/structured-components/drop-of-water/drop-of-water';
-import { CanRotation } from './components/structured-components/can-rotation/can-rotation';
-import { CircularLogo } from './components/structured-components/circular-logo/circular-logo';
-import { CssBattleP1 } from './components/structured-components/css-battle-p1/css-battle-p1';
-import { CssBattleP2 } from './components/structured-components/css-battle-p2/css-battle-p2';
-import { CssBattleP4 } from './components/structured-components/css-battle-p4/css-battle-p4';
-import { CssBattleP3 } from './components/structured-components/css-battle-p3/css-battle-p3';
-import { CssBattleP5 } from './components/structured-components/css-battle-p5/css-battle-p5';
-import { CssBattleP6 } from './components/structured-components/css-battle-p6/css-battle-p6';
-import { CssBattleP7 } from './components/structured-components/css-battle-p7/css-battle-p7';
-import { CssBattleP8 } from './components/structured-components/css-battle-p8/css-battle-p8';
-import { CssBattleP9 } from './components/structured-components/css-battle-p9/css-battle-p9';
-import { CssBattleP10 } from './components/structured-components/css-battle-p10/css-battle-p10';
-import { CssBattleP11 } from './components/structured-components/css-battle-p11/css-battle-p11';
-import { LeetCode1 } from './components/structured-components/leet-code-1/leet-code-1';
-import { LeetCode2 } from './components/structured-components/leet-code-2/leet-code-2';
-import { CssBattle } from './components/structured-components/css-battle/css-battle';
-import { CssBattleP13 } from './components/structured-components/css-battle-p13/css-battle-p13';
-import { LeetCode3 } from './components/structured-components/leet-code-3/leet-code-3';
-import { LeetCode4 } from './components/structured-components/leet-code-4/leet-code-4';
-import { LeetCode5 } from './components/structured-components/leet-code-5/leet-code-5';
-import { CssBattleP14 } from './components/structured-components/css-battle-p14/css-battle-p14';
-import { CssBattleP15 } from './components/structured-components/css-battle-p15/css-battle-p15';
-import { CssBattleP16 } from './components/structured-components/css-battle-p16/css-battle-p16';
-import { CssBattleP17 } from './components/structured-components/css-battle-p17/css-battle-p17';
-import { CssBattleP18 } from './components/structured-components/css-battle-p18/css-battle-p18';
-import { LeetCode6 } from './components/structured-components/leet-code-6/leet-code-6';
-import { LeetCode7 } from './components/structured-components/leet-code-7/leet-code-7';
-import { CssBattleP19 } from './components/structured-components/css-battle-p19/css-battle-p19';
-import { CssBattleP20 } from './components/structured-components/css-battle-p20/css-battle-p20';
-import { CssBattleP21 } from './components/structured-components/css-battle-p21/css-battle-p21';
-import { CssBattleP22 } from './components/structured-components/css-battle-p22/css-battle-p22';
-import { CssBattleP23 } from './components/structured-components/css-battle-p23/css-battle-p23';
-import { CssBattleP24 } from './components/structured-components/css-battle-p24/css-battle-p24';
-import { CssBattleP25 } from './components/structured-components/css-battle-p25/css-battle-p25';
-import { CssBattleP26 } from './components/structured-components/css-battle-p26/css-battle-p26';
-import { LeetCode8 } from './components/structured-components/leet-code-8/leet-code-8';
-import { CleanCode01 } from './components/structured-components/clean-code-01/clean-code-01';
-import { CleanCode02 } from './components/structured-components/clean-code-02/clean-code-02';
-import { LeetCode9 } from './components/structured-components/leet-code-9/leet-code-9';
-import { CssBattleP27 } from './components/structured-components/css-battle-p27/css-battle-p27';
-import { CleanCode03 } from './components/structured-components/clean-code-03/clean-code-03';
-import { LeetCode10 } from './components/structured-components/leet-code-10/leet-code-10';
-import { CssBattleP28 } from './components/structured-components/css-battle-p28/css-battle-p28';
-import { CleanCode04 } from './components/structured-components/clean-code-04/clean-code-04';
-import { LeetCode11 } from './components/structured-components/leet-code-11/leet-code-11';
-import { CleanCode05 } from './components/structured-components/clean-code-05/clean-code-05';
-import { LabComponent } from './components/lab/lab';
-import { CssBattleP29 } from './components/structured-components/css-battle-p29/css-battle-p29';
-import { StationPageComponent } from '../features/station-page/station-page';
-
 
 const routes: Routes = [
   {
-    path: '', component: ClientLayoutComponent, title: '', children: [
+    path: '',
+    component: ClientLayoutComponent,
+    children: [
+      // ─── Home ───
       {
         path: '',
-        redirectTo: '',
-        pathMatch: 'full'
+        loadComponent: () =>
+          import('./components/home/home.component').then(m => m.HomeComponent),
+        title: 'IBDevLab — معمل التجارب البرمجية'
       },
       {
-        path: '',
-        component: HomeComponent,
-        title: 'Home page'
+        path: 'exp',
+        loadComponent: () =>
+          import('./components/exp/exp.component').then(m => m.ExpComponent),
+        title: 'Explanation Page'
       },
-      {
-        path: "exp",
-        component: ExpComponent,
-        title: "Explanation Page"
-      },
+
+      // ─── Interactive Components ───
       {
         path: 'tabs',
-        component: TabsComponent,
+        loadComponent: () =>
+          import('./components/structured-components/tabs/tabs.component').then(m => m.TabsComponent),
         title: 'Tabs Component'
       },
       {
         path: 'blocks',
-        component: BackgroundGeneratorComponent,
+        loadComponent: () =>
+          import('./components/structured-components/background-generator/background-generator.component').then(m => m.BackgroundGeneratorComponent),
         title: 'Blocks Generator'
       },
       {
         path: 'animated-typing-text',
-        component: AnimatedTextComponent,
+        loadComponent: () =>
+          import('./components/structured-components/animated-text/animated-text.component').then(m => m.AnimatedTextComponent),
         title: 'Animated Typing Text'
       },
       {
         path: 'password-generator-v1',
-        component: PasswordGeneratorComponent,
+        loadComponent: () =>
+          import('./components/structured-components/password-generator/password-generator.component').then(m => m.PasswordGeneratorComponent),
         title: 'Password Generator V1'
       },
       {
         path: 'animated-popup-v1',
-        component: AnimatedPopupV1Component,
+        loadComponent: () =>
+          import('./components/structured-components/animated-popup-v1/animated-popup-v1.component').then(m => m.AnimatedPopupV1Component),
         title: 'Animated Popup V1'
       },
       {
         path: 'menu-indicator-v1',
-        component: MenuIndicatorV1Component,
+        loadComponent: () =>
+          import('./components/structured-components/menu-indicator-v1/menu-indicator-v1.component').then(m => m.MenuIndicatorV1Component),
         title: 'Menu Indicator V1'
       },
       {
         path: 'conic-gradient-generator',
-        component: ConicGradientGeneratorComponent,
+        loadComponent: () =>
+          import('./components/structured-components/conic-gradient-generator/conic-gradient-generator.component').then(m => m.ConicGradientGeneratorComponent),
         title: 'Conic Gradient Generator'
       },
       {
         path: 'solar-system-loading',
-        component: SolarSystemLoadingComponent,
+        loadComponent: () =>
+          import('./components/structured-components/solar-system-loading/solar-system-loading.component').then(m => m.SolarSystemLoadingComponent),
         title: 'Solar System Loading'
       },
       {
         path: 'interactive-box-3d',
-        component: InteractiveBox3DComponent,
+        loadComponent: () =>
+          import('./components/structured-components/interactive-box3-d/interactive-box3-d.component').then(m => m.InteractiveBox3DComponent),
         title: 'Interactive Box 3D'
       },
       {
         path: 'clip-path-scrolling',
-        component: ClipPathScrollingComponent,
+        loadComponent: () =>
+          import('./components/structured-components/clip-path-scrolling/clip-path-scrolling.component').then(m => m.ClipPathScrollingComponent),
         title: 'Clip Path Scrolling'
       },
       {
         path: 'glassmorphism-v1',
-        component: GlassmorphismV1Component,
+        loadComponent: () =>
+          import('./components/structured-components/glassmorphism-v1/glassmorphism-v1.component').then(m => m.GlassmorphismV1Component),
         title: 'Glassmorphism V1'
       },
       {
         path: 'animated-3d-gif-image',
-        component: AnimatedGIFImage3dComponent,
+        loadComponent: () =>
+          import('./components/structured-components/animated-gifimage3d/animated-gifimage3d.component').then(m => m.AnimatedGIFImage3dComponent),
         title: 'Animated 3D GIF Image'
       },
       {
         path: 'slider-v1',
-        component: SliderV1Component,
+        loadComponent: () =>
+          import('./components/structured-components/slider-v1/slider-v1.component').then(m => m.SliderV1Component),
         title: 'Slider V1'
       },
       {
         path: 'text-stroke-fill-animation',
-        component: TextStrokeFillAnimationComponent,
+        loadComponent: () =>
+          import('./components/structured-components/text-stroke-fill-animation/text-stroke-fill-animation.component').then(m => m.TextStrokeFillAnimationComponent),
         title: 'Text Stroke Fill Animation'
       },
       {
         path: 'text-stroke-animation',
-        component: TextStrokeAnimationComponent,
+        loadComponent: () =>
+          import('./components/structured-components/text-stroke-animation/text-stroke-animation.component').then(m => m.TextStrokeAnimationComponent),
         title: 'Text Stroke Animation'
       },
       {
         path: 'html-css-js',
-        component: HtmlCssJsComponent,
+        loadComponent: () =>
+          import('./components/structured-components/html-css-js/html-css-js.component').then(m => m.HtmlCssJsComponent),
         title: 'HTML CSS JS projects'
       },
       {
         path: 'news-app',
-        component: NewsAppComponent,
+        loadComponent: () =>
+          import('./components/structured-components/news-app/news-app.component').then(m => m.NewsAppComponent),
         title: 'News app project'
       },
       {
         path: 'pie-chart',
-        component: PieChartComponent,
+        loadComponent: () =>
+          import('./components/structured-components/pie-chart/pie-chart.component').then(m => m.PieChartComponent),
         title: 'Pie chart project'
       },
       {
         path: 'text-v4',
-        component: TextV4Component,
+        loadComponent: () =>
+          import('./components/structured-components/text-v4/text-v4.component').then(m => m.TextV4Component),
         title: 'Text Animation V4'
       },
       {
         path: 'rains',
-        component: RainsComponent,
+        loadComponent: () =>
+          import('./components/structured-components/rains/rains.component').then(m => m.RainsComponent),
         title: 'Rains Animation'
       },
       {
         path: 'loading-v2',
-        component: LoadingV2Component,
+        loadComponent: () =>
+          import('./components/structured-components/loading/components/loading-v2/loading-v2.component').then(m => m.LoadingV2Component),
         title: 'Loading Animation V2'
       },
       {
         path: 'text-v5',
-        component: TextV5Component,
+        loadComponent: () =>
+          import('./components/structured-components/text-v5/text-v5.component').then(m => m.TextV5Component),
         title: 'Text Animation V5'
       },
       {
         path: 'mouse-move-v3',
-        component: MouseMoveV3Component,
+        loadComponent: () =>
+          import('./components/structured-components/mouse-move-v3/mouse-move-v3.component').then(m => m.MouseMoveV3Component),
         title: 'Mouse Move Animation V3'
       },
       {
         path: 'text-v3',
-        component: TextV3Component,
+        loadComponent: () =>
+          import('./components/structured-components/text-v3/text-v3.component').then(m => m.TextV3Component),
         title: 'Text Animation V3'
       },
       {
         path: 'mouse-move-v2',
-        component: MouseMoveV2Component,
+        loadComponent: () =>
+          import('./components/structured-components/mouse-move-v2/mouse-move-v2.component').then(m => m.MouseMoveV2Component),
         title: 'Mouse Move Animation V2'
       },
       {
         path: 'image-scrolling',
-        component: ImageScrollingComponent,
+        loadComponent: () =>
+          import('./components/structured-components/image-scrolling/image-scrolling.component').then(m => m.ImageScrollingComponent),
         title: 'Image Scrolling Effect'
       },
       {
         path: 'tilt-v1',
-        component: TiltV1Component,
+        loadComponent: () =>
+          import('./components/structured-components/tilt-v1/tilt-v1.component').then(m => m.TiltV1Component),
         title: 'Tilt Effect V1'
       },
       {
         path: 'tilt-v2',
-        component: TiltV2Component,
+        loadComponent: () =>
+          import('./components/structured-components/tilt-v2/tilt-v2.component').then(m => m.TiltV2Component),
         title: 'Tilt Effect V2'
       },
       {
         path: 'tilt-v3',
-        component: TiltV3Component,
+        loadComponent: () =>
+          import('./components/structured-components/tilt-v3/tilt-v3.component').then(m => m.TiltV3Component),
         title: 'Tilt Effect V3'
       },
       {
         path: 'mouse-move-v1',
-        component: MouseMoveV1Component,
+        loadComponent: () =>
+          import('./components/structured-components/mouse-move-v1/mouse-move-v1.component').then(m => m.MouseMoveV1Component),
         title: 'Mouse Move Animation V1'
       },
       {
         path: 'cube',
-        component: CubeComponent,
+        loadComponent: () =>
+          import('./components/structured-components/cube/cube.component').then(m => m.CubeComponent),
         title: 'Cube Animation'
       },
       {
+        path: 'drop-of-water',
+        loadComponent: () =>
+          import('./components/structured-components/drop-of-water/drop-of-water').then(m => m.DropOfWater),
+        title: 'Drop of Water Animation'
+      },
+      {
+        path: 'can-rotation',
+        loadComponent: () =>
+          import('./components/structured-components/can-rotation/can-rotation').then(m => m.CanRotation),
+        title: 'Can Rotation Animation'
+      },
+      {
+        path: 'circular-logo',
+        loadComponent: () =>
+          import('./components/structured-components/circular-logo/circular-logo').then(m => m.CircularLogo),
+        title: 'Circular Logo Animation'
+      },
+
+      // ─── Lazy-loaded NgModules (feature modules with internal routes) ───
+      {
         path: 'buttons',
         loadChildren: () =>
-          import('./components/structured-components/buttons/buttons.module').then(m => m.ButtonsModule),
+          import('./components/structured-components/buttons/buttons.module').then(m => m.ButtonsModule)
       },
       {
         path: 'night-mode',
         loadChildren: () =>
           import('./components/structured-components/night-mode/night-mode.module').then(m => m.NightModeModule)
       },
-      { path: 'layers', loadChildren: () => import('./components/structured-components/layers/layers-module').then(m => m.LayersModule) },
-      { path: 'loading', loadChildren: () => import('./components/structured-components/loading/loading-module').then(m => m.LoadingModule) },
-      { path: 'drop-of-water', component: DropOfWater, title: 'Drop of Water Animation' },
-      { path: 'can-rotation', component: CanRotation, title: 'Can Rotation Animation' },
-      { path: 'circular-logo', component: CircularLogo, title: 'Circular Logo Animation' },
+      {
+        path: 'layers',
+        loadChildren: () =>
+          import('./components/structured-components/layers/layers-module').then(m => m.LayersModule)
+      },
+      {
+        path: 'loading',
+        loadChildren: () =>
+          import('./components/structured-components/loading/loading-module').then(m => m.LoadingModule)
+      },
 
+      // ─── CSS Battles (29 routes) ───
+      {
+        path: 'css_battle_P1',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p1' },
+        title: 'CSS Battle Project 1'
+      },
+      {
+        path: 'css_battle_P2',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p2' },
+        title: 'CSS Battle Project 2'
+      },
+      {
+        path: 'css_battle_P3',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p3' },
+        title: 'CSS Battle Project 3'
+      },
+      {
+        path: 'css_battle_P4',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p4' },
+        title: 'CSS Battle Project 4'
+      },
+      {
+        path: 'css_battle_P5',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p5' },
+        title: 'CSS Battle Project 5'
+      },
+      {
+        path: 'css_battle_P6',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p6' },
+        title: 'CSS Battle Project 6'
+      },
+      {
+        path: 'css_battle_P7',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p7' },
+        title: 'CSS Battle Project 7'
+      },
+      {
+        path: 'css_battle_P8',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p8' },
+        title: 'CSS Battle Project 8'
+      },
+      {
+        path: 'css_battle_P9',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p9' },
+        title: 'CSS Battle Project 9'
+      },
+      {
+        path: 'css_battle_P10',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p10' },
+        title: 'CSS Battle Project 10'
+      },
+      {
+        path: 'css_battle_p11',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p11' },
+        title: 'Css Battle Project 11'
+      },
+      {
+        path: 'css_battle_p12',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p12' },
+        title: 'Css Battle Project 12'
+      },
+      {
+        path: 'css_battle_p13',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p13' },
+        title: 'Css Battle Project 13'
+      },
+      {
+        path: 'css_battle_p14',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p14' },
+        title: 'Css Battle Project 14'
+      },
+      {
+        path: 'css_battle_p15',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p15' },
+        title: 'Css Battle Project 15'
+      },
+      {
+        path: 'css_battle_p16',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p16' },
+        title: 'Css Battle Project 16'
+      },
+      {
+        path: 'css_battle_p17',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p17' },
+        title: 'Css Battle Project 17'
+      },
+      {
+        path: 'css_battle_p18',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p18' },
+        title: 'Css Battle Project 18'
+      },
+      {
+        path: 'css_battle_p19',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p19' },
+        title: 'Css Battle Project 19'
+      },
+      {
+        path: 'css_battle_p20',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p20' },
+        title: 'Css Battle Project 20'
+      },
+      {
+        path: 'css_battle_p21',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p21' },
+        title: 'Css Battle Project 21'
+      },
+      {
+        path: 'css_battle_p22',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p22' },
+        title: 'Css Battle Project 22'
+      },
+      {
+        path: 'css_battle_p23',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p23' },
+        title: 'Css Battle Project 23'
+      },
+      {
+        path: 'css_battle_p24',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p24' },
+        title: 'Css Battle Project 24'
+      },
+      {
+        path: 'css_battle_p25',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p25' },
+        title: 'Css Battle Project 25'
+      },
+      {
+        path: 'css_battle_p26',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p26' },
+        title: 'Css Battle Project 26'
+      },
+      {
+        path: 'css_battle_p27',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p27' },
+        title: 'Css Battle Project 27'
+      },
+      {
+        path: 'css_battle_p28',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p28' },
+        title: 'Css Battle Project 28'
+      },
+      {
+        path: 'css_battle_p29',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p29' },
+        title: 'Css Battle Project 29'
+      },
 
-      // --------------------------------- CSS BATTLE -----------------------------------
-      { path: 'css_battle_P1', component: CssBattleP1, title: 'CSS Battle Project 1' },
-      { path: 'css_battle_P2', component: CssBattleP2, title: 'CSS Battle Project 2' },
-      { path: 'css_battle_P3', component: CssBattleP3, title: 'CSS Battle Project 3' },
-      { path: 'css_battle_P4', component: CssBattleP4, title: 'CSS Battle Project 4' },
-      { path: 'css_battle_P5', component: CssBattleP5, title: 'CSS Battle Project 5' },
-      { path: 'css_battle_P6', component: CssBattleP6, title: 'CSS Battle Project 6' },
-      { path: 'css_battle_P7', component: CssBattleP7, title: 'CSS Battle Project 7' },
-      { path: 'css_battle_P8', component: CssBattleP8, title: 'CSS Battle Project 8' },
-      { path: 'css_battle_P9', component: CssBattleP9, title: 'CSS Battle Project 9' },
-      { path: 'css_battle_P10', component: CssBattleP10, title: 'CSS Battle Project 10' },
-      { path: 'css_battle_p11', component: CssBattleP11, title: 'Css Battle Project 11' },
-      { path: 'css_battle_p12', component: CssBattle, title: 'Css Battle Project 12' },
-      { path: 'css_battle_p13', component: CssBattleP13, title: 'Css Battle Project 13' },
-      { path: 'css_battle_p14', component: CssBattleP14, title: 'Css Battle Project 14' },
-      { path: 'css_battle_p15', component: CssBattleP15, title: 'Css Battle Project 15' },
-      { path: 'css_battle_p16', component: CssBattleP16, title: 'Css Battle Project 16' },
-      { path: 'css_battle_p17', component: CssBattleP17, title: 'Css Battle Project 17' },
-      { path: 'css_battle_p18', component: CssBattleP18, title: 'Css Battle Project 18' },
-      { path: 'css_battle_p19', component: CssBattleP19, title: 'Css Battle Project 19' },
-      { path: 'css_battle_p20', component: CssBattleP20, title: 'Css Battle Project 20' },
-      { path: 'css_battle_p21', component: CssBattleP21, title: 'Css Battle Project 21' },
-      { path: 'css_battle_p22', component: CssBattleP22, title: 'Css Battle Project 22' },
-      { path: 'css_battle_p23', component: CssBattleP23, title: 'Css Battle Project 23' },
-      { path: 'css_battle_p24', component: CssBattleP24, title: 'Css Battle Project 24' },
-      { path: 'css_battle_p25', component: CssBattleP25, title: 'Css Battle Project 25' },
-      { path: 'css_battle_p26', component: CssBattleP26, title: 'Css Battle Project 26' },
-      { path: 'css_battle_p27', component: CssBattleP27, title: 'Css Battle Project 27' },
-      { path: 'css_battle_p28', component: CssBattleP28, title: 'Css Battle Project 28' },
-      { path: 'css_battle_p29', component: CssBattleP29, title: 'Css Battle Project 29' },
+      // ─── Problem Solving / LeetCode (11 routes) ───
+      {
+        path: 'problem-solving/roman-to-integer',
+        loadComponent: () =>
+          import('./components/structured-components/leet-code-1/leet-code-1').then(m => m.LeetCode1),
+        title: 'Roman To Integer'
+      },
+      {
+        path: 'problem-solving/longest-substring',
+        loadComponent: () =>
+          import('./components/structured-components/leet-code-2/leet-code-2').then(m => m.LeetCode2),
+        title: 'Longest Substring'
+      },
+      {
+        path: 'problem-solving/palindrome-number',
+        loadComponent: () =>
+          import('./components/structured-components/leet-code-3/leet-code-3').then(m => m.LeetCode3),
+        title: 'Palindrome Number'
+      },
+      {
+        path: 'problem-solving/longest-common-prefix',
+        loadComponent: () =>
+          import('./components/structured-components/leet-code-4/leet-code-4').then(m => m.LeetCode4),
+        title: 'Longest Common Prefix'
+      },
+      {
+        path: 'problem-solving/valid-parentheses',
+        loadComponent: () =>
+          import('./components/structured-components/leet-code-5/leet-code-5').then(m => m.LeetCode5),
+        title: 'Valid Parentheses'
+      },
+      {
+        path: 'problem-solving/merge-two-sorted-lists',
+        loadComponent: () =>
+          import('./components/structured-components/leet-code-6/leet-code-6').then(m => m.LeetCode6),
+        title: 'Merge Two Sorted Lists'
+      },
+      {
+        path: 'problem-solving/remove-duplicates-from-sorted-array',
+        loadComponent: () =>
+          import('./components/structured-components/leet-code-7/leet-code-7').then(m => m.LeetCode7),
+        title: 'Remove duplicates from sorted array'
+      },
+      {
+        path: 'problem-solving/remove-element',
+        loadComponent: () =>
+          import('./components/structured-components/leet-code-8/leet-code-8').then(m => m.LeetCode8),
+        title: 'Remove Element'
+      },
+      {
+        path: 'problem-solving/find-the-index-of-the-first-occurrence',
+        loadComponent: () =>
+          import('./components/structured-components/leet-code-9/leet-code-9').then(m => m.LeetCode9),
+        title: 'Find the Index of the First Occurrence'
+      },
+      {
+        path: 'problem-solving/search-insert-position',
+        loadComponent: () =>
+          import('./components/structured-components/leet-code-10/leet-code-10').then(m => m.LeetCode10),
+        title: 'Search Insert Position'
+      },
+      {
+        path: 'problem-solving/length-of-last-word',
+        loadComponent: () =>
+          import('./components/structured-components/leet-code-11/leet-code-11').then(m => m.LeetCode11),
+        title: 'Length of Last Word'
+      },
 
-
-      // ---------------------- PROBLEM SOLVING -------------------------- //
-      { path: 'problem-solving/roman-to-integer', component: LeetCode1, title: 'Roman To Integer' },
-      { path: 'problem-solving/longest-substring', component: LeetCode2, title: 'Longest Substring' },
-      { path: 'problem-solving/palindrome-number', component: LeetCode3, title: 'Palindrome Number' },
-      { path: 'problem-solving/longest-common-prefix', component: LeetCode4, title: 'Longest Common Prefix' },
-      { path: 'problem-solving/valid-parentheses', component: LeetCode5, title: 'Valid Parentheses' },
-      { path: 'problem-solving/merge-two-sorted-lists', component: LeetCode6, title: 'Merge Two Sorted Lists' },
-      { path: 'problem-solving/remove-duplicates-from-sorted-array', component: LeetCode7, title: 'Remove duplicates from sorted array' },
-      { path: 'problem-solving/remove-element', component: LeetCode8, title: 'Remove Element' },
-      { path: 'problem-solving/find-the-index-of-the-first-occurrence', component: LeetCode9, title: 'Find the Index of the First Occurrence' },
-      { path: 'problem-solving/search-insert-position', component: LeetCode10, title: 'Search Insert Position' },
-      { path: 'problem-solving/length-of-last-word', component: LeetCode11, title: 'Length of Last Word' },
-
-
-      // ----------------------- CLEAN CODE ------------------------------
+      // ─── Clean Code (5 routes) ───
       {
         path: 'clean-code-01',
-        component: CleanCode01,
+        loadComponent: () =>
+          import('./components/structured-components/clean-code-01/clean-code-01').then(m => m.CleanCode01),
         title: 'Clean Code – From Messy to Maintainable'
       },
       {
         path: 'clean-code-02',
-        component: CleanCode02,
+        loadComponent: () =>
+          import('./components/structured-components/clean-code-02/clean-code-02').then(m => m.CleanCode02),
         title: 'Clean Code – Meaningful Names'
       },
       {
         path: 'clean-code-03',
-        component: CleanCode03,
+        loadComponent: () =>
+          import('./components/structured-components/clean-code-03/clean-code-03').then(m => m.CleanCode03),
         title: 'Clean Code – Class & Method Names'
       },
       {
         path: 'clean-code-04',
-        component: CleanCode04,
+        loadComponent: () =>
+          import('./components/structured-components/clean-code-04/clean-code-04').then(m => m.CleanCode04),
         title: 'Clean Code – Functions'
       },
       {
         path: 'clean-code-05',
-        component: CleanCode05,
+        loadComponent: () =>
+          import('./components/structured-components/clean-code-05/clean-code-05').then(m => m.CleanCode05),
         title: 'Clean Code – Comments'
       },
 
-
+      // ─── Lab (specimen stage) ───
       {
         path: 'lab',
-        component: LabComponent,
+        loadComponent: () =>
+          import('./components/lab/lab').then(m => m.LabComponent),
         title: 'المعمل الحيّ — IBDevLab'
       },
 
+      // ─── Station page (algorithms) ───
       {
         path: 'algorithms/binary-search',
-        component: StationPageComponent,
+        loadComponent: () =>
+          import('../features/station-page/station-page').then(m => m.StationPageComponent),
         title: 'Binary Search - IBDevLab',
         data: { stationId: 'A-001' }
       }
     ]
-  },
+  }
 ];
 
 @NgModule({
@@ -371,4 +550,3 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class ClientLayoutRoutingModule { }
-

@@ -1,6 +1,16 @@
 export type LineKey = 'algo' | 'ds' | 'api';
 export type LevelKey = 'beginner' | 'intermediate' | 'advanced';
 
+export const LEVEL_LABELS: Record<LevelKey, string> = {
+    beginner: 'مبتدئ',
+    intermediate: 'متوسط',
+    advanced: 'متقدم',
+};
+
+export function getLevelLabel(level: LevelKey): string {
+    return LEVEL_LABELS[level];
+}
+
 export interface StationCodeLine {
     line: string;
     note: string;
