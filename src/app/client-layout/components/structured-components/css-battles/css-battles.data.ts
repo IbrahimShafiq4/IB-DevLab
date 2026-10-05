@@ -1117,5 +1117,29 @@ The design uses:
         tags: ['Web Development', 'HTML', 'CSS', 'Pseudo-elements', 'Positioning', 'Border-radius', 'CSS Shapes', 'CSS Battle'],
         zipFile: 'assets/zip-files/cssBattle/29 - p29.zip',
         html: `<div></div><style>body{display:grid;place-items:center;background:#4C7A6F}div{width:175px;height:25px;background:#D6B96F;position:relative;transform:translateY(-5px)}div:before{content:"";position:absolute;width:100%;height:38px;background:#D6B96F;border-radius:100% 100% 0 0/100% 100% 0 0;top:-50px}div:after{content:"";position:absolute;width:100%;height:25px;background:#ddd;top:-38px}</style>`
+    },
+    // ═══════════════════════════════════════════════════════════════
+    // P30 — Reflection Dots & Cross
+    // ═══════════════════════════════════════════════════════════════
+    'p30': {
+        id: 'p30',
+        title: 'CSS Battle – Reflection Dots & Cross',
+        description: `
+CSS recreation of a composition featuring mirrored dots and a cross-like shape using pure HTML and CSS.
+
+The design uses:
+- CSS pseudo-elements
+- Border-radius for circular dots
+- -webkit-box-reflect for mirroring dots
+- Absolute positioning
+- Layered geometric shapes
+- Minimal HTML structure
+- Pure CSS without images or SVG
+        `.trim(),
+        date: 'Last updated: Oct 5, 2026',
+        version: 'v1.0.0',
+        tags: ['Web Development', 'HTML', 'CSS', 'Pseudo-elements', 'Positioning', 'Border-radius', 'CSS Box Reflect', 'CSS Battle'],
+        zipFile: 'assets/zip-files/cssBattle/30 - p30.zip',
+        html: `<p></p><i></i><style>body{display:flex;justify-content:center;align-items:center;gap:100px;background:#F7CB71}i{width:100px;height:100px;position:relative}& i:before,& i:after{content:'';position:absolute;top:-10px;left:10px;width:50px;height:50px;background:#4D52D0;border-radius:50%;-webkit-box-reflect:below 20px}& i:after{left:80px;background:#D16161}p{background:#D16161;width:60px;height:120px;position:relative}p:before{content:'';position:absolute;top:30px;left:-30px;width:120px;height:60px;background:#D16161}</style>`
     }
 };

@@ -783,6 +783,17 @@ const BASE_SPECIMENS: Specimen[] = [
     stage: 'light',
     sortKey: 128
   },
+  {
+    id: 'CB-30',
+    kind: 'css-battle',
+    title: 'CSS Battle — Reflection Dots & Cross',
+    description: 'دوائر معكوسة مع شكل صليب باستخدام box-reflect وpseudo-elements.',
+    date: 'أكتوبر 2026',
+    tags: ['CSS', 'Battle'],
+    href: '/css_battle_p30',
+    stage: 'light',
+    sortKey: 129
+  },
 
   // ─── Problem Solving ───
   {

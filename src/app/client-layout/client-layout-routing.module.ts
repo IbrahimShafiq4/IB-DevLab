@@ -424,6 +424,12 @@ const routes: Routes = [
         data: { battleId: 'p29' },
         title: 'Css Battle Project 29'
       },
+      {
+        path: 'css_battle_p30',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p30' },
+        title: 'Css Battle Project 30'
+      },
 
       // ─── Problem Solving / LeetCode (11 routes) ───
       {
