@@ -794,6 +794,17 @@ const BASE_SPECIMENS: Specimen[] = [
     stage: 'light',
     sortKey: 129
   },
+  {
+    id: 'CB-31',
+    kind: 'css-battle',
+    title: 'CSS Battle — Geometric Hourglass',
+    description: 'شكل ساعة رملية هندسية بـ border-radius وbox-reflect.',
+    date: 'أكتوبر 2026',
+    tags: ['CSS', 'Battle'],
+    href: '/css_battle_p31',
+    stage: 'light',
+    sortKey: 130
+  },
 
   // ─── Problem Solving ───
   {

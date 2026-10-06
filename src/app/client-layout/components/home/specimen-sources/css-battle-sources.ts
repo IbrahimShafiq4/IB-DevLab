@@ -1850,6 +1850,69 @@ body {
     <i></i>
 </body>
 </html>`
-  }
+  },
+  // ═══════════════════════════════════════════════════════════════
+  // CB-31 — Geometric Hourglass
+  // ═══════════════════════════════════════════════════════════════
+  'CB-31': {
+    stage: 'light',
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geometric Hourglass</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="transform: scale(0.5);">
+    <p><i></i></p>
+</body>
+</html>`,
+    css: `body {
+    display: grid;
+    place-items: center;
+    background: #E98F6B;
+    min-height: 100vh;
+}
+
+p {
+    width: 60px;
+    height: 80px;
+    background: #8B4646;
+    border-right: 20px solid #fff;
+    border-left: 20px solid #fff;
+    position: relative;
+}
+
+p i {
+    position: absolute;
+    width: 45px;
+    height: 80px;
+    top: 0;
+    left: -65px;
+    background: #E98F6B;
+    -webkit-box-reflect: right 100px;
+}
+
+p:before,
+p:after {
+    content: '';
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 145px;
+    height: 40px;
+    background: #8B4646;
+    border-radius: 50% 50% 0% 0% / 100% 100% 0% 0%;
+    border: 20px solid #fff;
+    z-index: -1;
+}
+
+p::after {
+    top: 60px;
+    transform: translateX(-50%) rotate(180deg);
+}`
+  },
 
 };

@@ -1141,5 +1141,30 @@ The design uses:
         tags: ['Web Development', 'HTML', 'CSS', 'Pseudo-elements', 'Positioning', 'Border-radius', 'CSS Box Reflect', 'CSS Battle'],
         zipFile: 'assets/zip-files/cssBattle/30 - p30.zip',
         html: `<p></p><i></i><style>body{display:flex;justify-content:center;align-items:center;gap:100px;background:#F7CB71}i{width:100px;height:100px;position:relative}& i:before,& i:after{content:'';position:absolute;top:-10px;left:10px;width:50px;height:50px;background:#4D52D0;border-radius:50%;-webkit-box-reflect:below 20px}& i:after{left:80px;background:#D16161}p{background:#D16161;width:60px;height:120px;position:relative}p:before{content:'';position:absolute;top:30px;left:-30px;width:120px;height:60px;background:#D16161}</style>`
+    },
+    // ═══════════════════════════════════════════════════════════════
+    // P31 — Geometric Hourglass
+    // ═══════════════════════════════════════════════════════════════
+    'p31': {
+        id: 'p31',
+        title: 'CSS Battle – Geometric Hourglass',
+        description: `
+CSS recreation of a geometric hourglass-like shape using pure HTML and CSS.
+
+The design uses:
+- CSS pseudo-elements
+- Absolute positioning
+- Border-radius with elliptical values
+- CSS box-reflect
+- Layered geometric shapes
+- Precise sizing and positioning
+- Minimal HTML structure
+- Pure CSS without images or SVG
+        `.trim(),
+        date: 'Last updated: Oct 6, 2026',
+        version: 'v1.0.0',
+        tags: ['Web Development', 'HTML', 'CSS', 'Pseudo-elements', 'Positioning', 'Border-radius', 'CSS Box Reflect', 'CSS Battle'],
+        zipFile: 'assets/zip-files/cssBattle/31 - p31.zip',
+        html: `<p><i></i></p><style>body{display:grid;place-items:center;background:#E98F6B}p{width:60px;height:80px;background:#8B4646;border-right:20px solid #fff;border-left:20px solid #fff;position:relative}p i{position:absolute;width:45px;height:80px;top:0;left:-65px;background:#E98F6B;-webkit-box-reflect:right 100px}p:before,p:after{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:145px;height:40px;background:#8B4646;border-radius:50% 50% 0% 0%/100% 100% 0% 0%;border:20px solid #fff;z-index:-1}p::after{top:60px;transform:translateX(-50%) rotate(180deg)}</style>`
     }
 };
