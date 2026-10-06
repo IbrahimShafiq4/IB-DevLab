@@ -437,72 +437,78 @@ const routes: Routes = [
         title: 'Css Battle Project 31'
       },
 
-      // ─── Problem Solving / LeetCode (11 routes) ───
+      // ─── Problem Solving
       {
         path: 'problem-solving/roman-to-integer',
-        loadComponent: () =>
-          import('./components/structured-components/leet-code-1/leet-code-1').then(m => m.LeetCode1),
+        loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
+        data: { problemId: 'roman-to-integer' },
         title: 'Roman To Integer'
       },
       {
         path: 'problem-solving/longest-substring',
-        loadComponent: () =>
-          import('./components/structured-components/leet-code-2/leet-code-2').then(m => m.LeetCode2),
+        loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
+        data: { problemId: 'longest-substring' },
         title: 'Longest Substring'
       },
       {
         path: 'problem-solving/palindrome-number',
-        loadComponent: () =>
-          import('./components/structured-components/leet-code-3/leet-code-3').then(m => m.LeetCode3),
+        loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
+        data: { problemId: 'palindrome-number' },
         title: 'Palindrome Number'
       },
       {
         path: 'problem-solving/longest-common-prefix',
-        loadComponent: () =>
-          import('./components/structured-components/leet-code-4/leet-code-4').then(m => m.LeetCode4),
+        loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
+        data: { problemId: 'longest-common-prefix' },
         title: 'Longest Common Prefix'
       },
       {
         path: 'problem-solving/valid-parentheses',
-        loadComponent: () =>
-          import('./components/structured-components/leet-code-5/leet-code-5').then(m => m.LeetCode5),
+        loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
+        data: { problemId: 'valid-parentheses' },
         title: 'Valid Parentheses'
       },
       {
         path: 'problem-solving/merge-two-sorted-lists',
-        loadComponent: () =>
-          import('./components/structured-components/leet-code-6/leet-code-6').then(m => m.LeetCode6),
+        loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
+        data: { problemId: 'merge-two-sorted-lists' },
         title: 'Merge Two Sorted Lists'
       },
       {
         path: 'problem-solving/remove-duplicates-from-sorted-array',
-        loadComponent: () =>
-          import('./components/structured-components/leet-code-7/leet-code-7').then(m => m.LeetCode7),
+        loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
+        data: { problemId: 'remove-duplicates-from-sorted-array' },
         title: 'Remove duplicates from sorted array'
       },
       {
         path: 'problem-solving/remove-element',
-        loadComponent: () =>
-          import('./components/structured-components/leet-code-8/leet-code-8').then(m => m.LeetCode8),
+        loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
+        data: { problemId: 'remove-element' },
         title: 'Remove Element'
       },
       {
         path: 'problem-solving/find-the-index-of-the-first-occurrence',
-        loadComponent: () =>
-          import('./components/structured-components/leet-code-9/leet-code-9').then(m => m.LeetCode9),
+        loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
+        data: { problemId: 'find-the-index-of-the-first-occurrence' },
         title: 'Find the Index of the First Occurrence'
       },
       {
         path: 'problem-solving/search-insert-position',
-        loadComponent: () =>
-          import('./components/structured-components/leet-code-10/leet-code-10').then(m => m.LeetCode10),
+        loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
+        data: { problemId: 'search-insert-position' },
         title: 'Search Insert Position'
       },
       {
         path: 'problem-solving/length-of-last-word',
-        loadComponent: () =>
-          import('./components/structured-components/leet-code-11/leet-code-11').then(m => m.LeetCode11),
+        loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
+        data: { problemId: 'length-of-last-word' },
         title: 'Length of Last Word'
+      },
+      {
+        path: 'problem-solving/add-binary',
+        loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
+        data: { problemId: 'add-binary' },
+        title: 'Add Binary'
       },
 
       // ─── Clean Code (5 routes) ───
@@ -552,7 +558,25 @@ const routes: Routes = [
           import('../features/station-page/station-page').then(m => m.StationPageComponent),
         title: 'Binary Search - IBDevLab',
         data: { stationId: 'A-001' }
-      }
+      },
+
+      // ─── Station page (Datastructure) ───
+      {
+        path: 'data-structures/linked-list',
+        loadComponent: () =>
+          import('../features/station-page/station-page').then(m => m.StationPageComponent),
+        title: 'Linked List - IBDevLab',
+        data: { stationId: 'linked-list' }
+      },
+
+      // ─── Station page (Built-in-Apis) ───
+      {
+        path: 'built-in-apis/fetch',
+        loadComponent: () =>
+          import('../features/station-page/station-page').then(m => m.StationPageComponent),
+        title: 'fetch() - IBDevLab',
+        data: { stationId: 'fetch' }
+      },
     ]
   }
 ];

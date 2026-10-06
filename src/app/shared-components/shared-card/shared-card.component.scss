@@ -6,6 +6,7 @@
 }
 
 .card {
+    position: relative;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -13,10 +14,30 @@
     border: 1px solid var(--rule-hairline);
     border-radius: t.$r-sm;
     overflow: hidden;
-    transition: border-color var(--dur-fast) var(--ease-out);
     justify-content: space-between;
+    transition:
+        border-color var(--dur-base) var(--ease-out),
+        background-color var(--dur-base) var(--ease-out);
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset-block-start: 0;
+        inset-inline-start: 0;
+        width: 32px;
+        height: 1px;
+        background-color: var(--line-algo);
+        transition: width var(--dur-slow) var(--ease-out);
+        z-index: 2;
+    }
+
     &:hover {
         border-color: var(--rule-solid);
+        background-color: var(--bg-elevated);
+
+        &::before {
+            width: 64px;
+        }
     }
 }
 
@@ -51,30 +72,60 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: t.$sp-3;
-    padding: t.$sp-3 t.$sp-4;
-    min-height: 56px;
+    gap: t.$sp-4;
+    padding: t.$sp-5 t.$sp-5;
+    min-height: 72px;
 }
 
 .card__meta {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
     min-width: 0;
 }
 
 .card__kind {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     font-family: var(--font-mono);
-    font-size: t.$fs-micro;
-    letter-spacing: t.$tracking-wide;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: t.$tracking-widest;
+    text-transform: uppercase;
     color: var(--ink-tertiary);
-    text-transform: lowercase;
+
+    &::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: var(--ink-tertiary);
+        flex-shrink: 0;
+    }
+
+    &[data-kind="component"]::before {
+        background-color: var(--line-algo);
+    }
+    &[data-kind="css-battle"]::before {
+        background-color: var(--line-ds);
+    }
+    &[data-kind="problem-solving"]::before {
+        background-color: var(--line-api);
+    }
+    &[data-kind="clean-code"]::before {
+        background-color: var(--signal);
+    }
+    &[data-kind="fullstack"]::before {
+        background-color: var(--line-algo);
+    }
 }
 
 .card__title {
     font-family: var(--font-display);
-    font-size: t.$fs-small;
-    font-weight: 600;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
     color: var(--ink-primary);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -85,20 +136,34 @@
     flex-shrink: 0;
     display: inline-flex;
     align-items: center;
-    padding: 6px 14px;
+    gap: 6px;
+    padding: 8px 14px;
     border: 1px solid var(--rule-solid);
     border-radius: t.$r-sm;
     font-family: var(--font-ui);
-    font-size: t.$fs-micro;
+    font-size: 0.75rem;
     font-weight: 500;
     color: var(--ink-secondary);
     transition:
         border-color var(--dur-fast) var(--ease-out),
-        color var(--dur-fast) var(--ease-out);
+        color var(--dur-fast) var(--ease-out),
+        background-color var(--dur-fast) var(--ease-out);
+
+    &::after {
+        content: "";
+        width: 6px;
+        height: 1px;
+        background-color: currentColor;
+        transition: width var(--dur-base) var(--ease-out);
+    }
 
     &:hover,
     &:focus-visible {
         border-color: var(--ink-primary);
         color: var(--ink-primary);
+
+        &::after {
+            width: 14px;
+        }
     }
 }

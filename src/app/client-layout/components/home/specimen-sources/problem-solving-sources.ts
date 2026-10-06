@@ -1,4 +1,4 @@
-import type { SpecimenSource } from './../../../../core/specimen-registry';
+import type { SpecimenSource } from '../../../../core/specimen-registry';
 
 export const PROBLEM_SOLVING_SOURCES: Record<string, SpecimenSource> = {
 
@@ -31,92 +31,60 @@ export const PROBLEM_SOLVING_SOURCES: Record<string, SpecimenSource> = {
     <script src="main.js"></script>
 </body>
 </html>`,
-        css: `* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+        css: `/* shared styles — same across all PS entries */
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: #0A1017;
-    font-family: system-ui, sans-serif;
-    padding: 16px;
-    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: #0A1017;
+    font-family: system-ui, -apple-system, sans-serif;
+    padding: 16px; font-size: 16px;
 }
 
 .demo {
-    background: #131C26;
-    border: 1px solid #2A3846;
-    border-radius: 4px;
-    padding: 20px;
-    width: 100%;
-    max-width: 360px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    background: #131C26; border: 1px solid #2A3846; border-radius: 4px;
+    padding: 20px; width: 100%; max-width: 380px;
+    display: flex; flex-direction: column; gap: 12px;
     color: #E9EFF5;
 }
 
-.row {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
+.row { display: flex; flex-direction: column; gap: 6px; }
 
 label {
-    font-family: monospace;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #8394A5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 20px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #8394A5;
 }
 
 input {
-    background: #0A1017;
-    border: 1px solid #2A3846;
-    border-radius: 2px;
-    padding: 8px 12px;
-    color: #E9EFF5;
-    font-family: monospace;
-    font-size: 14px;
-    outline: none;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    padding: 8px 12px; color: #E9EFF5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 28px; outline: none;
 }
 
-input:focus {
-    border-color: #E3A83A;
-}
+input:focus { border-color: #E3A83A; }
 
 button {
-    padding: 10px 16px;
-    background: #E3A83A;
-    color: #101A24;
-    border: 0;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
+    padding: 10px 16px; background: #E3A83A; color: #101A24;
+    border: 0; border-radius: 4px; font-size: 28px;
+    font-weight: 600; cursor: pointer; font-family: inherit;
+    transition: opacity 0.16s;
 }
 
+button:hover { opacity: 0.9; }
+
 output {
-    display: block;
-    padding: 12px;
-    background: #0A1017;
-    border: 1px solid #2A3846;
-    border-radius: 2px;
-    color: #3CC4BE;
-    font-family: monospace;
-    font-size: 16px;
-    min-height: 44px;
+    display: block; padding: 12px;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    color: #3CC4BE; font-family: ui-monospace, Consolas, monospace;
+    font-size: 28px; min-height: 44px;
+    word-break: break-all;
 }
 
 .hint {
-    font-size: 11px;
-    color: #8394A5;
-    font-family: monospace;
+    font-size: 20px; color: #8394A5;
+    font-family: ui-monospace, Consolas, monospace;
 }`,
         js: `function romanToInt(s) {
     const m = { I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000 };
@@ -171,93 +139,54 @@ run();`
             <label>الطول / النص</label>
             <output id="out">—</output>
         </div>
+        <p class="hint">أمثلة: abcabcbb · bbbbb · pwwkew</p>
     </div>
     <script src="main.js"></script>
 </body>
 </html>`,
-        css: `* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
+        css: `/* shared styles — same as PS-01 */
+* { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: #0A1017;
-    font-family: system-ui, sans-serif;
-    padding: 16px;
-    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: #0A1017;
+    font-family: system-ui, sans-serif; padding: 16px; font-size: 16px;
 }
-
 .demo {
-    background: #131C26;
-    border: 1px solid #2A3846;
-    border-radius: 4px;
-    padding: 20px;
-    width: 100%;
-    max-width: 360px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    color: #E9EFF5;
+    background: #131C26; border: 1px solid #2A3846; border-radius: 4px;
+    padding: 20px; width: 100%; max-width: 380px;
+    display: flex; flex-direction: column; gap: 12px; color: #E9EFF5;
 }
-
-.row {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
+.row { display: flex; flex-direction: column; gap: 6px; }
 label {
-    font-family: monospace;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #8394A5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 20px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #8394A5;
 }
-
 input {
-    background: #0A1017;
-    border: 1px solid #2A3846;
-    border-radius: 2px;
-    padding: 8px 12px;
-    color: #E9EFF5;
-    font-family: monospace;
-    font-size: 14px;
-    outline: none;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    padding: 8px 12px; color: #E9EFF5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 28px; outline: none;
 }
-
-input:focus {
-    border-color: #E3A83A;
-}
-
+input:focus { border-color: #E3A83A; }
 button {
-    padding: 10px 16px;
-    background: #E3A83A;
-    color: #101A24;
-    border: 0;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
+    padding: 10px 16px; background: #E3A83A; color: #101A24;
+    border: 0; border-radius: 4px; font-size: 28px;
+    font-weight: 600; cursor: pointer; font-family: inherit;
 }
-
+button:hover { opacity: 0.9; }
 output {
-    display: block;
-    padding: 12px;
-    background: #0A1017;
-    border: 1px solid #2A3846;
-    border-radius: 2px;
-    color: #3CC4BE;
-    font-family: monospace;
-    font-size: 16px;
-    min-height: 44px;
+    display: block; padding: 12px;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    color: #3CC4BE; font-family: ui-monospace, Consolas, monospace;
+    font-size: 28px; min-height: 44px; word-break: break-all;
+}
+.hint {
+    font-size: 20px; color: #8394A5;
+    font-family: ui-monospace, Consolas, monospace;
 }`,
         js: `function longest(s) {
-    let l = 0, best = 0, set = new Set(), start = 0, bestStart = 0;
+    let l = 0, best = 0, set = new Set(), bestStart = 0;
     for (let r = 0; r < s.length; r++) {
         while (set.has(s[r])) {
             set.delete(s[l]);
@@ -278,7 +207,7 @@ const out = document.getElementById('out');
 function run() {
     const v = inp.value;
     const r = longest(v);
-    out.textContent = r.len + ' → "' + r.str + '"';
+    out.textContent = r.len + '  →  "' + r.str + '"';
 }
 
 document.getElementById('run').onclick = run;
@@ -310,90 +239,50 @@ run();`
             <label>النتيجة</label>
             <output id="out">—</output>
         </div>
+        <p class="hint">جرّب: 121 · -121 · 10 · 12321</p>
     </div>
     <script src="main.js"></script>
 </body>
 </html>`,
-        css: `* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
+        css: `* { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: #0A1017;
-    font-family: system-ui, sans-serif;
-    padding: 16px;
-    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: #0A1017;
+    font-family: system-ui, sans-serif; padding: 16px; font-size: 16px;
 }
-
 .demo {
-    background: #131C26;
-    border: 1px solid #2A3846;
-    border-radius: 4px;
-    padding: 20px;
-    width: 100%;
-    max-width: 360px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    color: #E9EFF5;
+    background: #131C26; border: 1px solid #2A3846; border-radius: 4px;
+    padding: 20px; width: 100%; max-width: 380px;
+    display: flex; flex-direction: column; gap: 12px; color: #E9EFF5;
 }
-
-.row {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
+.row { display: flex; flex-direction: column; gap: 6px; }
 label {
-    font-family: monospace;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #8394A5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 20px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #8394A5;
 }
-
 input {
-    background: #0A1017;
-    border: 1px solid #2A3846;
-    border-radius: 2px;
-    padding: 8px 12px;
-    color: #E9EFF5;
-    font-family: monospace;
-    font-size: 14px;
-    outline: none;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    padding: 8px 12px; color: #E9EFF5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 28px; outline: none;
 }
-
-input:focus {
-    border-color: #E3A83A;
-}
-
+input:focus { border-color: #E3A83A; }
 button {
-    padding: 10px 16px;
-    background: #E3A83A;
-    color: #101A24;
-    border: 0;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
+    padding: 10px 16px; background: #E3A83A; color: #101A24;
+    border: 0; border-radius: 4px; font-size: 28px;
+    font-weight: 600; cursor: pointer; font-family: inherit;
 }
-
+button:hover { opacity: 0.9; }
 output {
-    display: block;
-    padding: 12px;
-    background: #0A1017;
-    border: 1px solid #2A3846;
-    border-radius: 2px;
-    color: #3CC4BE;
-    font-family: monospace;
-    font-size: 16px;
-    min-height: 44px;
+    display: block; padding: 12px;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    color: #3CC4BE; font-family: ui-monospace, Consolas, monospace;
+    font-size: 28px; min-height: 44px; word-break: break-all;
+}
+.hint {
+    font-size: 20px; color: #8394A5;
+    font-family: ui-monospace, Consolas, monospace;
 }`,
         js: `function isPal(x) {
     if (x < 0) return false;
@@ -414,7 +303,7 @@ function run() {
     const v = inp.value.trim();
     const n = Number(v);
     const r = isPal(n);
-    out.textContent = v + ' → ' + (r ? '✓ نعم Palindrome' : '✕ ليس Palindrome');
+    out.textContent = v + '  →  ' + (r ? '✓ نعم Palindrome' : '✕ ليس Palindrome');
     out.style.color = r ? '#4CC38A' : '#F26B62';
 }
 
@@ -444,93 +333,53 @@ run();`
         </div>
         <button id="run">ابحث</button>
         <div class="row">
-            <label>البادئة</label>
+            <label>البادئة المشتركة</label>
             <output id="out">—</output>
         </div>
+        <p class="hint">جرّب: flower,flow,flight · dog,racecar,car</p>
     </div>
     <script src="main.js"></script>
 </body>
 </html>`,
-        css: `* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
+        css: `* { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: #0A1017;
-    font-family: system-ui, sans-serif;
-    padding: 16px;
-    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: #0A1017;
+    font-family: system-ui, sans-serif; padding: 16px; font-size: 16px;
 }
-
 .demo {
-    background: #131C26;
-    border: 1px solid #2A3846;
-    border-radius: 4px;
-    padding: 20px;
-    width: 100%;
-    max-width: 360px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    color: #E9EFF5;
+    background: #131C26; border: 1px solid #2A3846; border-radius: 4px;
+    padding: 20px; width: 100%; max-width: 420px;
+    display: flex; flex-direction: column; gap: 12px; color: #E9EFF5;
 }
-
-.row {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
+.row { display: flex; flex-direction: column; gap: 6px; }
 label {
-    font-family: monospace;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #8394A5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 20px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #8394A5;
 }
-
 input {
-    background: #0A1017;
-    border: 1px solid #2A3846;
-    border-radius: 2px;
-    padding: 8px 12px;
-    color: #E9EFF5;
-    font-family: monospace;
-    font-size: 14px;
-    outline: none;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    padding: 8px 12px; color: #E9EFF5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 28px; outline: none;
 }
-
-input:focus {
-    border-color: #E3A83A;
-}
-
+input:focus { border-color: #E3A83A; }
 button {
-    padding: 10px 16px;
-    background: #E3A83A;
-    color: #101A24;
-    border: 0;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
+    padding: 10px 16px; background: #E3A83A; color: #101A24;
+    border: 0; border-radius: 4px; font-size: 28px;
+    font-weight: 600; cursor: pointer; font-family: inherit;
 }
-
+button:hover { opacity: 0.9; }
 output {
-    display: block;
-    padding: 12px;
-    background: #0A1017;
-    border: 1px solid #2A3846;
-    border-radius: 2px;
-    color: #3CC4BE;
-    font-family: monospace;
-    font-size: 16px;
-    min-height: 44px;
+    display: block; padding: 12px;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    color: #3CC4BE; font-family: ui-monospace, Consolas, monospace;
+    font-size: 28px; min-height: 44px; word-break: break-all;
+}
+.hint {
+    font-size: 20px; color: #8394A5;
+    font-family: ui-monospace, Consolas, monospace;
 }`,
         js: `function lcp(arr) {
     if (!arr.length) return '';
@@ -548,6 +397,7 @@ function run() {
     const arr = inp.value.split(',').map(s => s.trim()).filter(Boolean);
     const r = lcp(arr);
     out.textContent = r ? '"' + r + '"' : '(لا توجد بادئة مشتركة)';
+    out.style.color = r ? '#3CC4BE' : '#F26B62';
 }
 
 document.getElementById('run').onclick = run;
@@ -579,90 +429,50 @@ run();`
             <label>النتيجة</label>
             <output id="out">—</output>
         </div>
+        <p class="hint">جرّب: ()[]{} · ([)] · (]</p>
     </div>
     <script src="main.js"></script>
 </body>
 </html>`,
-        css: `* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
+        css: `* { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: #0A1017;
-    font-family: system-ui, sans-serif;
-    padding: 16px;
-    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: #0A1017;
+    font-family: system-ui, sans-serif; padding: 16px; font-size: 16px;
 }
-
 .demo {
-    background: #131C26;
-    border: 1px solid #2A3846;
-    border-radius: 4px;
-    padding: 20px;
-    width: 100%;
-    max-width: 360px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    color: #E9EFF5;
+    background: #131C26; border: 1px solid #2A3846; border-radius: 4px;
+    padding: 20px; width: 100%; max-width: 380px;
+    display: flex; flex-direction: column; gap: 12px; color: #E9EFF5;
 }
-
-.row {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
+.row { display: flex; flex-direction: column; gap: 6px; }
 label {
-    font-family: monospace;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #8394A5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 20px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #8394A5;
 }
-
 input {
-    background: #0A1017;
-    border: 1px solid #2A3846;
-    border-radius: 2px;
-    padding: 8px 12px;
-    color: #E9EFF5;
-    font-family: monospace;
-    font-size: 14px;
-    outline: none;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    padding: 8px 12px; color: #E9EFF5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 28px; outline: none;
 }
-
-input:focus {
-    border-color: #E3A83A;
-}
-
+input:focus { border-color: #E3A83A; }
 button {
-    padding: 10px 16px;
-    background: #E3A83A;
-    color: #101A24;
-    border: 0;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
+    padding: 10px 16px; background: #E3A83A; color: #101A24;
+    border: 0; border-radius: 4px; font-size: 28px;
+    font-weight: 600; cursor: pointer; font-family: inherit;
 }
-
+button:hover { opacity: 0.9; }
 output {
-    display: block;
-    padding: 12px;
-    background: #0A1017;
-    border: 1px solid #2A3846;
-    border-radius: 2px;
-    color: #3CC4BE;
-    font-family: monospace;
-    font-size: 16px;
-    min-height: 44px;
+    display: block; padding: 12px;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    color: #3CC4BE; font-family: ui-monospace, Consolas, monospace;
+    font-size: 28px; min-height: 44px; word-break: break-all;
+}
+.hint {
+    font-size: 20px; color: #8394A5;
+    font-family: ui-monospace, Consolas, monospace;
 }`,
         js: `function isValid(s) {
     const st = [], m = { ')': '(', ']': '[', '}': '{' };
@@ -678,7 +488,7 @@ const out = document.getElementById('out');
 
 function run() {
     const r = isValid(inp.value);
-    out.textContent = inp.value + ' → ' + (r ? '✓ صحيح' : '✕ غير صحيح');
+    out.textContent = inp.value + '  →  ' + (r ? '✓ صحيح' : '✕ غير صحيح');
     out.style.color = r ? '#4CC38A' : '#F26B62';
 }
 
@@ -719,91 +529,48 @@ run();`
     <script src="main.js"></script>
 </body>
 </html>`,
-        css: `* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
+        css: `* { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: #0A1017;
-    font-family: system-ui, sans-serif;
-    padding: 16px;
-    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: #0A1017;
+    font-family: system-ui, sans-serif; padding: 16px; font-size: 16px;
 }
-
 .demo {
-    background: #131C26;
-    border: 1px solid #2A3846;
-    border-radius: 4px;
-    padding: 20px;
-    width: 100%;
-    max-width: 360px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    color: #E9EFF5;
+    background: #131C26; border: 1px solid #2A3846; border-radius: 4px;
+    padding: 20px; width: 100%; max-width: 420px;
+    display: flex; flex-direction: column; gap: 12px; color: #E9EFF5;
 }
-
-.row {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
+.row { display: flex; flex-direction: column; gap: 6px; }
 label {
-    font-family: monospace;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #8394A5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 20px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #8394A5;
 }
-
 input {
-    background: #0A1017;
-    border: 1px solid #2A3846;
-    border-radius: 2px;
-    padding: 8px 12px;
-    color: #E9EFF5;
-    font-family: monospace;
-    font-size: 14px;
-    outline: none;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    padding: 8px 12px; color: #E9EFF5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 28px; outline: none;
 }
-
-input:focus {
-    border-color: #E3A83A;
-}
-
+input:focus { border-color: #E3A83A; }
 button {
-    padding: 10px 16px;
-    background: #E3A83A;
-    color: #101A24;
-    border: 0;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
+    padding: 10px 16px; background: #E3A83A; color: #101A24;
+    border: 0; border-radius: 4px; font-size: 28px;
+    font-weight: 600; cursor: pointer; font-family: inherit;
 }
-
+button:hover { opacity: 0.9; }
 output {
-    display: block;
-    padding: 12px;
-    background: #0A1017;
-    border: 1px solid #2A3846;
-    border-radius: 2px;
-    color: #3CC4BE;
-    font-family: monospace;
-    font-size: 16px;
-    min-height: 44px;
+    display: block; padding: 12px;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    color: #3CC4BE; font-family: ui-monospace, Consolas, monospace;
+    font-size: 28px; min-height: 44px; word-break: break-all;
 }`,
         js: `function merge(a, b) {
     const r = [];
     let i = 0, j = 0;
-    while (i < a.length && j < b.length) r.push(a[i] <= b[j] ? a[i++] : b[j++]);
+    while (i < a.length && j < b.length) {
+        r.push(a[i] <= b[j] ? a[i++] : b[j++]);
+    }
     while (i < a.length) r.push(a[i++]);
     while (j < b.length) r.push(b[j++]);
     return r;
@@ -853,91 +620,48 @@ run();`
     <script src="main.js"></script>
 </body>
 </html>`,
-        css: `* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
+        css: `* { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: #0A1017;
-    font-family: system-ui, sans-serif;
-    padding: 16px;
-    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: #0A1017;
+    font-family: system-ui, sans-serif; padding: 16px; font-size: 16px;
 }
-
 .demo {
-    background: #131C26;
-    border: 1px solid #2A3846;
-    border-radius: 4px;
-    padding: 20px;
-    width: 100%;
-    max-width: 360px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    color: #E9EFF5;
+    background: #131C26; border: 1px solid #2A3846; border-radius: 4px;
+    padding: 20px; width: 100%; max-width: 420px;
+    display: flex; flex-direction: column; gap: 12px; color: #E9EFF5;
 }
-
-.row {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
+.row { display: flex; flex-direction: column; gap: 6px; }
 label {
-    font-family: monospace;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #8394A5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 20px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #8394A5;
 }
-
 input {
-    background: #0A1017;
-    border: 1px solid #2A3846;
-    border-radius: 2px;
-    padding: 8px 12px;
-    color: #E9EFF5;
-    font-family: monospace;
-    font-size: 14px;
-    outline: none;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    padding: 8px 12px; color: #E9EFF5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 28px; outline: none;
 }
-
-input:focus {
-    border-color: #E3A83A;
-}
-
+input:focus { border-color: #E3A83A; }
 button {
-    padding: 10px 16px;
-    background: #E3A83A;
-    color: #101A24;
-    border: 0;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
+    padding: 10px 16px; background: #E3A83A; color: #101A24;
+    border: 0; border-radius: 4px; font-size: 28px;
+    font-weight: 600; cursor: pointer; font-family: inherit;
 }
-
+button:hover { opacity: 0.9; }
 output {
-    display: block;
-    padding: 12px;
-    background: #0A1017;
-    border: 1px solid #2A3846;
-    border-radius: 2px;
-    color: #3CC4BE;
-    font-family: monospace;
-    font-size: 14px;
-    min-height: 44px;
+    display: block; padding: 12px;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    color: #3CC4BE; font-family: ui-monospace, Consolas, monospace;
+    font-size: 14px; min-height: 44px; word-break: break-all;
 }`,
         js: `function removeDup(a) {
     if (!a.length) return 0;
     let k = 1;
-    for (let i = 1; i < a.length; i++) if (a[i] !== a[i - 1]) a[k++] = a[i];
+    for (let i = 1; i < a.length; i++) {
+        if (a[i] !== a[i - 1]) a[k++] = a[i];
+    }
     return k;
 }
 
@@ -947,7 +671,7 @@ const out = document.getElementById('out');
 function run() {
     const a = inp.value.split(',').map(Number).filter(n => !isNaN(n));
     const k = removeDup(a);
-    out.textContent = 'k=' + k + ' → [' + a.slice(0, k).join(', ') + ']';
+    out.textContent = 'k=' + k + '  →  [' + a.slice(0, k).join(', ') + ']';
 }
 
 document.getElementById('run').onclick = run;
@@ -987,90 +711,47 @@ run();`
     <script src="main.js"></script>
 </body>
 </html>`,
-        css: `* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
+        css: `* { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: #0A1017;
-    font-family: system-ui, sans-serif;
-    padding: 16px;
-    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: #0A1017;
+    font-family: system-ui, sans-serif; padding: 16px; font-size: 16px;
 }
-
 .demo {
-    background: #131C26;
-    border: 1px solid #2A3846;
-    border-radius: 4px;
-    padding: 20px;
-    width: 100%;
-    max-width: 360px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    color: #E9EFF5;
+    background: #131C26; border: 1px solid #2A3846; border-radius: 4px;
+    padding: 20px; width: 100%; max-width: 420px;
+    display: flex; flex-direction: column; gap: 12px; color: #E9EFF5;
 }
-
-.row {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
+.row { display: flex; flex-direction: column; gap: 6px; }
 label {
-    font-family: monospace;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #8394A5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 20px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #8394A5;
 }
-
 input {
-    background: #0A1017;
-    border: 1px solid #2A3846;
-    border-radius: 2px;
-    padding: 8px 12px;
-    color: #E9EFF5;
-    font-family: monospace;
-    font-size: 14px;
-    outline: none;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    padding: 8px 12px; color: #E9EFF5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 28px; outline: none;
 }
-
-input:focus {
-    border-color: #E3A83A;
-}
-
+input:focus { border-color: #E3A83A; }
 button {
-    padding: 10px 16px;
-    background: #E3A83A;
-    color: #101A24;
-    border: 0;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
+    padding: 10px 16px; background: #E3A83A; color: #101A24;
+    border: 0; border-radius: 4px; font-size: 28px;
+    font-weight: 600; cursor: pointer; font-family: inherit;
 }
-
+button:hover { opacity: 0.9; }
 output {
-    display: block;
-    padding: 12px;
-    background: #0A1017;
-    border: 1px solid #2A3846;
-    border-radius: 2px;
-    color: #3CC4BE;
-    font-family: monospace;
-    font-size: 14px;
-    min-height: 44px;
+    display: block; padding: 12px;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    color: #3CC4BE; font-family: ui-monospace, Consolas, monospace;
+    font-size: 14px; min-height: 44px; word-break: break-all;
 }`,
         js: `function removeEl(a, v) {
     let k = 0;
-    for (let i = 0; i < a.length; i++) if (a[i] !== v) a[k++] = a[i];
+    for (let i = 0; i < a.length; i++) {
+        if (a[i] !== v) a[k++] = a[i];
+    }
     return k;
 }
 
@@ -1082,7 +763,7 @@ function run() {
     const a = inp.value.split(',').map(Number).filter(n => !isNaN(n));
     const v = Number(val.value);
     const k = removeEl(a, v);
-    out.textContent = 'k=' + k + ' → [' + a.slice(0, k).join(', ') + ']';
+    out.textContent = 'k=' + k + '  →  [' + a.slice(0, k).join(', ') + ']';
 }
 
 document.getElementById('run').onclick = run;
@@ -1123,86 +804,41 @@ run();`
     <script src="main.js"></script>
 </body>
 </html>`,
-        css: `* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
+        css: `* { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: #0A1017;
-    font-family: system-ui, sans-serif;
-    padding: 16px;
-    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: #0A1017;
+    font-family: system-ui, sans-serif; padding: 16px; font-size: 16px;
 }
-
 .demo {
-    background: #131C26;
-    border: 1px solid #2A3846;
-    border-radius: 4px;
-    padding: 20px;
-    width: 100%;
-    max-width: 360px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    color: #E9EFF5;
+    background: #131C26; border: 1px solid #2A3846; border-radius: 4px;
+    padding: 20px; width: 100%; max-width: 400px;
+    display: flex; flex-direction: column; gap: 12px; color: #E9EFF5;
 }
-
-.row {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
+.row { display: flex; flex-direction: column; gap: 6px; }
 label {
-    font-family: monospace;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #8394A5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 20px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #8394A5;
 }
-
 input {
-    background: #0A1017;
-    border: 1px solid #2A3846;
-    border-radius: 2px;
-    padding: 8px 12px;
-    color: #E9EFF5;
-    font-family: monospace;
-    font-size: 14px;
-    outline: none;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    padding: 8px 12px; color: #E9EFF5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 28px; outline: none;
 }
-
-input:focus {
-    border-color: #E3A83A;
-}
-
+input:focus { border-color: #E3A83A; }
 button {
-    padding: 10px 16px;
-    background: #E3A83A;
-    color: #101A24;
-    border: 0;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
+    padding: 10px 16px; background: #E3A83A; color: #101A24;
+    border: 0; border-radius: 4px; font-size: 28px;
+    font-weight: 600; cursor: pointer; font-family: inherit;
 }
-
+button:hover { opacity: 0.9; }
 output {
-    display: block;
-    padding: 12px;
-    background: #0A1017;
-    border: 1px solid #2A3846;
-    border-radius: 2px;
-    color: #3CC4BE;
-    font-family: monospace;
-    font-size: 16px;
-    min-height: 44px;
+    display: block; padding: 12px;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    color: #3CC4BE; font-family: ui-monospace, Consolas, monospace;
+    font-size: 28px; min-height: 44px;
 }`,
         js: `const h = document.getElementById('h');
 const n = document.getElementById('n');
@@ -1211,6 +847,7 @@ const out = document.getElementById('out');
 function run() {
     const i = h.value.indexOf(n.value);
     out.textContent = 'indexOf = ' + i + (i === -1 ? '  (غير موجود)' : '');
+    out.style.color = i === -1 ? '#F26B62' : '#3CC4BE';
 }
 
 document.getElementById('run').onclick = run;
@@ -1251,86 +888,41 @@ run();`
     <script src="main.js"></script>
 </body>
 </html>`,
-        css: `* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
+        css: `* { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: #0A1017;
-    font-family: system-ui, sans-serif;
-    padding: 16px;
-    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: #0A1017;
+    font-family: system-ui, sans-serif; padding: 16px; font-size: 16px;
 }
-
 .demo {
-    background: #131C26;
-    border: 1px solid #2A3846;
-    border-radius: 4px;
-    padding: 20px;
-    width: 100%;
-    max-width: 360px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    color: #E9EFF5;
+    background: #131C26; border: 1px solid #2A3846; border-radius: 4px;
+    padding: 20px; width: 100%; max-width: 400px;
+    display: flex; flex-direction: column; gap: 12px; color: #E9EFF5;
 }
-
-.row {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
+.row { display: flex; flex-direction: column; gap: 6px; }
 label {
-    font-family: monospace;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #8394A5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 20px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #8394A5;
 }
-
 input {
-    background: #0A1017;
-    border: 1px solid #2A3846;
-    border-radius: 2px;
-    padding: 8px 12px;
-    color: #E9EFF5;
-    font-family: monospace;
-    font-size: 14px;
-    outline: none;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    padding: 8px 12px; color: #E9EFF5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 28px; outline: none;
 }
-
-input:focus {
-    border-color: #E3A83A;
-}
-
+input:focus { border-color: #E3A83A; }
 button {
-    padding: 10px 16px;
-    background: #E3A83A;
-    color: #101A24;
-    border: 0;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
+    padding: 10px 16px; background: #E3A83A; color: #101A24;
+    border: 0; border-radius: 4px; font-size: 28px;
+    font-weight: 600; cursor: pointer; font-family: inherit;
 }
-
+button:hover { opacity: 0.9; }
 output {
-    display: block;
-    padding: 12px;
-    background: #0A1017;
-    border: 1px solid #2A3846;
-    border-radius: 2px;
-    color: #3CC4BE;
-    font-family: monospace;
-    font-size: 16px;
-    min-height: 44px;
+    display: block; padding: 12px;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    color: #3CC4BE; font-family: ui-monospace, Consolas, monospace;
+    font-size: 28px; min-height: 44px;
 }`,
         js: `function search(nums, t) {
     let l = 0, r = nums.length - 1;
@@ -1387,94 +979,46 @@ run();`
     <script src="main.js"></script>
 </body>
 </html>`,
-        css: `* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
+        css: `* { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: #0A1017;
-    font-family: system-ui, sans-serif;
-    padding: 16px;
-    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: #0A1017;
+    font-family: system-ui, sans-serif; padding: 16px; font-size: 16px;
 }
-
 .demo {
-    background: #131C26;
-    border: 1px solid #2A3846;
-    border-radius: 4px;
-    padding: 20px;
-    width: 100%;
-    max-width: 360px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    color: #E9EFF5;
+    background: #131C26; border: 1px solid #2A3846; border-radius: 4px;
+    padding: 20px; width: 100%; max-width: 420px;
+    display: flex; flex-direction: column; gap: 12px; color: #E9EFF5;
 }
-
-.row {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
+.row { display: flex; flex-direction: column; gap: 6px; }
 label {
-    font-family: monospace;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #8394A5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 20px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #8394A5;
 }
-
 input {
-    background: #0A1017;
-    border: 1px solid #2A3846;
-    border-radius: 2px;
-    padding: 8px 12px;
-    color: #E9EFF5;
-    font-family: monospace;
-    font-size: 14px;
-    outline: none;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    padding: 8px 12px; color: #E9EFF5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 28px; outline: none;
 }
-
-input:focus {
-    border-color: #E3A83A;
-}
-
+input:focus { border-color: #E3A83A; }
 button {
-    padding: 10px 16px;
-    background: #E3A83A;
-    color: #101A24;
-    border: 0;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
+    padding: 10px 16px; background: #E3A83A; color: #101A24;
+    border: 0; border-radius: 4px; font-size: 28px;
+    font-weight: 600; cursor: pointer; font-family: inherit;
 }
-
+button:hover { opacity: 0.9; }
 output {
-    display: block;
-    padding: 12px;
-    background: #0A1017;
-    border: 1px solid #2A3846;
-    border-radius: 2px;
-    color: #3CC4BE;
-    font-family: monospace;
-    font-size: 16px;
-    min-height: 44px;
+    display: block; padding: 12px;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    color: #3CC4BE; font-family: ui-monospace, Consolas, monospace;
+    font-size: 28px; min-height: 44px;
 }`,
         js: `function lastLen(s) {
     let i = s.length - 1, c = 0;
     while (i >= 0 && s[i] === ' ') i--;
-    while (i >= 0 && s[i] !== ' ') {
-        c++;
-        i--;
-    }
+    while (i >= 0 && s[i] !== ' ') { c++; i--; }
     return c;
 }
 
@@ -1488,5 +1032,120 @@ function run() {
 document.getElementById('run').onclick = run;
 inp.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
 run();`
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // PS-12 — Add Binary 🆕
+    // ═══════════════════════════════════════════════════════════════
+    'PS-12': {
+        stage: 'dark',
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Binary</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="demo">
+        <div class="row">
+            <label>binary a</label>
+            <input type="text" id="a" value="1010" dir="ltr">
+        </div>
+        <div class="row">
+            <label>binary b</label>
+            <input type="text" id="b" value="1011" dir="ltr">
+        </div>
+        <button id="run">اجمع</button>
+        <div class="row">
+            <label>الناتج (binary)</label>
+            <output id="out">—</output>
+        </div>
+        <p class="hint">أمثلة: 11 + 1 = 100 · 1010 + 1011 = 10101</p>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>`,
+        css: `* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: #0A1017;
+    font-family: system-ui, sans-serif; padding: 16px; font-size: 16px;
+}
+.demo {
+    background: #131C26; border: 1px solid #2A3846; border-radius: 4px;
+    padding: 20px; width: 100%; max-width: 420px;
+    display: flex; flex-direction: column; gap: 12px; color: #E9EFF5;
+}
+.row { display: flex; flex-direction: column; gap: 6px; }
+label {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 20px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #8394A5;
+}
+input {
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    padding: 8px 12px; color: #E9EFF5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 28px; outline: none;
+}
+input:focus { border-color: #E3A83A; }
+button {
+    padding: 10px 16px; background: #E3A83A; color: #101A24;
+    border: 0; border-radius: 4px; font-size: 28px;
+    font-weight: 600; cursor: pointer; font-family: inherit;
+}
+button:hover { opacity: 0.9; }
+output {
+    display: block; padding: 12px;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    color: #3CC4BE; font-family: ui-monospace, Consolas, monospace;
+    font-size: 18px; min-height: 44px; letter-spacing: 0.1em;
+}
+.hint {
+    font-size: 20px; color: #8394A5;
+    font-family: ui-monospace, Consolas, monospace;
+}`,
+        js: `function addBinary(a, b) {
+    let i = a.length - 1;
+    let j = b.length - 1;
+    let carry = 0;
+    let result = '';
+
+    while (i >= 0 || j >= 0 || carry) {
+        let sum = carry;
+        if (i >= 0) sum += +a[i--];
+        if (j >= 0) sum += +b[j--];
+        result = (sum % 2) + result;
+        carry = sum > 1 ? 1 : 0;
     }
+
+    return result;
+}
+
+const a = document.getElementById('a');
+const b = document.getElementById('b');
+const out = document.getElementById('out');
+
+function run() {
+    const va = a.value.trim();
+    const vb = b.value.trim();
+
+    if (!/^[01]+$/.test(va) || !/^[01]+$/.test(vb)) {
+        out.textContent = '✕ القيم لازم تكون binary (0 و 1 بس)';
+        out.style.color = '#F26B62';
+        return;
+    }
+
+    out.style.color = '#3CC4BE';
+    out.textContent = va + ' + ' + vb + ' = ' + addBinary(va, vb);
+}
+
+document.getElementById('run').onclick = run;
+a.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+b.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+run();`
+    }
+
 };

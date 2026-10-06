@@ -1,27 +1,30 @@
 @import "@fontsource/cairo/600.css";
 @import "@fontsource/cairo/700.css";
 @import "@fontsource/cairo/800.css";
+@import "@fontsource/cairo/900.css";
 @import "@fontsource/ibm-plex-sans-arabic/400.css";
 @import "@fontsource/ibm-plex-sans-arabic/500.css";
 @import "@fontsource/ibm-plex-sans-arabic/600.css";
 @import "@fontsource/ibm-plex-mono/400.css";
 @import "@fontsource/ibm-plex-mono/500.css";
+@import "@fontsource/ibm-plex-mono/600.css";
 
 .t-display {
     font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(2.25rem, 6vw, 4rem);
-    line-height: 1.05;
-    letter-spacing: -0.03em;
+    font-weight: 900;
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
     color: var(--ink-primary);
     text-wrap: balance;
 }
 
 .t-h1 {
     font-family: var(--font-display);
-    font-weight: 700;
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
-    line-height: 1.15;
+    font-weight: 800;
+    font-size: clamp(1.875rem, 4.5vw, 2.75rem);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
     color: var(--ink-primary);
     text-wrap: balance;
 }
@@ -29,8 +32,9 @@
 .t-h2 {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: clamp(1.375rem, 2.4vw, 1.75rem);
-    line-height: 1.25;
+    font-size: clamp(1.375rem, 2.6vw, 1.875rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
     color: var(--ink-primary);
     text-wrap: balance;
 }
@@ -40,14 +44,23 @@
     font-weight: 700;
     font-size: 1.25rem;
     line-height: 1.3;
+    letter-spacing: -0.015em;
+    color: var(--ink-primary);
+}
+
+.t-h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.0625rem;
+    line-height: 1.35;
     color: var(--ink-primary);
 }
 
 .t-lead {
     font-family: var(--font-ui);
     font-weight: 400;
-    font-size: 1.125rem;
-    line-height: 1.75;
+    font-size: 1.0625rem;
+    line-height: 1.7;
     color: var(--ink-secondary);
     max-width: var(--reading-max);
 }
@@ -70,10 +83,12 @@
 }
 
 .t-label {
-    font-family: var(--font-ui);
+    font-family: var(--font-mono);
     font-weight: 500;
-    font-size: 0.8125rem;
-    line-height: 1.5;
+    font-size: 0.6875rem;
+    line-height: 1.4;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
     color: var(--ink-tertiary);
 }
 
@@ -91,10 +106,11 @@
 code:not(pre code) {
     font-family: var(--font-mono);
     font-size: 0.875em;
-    padding: 2px 6px;
+    padding: 2px 7px;
     border-radius: var(--r-sm);
-    background-color: var(--bg-surface);
-    color: var(--code-text);
+    background-color: color-mix(in oklab, var(--ink-primary) 6%, transparent);
+    color: var(--ink-primary);
     direction: ltr;
     unicode-bidi: isolate;
+    border: 1px solid var(--rule-hairline);
 }

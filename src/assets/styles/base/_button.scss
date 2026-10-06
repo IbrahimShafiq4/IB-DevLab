@@ -5,60 +5,60 @@ button,
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: t.$sp-2;
-    padding: t.$sp-2 t.$sp-4;
-    font-family: t.$font-mono;
-    font-size: 0.8rem;
+    gap: 8px;
+    padding: 10px 18px;
+    font-family: t.$font-ui;
+    font-size: 0.8125rem;
     font-weight: 500;
-    letter-spacing: 0.02em;
+    letter-spacing: 0;
     border: 1px solid transparent;
-    border-radius: t.$r-md;
+    border-radius: t.$r-sm;
     cursor: pointer;
     transition: all t.$dur-fast t.$ease-out;
     white-space: nowrap;
+    text-decoration: none;
 
     &:disabled {
         cursor: not-allowed;
-        opacity: 0.4;
+        opacity: 0.35;
     }
 
-    /* ---- PRIMARY ---- */
     &.primary {
-        background-color: var(--accent-primary);
-        border-color: var(--accent-primary);
-        color: var(--ink-inverse);
+        background-color: var(--signal);
+        border-color: var(--signal);
+        color: var(--on-brass);
+        font-weight: 600;
 
         &:hover:not(:disabled) {
-            background-color: transparent;
-            color: var(--accent-primary);
-        }
-    }
-
-    /* ---- PRIMARY HOVER (inverse) ---- */
-    &.primary-hover {
-        background-color: transparent;
-        border-color: var(--accent-primary);
-        color: var(--accent-primary);
-
-        &:hover:not(:disabled) {
-            background-color: var(--accent-primary);
+            background-color: var(--ink-primary);
+            border-color: var(--ink-primary);
             color: var(--ink-inverse);
         }
     }
 
-    /* ---- GHOST ---- */
+    &.primary-hover {
+        background-color: transparent;
+        border-color: var(--signal);
+        color: var(--signal);
+        font-weight: 600;
+
+        &:hover:not(:disabled) {
+            background-color: var(--signal);
+            color: var(--on-brass);
+        }
+    }
+
     &.btn-code {
         background-color: transparent;
         border-color: var(--rule-solid);
         color: var(--ink-primary);
 
         &:hover:not(:disabled) {
-            border-color: var(--accent-primary);
-            color: var(--accent-primary);
+            border-color: var(--ink-primary);
+            color: var(--ink-primary);
         }
     }
 
-    /* ---- DANGER ---- */
     &.delete-btn {
         background-color: transparent;
         border-color: var(--accent-critical);
@@ -70,7 +70,6 @@ button,
         }
     }
 
-    /* ---- LINK-STYLE ---- */
     &.primary-color {
         background: transparent;
         border: none;
@@ -78,8 +77,7 @@ button,
         color: var(--accent-primary);
 
         &:hover:not(:disabled) {
-            color: var(--accent-primary);
-            opacity: 0.8;
+            color: var(--signal);
         }
     }
 
@@ -87,6 +85,7 @@ button,
         background: transparent;
         border: none;
         color: var(--ink-secondary);
+        padding: 6px 10px;
 
         &:hover:not(:disabled) {
             color: var(--ink-primary);

@@ -20,6 +20,7 @@ import {
   PracticeTest,
   LevelKey,
 } from '../../core/stations.data';
+import { CodeThemeService } from '../../core/services/code-theme.service';
 
 interface TestResult {
   id: string;
@@ -42,6 +43,7 @@ export class StationPageComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute);
   private readonly sanitizer = inject(DomSanitizer);
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly codeTheme = inject(CodeThemeService);
 
   @ViewChild('testFrameHost', { static: false })
   testFrameHost?: ElementRef<HTMLDivElement>;
@@ -50,6 +52,7 @@ export class StationPageComponent implements OnInit, OnDestroy {
 
   readonly runnableSrcdoc = computed<SafeHtml>(() => {
     const s = this.station();
+    const _theme = this.codeTheme.theme();
     if (!s) return this.sanitizer.bypassSecurityTrustHtml('');
     return this.sanitizer.bypassSecurityTrustHtml(this.buildRunnableDoc(s));
   });
@@ -89,24 +92,51 @@ export class StationPageComponent implements OnInit, OnDestroy {
       return `<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"></head><body></body></html>`;
     }
 
+    const needsEvalAndNetwork = s.id === 'fetch';
+
     const csp =
       "default-src 'none'; " +
       "style-src 'unsafe-inline'; " +
-      "script-src 'unsafe-inline'; " +
-      "img-src data:;";
+      "img-src data: blob: https:; " +
+      "font-src data:; " +
+      (needsEvalAndNetwork
+        ? "script-src 'unsafe-inline' 'unsafe-eval'; " +
+        "connect-src https: http://localhost:* http://127.0.0.1:*;"
+        : "script-src 'unsafe-inline'; " +
+        "connect-src 'none';");
+
+    const codeThemeTokens = this.readCodeThemeTokens();
 
     return `<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="${csp}">
-<style>${runnable.css}</style>
+<style>
+${codeThemeTokens}
+${runnable.css}
+</style>
 </head>
 <body>
 ${runnable.html}
 <script>${runnable.js}<\/script>
 </body>
 </html>`;
+  }
+
+  private readCodeThemeTokens(): string {
+    if (!isPlatformBrowser(this.platformId)) return '';
+    const styles = getComputedStyle(document.documentElement);
+    const keys = [
+      '--ct-bg', '--ct-bg-elevated', '--ct-border', '--ct-text',
+      '--ct-comment', '--ct-keyword', '--ct-string', '--ct-number',
+      '--ct-function', '--ct-tag', '--ct-attr', '--ct-operator',
+      '--ct-punctuation', '--ct-selection', '--ct-cursor',
+      '--ct-scroll-track', '--ct-scroll-thumb', '--ct-scroll-thumb-hover',
+    ];
+    return `:root { ${keys
+      .map(k => `${k}: ${styles.getPropertyValue(k).trim() || 'initial'};`)
+      .join(' ')} }`;
   }
 
   onCodeInput(event: Event): void {
@@ -303,7 +333,7 @@ ${runnable.html}
     if (!s?.next) return '/';
     const next = STATIONS.find(x => x.id === s.next);
     if (!next) return '/';
-    return next.href; 
+    return next.href;
   }
 
   nextStationTitle(): string {

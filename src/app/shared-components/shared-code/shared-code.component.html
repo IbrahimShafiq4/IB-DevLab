@@ -88,6 +88,7 @@
     @if (isItProblemSolving && problemSolvingContent) {
     <div class="specimen__body" dir="rtl">
 
+        <!-- ─── المسألة ─── -->
         <section class="sect">
             <header class="sect__head">
                 <span class="sect__dot" data-line="algo" aria-hidden="true"></span>
@@ -97,6 +98,7 @@
             <p class="sect__text">{{ problemSolvingContent.problem }}</p>
         </section>
 
+        <!-- ─── الفكرة العامة ─── -->
         <section class="sect">
             <header class="sect__head">
                 <span class="sect__dot" data-line="algo" aria-hidden="true"></span>
@@ -106,6 +108,7 @@
             <p class="sect__text">{{ problemSolvingContent.generalIdea }}</p>
         </section>
 
+        <!-- ─── فكرة الحل ─── -->
         <section class="sect">
             <header class="sect__head">
                 <span class="sect__dot" data-line="algo" aria-hidden="true"></span>
@@ -115,6 +118,7 @@
             <p class="sect__text">{{ problemSolvingContent.solutionIdea }}</p>
         </section>
 
+        <!-- ─── الخطوات ─── -->
         <section class="sect">
             <header class="sect__head">
                 <span class="sect__dot" data-line="ds" aria-hidden="true"></span>
@@ -131,6 +135,7 @@
             </ol>
         </section>
 
+        <!-- ─── مثال ─── -->
         @if (problemSolvingContent.example) {
         <section class="sect">
             <header class="sect__head">
@@ -155,6 +160,7 @@
         </section>
         }
 
+        <!-- ─── التعقيد ─── -->
         <section class="sect">
             <header class="sect__head">
                 <span class="sect__dot" data-line="ds" aria-hidden="true"></span>
@@ -173,6 +179,7 @@
             </div>
         </section>
 
+        <!-- ─── الكود + التفكيك ─── -->
         <section class="sect">
             <header class="sect__head">
                 <span class="sect__dot" data-line="api" aria-hidden="true"></span>
@@ -194,10 +201,29 @@
                 </header>
                 <pre class="code-panel__pre" dir="ltr"><code class="language-javascript"
                     [textContent]="code.code"></code></pre>
+
+                @if (code.lines && code.lines.length) {
+                <div class="code-panel__breakdown" dir="rtl">
+                    <h4 class="code-panel__breakdown-title">تفكيك الكود سطر سطر</h4>
+                    <ol class="breakdown">
+                        @for (item of code.lines; track $index) {
+                        <li class="breakdown__item">
+                            @if (item.line) {
+                            <pre class="breakdown__code ltr"><code>{{ item.line }}</code></pre>
+                            } @else {
+                            <pre class="breakdown__code breakdown__code--blank ltr"><code>&nbsp;</code></pre>
+                            }
+                            <p class="breakdown__note">{{ item.note }}</p>
+                        </li>
+                        }
+                    </ol>
+                </div>
+                }
             </div>
             }
         </section>
 
+        <!-- ─── ما تعلّمته ─── -->
         <section class="sect">
             <header class="sect__head">
                 <span class="sect__dot" data-line="api" aria-hidden="true"></span>

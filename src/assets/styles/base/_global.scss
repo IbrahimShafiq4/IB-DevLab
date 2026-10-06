@@ -1,9 +1,5 @@
 @use "../tokens/tokens" as t;
 
-// ============================================================
-// Global resets & primitives — token-driven
-// ============================================================
-
 *,
 *::before,
 *::after {
@@ -37,16 +33,17 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: t.$font-sans;
-    font-weight: 600;
-    line-height: 1.25;
+    font-family: t.$font-display;
+    font-weight: 700;
+    line-height: 1.2;
     color: var(--ink-primary);
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
 }
 
 h1 {
     font-size: t.$fs-h1;
-    font-weight: 700;
+    font-weight: 800;
+    letter-spacing: t.$tracking-tight;
 }
 h2 {
     font-size: t.$fs-h2;
@@ -54,12 +51,8 @@ h2 {
 h3 {
     font-size: t.$fs-h3;
 }
-h4 {
-    font-size: t.$fs-h4;
-}
-h5 {
-    font-size: t.$fs-h4;
-}
+h4,
+h5,
 h6 {
     font-size: t.$fs-h4;
 }
@@ -71,12 +64,12 @@ p {
 }
 
 a {
-    color: var(--accent-reference);
+    color: var(--accent-primary);
     text-decoration: none;
     transition: color t.$dur-fast t.$ease-out;
 
     &:hover {
-        color: var(--accent-primary);
+        color: var(--signal);
     }
 }
 
@@ -102,22 +95,27 @@ select {
 
 ::selection {
     background-color: var(--selection-bg);
-    color: var(--selection-fg);
+    color: var(--ink-primary);
 }
 
 ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
 }
+
 ::-webkit-scrollbar-track {
-    background: var(--bg-void);
+    background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
     background: var(--rule-solid);
-    border-radius: t.$r-sm;
+    border-radius: 6px;
+    border: 3px solid var(--bg-void);
+    background-clip: padding-box;
 
     &:hover {
         background: var(--ink-tertiary);
+        background-clip: padding-box;
     }
 }
 
@@ -127,7 +125,8 @@ select {
 
 :focus-visible {
     outline: 2px solid var(--focus-ring);
-    outline-offset: 2px;
+    outline-offset: 3px;
+    border-radius: var(--r-sm);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -140,7 +139,6 @@ select {
     }
 }
 
-// ---- Utility classes ----
 .font-weight-400 {
     font-weight: 400;
 }

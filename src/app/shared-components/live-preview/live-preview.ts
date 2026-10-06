@@ -19,6 +19,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LivePreviewRegistry } from './live-preview-registry.service';
 import { ThemeService } from '../../core/services/theme.service';
+import { CodeThemeService } from '../../core/services/code-theme.service';
 
 export type StageTone = 'auto' | 'light' | 'dark';
 
@@ -35,8 +36,17 @@ export class LivePreviewComponent implements AfterViewInit, OnDestroy, OnChanges
   @Input() css = '';
   @Input() js = '';
   @Input() title = '';
-  @Input() tone: StageTone = 'auto';
   @Input() interactive = false;
+
+  private readonly _tone = signal<StageTone>('auto');
+
+  @Input()
+  set tone(value: StageTone) {
+    this._tone.set(value);
+  }
+  get tone(): StageTone {
+    return this._tone();
+  }
 
   @ViewChild('iframeHost') iframeHost?: ElementRef<HTMLIFrameElement>;
 
@@ -49,6 +59,7 @@ export class LivePreviewComponent implements AfterViewInit, OnDestroy, OnChanges
   private readonly sanitizer = inject(DomSanitizer);
   private readonly platformId = inject(PLATFORM_ID);
   private readonly themeService = inject(ThemeService);
+  private readonly codeThemeService = inject(CodeThemeService);
   private readonly registry = inject(LivePreviewRegistry);
   private readonly injector = inject(Injector);
 
@@ -59,20 +70,21 @@ export class LivePreviewComponent implements AfterViewInit, OnDestroy, OnChanges
   private srcdocValue: SafeHtml = this.emptyDoc();
 
   private cachedTokens: string | null = null;
-
   private lastBuildHash: string | null = null;
 
   readonly srcdoc = signal<SafeHtml>(this.srcdocValue);
 
   readonly resolvedTone = computed<'light' | 'dark'>(() => {
-    if (this.tone === 'light') return 'light';
-    if (this.tone === 'dark') return 'dark';
+    const t = this.tone;
+    if (t === 'light') return 'light';
+    if (t === 'dark') return 'dark';
     return this.themeService.theme() === 'light' ? 'light' : 'dark';
   });
 
   constructor() {
     effect(() => {
       const tone = this.resolvedTone();
+      const _ct = this.codeThemeService.theme();
 
       this.cachedTokens = null;
 
@@ -204,9 +216,10 @@ export class LivePreviewComponent implements AfterViewInit, OnDestroy, OnChanges
 
     const tone = this.resolvedTone();
     const paused = this.reducedMotion() && !this.playing();
+    const codeTheme = this.codeThemeService.theme();
 
     const hash = this.computeHash([
-      this.html, this.css, this.js, tone, paused ? '1' : '0'
+      this.html, this.css, this.js, tone, codeTheme, paused ? '1' : '0'
     ]);
 
     if (hash === this.lastBuildHash) return;
@@ -235,7 +248,7 @@ export class LivePreviewComponent implements AfterViewInit, OnDestroy, OnChanges
       "style-src 'unsafe-inline' https: http://localhost:* http://127.0.0.1:*; " +
       "script-src 'unsafe-inline'; " +
       "font-src data: https: http://localhost:* http://127.0.0.1:*; " +
-      "connect-src 'none';";
+      "connect-src https: http://localhost:* http://127.0.0.1:*;";
 
     const origin = typeof window !== 'undefined' ? window.location.origin : '';
     const cleanHtml = this.sanitizeForPreview(this.html);
@@ -258,17 +271,17 @@ ${tokens}
 :root, :root[data-tone="dark"] {
   --stage-bg: var(--stage-dark, #1E1E1E);
   --preview-scale: 0.5;
-  --scroll-track: #1E1E1E;
-  --scroll-thumb: #4A4A4A;
-  --scroll-thumb-hover: #616161;
+  --scroll-track: var(--ct-scroll-track, #1E1E1E);
+  --scroll-thumb: var(--ct-scroll-thumb, #4A4A4A);
+  --scroll-thumb-hover: var(--ct-scroll-thumb-hover, #616161);
 }
 
 :root[data-tone="light"] {
   --stage-bg: var(--stage-light, #ECF0F1);
   --preview-scale: 0.5;
-  --scroll-track: #ECF0F1;
-  --scroll-thumb: #C5C9CC;
-  --scroll-thumb-hover: #8F9499;
+  --scroll-track: var(--ct-scroll-track, #ECF0F1);
+  --scroll-thumb: var(--ct-scroll-thumb, #C5C9CC);
+  --scroll-thumb-hover: var(--ct-scroll-thumb-hover, #8F9499);
 }
 
 html {
@@ -415,7 +428,25 @@ ${cleanHtml}
       '--syntax-function',
       '--syntax-comment',
       '--grid-1',
-      '--grid-2'
+      '--grid-2',
+      '--ct-bg',
+      '--ct-bg-elevated',
+      '--ct-border',
+      '--ct-text',
+      '--ct-comment',
+      '--ct-keyword',
+      '--ct-string',
+      '--ct-number',
+      '--ct-function',
+      '--ct-tag',
+      '--ct-attr',
+      '--ct-operator',
+      '--ct-punctuation',
+      '--ct-selection',
+      '--ct-cursor',
+      '--ct-scroll-track',
+      '--ct-scroll-thumb',
+      '--ct-scroll-thumb-hover'
     ];
     return `:root { ${keys
       .map(k => `${k}: ${styles.getPropertyValue(k).trim() || 'initial'};`)

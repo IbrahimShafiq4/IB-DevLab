@@ -928,6 +928,17 @@ const BASE_SPECIMENS: Specimen[] = [
     stage: 'dark',
     sortKey: 210
   },
+  {
+    id: 'PS-12',
+    kind: 'problem-solving',
+    title: 'Add Binary',
+    description: 'جمع اتنين binary strings وإرجاع الناتج كـ binary string.',
+    date: 'أكتوبر 2026',
+    tags: ['LeetCode', 'String', 'Math'],
+    href: '/problem-solving/add-binary',
+    stage: 'dark',
+    sortKey: 211
+  },
 
   // ─── Clean Code ───
   {

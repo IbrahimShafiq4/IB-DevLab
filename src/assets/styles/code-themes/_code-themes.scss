@@ -1,0 +1,188 @@
+[data-code-theme="auto"] {
+    --ct-bg:               var(--code-bg);
+    --ct-bg-elevated:      var(--bg-elevated);
+    --ct-border:           var(--code-border);
+    --ct-text:             var(--code-text);
+    --ct-comment:          #6b7c92;
+    --ct-keyword:          #5b9dff;
+    --ct-string:           #4cd08a;
+    --ct-number:           #f2b200;
+    --ct-function:         #c586c0;
+    --ct-tag:              #ff6b57;
+    --ct-attr:             #4cd08a;
+    --ct-operator:         #9daec2;
+    --ct-punctuation:      #6b7c92;
+    --ct-selection:        rgba(91, 157, 255, 0.35);
+    --ct-cursor:           #5b9dff;
+    --ct-scroll-track:     transparent;
+    --ct-scroll-thumb:     var(--rule-solid);
+    --ct-scroll-thumb-hover: var(--ink-tertiary);
+    color-scheme: dark;
+}
+
+:root[data-theme="light"] [data-code-theme="auto"],
+:root[data-theme="light"][data-code-theme="auto"] {
+    --ct-bg:               var(--code-bg);
+    --ct-bg-elevated:      var(--bg-elevated);
+    --ct-border:           var(--code-border);
+    --ct-text:             var(--code-text);
+    --ct-comment:          #7a8a98;
+    --ct-keyword:          #1a52a8;
+    --ct-string:           #156b3a;
+    --ct-number:           #b08000;
+    --ct-function:         #8b2c8b;
+    --ct-tag:              #c0291a;
+    --ct-attr:             #156b3a;
+    --ct-operator:         #4a5a67;
+    --ct-punctuation:      #7a8a98;
+    --ct-selection:        rgba(26, 82, 168, 0.25);
+    --ct-cursor:           #1a52a8;
+    --ct-scroll-track:     transparent;
+    --ct-scroll-thumb:     var(--rule-solid);
+    --ct-scroll-thumb-hover: var(--ink-tertiary);
+    color-scheme: light;
+}
+
+[data-code-theme="dracula"] {
+    --ct-bg:               #282a36;
+    --ct-bg-elevated:      #21222c;
+    --ct-border:           #44475a;
+    --ct-text:             #f8f8f2;
+    --ct-comment:          #6272a4;
+    --ct-keyword:          #ff79c6;
+    --ct-string:           #f1fa8c;
+    --ct-number:           #bd93f9;
+    --ct-function:         #50fa7b;
+    --ct-tag:              #ff79c6;
+    --ct-attr:             #50fa7b;
+    --ct-operator:         #ff79c6;
+    --ct-punctuation:      #f8f8f2;
+    --ct-selection:        rgba(255, 121, 198, 0.3);
+    --ct-cursor:           #ff79c6;
+    --ct-scroll-track:     #21222c;
+    --ct-scroll-thumb:     #44475a;
+    --ct-scroll-thumb-hover: #6272a4;
+    color-scheme: dark;
+}
+
+[data-code-theme="monokai"] {
+    --ct-bg:               #272822;
+    --ct-bg-elevated:      #1e1f1c;
+    --ct-border:           #3e3d32;
+    --ct-text:             #f8f8f2;
+    --ct-comment:          #75715e;
+    --ct-keyword:          #f92672;
+    --ct-string:           #e6db74;
+    --ct-number:           #ae81ff;
+    --ct-function:         #a6e22e;
+    --ct-tag:              #f92672;
+    --ct-attr:             #a6e22e;
+    --ct-operator:         #f92672;
+    --ct-punctuation:      #f8f8f2;
+    --ct-selection:        rgba(249, 38, 114, 0.3);
+    --ct-cursor:           #f92672;
+    --ct-scroll-track:     #1e1f1c;
+    --ct-scroll-thumb:     #3e3d32;
+    --ct-scroll-thumb-hover: #75715e;
+    color-scheme: dark;
+}
+
+[data-code-theme="one-dark"] {
+    --ct-bg:               #282c34;
+    --ct-bg-elevated:      #21252b;
+    --ct-border:           #3b4048;
+    --ct-text:             #abb2bf;
+    --ct-comment:          #5c6370;
+    --ct-keyword:          #c678dd;
+    --ct-string:           #98c379;
+    --ct-number:           #d19a66;
+    --ct-function:         #61afef;
+    --ct-tag:              #e06c75;
+    --ct-attr:             #d19a66;
+    --ct-operator:         #56b6c2;
+    --ct-punctuation:      #abb2bf;
+    --ct-selection:        rgba(97, 175, 239, 0.3);
+    --ct-cursor:           #528bff;
+    --ct-scroll-track:     #21252b;
+    --ct-scroll-thumb:     #3b4048;
+    --ct-scroll-thumb-hover: #5c6370;
+    color-scheme: dark;
+}
+
+[data-code-theme="github-light"] {
+    --ct-bg:               #ffffff;
+    --ct-bg-elevated:      #f6f8fa;
+    --ct-border:           #d0d7de;
+    --ct-text:             #24292f;
+    --ct-comment:          #6e7781;
+    --ct-keyword:          #cf222e;
+    --ct-string:           #0a3069;
+    --ct-number:           #0550ae;
+    --ct-function:         #8250df;
+    --ct-tag:              #116329;
+    --ct-attr:             #0550ae;
+    --ct-operator:         #cf222e;
+    --ct-punctuation:      #24292f;
+    --ct-selection:        rgba(84, 174, 255, 0.4);
+    --ct-cursor:           #0969da;
+    --ct-scroll-track:     #f6f8fa;
+    --ct-scroll-thumb:     #d0d7de;
+    --ct-scroll-thumb-hover: #afb8c1;
+    color-scheme: light;
+}
+
+[data-code-theme="nord"] {
+    --ct-bg:               #2e3440;
+    --ct-bg-elevated:      #292e39;
+    --ct-border:           #3b4252;
+    --ct-text:             #d8dee9;
+    --ct-comment:          #616e88;
+    --ct-keyword:          #81a1c1;
+    --ct-string:           #a3be8c;
+    --ct-number:           #b48ead;
+    --ct-function:         #88c0d0;
+    --ct-tag:              #81a1c1;
+    --ct-attr:             #8fbcbb;
+    --ct-operator:         #81a1c1;
+    --ct-punctuation:      #d8dee9;
+    --ct-selection:        rgba(136, 192, 208, 0.3);
+    --ct-cursor:           #88c0d0;
+    --ct-scroll-track:     #292e39;
+    --ct-scroll-thumb:     #3b4252;
+    --ct-scroll-thumb-hover: #4c566a;
+    color-scheme: dark;
+}
+
+
+[data-code-theme] {
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--ct-scroll-thumb) var(--ct-scroll-track);
+    }
+
+    *::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    *::-webkit-scrollbar-track {
+        background: var(--ct-scroll-track);
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background: var(--ct-scroll-thumb);
+        border-radius: 6px;
+        border: 2px solid var(--ct-bg);
+        background-clip: padding-box;
+        transition: background-color 160ms ease-out;
+    }
+
+    *::-webkit-scrollbar-thumb:hover {
+        background: var(--ct-scroll-thumb-hover);
+        background-clip: padding-box;
+    }
+
+    *::-webkit-scrollbar-corner {
+        background: var(--ct-scroll-track);
+    }
+}

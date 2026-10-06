@@ -11,14 +11,14 @@
 
     &--sticky {
         position: sticky;
-        top: 56px;
+        top: 64px;
         z-index: t.$z-sticky;
-        backdrop-filter: saturate(140%) blur(6px);
-        background-color: color-mix(in oklab, var(--bg-void) 88%, transparent);
+        backdrop-filter: saturate(150%) blur(12px);
+        -webkit-backdrop-filter: saturate(150%) blur(12px);
+        background-color: color-mix(in oklab, var(--bg-void) 92%, transparent);
     }
 }
 
-/* Progress bar */
 .register__track {
     position: relative;
     height: 2px;
@@ -30,11 +30,11 @@
     position: absolute;
     inset-block: 0;
     inset-inline-start: 0;
-    background-color: var(--accent-primary);
+    background-color: var(--signal);
     transition: width 120ms linear;
+    box-shadow: 0 0 8px color-mix(in oklab, var(--signal) 60%, transparent);
 }
 
-/* Ticks */
 .register__list {
     display: flex;
     align-items: stretch;
@@ -59,11 +59,10 @@
     &::after {
         content: "";
         position: absolute;
-        inset-block: 0;
+        inset-block: 12px;
         inset-inline-end: 0;
         width: 1px;
         background-color: var(--rule-hairline);
-        opacity: 0.6;
     }
 
     &:last-child::after {
@@ -73,9 +72,9 @@
 
 .register__tick {
     display: inline-flex;
-    align-items: baseline;
-    gap: t.$sp-2;
-    padding: t.$sp-3 t.$sp-4;
+    align-items: center;
+    gap: t.$sp-3;
+    padding: t.$sp-4 t.$sp-5;
     background: transparent;
     border: none;
     font: inherit;
@@ -87,14 +86,13 @@
     white-space: nowrap;
     position: relative;
 
-    /* Tick mark on the bottom edge */
     &::before {
         content: "";
         position: absolute;
         inset-inline-start: 50%;
         bottom: -1px;
         width: 1px;
-        height: 5px;
+        height: 6px;
         background-color: var(--rule-solid);
         transform: translateX(50%);
         transition:
@@ -111,19 +109,21 @@
         color: var(--ink-primary);
 
         &::before {
-            background-color: var(--accent-primary);
-            height: 9px;
+            background-color: var(--signal);
+            height: 10px;
+            width: 2px;
         }
 
         .register__index {
-            color: var(--accent-primary);
+            color: var(--signal);
+            font-weight: 700;
         }
     }
 }
 
 .register__index {
     font-family: t.$font-mono;
-    font-size: t.$fs-nano;
+    font-size: 0.6875rem;
     font-weight: 500;
     letter-spacing: t.$tracking-wider;
     color: var(--ink-tertiary);
@@ -131,23 +131,22 @@
 }
 
 .register__label {
-    font-size: t.$fs-small;
+    font-family: t.$font-ui;
+    font-size: 0.875rem;
     font-weight: 500;
     letter-spacing: -0.005em;
 }
 
-/* Mobile: tighter ticks, hide label after 3rd */
 @media (max-width: 640px) {
     .register__tick {
-        padding: t.$sp-2 t.$sp-3;
+        padding: t.$sp-3 t.$sp-4;
     }
 
     .register__label {
-        font-size: t.$fs-micro;
+        font-size: 0.75rem;
     }
 }
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
     .register__progress {
         transition: none;

@@ -7,7 +7,7 @@
 .metro-wrap {
     position: relative;
     width: 100%;
-    padding-block: t.$sp-4 t.$sp-8;
+    padding-block: t.$sp-8 t.$sp-12;
 }
 
 .metro {
@@ -20,14 +20,13 @@
 .metro__line {
     path {
         fill: none;
-        stroke-width: 6;
+        stroke-width: 4;
         stroke-linecap: round;
         stroke-linejoin: round;
-
         stroke-dasharray: 1;
         stroke-dashoffset: 1;
-
         animation-play-state: paused;
+        filter: drop-shadow(0 0 6px currentColor);
     }
 
     &.is-visible path {
@@ -37,12 +36,15 @@
 
     &[data-line="algo"] path {
         stroke: var(--line-algo);
+        color: var(--line-algo);
     }
     &[data-line="ds"] path {
         stroke: var(--line-ds);
+        color: var(--line-ds);
     }
     &[data-line="api"] path {
         stroke: var(--line-api);
+        color: var(--line-api);
     }
 }
 
@@ -61,12 +63,22 @@
         opacity: 1;
         transition-delay: 1400ms;
     }
+
+    &:focus-visible {
+        outline: none;
+
+        .station__outer {
+            stroke-width: 4;
+        }
+    }
 }
 
 .station__outer {
     fill: var(--bg-void);
-    stroke-width: 3;
-    transition: stroke-width var(--dur-fast) var(--ease-out);
+    stroke-width: 2.5;
+    transition:
+        stroke-width var(--dur-base) var(--ease-out),
+        r var(--dur-base) var(--ease-out);
 }
 
 .station__inner {
@@ -94,22 +106,26 @@
 }
 
 .station:hover .station__outer,
-.station:focus-visible .station__outer,
 .station.is-active .station__outer {
-    stroke-width: 5;
+    stroke-width: 4;
 }
 
 .station.is-active .station__inner {
     fill: var(--signal);
 }
 
+.station.is-active .station__outer {
+    stroke: var(--signal);
+    filter: drop-shadow(0 0 8px color-mix(in oklab, var(--signal) 50%, transparent));
+}
+
 .station__label {
     font-family: var(--font-mono);
-    font-size: 14px;
-    font-weight: 500;
-    fill: var(--ink-secondary);
+    font-size: 13px;
+    font-weight: 600;
+    fill: var(--ink-tertiary);
     pointer-events: none;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.12em;
     direction: ltr;
     unicode-bidi: isolate;
     transition: fill var(--dur-fast) var(--ease-out);
@@ -117,46 +133,61 @@
 
 .station.is-active .station__label {
     fill: var(--ink-primary);
-    font-weight: 600;
+    font-weight: 700;
 }
 
 @media (max-width: #{t.$bp-md}) {
     .station__label {
-        font-size: 20px;
+        font-size: 18px;
     }
     .station__outer {
-        stroke-width: 3.5;
+        stroke-width: 3;
     }
 }
 
 .ticket {
     position: absolute;
     z-index: var(--z-ticket);
-    width: min(320px, 88vw);
+    width: min(340px, 88vw);
 
     background: var(--ticket-bg);
     border: 1px solid var(--ticket-border);
     border-radius: t.$r-sm;
     box-shadow: var(--ticket-shadow);
 
-    padding: t.$sp-4;
+    padding: t.$sp-5;
     display: flex;
     flex-direction: column;
-    gap: t.$sp-3;
+    gap: t.$sp-4;
 
     background-image:
-        radial-gradient(circle at 8px 0, transparent 5px, var(--ticket-bg) 5px),
-        radial-gradient(circle at calc(100% - 8px) 0, transparent 5px, var(--ticket-bg) 5px);
+        radial-gradient(circle at 10px 0, transparent 6px, var(--ticket-bg) 6px),
+        radial-gradient(circle at calc(100% - 10px) 0, transparent 6px, var(--ticket-bg) 6px);
     background-size: 100% 1px;
     background-repeat: no-repeat;
     background-position: 0 0;
 
     opacity: 0;
-    transform: translate(-50%, -4px) scale(0.98);
+    transform: translate(-50%, -6px) scale(0.97);
     pointer-events: none;
     transition:
         opacity var(--dur-base) var(--ease-out),
         transform var(--dur-base) var(--ease-out);
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        inset-inline: 20px;
+        height: 1px;
+        background: repeating-linear-gradient(
+            to right,
+            var(--ticket-border),
+            var(--ticket-border) 4px,
+            transparent 4px,
+            transparent 8px
+        );
+    }
 
     &.is-visible {
         opacity: 1;
@@ -170,13 +201,18 @@
     align-items: center;
     gap: t.$sp-2;
     font-family: var(--font-mono);
-    font-size: t.$fs-micro;
+    font-size: 0.6875rem;
+    letter-spacing: t.$tracking-widest;
+    text-transform: uppercase;
     color: var(--ink-tertiary);
 
     .ticket__num {
         margin-inline-start: auto;
-        font-weight: 500;
+        font-weight: 600;
         color: var(--ink-secondary);
+        padding: 2px 8px;
+        border: 1px solid var(--rule-hairline);
+        border-radius: t.$r-sm;
     }
 }
 
@@ -187,34 +223,36 @@
     flex-shrink: 0;
 
     &[data-line="algo"] {
-        background: var(--line-algo);
+        background-color: var(--line-algo);
     }
     &[data-line="ds"] {
-        background: var(--line-ds);
+        background-color: var(--line-ds);
     }
     &[data-line="api"] {
-        background: var(--line-api);
+        background-color: var(--line-api);
     }
 }
 
 .ticket__titles {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
 }
 
 .ticket__title {
     font-family: var(--font-display);
-    font-size: 1.0625rem;
-    font-weight: 700;
-    line-height: 1.3;
+    font-size: 1.125rem;
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
     color: var(--ink-primary);
 }
 
 .ticket__title-en {
     font-family: var(--font-mono);
-    font-size: t.$fs-small;
-    color: var(--ink-secondary);
+    font-size: 0.75rem;
+    color: var(--ink-tertiary);
+    letter-spacing: t.$tracking-wide;
     direction: ltr;
     unicode-bidi: isolate;
 }
@@ -237,32 +275,48 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: t.$sp-2;
-    padding-block-start: t.$sp-3;
+    gap: t.$sp-3;
+    padding-block-start: t.$sp-4;
     border-block-start: 1px dashed var(--rule-solid);
 }
 
 .ticket__level {
     font-family: var(--font-mono);
-    font-size: t.$fs-micro;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: t.$tracking-widest;
+    text-transform: uppercase;
     color: var(--ink-tertiary);
 }
 
 .ticket__link {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
+    gap: 8px;
+    padding: 8px 16px;
     background: var(--signal);
-    color: var(--ink-inverse);
+    color: var(--on-brass);
     border-radius: t.$r-sm;
     font-family: var(--font-ui);
-    font-size: t.$fs-small;
+    font-size: 0.8125rem;
     font-weight: 600;
-    transition: opacity var(--dur-fast) var(--ease-out);
+    transition: all var(--dur-fast) var(--ease-out);
+
+    &::after {
+        content: "";
+        width: 6px;
+        height: 1px;
+        background-color: currentColor;
+        transition: width var(--dur-base) var(--ease-out);
+    }
 
     &:hover {
-        opacity: 0.88;
+        background: var(--ink-primary);
+        color: var(--ink-inverse);
+
+        &::after {
+            width: 14px;
+        }
     }
 }
 

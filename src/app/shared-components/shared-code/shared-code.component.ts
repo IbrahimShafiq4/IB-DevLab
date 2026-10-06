@@ -33,9 +33,15 @@ import {
 } from '../../core/specimen-registry';
 import { SPECIMENS } from '../../client-layout/components/home/specimens.data';
 
+export interface ICodeLine {
+  line: string;
+  note: string;
+}
+
 export interface ICodeStructure {
   codeTitle: string;
   code: string;
+  lines?: ICodeLine[];
 }
 
 export interface IProblemSolvingContent {
@@ -343,6 +349,7 @@ export class SharedCodeComponent implements OnInit, AfterViewInit {
       'Linked List': { icon: 'link', type: 'solid' },
       'Two Pointers': { icon: 'arrow-pointer', type: 'solid' },
       'String': { icon: 'font', type: 'solid' },
+      'Math': { icon: 'calculator', type: 'solid' },
       'Binary Search': { icon: 'magnifying-glass', type: 'solid' },
       'عربي': { icon: 'language', type: 'solid' }
     };
