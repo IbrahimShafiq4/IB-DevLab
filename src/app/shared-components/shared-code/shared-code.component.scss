@@ -911,3 +911,47 @@
         height: 380px;
     }
 }
+
+.visualization {
+    margin: 0;
+    padding: t.$sp-5;
+    background-color: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: t.$r-sm;
+    overflow: hidden;
+}
+
+.visualization__caption {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: t.$tracking-widest;
+    text-transform: uppercase;
+    color: var(--ink-tertiary);
+    margin-block-end: t.$sp-4;
+    padding-block-end: t.$sp-3;
+    border-block-end: 1px dashed var(--rule-hairline);
+}
+
+.visualization__content {
+    margin: 0;
+    padding: t.$sp-5;
+    background-color: color-mix(in oklab, var(--bg-surface) 40%, transparent);
+    border-radius: t.$r-sm;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.7;
+    color: var(--code-text);
+    overflow-x: auto;
+    white-space: pre;
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+
+.visualization__foot {
+    margin: t.$sp-3 0 0;
+    font-family: var(--font-ui);
+    font-size: 0.875rem;
+    line-height: t.$lh-relaxed;
+    color: var(--ink-secondary);
+}

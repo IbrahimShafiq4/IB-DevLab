@@ -635,5 +635,121 @@ function setCode(t) {
 
 btns.forEach(b => b.addEventListener('click', () => setCode(b.dataset.t)));
 setCode('bad');`
+    },
+    'CC-06': {
+        stage: 'dark',
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clean Code 06</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="card">
+        <h2>التنسيق — الصحيفة</h2>
+        <p>شوف الفرق بين ملف متلخبط وملف منظّم. اضغط الأزرار للمقارنة.</p>
+        <div class="btns">
+            <button data-show="bad" class="active">قبل</button>
+            <button data-show="good">بعد</button>
+        </div>
+        <pre class="code" id="code"></pre>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>`,
+        css: `* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #0A1017;
+    font-family: system-ui, sans-serif;
+    padding: 16px;
+    font-size: 16px;
+    color: #E9EFF5;
+}
+
+.card {
+    background: #131C26;
+    border: 1px solid #2A3846;
+    border-radius: 4px;
+    padding: 20px;
+    width: 100%;
+    max-width: 560px;
+}
+
+h2 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+    color: #E3A83A;
+}
+
+p {
+    font-size: .85rem;
+    color: #B4C1CE;
+    margin-bottom: 14px;
+    line-height: 1.6;
+}
+
+.btns {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.btns button {
+    padding: 6px 14px;
+    background: transparent;
+    border: 1px solid #2A3846;
+    color: #B4C1CE;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: .8rem;
+}
+
+.btns button.active {
+    background: #E3A83A;
+    color: #101A24;
+    border-color: #E3A83A;
+    font-weight: 600;
+}
+
+.code {
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    padding: 14px;
+    font-family: monospace;
+    font-size: .72rem;
+    line-height: 1.6;
+    color: #D5E0EA;
+    overflow: auto;
+    max-height: 320px;
+    direction: ltr;
+    text-align: left;
+    white-space: pre;
+}`,
+        js: `const bad = 'public class Service\\n{\\n    private readonly Ctx _c;\\n    public Service(Ctx c) { _c = c; }\\n    public void A() { _c.Save(); }\\n    public void B() { _c.Load(); }\\n    public void C() { _c.Update(); }\\n}';
+
+const good = 'public class Service\\n{\\n    private readonly Ctx _c;\\n\\n    public Service(Ctx c)\\n    {\\n        _c = c;\\n    }\\n\\n    public void A()\\n    {\\n        _c.Save();\\n    }\\n\\n    public void B()\\n    {\\n        _c.Load();\\n    }\\n\\n    public void C()\\n    {\\n        _c.Update();\\n    }\\n}';
+
+const code = document.getElementById('code');
+const btns = document.querySelectorAll('.btns button');
+
+function setCode(kind) {
+    code.textContent = kind === 'bad' ? bad : good;
+    btns.forEach(b => b.classList.toggle('active', b.dataset.show === kind));
+}
+
+btns.forEach(b => b.addEventListener('click', () => setCode(b.dataset.show)));
+setCode('bad');`
     }
 };

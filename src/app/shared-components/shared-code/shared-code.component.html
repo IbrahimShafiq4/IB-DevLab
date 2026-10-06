@@ -88,7 +88,6 @@
     @if (isItProblemSolving && problemSolvingContent) {
     <div class="specimen__body" dir="rtl">
 
-        <!-- ─── المسألة ─── -->
         <section class="sect">
             <header class="sect__head">
                 <span class="sect__dot" data-line="algo" aria-hidden="true"></span>
@@ -98,7 +97,6 @@
             <p class="sect__text">{{ problemSolvingContent.problem }}</p>
         </section>
 
-        <!-- ─── الفكرة العامة ─── -->
         <section class="sect">
             <header class="sect__head">
                 <span class="sect__dot" data-line="algo" aria-hidden="true"></span>
@@ -108,7 +106,6 @@
             <p class="sect__text">{{ problemSolvingContent.generalIdea }}</p>
         </section>
 
-        <!-- ─── فكرة الحل ─── -->
         <section class="sect">
             <header class="sect__head">
                 <span class="sect__dot" data-line="algo" aria-hidden="true"></span>
@@ -118,7 +115,23 @@
             <p class="sect__text">{{ problemSolvingContent.solutionIdea }}</p>
         </section>
 
-        <!-- ─── الخطوات ─── -->
+        @if (problemSolvingContent.visualization) {
+        <section class="sect">
+            <header class="sect__head">
+                <span class="sect__dot" data-line="ds" aria-hidden="true"></span>
+                <h2 class="sect__title">تصوّر بصري</h2>
+                <span class="sect__rule" aria-hidden="true"></span>
+            </header>
+            <figure class="visualization">
+                <figcaption class="visualization__caption">{{ problemSolvingContent.visualization.title }}</figcaption>
+                <pre class="visualization__content ltr">{{ problemSolvingContent.visualization.content }}</pre>
+                @if (problemSolvingContent.visualization.caption) {
+                <p class="visualization__foot">{{ problemSolvingContent.visualization.caption }}</p>
+                }
+            </figure>
+        </section>
+        }
+
         <section class="sect">
             <header class="sect__head">
                 <span class="sect__dot" data-line="ds" aria-hidden="true"></span>
@@ -135,7 +148,6 @@
             </ol>
         </section>
 
-        <!-- ─── مثال ─── -->
         @if (problemSolvingContent.example) {
         <section class="sect">
             <header class="sect__head">
@@ -160,7 +172,6 @@
         </section>
         }
 
-        <!-- ─── التعقيد ─── -->
         <section class="sect">
             <header class="sect__head">
                 <span class="sect__dot" data-line="ds" aria-hidden="true"></span>
@@ -179,11 +190,64 @@
             </div>
         </section>
 
-        <!-- ─── الكود + التفكيك ─── -->
+        @if (problemSolvingContent.approaches?.length) {
+        @for (approach of problemSolvingContent.approaches; track approach.name) {
+        <section class="sect">
+            <header class="sect__head">
+                <span class="sect__dot" data-line="algo" aria-hidden="true"></span>
+                <h2 class="sect__title">{{ approach.name }}</h2>
+                <span class="sect__rule" aria-hidden="true"></span>
+            </header>
+
+            <p class="sect__text">{{ approach.tagline }}</p>
+
+            <div class="complexity">
+                <div class="complexity__card">
+                    <span class="complexity__label">الوقت</span>
+                    <strong class="complexity__value ltr">{{ approach.complexity.time }}</strong>
+                </div>
+                <div class="complexity__card">
+                    <span class="complexity__label">المساحة</span>
+                    <strong class="complexity__value ltr">{{ approach.complexity.space }}</strong>
+                </div>
+            </div>
+
+            <ul class="list">
+                @for (t of approach.tradeoffs; track $index) {
+                <li class="list__item">
+                    <span class="list__bullet" aria-hidden="true"></span>
+                    <span>{{ t }}</span>
+                </li>
+                }
+            </ul>
+
+            @for (sample of approach.samples; track sample.label) {
+            <div class="code-panel">
+                <header class="code-panel__head" dir="ltr">
+                    <span class="code-panel__file">{{ sample.label }}</span>
+                    <span class="code-panel__lang">{{ sample.framework }}</span>
+                </header>
+                <pre class="code-panel__pre"
+                    dir="ltr"><code class="language-javascript" [textContent]="sample.code"></code></pre>
+                @if (sample.notes?.length) {
+                <ol class="breakdown">
+                    @for (note of sample.notes; track $index) {
+                    <li class="breakdown__item">
+                        <p class="breakdown__note">{{ note }}</p>
+                    </li>
+                    }
+                </ol>
+                }
+            </div>
+            }
+        </section>
+        }
+        }
+
         <section class="sect">
             <header class="sect__head">
                 <span class="sect__dot" data-line="api" aria-hidden="true"></span>
-                <h2 class="sect__title">الكود</h2>
+                <h2 class="sect__title">الكود المرجعي</h2>
                 <span class="sect__rule" aria-hidden="true"></span>
             </header>
 
@@ -191,7 +255,7 @@
             <div class="code-panel">
                 <header class="code-panel__head" dir="ltr">
                     <span class="code-panel__file">{{ code.codeTitle }}</span>
-                    <span class="code-panel__lang">typescript</span>
+                    <span class="code-panel__lang">{{ code.language ?? 'typescript' }}</span>
                     <button type="button" class="code-panel__copy" (click)="onCopy(code.code, $index)"
                         [attr.aria-label]="copiedIndex !== $index ? 'نسخ الكود' : 'تم النسخ'">
                         <i class="fa-solid" [class.fa-copy]="copiedIndex !== $index"
@@ -223,7 +287,27 @@
             }
         </section>
 
-        <!-- ─── ما تعلّمته ─── -->
+        @if (problemSolvingContent.testing?.length) {
+        <section class="sect">
+            <header class="sect__head">
+                <span class="sect__dot" data-line="api" aria-hidden="true"></span>
+                <h2 class="sect__title">الاختبارات</h2>
+                <span class="sect__rule" aria-hidden="true"></span>
+            </header>
+
+            @for (t of problemSolvingContent.testing; track t.title) {
+            <div class="code-panel">
+                <header class="code-panel__head" dir="ltr">
+                    <span class="code-panel__file">{{ t.title }}</span>
+                    <span class="code-panel__lang">{{ t.framework }}</span>
+                </header>
+                <pre class="code-panel__pre" dir="ltr"><code class="language-javascript"
+                    [textContent]="t.code"></code></pre>
+            </div>
+            }
+        </section>
+        }
+
         <section class="sect">
             <header class="sect__head">
                 <span class="sect__dot" data-line="api" aria-hidden="true"></span>
@@ -275,6 +359,16 @@
 
             <p class="principle__desc">{{ principle.description }}</p>
 
+            @if (principle.visualization) {
+            <figure class="visualization">
+                <figcaption class="visualization__caption">{{ principle.visualization.title }}</figcaption>
+                <pre class="visualization__content ltr">{{ principle.visualization.content }}</pre>
+                @if (principle.visualization.caption) {
+                <p class="visualization__foot">{{ principle.visualization.caption }}</p>
+                }
+            </figure>
+            }
+
             <div class="compare">
                 <div class="code-panel code-panel--bad">
                     <header class="code-panel__head" dir="ltr">
@@ -295,10 +389,36 @@
                 </div>
             </div>
 
+            @if (principle.samples?.length) {
+            @for (sample of principle.samples; track sample.label) {
+            <div class="code-panel">
+                <header class="code-panel__head" dir="ltr">
+                    <span class="code-panel__file">{{ sample.label }}</span>
+                    <span class="code-panel__lang">{{ sample.framework }}</span>
+                </header>
+                <pre class="code-panel__pre" dir="ltr"><code class="language-javascript"
+                    [textContent]="sample.code"></code></pre>
+            </div>
+            }
+            }
+
             <div class="explain">
                 <i class="fa-solid fa-lightbulb" aria-hidden="true"></i>
                 <p>{{ principle.explanation }}</p>
             </div>
+
+            @if (principle.testing?.length) {
+            @for (t of principle.testing; track t.title) {
+            <div class="code-panel">
+                <header class="code-panel__head" dir="ltr">
+                    <span class="code-panel__file">{{ t.title }}</span>
+                    <span class="code-panel__lang">{{ t.framework }}</span>
+                </header>
+                <pre class="code-panel__pre" dir="ltr"><code class="language-javascript"
+                    [textContent]="t.code"></code></pre>
+            </div>
+            }
+            }
         </section>
         }
 

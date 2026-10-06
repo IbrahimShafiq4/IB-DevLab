@@ -42,6 +42,37 @@ export interface ICodeStructure {
   codeTitle: string;
   code: string;
   lines?: ICodeLine[];
+  language?: string;
+  framework?: string;
+}
+
+export interface ICodeSample {
+  label: string;
+  language: string;
+  framework: string;
+  code: string;
+  notes?: string[];
+}
+
+export interface IVisualization {
+  kind: 'grid' | 'flow' | 'diagram' | 'ascii' | 'chart';
+  title: string;
+  caption?: string;
+  content: string;
+}
+
+export interface ITestingExample {
+  title: string;
+  framework: string;
+  code: string;
+}
+
+export interface IApproach {
+  name: string;
+  tagline: string;
+  complexity: { time: string; space: string };
+  samples: ICodeSample[];
+  tradeoffs: string[];
 }
 
 export interface IProblemSolvingContent {
@@ -53,6 +84,9 @@ export interface IProblemSolvingContent {
   complexity: { time: string; space: string };
   code: ICodeStructure[];
   learned: string[];
+  approaches?: IApproach[];
+  visualization?: IVisualization;
+  testing?: ITestingExample[];
 }
 
 export interface ICleanCodePrinciple {
@@ -63,6 +97,9 @@ export interface ICleanCodePrinciple {
   goodExample: { title: string; code: string };
   explanation: string;
   tips?: string[];
+  samples?: ICodeSample[];
+  visualization?: IVisualization;
+  testing?: ITestingExample[];
 }
 
 export interface ICleanCodeContent {
@@ -337,12 +374,19 @@ export class SharedCodeComponent implements OnInit, AfterViewInit {
       'HTML': { icon: 'html5', type: 'brands' },
       'CSS': { icon: 'css3-alt', type: 'brands' },
       'JS': { icon: 'js', type: 'brands' },
+      'JavaScript': { icon: 'js', type: 'brands' },
+      'TypeScript': { icon: 'code', type: 'brands' },
+      'C#': { icon: 'code', type: 'solid' },
+      'CSharp': { icon: 'code', type: 'solid' },
       'Angular': { icon: 'angular', type: 'brands' },
       'Database': { icon: 'database', type: 'solid' },
+      'SQL': { icon: 'database', type: 'solid' },
+      'EFCore': { icon: 'database', type: 'solid' },
+      'LINQ': { icon: 'code', type: 'solid' },
       'Problem Solving': { icon: 'brain', type: 'solid' },
       'LeetCode': { icon: 'code', type: 'solid' },
-      'TypeScript': { icon: 'code', type: 'brands' },
       'Clean Code': { icon: 'broom', type: 'solid' },
+      'Formatting': { icon: 'align-left', type: 'solid' },
       'Software Engineering': { icon: 'gears', type: 'solid' },
       'Best Practices': { icon: 'star', type: 'solid' },
       'Refactoring': { icon: 'wrench', type: 'solid' },

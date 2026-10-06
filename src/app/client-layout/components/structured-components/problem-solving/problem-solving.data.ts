@@ -18,56 +18,69 @@ export const PROBLEM_SOLVING_ENTRIES: Record<string, ProblemSolvingEntry> = {
     'roman-to-integer': {
         id: 'roman-to-integer',
         projectName: 'Roman to Integer',
-        projectDescription: 'Convert a Roman numeral into an integer using a single-pass approach.',
-        projectDate: 'September 13, 2026',
+        projectDescription: 'Convert a Roman numeral into an integer — with multiple approaches, visualization, and testing across C#, JS, TS, and ASP.NET.',
+        projectDate: 'October 10, 2026',
         projectVersion: 'LeetCode #13',
-        tags: ['Problem Solving', 'JavaScript', 'LeetCode'],
+        tags: ['Problem Solving', 'JavaScript', 'TypeScript', 'CSharp', 'LeetCode'],
+
         problemSolvingContent: {
             problem: `
 Given a Roman numeral, convert it into an integer.
-Roman numerals use the symbols I, V, X, L, C, D and M.
-            `,
+
+Symbols: I = 1, V = 5, X = 10, L = 50, C = 100, D = 500, M = 1000.
+
+Rule: When a smaller value appears before a larger value, subtract it
+instead of adding it (e.g., IV = 4, IX = 9, XL = 40).
+    `,
 
             generalIdea: `
-The important observation is that when a smaller value appears before
-a larger value, we subtract it instead of adding it.
-            `,
+The interesting part of this problem is the subtraction rule.
+
+The naive approach walks the string left to right and adds every symbol —
+that gives the wrong answer for IV, IX, XL, XC, CD, CM.
+
+The fix is one insight: when current < next, subtract current instead of adding it.
+
+This single comparison turns a 20-line switch statement into a 6-line loop.
+    `,
 
             solutionIdea: `
-Compare the current Roman value with the next value.
-If the current value is smaller, subtract it.
-Otherwise, add it.
-            `,
+Walk the string once. For each symbol, compare its value to the next symbol's value.
+If current < next, subtract. Otherwise, add.
+
+The last symbol always has no "next", so it always gets added.
+
+The cleaner mental model: treat the string as a sequence of values,
+and let each value decide its sign based on the value that follows it.
+    `,
 
             steps: [
-                'Read the current Roman symbol.',
-                'Convert it to its integer value.',
-                'Read the next symbol.',
-                'Compare the current value with the next value.',
-                'Subtract when current is smaller.',
-                'Otherwise add the current value.',
-                'Return the final result.'
+                'Build a lookup map: symbol to value.',
+                'Initialize result = 0.',
+                'Walk through the string from index 0.',
+                'Read current value from map.',
+                'Read next value from map (may be undefined).',
+                'If current < next, subtract current.',
+                'Otherwise, add current.',
+                'Return result.'
             ],
 
             example: {
-                input: 'IV',
-                output: '4',
-                explanation: `نبدأ بالقيمة الأولى: حرف I وده قيمته 1.
+                input: 'MCMXCIV',
+                output: '1994',
+                explanation: `الـ String: M C M X C I V
+القيم:    1000 100 1000 10 100 1 5
 
-بعد كده بناخد القيمة اللي بعده: حرف V وده قيمته 5.
+المقارنات:
+M (1000) vs C (100)  -> 1000 >= 100 -> + 1000
+C (100)  vs M (1000) -> 100 < 1000  -> - 100
+M (1000) vs X (10)   -> 1000 >= 10  -> + 1000
+X (10)   vs C (100)  -> 10 < 100    -> - 10
+C (100)  vs I (1)    -> 100 >= 1    -> + 100
+I (1)    vs V (5)    -> 1 < 5       -> - 1
+V (5)    vs (لا يوجد) ->              + 5
 
-بنقارن: هل 1 أصغر من 5؟ أيوه.
-
-فبالتالي بنطرح بدل ما نجمع:
-result = 0 - 1 = -1
-
-بعد كده بنكمل على الـ V:
-بما إنها آخر حرف مفيش حرف بعدها نقارن بيه، فبنجمعها عادي:
-result = -1 + 5 = 4
-
-النتيجة النهائية: 4
-
-التحقق: الرقم الروماني "IV" معناه 4 في الـ decimal ✓`
+المجموع: 1000 - 100 + 1000 - 10 + 100 - 1 + 5 = 1994 ✓`
             },
 
             complexity: {
@@ -75,137 +88,526 @@ result = -1 + 5 = 4
                 space: 'O(1)'
             },
 
-            code: [
+            visualization: {
+                kind: 'diagram',
+                title: 'مسار التنفيذ على MCMXCIV',
+                content: `String:  M    C    M    X    C    I    V
+Index:   0    1    2    3    4    5    6
+
+Step 1:  M=1000, next C=100    -> 1000 >= 100  ->  ADD 1000   -> result=1000
+Step 2:  C=100,  next M=1000   -> 100 <  1000  ->  SUB 100    -> result=900
+Step 3:  M=1000, next X=10     -> 1000 >= 10   ->  ADD 1000   -> result=1900
+Step 4:  X=10,   next C=100    -> 10 <  100    ->  SUB 10     -> result=1890
+Step 5:  C=100,  next I=1      -> 100 >= 1     ->  ADD 100    -> result=1990
+Step 6:  I=1,    next V=5      -> 1 <  5       ->  SUB 1      -> result=1989
+Step 7:  V=5,    next none     ->               ->  ADD 5      -> result=1994
+
+                                                              OK 1994`,
+                caption: 'كل حرف يقرر إشارته بناءً على الحرف اللي بعده.'
+            },
+
+            approaches: [
                 {
-                    codeTitle: 'roman-to-integer.ts',
-                    code: `var romanToInt = function(s) {
-    const romanInteger = {
-        "I": 1,
-        "V": 5,
-        "X": 10,
-        "L": 50,
-        "C": 100,
-        "D": 500,
-        "M": 1000
+                    name: 'Approach 1 - Linear scan with lookahead',
+                    tagline: 'الطريقة الكلاسيكية: امرّ على الـ string مرة واحدة، قارن كل حرف بالحرف اللي بعده.',
+                    complexity: { time: 'O(n)', space: 'O(1)' },
+                    tradeoffs: [
+                        'الأبسط والأسرع — خطوة واحدة على الـ string.',
+                        'بتشتغل على كل الأرقام الرومانية بغض النظر عن طولها.',
+                        'مش محتاجة memory إضافية.',
+                        'أسهل واحدة تتكتب وتتقرا.'
+                    ],
+                    samples: [
+                        {
+                            label: 'roman-to-integer.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function romanToInt(s: string): number {
+  const values: Record<string, number> = {
+    I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000
+  };
+
+  let result = 0;
+
+  for (let i = 0; i < s.length; i++) {
+    const current = values[s[i]];
+    const next = values[s[i + 1]];
+
+    if (current < next) {
+      result -= current;
+    } else {
+      result += current;
+    }
+  }
+
+  return result;
+}`,
+                            notes: [
+                                'بنستخدم Record<string, number> كـ lookup table — O(1) للوصول.',
+                                'الـ loop من 0 لآخر حرف. مفيش special case للآخر لأن s[i+1] هيرجع undefined، والمقارنة current < undefined هتطلع false.',
+                                'المقارنة الأساسية: current < next -> subtract.',
+                                'التعقيد O(n) time, O(1) space (الـ map ثابت).'
+                            ]
+                        },
+                        {
+                            label: 'roman-to-integer.js',
+                            language: 'javascript',
+                            framework: 'JavaScript',
+                            code: `function romanToInt(s) {
+  const values = {
+    I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000
+  };
+
+  let result = 0;
+
+  for (let i = 0; i < s.length; i++) {
+    const current = values[s[i]];
+    const next = values[s[i + 1]];
+    result += current < next ? -current : current;
+  }
+
+  return result;
+}`,
+                            notes: [
+                                'نفس الفكرة بـ JS.',
+                                'الـ ternary operator بيخلي الـ loop نضيف.',
+                                'الفايدة: less code, same logic.'
+                            ]
+                        },
+                        {
+                            label: 'RomanConverter.cs',
+                            language: 'csharp',
+                            framework: 'C#',
+                            code: `public static class RomanConverter
+{
+    private static readonly Dictionary<char, int> Values = new()
+    {
+        ['I'] = 1,   ['V'] = 5,   ['X'] = 10,
+        ['L'] = 50,  ['C'] = 100, ['D'] = 500, ['M'] = 1000
     };
 
+    public static int RomanToInt(string s)
+    {
+        var result = 0;
+
+        for (var i = 0; i < s.Length; i++)
+        {
+            var current = Values[s[i]];
+            var next = i + 1 < s.Length ? Values[s[i + 1]] : 0;
+
+            result += current < next ? -current : current;
+        }
+
+        return result;
+    }
+}`,
+                            notes: [
+                                'static readonly Dictionary — built once, reused.',
+                                'Ternary operator بيخلي الـ loop نضيف.',
+                                'بنستخدم i + 1 < s.Length عشان نتجنب IndexOutOfRange لو الـ string خلص.'
+                            ]
+                        },
+                        {
+                            label: 'roman.controller.ts',
+                            language: 'typescript',
+                            framework: 'Angular Service',
+                            code: `import { Injectable } from '@angular/core';
+
+@Injectable({ providedIn: 'root' })
+export class RomanService {
+  private readonly values: Record<string, number> = {
+    I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000
+  };
+
+  romanToInt(input: string): number {
+    if (!input) throw new Error('Roman numeral required');
+
+    const s = input.toUpperCase();
     let result = 0;
 
     for (let i = 0; i < s.length; i++) {
-        const current = romanInteger[s[i]];
-        const next = romanInteger[s[i + 1]];
-
-        if (current < next) {
-            result -= current;
-        } else {
-            result += current;
-        }
+      const current = this.values[s[i]];
+      if (current === undefined) {
+        throw new Error(\`Invalid symbol: \${s[i]}\`);
+      }
+      const next = this.values[s[i + 1]] ?? 0;
+      result += current < next ? -current : current;
     }
 
     return result;
-};`,
-                    lines: [
+  }
+}`,
+                            notes: [
+                                'نفس الفكرة، بس في سياق Angular Service.',
+                                'بنضيف validation: لو الرمز مش معروف، نرمي error.',
+                                'بنستخدم toUpperCase عشان نقبل input بأي حالة.'
+                            ]
+                        }
+                    ]
+                },
+
+                {
+                    name: 'Approach 2 - Pair-based scan',
+                    tagline: 'بدل ما تقارن كل حرف باللي بعده، شوف كل اتنين مع بعض كـ pair.',
+                    complexity: { time: 'O(n)', space: 'O(1)' },
+                    tradeoffs: [
+                        'نفس التعقيد بس فكرة مختلفة — بعض الناس بتلاقيها أوضح.',
+                        'مفيدة لو هتحل variants معقدة.',
+                        'محتاجة handling خاص لآخر حرف لو عدد الحروف فردي.'
+                    ],
+                    samples: [
                         {
-                            line: 'var romanToInt = function(s) {',
-                            note: 'تعريف الدالة. بتاخد string اسمه s (الرقم الروماني)، وبترجّع القيمة كـ number.'
+                            label: 'roman-to-integer-window.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function romanToInt(s: string): number {
+  const values: Record<string, number> = {
+    I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000
+  };
+
+  let result = 0;
+  let i = 0;
+
+  while (i < s.length) {
+    const a = values[s[i]];
+    const b = values[s[i + 1]] ?? 0;
+
+    if (a < b) {
+      result += b - a;
+      i += 2;
+    } else {
+      result += a;
+      i += 1;
+    }
+  }
+
+  return result;
+}`,
+                            notes: [
+                                'بنمشي على الـ string بـ step variable (1 أو 2).',
+                                'لو a < b -> pair (IV, IX) -> نضيف (b - a) ونتخطى حرفين.',
+                                'لو a >= b -> single symbol -> نضيف a ونتخطى حرف واحد.',
+                                'نفس النتيجة، بس الفكرة مختلفة.'
+                            ]
+                        }
+                    ]
+                },
+
+                {
+                    name: 'Approach 3 - EF Core + SQL integration',
+                    tagline: 'لو الأرقام الرومانية محفوظة في database (مثلاً في جدول currencies أو chapters).',
+                    complexity: { time: 'O(n)', space: 'O(1) (بعد ما الـ map يتحمّل)' },
+                    tradeoffs: [
+                        'بيدمج الحل مع البنية التحتية الحقيقية (DB).',
+                        'بيوضّح إزاي تحوّل الـ algorithm لـ query.',
+                        'مناسب للمشاريع اللي فيها التحويل جزء من data pipeline.',
+                        'بطيء أكتر من الحل المباشر لأن في DB round-trip، بس relevant في بعض السيناريوهات.'
+                    ],
+                    samples: [
+                        {
+                            label: 'RomanNumerals.sql',
+                            language: 'sql',
+                            framework: 'SQL Server',
+                            code: `CREATE TABLE RomanNumerals (
+    Id       INT IDENTITY PRIMARY KEY,
+    Symbol   CHAR(1) NOT NULL UNIQUE,
+    Value    INT NOT NULL
+);
+
+INSERT INTO RomanNumerals (Symbol, Value) VALUES
+    ('I', 1),   ('V', 5),   ('X', 10),
+    ('L', 50),  ('C', 100), ('D', 500), ('M', 1000);
+
+CREATE OR ALTER FUNCTION dbo.RomanToInt (@roman VARCHAR(64))
+RETURNS INT
+AS
+BEGIN
+    DECLARE @result INT = 0;
+    DECLARE @i INT = 1;
+    DECLARE @len INT = LEN(@roman);
+
+    WHILE @i <= @len
+    BEGIN
+        DECLARE @cur CHAR(1) = SUBSTRING(@roman, @i, 1);
+        DECLARE @nxt CHAR(1) = CASE WHEN @i < @len
+                                    THEN SUBSTRING(@roman, @i + 1, 1)
+                                    ELSE NULL END;
+
+        DECLARE @curVal INT = (SELECT Value FROM RomanNumerals WHERE Symbol = @cur);
+        DECLARE @nxtVal INT = (SELECT Value FROM RomanNumerals WHERE Symbol = @nxt);
+
+        IF @nxtVal IS NOT NULL AND @curVal < @nxtVal
+            SET @result = @result - @curVal;
+        ELSE
+            SET @result = @result + @curVal;
+
+        SET @i = @i + 1;
+    END
+
+    RETURN @result;
+END;`
                         },
                         {
-                            line: '    const romanInteger = {',
-                            note: 'بنعمل object فيه كل الحروف الرومانية ومعناها بالأرقام. ده أسرع من استخدام if/else متكررة.'
+                            label: 'RomanRepository.cs',
+                            language: 'csharp',
+                            framework: 'EF Core',
+                            code: `public class RomanNumeral
+{
+    public int Id { get; set; }
+    public char Symbol { get; set; }
+    public int Value { get; set; }
+}
+
+public class RomanNumeralRepository
+{
+    private readonly AppDbContext _context;
+
+    public RomanNumeralRepository(AppDbContext context)
+        => _context = context;
+
+    public async Task<int> RomanToIntAsync(string roman)
+    {
+        var map = await _context.RomanNumerals
+            .AsNoTracking()
+            .ToDictionaryAsync(x => x.Symbol, x => x.Value);
+
+        var s = roman.ToUpperInvariant();
+        var result = 0;
+
+        for (var i = 0; i < s.Length; i++)
+        {
+            var current = map[s[i]];
+            var next = i + 1 < s.Length ? map[s[i + 1]] : 0;
+            result += current < next ? -current : current;
+        }
+
+        return result;
+    }
+}`,
+                            notes: [
+                                'بنستخدم ToDictionaryAsync عشان نجيب الـ map من DB في query واحد.',
+                                'AsNoTracking لأننا بنقرا بس (مش بنعدّل).',
+                                'باقي المنطق زي Approach 1 بالظبط.'
+                            ]
                         },
                         {
-                            line: '        "I": 1,',
-                            note: 'I = 1 — الوحدة الأساسية في الأرقام الرومانية.'
-                        },
+                            label: 'RomanController.cs',
+                            language: 'csharp',
+                            framework: 'ASP.NET Core Web API',
+                            code: `[ApiController]
+[Route("api/roman")]
+public class RomanController : ControllerBase
+{
+    private readonly RomanNumeralRepository _repo;
+
+    public RomanController(RomanNumeralRepository repo)
+        => _repo = repo;
+
+    [HttpGet("to-int/{roman}")]
+    public async Task<IActionResult> ToInt(string roman)
+    {
+        if (string.IsNullOrWhiteSpace(roman))
+            return BadRequest(new { error = "Roman numeral required" });
+
+        try
+        {
+            var value = await _repo.RomanToIntAsync(roman);
+            return Ok(new { roman, value });
+        }
+        catch (KeyNotFoundException)
+        {
+            return BadRequest(new { error = $"Invalid symbol in '{roman}'" });
+        }
+    }
+}`,
+                            notes: [
+                                'endpoint واحد: GET /api/roman/to-int/MCMXCIV',
+                                'بيرجع JSON: { roman: "MCMXCIV", value: 1994 }',
+                                'بيتعامل مع الأخطاء بـ BadRequest + رسالة واضحة.'
+                            ]
+                        }
+                    ]
+                },
+
+                {
+                    name: 'Approach 4 - LINQ + functional style',
+                    tagline: 'استخدم LINQ عشان تعبّر عن الحل بشكل declarative — كل حرف بيقرر إشارته.',
+                    complexity: { time: 'O(n)', space: 'O(n)' },
+                    tradeoffs: [
+                        'أسلوب functional — أنيق لو الفريق بيحب الـ LINQ.',
+                        'بينشئ IEnumerable وسيطة (memory أعلى شوية).',
+                        'قابل للقراءة جدًا لو الفريق متعوّد على الـ functional patterns.'
+                    ],
+                    samples: [
                         {
-                            line: '        "V": 5,',
-                            note: 'V = 5 — الخمسة.'
-                        },
-                        {
-                            line: '        "X": 10,',
-                            note: 'X = 10 — العشرة.'
-                        },
-                        {
-                            line: '        "L": 50,',
-                            note: 'L = 50 — الخمسين.'
-                        },
-                        {
-                            line: '        "C": 100,',
-                            note: 'C = 100 — المية.'
-                        },
-                        {
-                            line: '        "D": 500,',
-                            note: 'D = 500 — الخمس مية.'
-                        },
-                        {
-                            line: '        "M": 1000',
-                            note: 'M = 1000 — الألف.'
-                        },
-                        {
-                            line: '    };',
-                            note: 'نهاية الـ object.'
-                        },
-                        { line: '', note: 'سطر فاضي — للقراءة فقط.' },
-                        {
-                            line: '    let result = 0;',
-                            note: 'الـ accumulator. بنبدأ من صفر وبنضيف/نطرح كل حرف حسب قيمته.'
-                        },
-                        { line: '', note: 'سطر فاضي — للقراءة فقط.' },
-                        {
-                            line: '    for (let i = 0; i < s.length; i++) {',
-                            note: 'بنلف على كل حرف في الـ string، من أول حرف لآخر حرف.'
-                        },
-                        {
-                            line: '        const current = romanInteger[s[i]];',
-                            note: 'بناخد قيمة الحرف الحالي من الـ object (مثلاً لو s[i] = "X"، يبقى current = 10).'
-                        },
-                        {
-                            line: '        const next = romanInteger[s[i + 1]];',
-                            note: 'بناخد قيمة الحرف اللي بعده. لو ده آخر حرف، s[i + 1] هيرجع undefined، وبالتالي next هيكون undefined برضه.'
-                        },
-                        { line: '', note: 'سطر فاضي — للقراءة فقط.' },
-                        {
-                            line: '        if (current < next) {',
-                            note: 'القاعدة الذهبية في الأرقام الرومانية: لو الحرف الحالي أصغر من اللي بعده، يبقى ده حالة طرح مش جمع.'
-                        },
-                        {
-                            line: '            result -= current;',
-                            note: 'بنطرح القيمة الحالية من الـ result (زي IV = -1، بعدها +5 = 4).'
-                        },
-                        {
-                            line: '        } else {',
-                            note: 'لو القيمة الحالية أكبر من أو تساوي اللي بعدها، يبقى جمع عادي.'
-                        },
-                        {
-                            line: '            result += current;',
-                            note: 'بنضيف القيمة الحالية للـ result.'
-                        },
-                        {
-                            line: '        }',
-                            note: 'نهاية الـ if/else.'
-                        },
-                        {
-                            line: '    }',
-                            note: 'نهاية الـ for. لفينا على كل الحروف وعدّلنا الـ result.'
-                        },
-                        { line: '', note: 'سطر فاضي — للقراءة فقط.' },
-                        {
-                            line: '    return result;',
-                            note: 'بنرجّع الناتج النهائي كـ number.'
-                        },
-                        {
-                            line: '};',
-                            note: 'نهاية الدالة.'
+                            label: 'RomanLinq.cs',
+                            language: 'csharp',
+                            framework: 'C# / LINQ',
+                            code: `public static class RomanConverterLinq
+{
+    private static readonly Dictionary<char, int> Values = new()
+    {
+        ['I'] = 1,   ['V'] = 5,   ['X'] = 10,
+        ['L'] = 50,  ['C'] = 100, ['D'] = 500, ['M'] = 1000
+    };
+
+    public static int RomanToInt(string s)
+    {
+        return s
+            .Select((c, i) =>
+            {
+                var current = Values[c];
+                var next = i + 1 < s.Length ? Values[s[i + 1]] : 0;
+                return current < next ? -current : current;
+            })
+            .Sum();
+    }
+}`,
+                            notes: [
+                                'Select بياخد (element, index) — ده اللي بيسهل المقارنة.',
+                                'كل حرف بيتحول لقيمته (positive أو negative) بناءً على الحرف اللي بعده.',
+                                'Sum() بتجمع كل القيم.',
+                                'نفس النتيجة بس declarative — بتوصف إيه اللي بتعمله مش إزاي.'
+                            ]
                         }
                     ]
                 }
             ],
 
+            testing: [
+                {
+                    title: 'Jest',
+                    framework: 'Jest (JS/TS)',
+                    code: `import { romanToInt } from './roman-to-integer';
+
+describe('romanToInt', () => {
+  it.each([
+    ['I', 1],
+    ['III', 3],
+    ['IV', 4],
+    ['IX', 9],
+    ['LVIII', 58],
+    ['MCMXCIV', 1994],
+  ])('converts %s to %i', (roman, expected) => {
+    expect(romanToInt(roman)).toBe(expected);
+  });
+
+  it('handles lowercase input', () => {
+    expect(romanToInt('mcmxciv')).toBe(1994);
+  });
+
+  it('returns 0 for empty string', () => {
+    expect(romanToInt('')).toBe(0);
+  });
+});`
+                },
+                {
+                    title: 'xUnit',
+                    framework: 'xUnit (C#)',
+                    code: `public class RomanConverterTests
+{
+    [Theory]
+    [InlineData("I", 1)]
+    [InlineData("III", 3)]
+    [InlineData("IV", 4)]
+    [InlineData("IX", 9)]
+    [InlineData("LVIII", 58)]
+    [InlineData("MCMXCIV", 1994)]
+    public void RomanToInt_ReturnsExpected(string roman, int expected)
+    {
+        Assert.Equal(expected, RomanConverter.RomanToInt(roman));
+    }
+
+    [Fact]
+    public void RomanToInt_HandlesLowercase()
+    {
+        Assert.Equal(1994, RomanConverter.RomanToInt("mcmxciv"));
+    }
+}`
+                },
+                {
+                    title: 'LINQ Test',
+                    framework: 'C# / LINQ',
+                    code: `[Fact]
+public void RomanToInt_AllCases_Pass()
+{
+    var cases = new (string Roman, int Expected)[]
+    {
+        ("I", 1), ("IV", 4), ("IX", 9),
+        ("LVIII", 58), ("MCMXCIV", 1994),
+    };
+
+    var failures = cases
+        .Where(c => RomanConverter.RomanToInt(c.Roman) != c.Expected)
+        .Select(c => $"{c.Roman}: expected {c.Expected}, got {RomanConverter.RomanToInt(c.Roman)}")
+        .ToList();
+
+    Assert.Empty(failures);
+}`
+                },
+                {
+                    title: 'xUnit + EF Core InMemory',
+                    framework: 'xUnit + EF Core',
+                    code: `public class RomanRepositoryTests
+{
+    [Theory]
+    [InlineData("III", 3)]
+    [InlineData("IV", 4)]
+    [InlineData("MCMXCIV", 1994)]
+    public async Task RomanToIntAsync_ReturnsExpected(string roman, int expected)
+    {
+        var options = new DbContextOptionsBuilder<AppDbContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options;
+
+        using var db = new AppDbContext(options);
+        db.RomanNumerals.AddRange(
+            new() { Symbol = 'I', Value = 1 },
+            new() { Symbol = 'V', Value = 5 },
+            new() { Symbol = 'X', Value = 10 },
+            new() { Symbol = 'L', Value = 50 },
+            new() { Symbol = 'C', Value = 100 },
+            new() { Symbol = 'D', Value = 500 },
+            new() { Symbol = 'M', Value = 1000 }
+        );
+        await db.SaveChangesAsync();
+
+        var repo = new RomanNumeralRepository(db);
+        var result = await repo.RomanToIntAsync(roman);
+
+        Assert.Equal(expected, result);
+    }
+}`
+                }
+            ],
+
+            code: [
+                {
+                    codeTitle: 'roman-to-integer.ts',
+                    language: 'typescript',
+                    code: `function romanToInt(s: string): number {
+  const values: Record<string, number> = {
+    I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000
+  };
+
+  let result = 0;
+  for (let i = 0; i < s.length; i++) {
+    const current = values[s[i]];
+    const next = values[s[i + 1]];
+    result += current < next ? -current : current;
+  }
+  return result;
+}`
+                }
+            ],
+
             learned: [
-                'Recognizing subtraction patterns.',
-                'Comparing the current element with the next element.',
-                'Solving the problem in a single pass.',
-                'Understanding O(n) time complexity.'
+                'Subtraction rule في الأرقام الرومانية.',
+                'Lookahead pattern: قارن العنصر الحالي باللي بعده.',
+                'استخدام lookup table (hash map) عشان O(1) lookup.',
+                'Single-pass solution بتعقيد O(n).',
+                'Testing عبر Jest و xUnit و LINQ.',
+                'دمج الـ algorithm مع EF Core و ASP.NET Core Web API.'
             ]
         }
     },

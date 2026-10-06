@@ -996,6 +996,17 @@ const BASE_SPECIMENS: Specimen[] = [
     stage: 'dark',
     sortKey: 304
   },
+  {
+    id: 'CC-06',
+    kind: 'clean-code',
+    title: 'التنسيق — الكود اللي بيعرف يتنفّس',
+    description: 'الفصل الخامس من Clean Code — عن التنسيق الرأسي والأفقي، مع تصوّرات بصرية وأمثلة بلغات متعددة.',
+    date: 'أكتوبر 2026',
+    tags: ['Clean Code', 'Formatting', 'C#', 'TypeScript', 'EFCore'],
+    href: '/clean-code-06',
+    stage: 'dark',
+    sortKey: 305
+  },
 ];
 
 export const SPECIMENS: Specimen[] = BASE_SPECIMENS.map(s => {
