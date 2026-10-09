@@ -4,3 +4,28 @@
 @use "assets/styles/motion";
 @use "assets/styles/global-grid";
 @use "assets/styles/code-themes/code-themes";
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-void, #0f1b2d);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--rule-solid, #2a3846);
+    border-radius: 6px;
+    border: 2px solid var(--bg-void, #0f1b2d);
+    background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--ink-tertiary, #4a5f7a);
+    background-clip: padding-box;
+}
+
+::-webkit-scrollbar-corner {
+    background: var(--bg-void, #0f1b2d);
+}

@@ -146,7 +146,7 @@ Step 7:  V=5,    next none     ->               ->  ADD 5      -> result=1994
                                 'بنستخدم Record<string, number> كـ lookup table — O(1) للوصول.',
                                 'الـ loop من 0 لآخر حرف. مفيش special case للآخر لأن s[i+1] هيرجع undefined، والمقارنة current < undefined هتطلع false.',
                                 'المقارنة الأساسية: current < next -> subtract.',
-                                'التعقيد O(n) time, O(1) space (الـ map ثابت).'
+                                'Complexity O(n) time, O(1) space (الـ map ثابت).'
                             ]
                         },
                         {
@@ -251,7 +251,7 @@ export class RomanService {
                     tagline: 'بدل ما تقارن كل حرف باللي بعده، شوف كل اتنين مع بعض كـ pair.',
                     complexity: { time: 'O(n)', space: 'O(1)' },
                     tradeoffs: [
-                        'نفس التعقيد بس فكرة مختلفة — بعض الناس بتلاقيها أوضح.',
+                        'نفس Complexity بس فكرة مختلفة — بعض الناس بتلاقيها أوضح.',
                         'مفيدة لو هتحل variants معقدة.',
                         'محتاجة handling خاص لآخر حرف لو عدد الحروف فردي.'
                     ],
@@ -3242,6 +3242,440 @@ carry = 0
                 'التعامل مع BigInt كحل بديل لـ learning.'
             ]
         }
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // 13. Sqart X — LeetCode #69 🆕
+    // ═══════════════════════════════════════════════════════════════
+
+    'sqrt-x': {
+        id: 'sqrt-x',
+        projectName: 'Sqrt(x)',
+        projectDescription: 'احسب الجذر التربيعي لعدد صحيح بدون استخدام دوال جاهزة — باستخدام Binary Search.',
+        projectDate: 'October 8, 2026',
+        projectVersion: 'LeetCode #69',
+        tags: ['Problem Solving', 'JavaScript', 'TypeScript', 'LeetCode', 'Binary Search'],
+
+        problemSolvingContent: {
+            problem: `
+Given a non-negative integer x, return the square root of x rounded down
+to the nearest integer. The returned integer should be non-negative as well.
+
+You must not use any built-in exponent function or operator.
+
+For example, do not use pow(x, 0.5) in C++ or x ** 0.5 in Python.
+
+Example 1:
+Input: x = 4
+Output: 2
+Explanation: The square root of 4 is 2, so we return 2.
+
+Example 2:
+Input: x = 8
+Output: 2
+Explanation: The square root of 8 is 2.82842..., and since we round it down
+to the nearest integer, 2 is returned.
+
+Constraints:
+0 <= x <= 2^31 - 1
+            `,
+
+            generalIdea: `
+الفكرة الجوهرية: إيجاد أكبر عدد صحيح mid بحيث mid * mid <= x.
+
+لو مشينا خطوة خطوة من 0 لحد x، هناخد O(x) في أسوأ حالة — بطيء جدًا لـ x كبير.
+
+لكن فيه ملاحظة مهمة: الدالة f(mid) = mid * mid monotonic increasing على [0, x].
+دي إشارة إن Binary Search هو الحل المثالي.
+
+الفكرة:
+- ابحث في الـ range [0, x] عن أكبر mid يحقق mid * mid <= x.
+- لو mid * mid <= x → we might have found it، save as result و search right.
+- لو mid * mid > x → search left.
+
+Complexity بينزل من O(x) لـ O(log x).
+            `,
+
+            solutionIdea: `
+بنستخدم Binary Search على الـ range من 0 لـ x.
+
+في كل خطوة:
+1. نحسب mid = floor((left + right) / 2).
+2. نقارن mid * mid مع x:
+   - لو mid * mid <= x → ده مرشح صالح. نحفظه في result ونحرك left = mid + 1.
+   - لو mid * mid > x → نحن في المنطقة الكبيرة. نحرك right = mid - 1.
+3. نكرر لحد ما left يعدي right.
+
+ليه بنحفظ mid في result بدل ما نرجعه فورًا؟
+عشان الـ problem بتطلب "rounded down". لو رجعناه فورًا ونحن عند mid صغير، ممكن يفوتنا mid أكبر يحقق نفس الشرط.
+
+مثال: x = 8، في خطوة mid = 2 → 4 <= 8 ✓ (result = 2).
+بعدها mid = 3 → 9 > 8 ✗ (right = 2). left = 3 > right = 2 → توقف.
+return result = 2. ✓
+
+الحل مايستخدمش أي built-in exponent function — بس ضرب عادي.
+            `,
+
+            steps: [
+                'حدد left = 0 و right = x (الـ range اللي هنبحث فيه).',
+                'حدد result = 0 (أكبر mid صالح لقيناه لحد دلوقتي).',
+                'احسب mid = floor((left + right) / 2).',
+                'قارن mid * mid مع x.',
+                'لو mid * mid <= x → result = mid، و left = mid + 1 (ابحث في اليمين عشان possible أكبر).',
+                'لو mid * mid > x → right = mid - 1 (ابحث في الشمال).',
+                'كرر لحد ما left > right.',
+                'أرجع result.'
+            ],
+
+            example: {
+                input: '8',
+                output: '2',
+                explanation: `الهدف: أكبر عدد صحيح mid بحيث mid * mid <= 8
+
+Initial: left = 0, right = 8, result = 0
+
+الخطوة 1:
+mid = floor((0 + 8) / 2) = 4
+4 * 4 = 16 > 8  →  right = 4 - 1 = 3
+result لسه 0
+
+الخطوة 2:
+mid = floor((0 + 3) / 2) = 1
+1 * 1 = 1 <= 8  →  result = 1، left = 1 + 1 = 2
+
+الخطوة 3:
+mid = floor((2 + 3) / 2) = 2
+2 * 2 = 4 <= 8  →  result = 2، left = 2 + 1 = 3
+
+الخطوة 4:
+left = 3, right = 3
+mid = floor((3 + 3) / 2) = 3
+3 * 3 = 9 > 8  →  right = 3 - 1 = 2
+
+الآن: left (3) > right (2) → توقف
+
+النتيجة النهائية: result = 2 ✓
+
+التحقق: √8 = 2.828... → round down = 2 ✓`
+            },
+
+            complexity: {
+                time: 'O(log x)',
+                space: 'O(1)'
+            },
+
+            visualization: {
+                kind: 'diagram',
+                title: 'مسار البحث على x = 8',
+                content: `Range: [0, 8],  result = 0
+
+Step 1:  L=0  R=8  mid=4
+         ┌──────┐
+         4*4=16 > 8  →  R = 3
+
+Step 2:  L=0  R=3  mid=1
+         ┌──┐
+         1*1=1 <= 8  →  result=1, L=2
+
+Step 3:  L=2  R=3  mid=2
+           ┌┐
+         2*2=4 <= 8  →  result=2, L=3
+
+Step 4:  L=3  R=3  mid=3
+           │
+         3*3=9 > 8   →  R=2
+
+Stop: L(3) > R(2)
+Return: result = 2
+
+Final: √8 ≈ 2.828  →  rounded down = 2`,
+                caption: 'Binary Search بتستبعد نص المساحة في كل خطوة → O(log x)'
+            },
+
+            approaches: [
+                {
+                    name: 'Approach 1 - Binary Search (الأمثل)',
+                    tagline: 'أسرع حل — O(log x). بيستغل إن الدالة monotonic.',
+                    complexity: { time: 'O(log x)', space: 'O(1)' },
+                    tradeoffs: [
+                        'أسرع حل ممكن للـ problem دي.',
+                        'مايستخدمش أي built-in function.',
+                        'شغال لأي x في حدود 2^31 - 1 بدون overflow (لأن mid * mid هيكون في نطاق Number الآمن في JavaScript).',
+                        'منطقي وفهمه سهل.',
+                        'مش محتاج أي memory إضافية.'
+                    ],
+                    samples: [
+                        {
+                            label: 'sqrt-x.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function mySqrt(x: number): number {
+  let left = 0;
+  let right = x;
+  let result = 0;
+
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+
+    if (mid * mid <= x) {
+      result = mid;
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+
+  return result;
+}`,
+                            notes: [
+                                'بنبدأ من range [0, x] — الحل مضمون إنه فيه.',
+                                'بنحسب mid آمن (floor) عشان الـ index.',
+                                'بنحفظ result في كل مرة نلاقي mid صالح — مش بنرجع فورًا.',
+                                'بنحرك left = mid + 1 عشان ممكن يكون فيه mid أكبر.',
+                                'الـ loop بتوقف لما left > right — يعني result فيه القيمة الصح.',
+                                'Complexity O(log x) time، O(1) space.'
+                            ]
+                        },
+                        {
+                            label: 'sqrt-x.js',
+                            language: 'javascript',
+                            framework: 'JavaScript',
+                            code: `var mySqrt = function(x) {
+    let left = 0;
+    let right = x;
+    let result = 0;
+
+    while (left <= right) {
+        let mid = Math.floor((left + right) / 2);
+
+        if (mid * mid <= x) {
+            result = mid;
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
     }
 
+    return result;
+};`,
+                            notes: [
+                                'نفس الحل بـ JavaScript.',
+                                'بيشتغل صح مع x = 0 (return 0) و x = 1 (return 1).',
+                                'مع x = 2^31 - 1 = 2147483647، mid * mid بتوصل لـ ~10^18 وهي في نطاق Number الآمن (2^53).',
+                                'عكس C++، JavaScript مش محتاج long long عشان avoid overflow.'
+                            ]
+                        },
+                        {
+                            label: 'SqrtCalculator.cs',
+                            language: 'csharp',
+                            framework: 'C#',
+                            code: `public static class SqrtCalculator
+{
+    public static int MySqrt(int x)
+    {
+        if (x < 2) return x;
+
+        int left = 0;
+        int right = x;
+        int result = 0;
+
+        while (left <= right)
+        {
+            int mid = left + (right - left) / 2;
+
+            if ((long)mid * mid <= x)
+            {
+                result = mid;
+                left = mid + 1;
+            }
+            else
+            {
+                right = mid - 1;
+            }
+        }
+
+        return result;
+    }
+}`,
+                            notes: [
+                                'في C#، بنستخدم (long)mid * mid عشان نتجنب integer overflow.',
+                                'لو x قريب من int.MaxValue، mid * mid ممكن يتخطى int.MaxValue.',
+                                'left + (right - left) / 2 أأمن من (left + right) / 2 لو الاتنين قريبين من الحد الأقصى.',
+                                'بنستخدم if (x < 2) return x كـ optimization صغير.'
+                            ]
+                        },
+                        {
+                            label: 'newton-sqrt.cs',
+                            language: 'csharp',
+                            framework: 'C# / Newton\'s Method',
+                            code: `public static int NewtonSqrt(int x)
+{
+    if (x < 2) return x;
+
+    long guess = x;
+    while (guess * guess > x)
+    {
+        guess = (guess + x / guess) / 2;
+    }
+
+    return (int)guess;
+}`,
+                            notes: [
+                                'طريقة نيوتن — تعقيد O(log log x) تقريبًا (أسرع من Binary Search في الواقع).',
+                                'الفكرة: x_{n+1} = (x_n + x / x_n) / 2.',
+                                'بتتقارب بسرعة رهيبة — عمليًا 6-7 iterations لأي x في نطاق int.',
+                                'بس أصعب شوية في الشرح من Binary Search.',
+                                'في interviews، Binary Search هو الاختيار الافتراضي عشان وضوحه.'
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Approach 2 - Linear Search',
+                    tagline: 'أبسط حل — O(√x). مقبول للـ x صغيرة بس بطيء للكبيرة.',
+                    complexity: { time: 'O(√x)', space: 'O(1)' },
+                    tradeoffs: [
+                        'أبسط في الكتابة والفهم.',
+                        'مقبول لو x صغير (أقل من 10^6).',
+                        'بطيء جدًا للـ x الكبيرة (x = 2^31 - 1 → ~46341 iteration).',
+                        'مش recommended في الـ interviews.'
+                    ],
+                    samples: [
+                        {
+                            label: 'sqrt-linear.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function mySqrtLinear(x: number): number {
+  if (x < 2) return x;
+
+  let i = 1;
+  while (i * i <= x) {
+    i++;
+  }
+
+  return i - 1;
+}`,
+                            notes: [
+                                'بنلف من 1 لحد ما i * i > x.',
+                                'بنرجع i - 1 (آخر قيمة كانت صحيحة).',
+                                'بسيط بس بطيء لـ x كبير.',
+                                'مش بيستخدم أي built-in function.'
+                            ]
+                        }
+                    ]
+                }
+            ],
+
+            testing: [
+                {
+                    title: 'Jest',
+                    framework: 'Jest (TS/JS)',
+                    code: `import { mySqrt } from './sqrt-x';
+
+describe('mySqrt', () => {
+  it.each([
+    [0, 0],
+    [1, 1],
+    [4, 2],
+    [8, 2],
+    [9, 3],
+    [15, 3],
+    [16, 4],
+    [100, 10],
+    [2147395599, 46339],
+  ])('sqrt(%i) = %i', (input, expected) => {
+    expect(mySqrt(input)).toBe(expected);
+  });
+
+  it('handles x = 2^31 - 1', () => {
+    expect(mySqrt(2147483647)).toBe(46340);
+  });
+});`
+                },
+                {
+                    title: 'xUnit',
+                    framework: 'xUnit (C#)',
+                    code: `public class SqrtTests
+{
+    [Theory]
+    [InlineData(0, 0)]
+    [InlineData(1, 1)]
+    [InlineData(4, 2)]
+    [InlineData(8, 2)]
+    [InlineData(9, 3)]
+    [InlineData(15, 3)]
+    [InlineData(16, 4)]
+    [InlineData(100, 10)]
+    public void MySqrt_ReturnsFloorOfSquareRoot(int x, int expected)
+    {
+        Assert.Equal(expected, SqrtCalculator.MySqrt(x));
+    }
+
+    [Fact]
+    public void MySqrt_AtIntMaxValue_Returns46340()
+    {
+        Assert.Equal(46340, SqrtCalculator.MySqrt(int.MaxValue));
+    }
+}`
+                }
+            ],
+
+            code: [
+                {
+                    codeTitle: 'sqrt-x.ts',
+                    language: 'typescript',
+                    code: `function mySqrt(x: number): number {
+  let left = 0;
+  let right = x;
+  let result = 0;
+
+  while (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+
+    if (mid * mid <= x) {
+      result = mid;
+      left = mid + 1;
+    } else {
+      right = mid - 1;
+    }
+  }
+
+  return result;
+}`,
+                    lines: [
+                        { line: 'function mySqrt(x: number): number {', note: 'تعريف الدالة. بتاخد integer x (non-negative)، وبترجّع integer = الجذر التربيعي rounded down.' },
+                        { line: '  let left = 0;', note: 'حد البداية لمساحة البحث. أصغر جذر ممكن هو 0.' },
+                        { line: '  let right = x;', note: 'حد النهاية. أكبر جذر ممكن هو x نفسها (لأن √x <= x دائمًا لـ x >= 1).' },
+                        { line: '  let result = 0;', note: 'بنحفظ فيه أكبر mid صالح لقيناه لحد دلوقتي. بنبدأ بـ 0 عشان x = 0.' },
+                        { line: '', note: '—' },
+                        { line: '  while (left <= right) {', note: 'الـ loop الأساسية. بنكمل طول ما فيه عناصر في مساحة البحث.' },
+                        { line: '    const mid = Math.floor((left + right) / 2);', note: 'بنحسب العنصر اللي في النص. Math.floor عشان نتجنب العشريات.' },
+                        { line: '', note: '—' },
+                        { line: '    if (mid * mid <= x) {', note: 'بنقارن مربع الـ mid مع x. لو أصغر أو يساوي، ده مرشح صالح.' },
+                        { line: '      result = mid;', note: 'بنحفظ mid في result — يمكن يطلع هو الأكبر.' },
+                        { line: '      left = mid + 1;', note: 'بنحرك left لليمين — يمكن يكون فيه mid أكبر لسه يحقق الشرط.' },
+                        { line: '    } else {', note: 'لو mid * mid > x، يبقى الجذر أقل من mid.' },
+                        { line: '      right = mid - 1;', note: 'بنحرك right للشمال عشان نستبعد النص اليمين.' },
+                        { line: '    }', note: 'نهاية الـ if/else.' },
+                        { line: '  }', note: 'نهاية الـ while. الـ loop بتوقف لما left > right.' },
+                        { line: '', note: '—' },
+                        { line: '  return result;', note: 'بنرجّع أكبر mid لسه محقق mid * mid <= x. ده الجذر rounded down.' },
+                        { line: '}', note: 'نهاية الدالة. Complexity O(log x) time، O(1) space.' }
+                    ]
+                }
+            ],
+
+            learned: [
+                'فهم فكرة Binary Search on Answer — إننا نبحث عن قيمة في مساحة logically مرتبة.',
+                'استغلال الـ monotonic property (mid * mid monotonic increasing) لتحويل مشكلة quadratic لـ logarithmic.',
+                'التعامل مع الـ rounded down condition عن طريق حفظ result بدل الرجوع الفوري.',
+                'التعامل مع edge cases (x = 0، x = 1، x = 2).',
+                'الفرق بين الـ approaches: Binary Search vs Linear vs Newton\'s Method.',
+                'فهم ازاي نتجنب الـ integer overflow في اللغات المُعرّضة (زي C#).',
+                'اختبار الحل بـ test cases وحالات حافة (2147395599 و 2147483647).',
+                'المقارنة: O(log x) vs O(√x) — الفرق في الأداء لـ x كبير.',
+                'الـ interview tip: اشرحليه إنك بتستخدم Binary Search على مساحة القيم، مش على array.'
+            ]
+        }
+    },
 };

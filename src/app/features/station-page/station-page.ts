@@ -57,6 +57,12 @@ export class StationPageComponent implements OnInit, OnDestroy {
     return this.sanitizer.bypassSecurityTrustHtml(this.buildRunnableDoc(s));
   });
 
+  readonly fullCode = computed(() => {
+    const s = this.station();
+    if (!s || !s.codeBreakdown?.length) return '';
+    return s.codeBreakdown.map(item => item.line).join('\n');
+  });
+
   readonly userCode = signal('');
   readonly timerRunning = signal(false);
   readonly elapsedMs = signal(0);

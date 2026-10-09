@@ -32,7 +32,6 @@
         <p class="sect__text">{{ s.whatItDoes }}</p>
     </section>
 
-    <!-- ═════ الشرح التفصيلي ═════ -->
     <section class="sect">
         <header class="sect__head">
             <span class="sect__dot" aria-hidden="true"></span>
@@ -46,7 +45,18 @@
         </div>
     </section>
 
-    <!-- ═════ تفكيك الكود ═════ -->
+    @if (fullCode()) {
+    <section class="sect">
+        <header class="sect__head">
+            <span class="sect__dot" aria-hidden="true"></span>
+            <h2 class="sect__title">الكود الكامل</h2>
+            <span class="sect__rule" aria-hidden="true"></span>
+        </header>
+        <pre class="full-code ltr" dir="ltr"><code>{{ fullCode() }}</code></pre>
+    </section>
+    }
+
+    @if (s.codeBreakdown?.length) {
     <section class="sect">
         <header class="sect__head">
             <span class="sect__dot" aria-hidden="true"></span>
@@ -63,6 +73,7 @@
             }
         </ul>
     </section>
+    }
 
     <!-- ═════ شغّل بنفسك ═════ -->
     <section class="sect">

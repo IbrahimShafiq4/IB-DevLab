@@ -260,6 +260,26 @@ main {
     max-width: 72ch;
 }
 
+.full-code {
+    margin: 0;
+    padding: t.$sp-5;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.75;
+    color: var(--code-text);
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: t.$r-sm;
+    overflow-x: auto;
+    white-space: pre;
+    direction: ltr;
+    unicode-bidi: isolate;
+    tab-size: 2;
+    -moz-tab-size: 2;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
 /* ─── Runner iframe ────────────────────────────────────────── */
 .runner {
     border: 1px solid var(--rule-hairline);

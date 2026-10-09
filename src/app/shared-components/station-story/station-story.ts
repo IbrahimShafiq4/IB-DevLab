@@ -41,7 +41,7 @@ import {
   <article class="sect">
     <header class="sect__head">
       <span class="sect__dot" data-line="ds" aria-hidden="true"></span>
-      <h2 class="sect__title">التعقيد</h2>
+      <h2 class="sect__title">Complexity</h2>
       <span class="sect__rule" aria-hidden="true"></span>
     </header>
     <div class="complexity">

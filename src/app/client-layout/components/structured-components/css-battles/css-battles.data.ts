@@ -1166,5 +1166,170 @@ The design uses:
         tags: ['Web Development', 'HTML', 'CSS', 'Pseudo-elements', 'Positioning', 'Border-radius', 'CSS Box Reflect', 'CSS Battle'],
         zipFile: 'assets/zip-files/cssBattle/31 - p31.zip',
         html: `<p><i></i></p><style>body{display:grid;place-items:center;background:#E98F6B}p{width:60px;height:80px;background:#8B4646;border-right:20px solid #fff;border-left:20px solid #fff;position:relative}p i{position:absolute;width:45px;height:80px;top:0;left:-65px;background:#E98F6B;-webkit-box-reflect:right 100px}p:before,p:after{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:145px;height:40px;background:#8B4646;border-radius:50% 50% 0% 0%/100% 100% 0% 0%;border:20px solid #fff;z-index:-1}p::after{top:60px;transform:translateX(-50%) rotate(180deg)}</style>`
-    }
+    },
+    /* ═══════════════════════════════════════════════════════════════
+   P32 — Candy Wrapper / Hourglass
+   ═══════════════════════════════════════════════════════════════ */
+    'p32': {
+        id: 'p32',
+        title: 'CSS Battle – Candy Wrapper',
+        description: `
+CSS recreation of a candy-wrapper / hourglass-like shape using pure HTML and CSS.
+
+The design uses:
+- A rectangular green block as the base
+- A large circular ::before element with a thick green border
+  and a body-colored interior, creating a cut-out effect
+- A horizontal ::after strip that slices through the middle
+  of the circle, splitting it into two visible arcs
+- Precise positioning with absolute offsets
+
+All visuals are built with a single HTML element and pure CSS — no images, no SVG, no JavaScript.
+    `.trim(),
+        date: 'Last updated: Oct 12, 2026',
+        version: 'v1.0.0',
+        tags: ['Web Development', 'HTML', 'CSS', 'Pseudo-elements', 'Border-radius', 'CSS Battle'],
+        zipFile: 'assets/zip-files/cssBattle/32 - p32.zip',
+        html: `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candy Wrapper</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <p></p>
+</body>
+</html>
+    `.trim(),
+        css: `
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    background: #476573;
+}
+
+p {
+    width: 300px;
+    height: 200px;
+    background: #B8D982;
+    position: relative;
+}
+
+p::before,
+p::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+p::before {
+    top: -30px;
+    width: 200px;
+    height: 200px;
+    background: #476573;
+    border: 30px solid #B8D982;
+    border-radius: 50%;
+}
+
+p::after {
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 40px;
+    background: #B8D982;
+}
+    `.trim()
+    },
+    // ═══════════════════════════════════════════════════════════════
+    // P33 — Geometric Dome
+    // ═══════════════════════════════════════════════════════════════
+    'p33': {
+        id: 'p33',
+        title: 'CSS Battle – Geometric Dome',
+        description: `
+CSS recreation of a geometric dome-like shape using pure HTML and CSS.
+
+The design uses:
+- A rectangular base with a large top border-radius to create the dome silhouette
+- A circular ::before element centered on the dome
+- A vertical ::after element acting as a stem or pillar
+- Layered z-index stacking for proper visual hierarchy
+- Minimal HTML structure with a single <p> element
+- Pure CSS without images or SVG
+    `.trim(),
+        date: 'Last updated: Oct 12, 2026',
+        version: 'v1.0.0',
+        tags: ['Web Development', 'HTML', 'CSS', 'Pseudo-elements', 'Border-radius', 'Positioning', 'CSS Battle'],
+        youtube: 'https://cssbattle.dev/play/F2CiIdrt567y4qH4XEGq',
+        zipFile: 'assets/zip-files/cssBattle/33 - p33.zip',
+        html: `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geometric Dome</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <p></p>
+</body>
+</html>
+    `.trim(),
+        css: `
+body {
+    display: grid;
+    place-items: center;
+    background: #C2C298;
+}
+
+p {
+    width: 170px;
+    height: 100px;
+    background: #535FB1;
+    position: relative;
+    transform: translateY(-50px);
+    border-radius: 85px 85px 0 0;
+    z-index: -1;
+}
+
+p::before,
+p::after {
+    content: '';
+    position: absolute;
+}
+
+p::before {
+    width: 100px;
+    height: 100px;
+    background: #D07B5F;
+    border-radius: 50%;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+}
+
+p::after {
+    z-index: 3;
+    width: 20px;
+    height: 50px;
+    background: #454545;
+    top: 140px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+    `.trim()
+    },
 };

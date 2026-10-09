@@ -1914,5 +1914,122 @@ p::after {
     transform: translateX(-50%) rotate(180deg);
 }`
   },
+  /* ═══════════════════════════════════════════════════════════════
+     CB-32 — Candy Wrapper
+     ═══════════════════════════════════════════════════════════════ */
+  'CB-32': {
+    stage: 'dark',
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Candy Wrapper</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      background: #476573;
+    }
+
+    p {
+      width: 300px;
+      height: 200px;
+      background: #B8D982;
+      position: relative;
+    }
+
+    p::before,
+    p::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    p::before {
+      top: -30px;
+      width: 200px;
+      height: 200px;
+      background: #476573;
+      border: 30px solid #B8D982;
+      border-radius: 50%;
+    }
+
+    p::after {
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      height: 40px;
+      background: #B8D982;
+    }
+  </style>
+</head>
+<body>
+  <p></p>
+</body>
+</html>`
+  },
+  // ═══════════════════════════════════════════════════════════════
+  // CB-33 — Geometric Dome
+  // ═══════════════════════════════════════════════════════════════
+  'CB-33': {
+    stage: 'light',
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Geometric Dome</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <p></p>
+</body>
+</html>`,
+    css: `body {
+    display: grid;
+    place-items: center;
+    background: #C2C298;
+}
+
+p {
+    width: 170px;
+    height: 100px;
+    background: #535FB1;
+    position: relative;
+    transform: translateY(-50px);
+    border-radius: 85px 85px 0 0;
+    z-index: -1;
+}
+
+p::before,
+p::after {
+    content: '';
+    position: absolute;
+}
+
+p::before {
+    width: 100px;
+    height: 100px;
+    background: #D07B5F;
+    border-radius: 50%;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+}
+
+p::after {
+    z-index: 3;
+    width: 20px;
+    height: 50px;
+    background: #454545;
+    top: 140px;
+    left: 50%;
+    transform: translateX(-50%);
+}`
+  },
 
 };

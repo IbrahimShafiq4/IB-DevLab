@@ -1146,6 +1146,242 @@ document.getElementById('run').onclick = run;
 a.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
 b.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
 run();`
+    },
+    'PS-13': {
+        stage: 'dark',
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sqrt(x)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="demo">
+        <div class="row">
+            <label>x</label>
+            <input type="text" id="in" value="8" dir="ltr">
+        </div>
+        <button id="run">احسب</button>
+        <div class="row">
+            <label>sqrt(x) =</label>
+            <output id="out">—</output>
+        </div>
+        <p class="hint">جرّب: 4 · 8 · 9 · 15 · 16 · 100 · 2147395599</p>
+        <div class="trace" id="trace"></div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>`,
+        css: `* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #0A1017;
+    font-family: system-ui, -apple-system, sans-serif;
+    padding: 16px;
+    font-size: 16px;
+    color: #E9EFF5;
+}
+
+.demo {
+    background: #131C26;
+    border: 1px solid #2A3846;
+    border-radius: 4px;
+    padding: 20px;
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+label {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8394A5;
+}
+
+input {
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    padding: 10px 14px;
+    color: #E9EFF5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 22px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #E3A83A;
+}
+
+button {
+    padding: 12px 18px;
+    background: #E3A83A;
+    color: #101A24;
+    border: 0;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: opacity 0.16s;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+output {
+    display: block;
+    padding: 14px;
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    color: #3CC4BE;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 24px;
+    min-height: 52px;
+    word-break: break-all;
+}
+
+.hint {
+    font-size: 12px;
+    color: #8394A5;
+    font-family: ui-monospace, Consolas, monospace;
+    line-height: 1.6;
+}
+
+.trace {
+    margin-top: 8px;
+    max-height: 240px;
+    overflow-y: auto;
+    border-top: 1px solid #2A3846;
+    padding-top: 12px;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 11px;
+    line-height: 1.8;
+    color: #8394A5;
+    direction: ltr;
+    text-align: left;
+    display: none;
+}
+
+.trace.visible {
+    display: block;
+}
+
+.trace__row {
+    padding: 3px 0;
+    white-space: pre;
+}
+
+.trace__row--found { color: #4CD08A; }
+.trace__row--move { color: #5B9DFF; }
+.trace__row--miss { color: #F26B62; }
+.trace__row--final { color: #E3A83A; font-weight: 700; padding-top: 6px; border-top: 1px dashed #2A3846; margin-top: 4px; }
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #0A1017; }
+::-webkit-scrollbar-thumb { background: #2A3846; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #4A5F7A; }`,
+        js: `function mySqrt(x) {
+    let left = 0;
+    let right = x;
+    let result = 0;
+
+    while (left <= right) {
+        let mid = Math.floor((left + right) / 2);
+
+        if (mid * mid <= x) {
+            result = mid;
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
     }
+
+    return result;
+}
+
+const inp = document.getElementById('in');
+const out = document.getElementById('out');
+const trace = document.getElementById('trace');
+
+function traceRun(x) {
+    const rows = [];
+    let left = 0;
+    let right = x;
+    let result = 0;
+    let step = 0;
+
+    if (x < 0) return { rows: ['✕ x لازم يكون non-negative'], value: null };
+
+    while (left <= right) {
+        step++;
+        const mid = Math.floor((left + right) / 2);
+        const sq = mid * mid;
+
+        if (sq <= x) {
+            rows.push({ text: 'Step ' + step + ':  L=' + left + '  R=' + right + '  mid=' + mid + '  mid²=' + sq + ' ≤ ' + x + '  →  result=' + mid + ', L=' + (mid + 1), cls: 'found' });
+            result = mid;
+            left = mid + 1;
+        } else {
+            rows.push({ text: 'Step ' + step + ':  L=' + left + '  R=' + right + '  mid=' + mid + '  mid²=' + sq + ' > ' + x + '  →  R=' + (mid - 1), cls: 'move' });
+            right = mid - 1;
+        }
+    }
+
+    rows.push({ text: 'Stop: L(' + left + ') > R(' + right + ')', cls: 'miss' });
+    rows.push({ text: '✓ return result = ' + result, cls: 'final' });
+    return { rows, value: result };
+}
+
+function run() {
+    const v = inp.value.trim();
+    const x = Number(v);
+
+    if (v === '' || isNaN(x) || x < 0) {
+        out.textContent = '✕ قيمة غير صحيحة';
+        out.style.color = '#F26B62';
+        trace.classList.remove('visible');
+        return;
+    }
+
+    const fast = mySqrt(x);
+    const { rows, value } = traceRun(x);
+
+    out.style.color = '#3CC4BE';
+    out.textContent = '√' + x + ' ≈ ' + value + '  (mySqrt = ' + fast + ')';
+
+    trace.innerHTML = '';
+    rows.forEach(r => {
+        const div = document.createElement('div');
+        div.className = 'trace__row' + (r.cls ? ' trace__row--' + r.cls : '');
+        div.textContent = r.text;
+        trace.appendChild(div);
+    });
+    trace.classList.add('visible');
+}
+
+document.getElementById('run').onclick = run;
+inp.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+inp.addEventListener('input', run);
+run();`
+    },
 
 };

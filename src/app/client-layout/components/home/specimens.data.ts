@@ -805,6 +805,28 @@ const BASE_SPECIMENS: Specimen[] = [
     stage: 'light',
     sortKey: 130
   },
+  {
+    id: 'CB-32',
+    kind: 'css-battle',
+    title: 'CSS Battle — Candy Wrapper',
+    description: 'شكل يشبه غلاف الحلوى باستخدام دايرة داخل مستطيل وشريط أفقي — CSS خالص.',
+    date: 'أكتوبر 2026',
+    tags: ['CSS', 'Battle', 'Pseudo-elements'],
+    href: '/css_battle_p32',
+    stage: 'dark',
+    sortKey: 131
+  },
+  {
+    id: 'CB-33',
+    kind: 'css-battle',
+    title: 'CSS Battle — Geometric Dome',
+    description: 'شكل قبة هندسية باستخدام border-radius وpseudo-elements — CSS خالص.',
+    date: 'أكتوبر 2026',
+    tags: ['CSS', 'Battle', 'Pseudo-elements', 'Border-radius'],
+    href: '/css_battle_p33',
+    stage: 'light',
+    sortKey: 132
+  },
 
   // ─── Problem Solving ───
   {
@@ -938,6 +960,17 @@ const BASE_SPECIMENS: Specimen[] = [
     href: '/problem-solving/add-binary',
     stage: 'dark',
     sortKey: 211
+  },
+  {
+    id: 'PS-13',
+    kind: 'problem-solving',
+    title: 'Sqrt(x)',
+    description: 'احسب الجذر التربيعي لعدد صحيح بدون دوال جاهزة — بـ Binary Search.',
+    date: 'أكتوبر 2026',
+    tags: ['LeetCode', 'Binary Search', 'Math'],
+    href: '/problem-solving/sqrt-x',
+    stage: 'dark',
+    sortKey: 212
   },
 
   // ─── Clean Code ───

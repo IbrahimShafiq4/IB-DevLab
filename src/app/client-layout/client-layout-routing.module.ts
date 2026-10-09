@@ -265,7 +265,18 @@ const routes: Routes = [
         data: { battleId: 'p31' },
         title: 'Css Battle Project 31'
       },
-
+      {
+        path: 'css_battle_p32',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p32' },
+        title: 'Css Battle Project 32'
+      },
+      {
+        path: 'css_battle_p33',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p33' },
+        title: 'CSS Battle Project 33'
+      },
       // ─── Problem Solving ───
       {
         path: 'problem-solving/roman-to-integer',
@@ -339,6 +350,12 @@ const routes: Routes = [
         data: { problemId: 'add-binary' },
         title: 'Add Binary'
       },
+      {
+        path: 'problem-solving/sqrt-x',
+        loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
+        data: { problemId: 'sqrt-x' },
+        title: 'Sqrt(x)'
+      },
 
       // ─── Clean Code (unified — everything routed through clean-code-page) ───
       ...CLEAN_CODE_ROUTES,
@@ -364,7 +381,28 @@ const routes: Routes = [
           import('../features/station-page/station-page').then(m => m.StationPageComponent),
         title: 'fetch() - IBDevLab',
         data: { stationId: 'fetch' }
-      }
+      },
+      {
+        path: 'algorithms/quick-sort',
+        loadComponent: () =>
+          import('../features/station-page/station-page').then(m => m.StationPageComponent),
+        title: 'Quick Sort - IBDevLab',
+        data: { stationId: 'quick-sort' }
+      },
+      {
+        path: 'data-structures/stack',
+        loadComponent: () =>
+          import('../features/station-page/station-page').then(m => m.StationPageComponent),
+        title: 'Stack - IBDevLab',
+        data: { stationId: 'stack' }
+      },
+      {
+        path: 'built-in-apis/promise',
+        loadComponent: () =>
+          import('../features/station-page/station-page').then(m => m.StationPageComponent),
+        title: 'Promise - IBDevLab',
+        data: { stationId: 'promise' }
+      },
     ]
   }
 ];
