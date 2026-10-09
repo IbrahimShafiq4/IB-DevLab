@@ -6145,7 +6145,7 @@ O(1). مهما كان حجم القائمة.
       'Uploading الملفات والصور (FormData)',
       'Real-time data streaming بـ response.body.getReader()',
       'SPA navigation data prefetching',
-      'التكامل مع Firebase / Supabase / أي backend',
+      'integerations مع Firebase / Supabase / أي backend',
       'PWA offline requests بـ Service Workers',
     ],
 
