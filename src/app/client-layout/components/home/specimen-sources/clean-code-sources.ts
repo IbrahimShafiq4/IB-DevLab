@@ -636,6 +636,7 @@ function setCode(t) {
 btns.forEach(b => b.addEventListener('click', () => setCode(b.dataset.t)));
 setCode('bad');`
     },
+
     'CC-06': {
         stage: 'dark',
         html: `<!DOCTYPE html>
@@ -751,5 +752,139 @@ function setCode(kind) {
 
 btns.forEach(b => b.addEventListener('click', () => setCode(b.dataset.show)));
 setCode('bad');`
-    }
+    },
+    'CC-07': {
+        stage: 'dark',
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Objects vs Data Structures</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="card">
+        <h2>Objects vs Data Structures</h2>
+        <p>شف الفرق بينهم بنفس المثال. اضغط على أي زرار.</p>
+        <div class="btns">
+            <button data-show="object" class="active">Object</button>
+            <button data-show="data">Data Structure</button>
+            <button data-show="bad">Hybrid (Bad)</button>
+        </div>
+        <pre class="code" id="code"></pre>
+        <div class="demo-area" id="demo"></div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>`,
+        css: `* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: #0A1017;
+    font-family: system-ui, sans-serif; padding: 16px;
+    font-size: 16px; color: #E9EFF5;
+}
+.card {
+    background: #131C26; border: 1px solid #2A3846; border-radius: 4px;
+    padding: 20px; width: 100%; max-width: 720px;
+    display: flex; flex-direction: column; gap: 14px;
+}
+h2 { font-size: 1rem; color: #E3A83A; }
+p { font-size: .85rem; color: #B4C1CE; line-height: 1.6; }
+.btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.btns button {
+    padding: 6px 14px; background: transparent;
+    border: 1px solid #2A3846; color: #B4C1CE;
+    border-radius: 2px; cursor: pointer; font-size: .8rem;
+    font-family: inherit;
+}
+.btns button.active {
+    background: #E3A83A; color: #101A24;
+    border-color: #E3A83A; font-weight: 600;
+}
+.code {
+    background: #0A1017; border: 1px solid #2A3846;
+    border-radius: 2px; padding: 14px;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: .75rem; line-height: 1.7; color: #D5E0EA;
+    overflow: auto; max-height: 320px;
+    direction: ltr; text-align: left; white-space: pre;
+}
+.demo-area {
+    padding: 12px; background: #0A1017;
+    border: 1px solid #2A3846; border-radius: 2px;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: .8rem; color: #B4C1CE;
+    min-height: 60px; line-height: 1.7;
+}
+.demo-area .ok { color: #4CD08A; }
+.demo-area .err { color: #F26B62; }
+.demo-area .warn { color: #E3A83A; }`,
+        js: `const code = document.getElementById('code');
+const demo = document.getElementById('demo');
+const btns = document.querySelectorAll('.btns button');
+
+const SNIPPETS = {
+    object: \`class MessageBox {
+  #messages = [];
+
+  addMessage(message) {
+    this.#messages.push(message);
+  }
+
+  getUnreadCount() {
+    return this.#messages.filter(m => !m.isRead).length;
+  }
+
+  markAllAsRead() {
+    this.#messages.forEach(m => m.isRead = true);
+  }
+}
+
+const box = new MessageBox();
+box.addMessage({ text: 'Hi', isRead: false });
+console.log(box.getUnreadCount());
+console.log(box.#messages);\`,
+    data: \`class MessageData {
+  constructor() {
+    this.messages = [];
+    this.unreadCount = 0;
+    this.lastUpdated = new Date();
+  }
+}
+
+const data = new MessageData();
+data.messages.push({ text: 'Hi', isRead: false });
+data.unreadCount = -999;
+console.log(data.unreadCount);\`,
+    bad: \`class UserService {
+  messages = [];
+  unreadCount = 0;
+
+  getUnreadCount() {
+    return this.messages.filter(m => !m.isRead).length;
+  }
+}
+
+const svc = new UserService();
+svc.messages = null;
+svc.getUnreadCount();\`
+};
+
+const DEMOS = {
+    object: '<span class="ok">البيانات مخفية، مفيش كود خارجي يقدر يعدلها مباشرة</span>',
+    data: '<span class="warn">البيانات مكشوفة، أي حد يقدر يحط قيم غلط</span>',
+    bad: '<span class="err">أسوأ حالة: behavior + بيانات مكشوفة. هش جدًا</span>'
+};
+
+function show(kind) {
+    code.textContent = SNIPPETS[kind];
+    demo.innerHTML = DEMOS[kind];
+    btns.forEach(b => b.classList.toggle('active', b.dataset.show === kind));
+}
+
+btns.forEach(b => b.addEventListener('click', () => show(b.dataset.show)));
+show('object');`
+    },
 };

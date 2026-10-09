@@ -1064,6 +1064,18 @@ const BASE_SPECIMENS: Specimen[] = [
     stage: 'dark',
     sortKey: 305
   },
+  {
+    id: 'CC-07',
+    kind: 'clean-code',
+    title: 'Objects and Data Structures',
+    description: 'الفصل السادس — Objects vs Data Structures، Law of Demeter، ومتى تستخدم كل واحد.',
+    date: 'أكتوبر 2026',
+    addedAt: '2026-10-09',
+    tags: ['Clean Code', 'Objects', 'عربي'],
+    href: '/clean-code-07',
+    stage: 'dark',
+    sortKey: 306
+  },
 ];
 
 export const SPECIMENS: Specimen[] = BASE_SPECIMENS.map(s => {

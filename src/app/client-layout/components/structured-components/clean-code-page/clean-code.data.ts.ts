@@ -6560,6 +6560,1566 @@ GO`
                 'LINQ'
             ]
         }
+    },
+    'clean-code-07': {
+        id: 'clean-code-07',
+        slug: 'clean-code-07',
+        projectName: 'Objects and Data Structures – الفصل اللي بيغيّر طريقة تفكيرك',
+        projectDescription: `الفصل السادس من Clean Code — Objects vs Data Structures، The Law of Demeter، ومتى تستخدم كل واحد. بأمثلة عبر 7 بيئات.`,
+        projectDate: 'آخر تحديث: 9 أكتوبر 2026',
+        projectVersion: 'v1.0.0',
+        projectTags: ['Clean Code', 'Objects', 'DataStructures', 'LawOfDemeter', 'CSharp', 'TypeScript', 'JavaScript', 'EFCore', 'ASPNet', 'SQL', 'LINQ'],
+
+        cleanCodeContent: {
+            introduction: `
+        تخيّل معايا السيناريو ده: عندك سيارتين قدامك.
+
+        السيارة الأولى: لما تيجي تسوقها، مش لازم تعرف إزاي المحرك شغال
+        من جوه — إنت بس بتدوس البنزين، وبتلف العجلة، والسيارة بترد
+        عليك بالسلوك المتوقع. تفاصيل المحرك مخفية عنك تمامًا.
+
+        السيارة التانية: الشركة قررت إنها "تفتح" كل حاجة قدامك —
+        عجلة القيادة متصلة بالبستم، والبنزين عايزك تضبط نسبته بنفسك.
+        أي تغيير بسيط في المحرك، هتحتاج تتعلم تسوق من الأول.
+
+        الفرق ده هو جوهر الفصل السادس: الفرق بين Objects
+        و Data Structures.
+        `,
+
+            story: `
+        كنت شغّال على feature في ChatterHub، وكان عندي كلاس
+        اسمه MessageBox فيه \`public List<Message> Messages\`.
+
+        الفكرة كانت إن أي حد يقدر يضيف رسالة بسهولة، فسيبتها public.
+
+        مر أسبوع، ولقيت bug غريب: عدد الرسايل غير المقروءة بيطلع رقم سالب.
+
+        دورت كتير، ولقيت السبب في مكان غريب: كود تاني في المشروع
+        كان بيعمل \`messages.RemoveAll(m => m.IsArchived)\` من غير
+        ما يحدّث الـ UnreadCount. الباقي بقى رقم مش منطقي.
+
+        المشكلة مكانتش في الكود اللي عمل RemoveAll — هو كان
+        بيعمل حاجة معقولة. المشكلة كانت في تصميم MessageBox نفسه:
+        كشفت الـ List للخارج، فالخارج عدّلها بالطريقة اللي هو عايزها.
+
+        رحت عدّلت MessageBox:
+        - خليت الـ List private.
+        - ضفت methods بس للعمليات المسموحة.
+        - أي عملية تانية ممنوعة.
+
+        الفصل السادس من Clean Code بيشرح بالظبط الفكرة دي:
+        في Objects، البيانات مخفية. بس الـ behaviors هي اللي مكشوفة.
+        `,
+
+            principles: [
+
+                {
+                    title: '١. الفرق الجوهري — Objects vs Data Structures',
+                    icon: 'fa-solid fa-cube',
+                    description: `
+                في Objects: البيانات مخفية ورا abstraction، ومكشوف بس الـ behaviors.
+                إنت مش عارف ولا لازم تعرف إزاي البيانات متخزنة.
+
+                في Data Structures: البيانات مكشوفة مباشرة، ومفيش behaviors حقيقية —
+                هي مجرد حاويات للبيانات.
+                `,
+                    badExample: {
+                        title: 'غلط — Half object, half data structure',
+                        code: `public class UserService
+{
+    public List<Message> Messages { get; set; }
+    public int UnreadCount { get; set; }
+
+    public void AddMessage(Message message)
+    {
+        Messages.Add(message);
+        if (!message.IsRead) UnreadCount++;
+    }
+}`
+                    },
+                    goodExample: {
+                        title: 'صح — اختار واحد بس',
+                        code: `// Object — بيانات مخفية + behavior
+public class MessageBox
+{
+    private readonly List<Message> _messages = new();
+
+    public void AddMessage(Message message)
+    {
+        _messages.Add(message);
     }
 
+    public int GetUnreadCount()
+        => _messages.Count(m => !m.IsRead);
+}
+
+// Data Structure — بيانات مكشوفة بلا behavior
+public class MessageDto
+{
+    public string Content { get; set; }
+    public string SenderName { get; set; }
+    public DateTime SentAt { get; set; }
+}`
+                    },
+                    explanation: `
+                الـ Object بيحمي البيانات ويقدّم behaviors.
+                الـ Data Structure بيكشف البيانات بدون أي منطق.
+
+                المشكلة بتحصل لما تخلط الاتنين:
+                - عندك بيانات مكشوفة (زي data structure)
+                - وفي نفس الوقت عندك methods بتفترض إن البيانات سليمة (زي object)
+                - النتيجة: هشاشة وكوارث صامتة.
+                `,
+                    tips: [
+                        'لو الكلاس عند behavioral logic → Object (بيانات private).',
+                        'لو الكلاس غرضه نقل بيانات → Data Structure (بيانات public).',
+                        'متخلطش الاتنين — أي خلط = هشاشة.',
+                        'اسأل: هل محتاج أحمي البيانات، ولا محتاج أوصلها بسرعة؟'
+                    ],
+                    visualization: {
+                        kind: 'ascii',
+                        title: 'الفروق الأساسية',
+                        content: `+---------------------------+---------------------------+
+|        OBJECT             |     DATA STRUCTURE        |
++---------------------------+---------------------------+
+| Private fields            | Public properties         |
+| Public methods (behavior) | No behavior (or minimal)  |
+| Hide implementation       | Expose layout             |
+| Easy to change inside     | Easy to transfer          |
+| Use for logic             | Use for data transfer     |
++---------------------------+---------------------------+
+
+Examples of objects:   MessageBox, Cart, OrderService
+Examples of data:      DTOs, ViewModels, API requests`,
+                        caption: 'كل واحد له غرض واضح — متخلطهمش.'
+                    },
+                    samples: [
+                        {
+                            label: 'message-box.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript — Object',
+                            code: `export class MessageBox {
+  private messages: Message[] = [];
+
+  addMessage(message: Message): void {
+    this.messages.push(message);
+  }
+
+  getUnreadCount(): number {
+    return this.messages.filter(m => !m.isRead).length;
+  }
+
+  markAllAsRead(): void {
+    this.messages.forEach(m => m.isRead = true);
+  }
+}`,
+                            notes: [
+                                'الـ messages private — الكود الخارجي مش قادر يوصلها.',
+                                'الـ methods هي الـ API الوحيد المتاح.',
+                                'لو بكرة غيّرنا الـ List لـ Queue، مفيش كود خارجي هيتأثر.',
+                                'ده Object حقيقي — بيحمي البيانات + بيقدّم behavior.'
+                            ]
+                        },
+                        {
+                            label: 'message.dto.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript — Data Structure',
+                            code: `export interface MessageDto {
+  content: string;
+  senderName: string;
+  sentAt: string;
+}
+
+export interface MessageListDto {
+  messages: MessageDto[];
+  totalCount: number;
+  unreadCount: number;
+}`,
+                            notes: [
+                                'كل الحقول public بشكل صريح.',
+                                'مفيش methods ولا منطق.',
+                                'الغرض الوحيد: نقل البيانات عبر الـ API.',
+                                'de7 DTOs للأسماء (Data Transfer Object) بيعبّر عن الغرض ده.'
+                            ]
+                        },
+                        {
+                            label: 'MessageBox.cs',
+                            language: 'csharp',
+                            framework: 'C# — Object',
+                            code: `public class MessageBox
+{
+    private readonly List<Message> _messages = new();
+
+    public void AddMessage(Message message)
+    {
+        _messages.Add(message);
+    }
+
+    public int GetUnreadCount()
+    {
+        return _messages.Count(m => !m.IsRead);
+    }
+
+    public void MarkAllAsRead()
+    {
+        foreach (var message in _messages)
+            message.IsRead = true;
+    }
+}`,
+                            notes: [
+                                'readonly List — الـ reference ثابت.',
+                                'في C# 12، ممكن تستخدم primary constructor.',
+                                'الـ LINQ Count مباشر وواضح.',
+                                'مفيش property واحدة معرّضة للخارج.'
+                            ]
+                        },
+                        {
+                            label: 'MessageData.cs',
+                            language: 'csharp',
+                            framework: 'C# — Data Structure',
+                            code: `public class MessageData
+{
+    public List<Message> Messages { get; set; } = new();
+    public int UnreadCount { get; set; }
+    public DateTime LastUpdated { get; set; }
+}
+
+// الاستخدام:
+var data = new MessageData();
+data.Messages.Add(someMessage);
+data.UnreadCount = -999;  // محدش بيمنعه!
+data.LastUpdated = DateTime.MinValue;  // ولا ده!`,
+                            notes: [
+                                'كل الـ properties public + set — مفيش حماية.',
+                                'أي كود في المشروع يقدر يعمل أي حاجة.',
+                                'ينفع بس في السيناريوهات المحدودة جدًا (DTOs).',
+                                'لو الكلاس ده جواه logic، بقى Hybrid خطير.'
+                            ]
+                        },
+                        {
+                            label: 'MessageBoxRepository.cs',
+                            language: 'csharp',
+                            framework: 'EF Core — Object',
+                            code: `public class MessageBoxRepository
+{
+    private readonly AppDbContext _context;
+
+    public MessageBoxRepository(AppDbContext context)
+        => _context = context;
+
+    public async Task AddAsync(Message message)
+    {
+        _context.Messages.Add(message);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<int> GetUnreadCountAsync(int userId)
+    {
+        return await _context.Messages
+            .AsNoTracking()
+            .Where(m => m.RecipientId == userId && !m.IsRead)
+            .CountAsync();
+    }
+
+    public async Task MarkAllAsReadAsync(int userId)
+    {
+        var unread = await _context.Messages
+            .Where(m => m.RecipientId == userId && !m.IsRead)
+            .ToListAsync();
+
+        foreach (var m in unread)
+            m.IsRead = true;
+
+        await _context.SaveChangesAsync();
+    }
+}`,
+                            notes: [
+                                'الـ repository كلاس object: بيخفي الـ DbContext ويعرض behaviors.',
+                                'الـ consumer (controller, service) مش عارف الـ DB schema.',
+                                'لو بكرة غيّرنا SQL لـ Cosmos DB، الكود الخارجي مش هيتأثر.',
+                                'AsNoTracking للـ read-only queries بيحسّن الأداء.'
+                            ]
+                        },
+                        {
+                            label: 'MessageDto.cs',
+                            language: 'csharp',
+                            framework: 'ASP.NET Core — Data Structure',
+                            code: `public class MessageDto
+{
+    public int Id { get; set; }
+    public string Content { get; set; } = "";
+    public string SenderName { get; set; } = "";
+    public DateTime SentAt { get; set; }
+    public bool IsRead { get; set; }
+}
+
+public class MessageListResponse
+{
+    public List<MessageDto> Messages { get; set; } = new();
+    public int TotalCount { get; set; }
+    public int UnreadCount { get; set; }
+}
+
+[ApiController]
+[Route("api/messages")]
+public class MessagesController : ControllerBase
+{
+    private readonly MessageBoxRepository _repo;
+
+    public MessagesController(MessageBoxRepository repo)
+        => _repo = repo;
+
+    [HttpGet("{userId}")]
+    public async Task<IActionResult> GetUnread(int userId)
+    {
+        var count = await _repo.GetUnreadCountAsync(userId);
+        return Ok(new MessageListResponse
+        {
+            TotalCount = count,
+            UnreadCount = count,
+            Messages = new()
+        });
+    }
+}`,
+                            notes: [
+                                'الـ DTOs هي data structures: نقل بيانات للـ frontend.',
+                                'الـ Controller هو طبقة الـ API — بيستخدم الـ repo (object).',
+                                'الـ Response كلها DTOs بسيطة بدون logic.',
+                                'ده التطبيق الصح: objects في الـ domain، data structures في الـ API.'
+                            ]
+                        },
+                        {
+                            label: 'messages.sql',
+                            language: 'sql',
+                            framework: 'SQL Server',
+                            code: `-- Data Structure: جدول الرسائل — بيانات مكشوفة
+CREATE TABLE Messages (
+    Id          INT IDENTITY PRIMARY KEY,
+    Content     NVARCHAR(1000) NOT NULL,
+    SenderId    INT NOT NULL,
+    RecipientId INT NOT NULL,
+    IsRead      BIT NOT NULL DEFAULT 0,
+    SentAt      DATETIME2 DEFAULT SYSUTCDATETIME()
+);
+
+-- Object: stored procedure بتخفي الـ implementation
+CREATE OR ALTER PROCEDURE dbo.GetUnreadCount
+    @UserId INT
+AS
+BEGIN
+    SELECT COUNT(*) AS UnreadCount
+    FROM Messages
+    WHERE RecipientId = @UserId AND IsRead = 0;
+END;
+
+CREATE OR ALTER PROCEDURE dbo.MarkAllAsRead
+    @UserId INT
+AS
+BEGIN
+    UPDATE Messages
+    SET IsRead = 1
+    WHERE RecipientId = @UserId AND IsRead = 0;
+END;
+
+-- Note: الـ client بيتعامل مع الـ procedures مش مع الجداول مباشرة
+-- دي فكرة "encapsulation" على مستوى الداتابيز.`,
+                            notes: [
+                                'الجدول = data structure (كيان مكشوف).',
+                                'الـ procedures = objects (behavior مخفي).',
+                                'المشروع بيعمل abstraction على مستوى الـ DB.',
+                                'لكن في معظم المشاريع الحديثة بنستخدم ORM بدل procedures.'
+                            ]
+                        },
+                        {
+                            label: 'message-queries.cs',
+                            language: 'csharp',
+                            framework: 'LINQ — Object',
+                            code: `public class MessageQueryService
+{
+    private readonly AppDbContext _context;
+
+    public MessageQueryService(AppDbContext context)
+        => _context = context;
+
+    public async Task<MessageListDto> GetInboxAsync(int userId, int page = 1, int size = 20)
+    {
+        var query = _context.Messages
+            .AsNoTracking()
+            .Where(m => m.RecipientId == userId);
+
+        var total = await query.CountAsync();
+        var unread = await query.CountAsync(m => !m.IsRead);
+
+        var items = await query
+            .OrderByDescending(m => m.SentAt)
+            .Skip((page - 1) * size)
+            .Take(size)
+            .Select(m => new MessageDto
+            {
+                Id = m.Id,
+                Content = m.Content,
+                SentAt = m.SentAt,
+                IsRead = m.IsRead
+            })
+            .ToListAsync();
+
+        return new MessageListDto
+        {
+            Messages = items,
+            TotalCount = total,
+            UnreadCount = unread
+        };
+    }
+}`,
+                            notes: [
+                                'الـ service هو object: بيخفي تفاصيل الـ DB query.',
+                                'الـ caller (controller) مش عارف إذا كان بيستخدم EF أو Dapper أو raw SQL.',
+                                'الـ DTO هي data structure: نقل النتايج للخارج.',
+                                'ده التطبيق الصح: objects في الـ domain، DTOs على الـ boundary.'
+                            ]
+                        }
+                    ]
+                },
+
+                {
+                    title: '٢. متى تستخدم إيه؟ (قاعدة الاختيار)',
+                    icon: 'fa-solid fa-scale-balanced',
+                    description: `
+                القاعدة بسيطة: 
+                استخدم Object لما عندك behavior محتاج تحميه.
+                استخدم Data Structure لما غرضك نقل بيانات بس.
+                `,
+                    badExample: {
+                        title: 'غلط — استخدام Object لنقل بيانات',
+                        code: `// ✕ Object overloaded بنقل بيانات
+public class UserDto
+{
+    private string _name;
+    private string _email;
+
+    public UserDto(string name, string email)
+    {
+        _name = name;
+        _email = email;
+    }
+
+    public string GetName() => _name;
+    public string GetEmail() => _email;
+    public void SetName(string n) => _name = n;
+    public void SetEmail(string e) => _email = e;
+}
+
+// ✕ استخدام Data Structure لحماية business logic
+public class ShoppingCart
+{
+    public List<CartItem> Items { get; set; } = new();
+    public decimal Total { get; set; }
+
+    // ده cart المفروض يعمل حساب
+    // لكن لأنه data structure، محدش يضمن إن Total متحدّث
+}`
+                    },
+                    goodExample: {
+                        title: 'صح — كل واحد في مكانه',
+                        code: `// ✓ Data Structure لنقل البيانات
+public class UserDto
+{
+    public string Name { get; set; } = "";
+    public string Email { get; set; } = "";
+}
+
+// ✓ Object لحماية الـ business logic
+public class ShoppingCart
+{
+    private readonly List<CartItem> _items = new();
+
+    public void AddItem(CartItem item)
+    {
+        _items.Add(item);
+    }
+
+    public decimal CalculateTotal()
+    {
+        return _items.Sum(i => i.Price * i.Quantity);
+    }
+
+    public IReadOnlyList<CartItem> GetItems()
+        => _items.AsReadOnly();
+}`
+                    },
+                    explanation: `
+                القاعدة اللي بتوفّر عليك ساعات:
+                - لو الكلاس فيه business logic (حسابات، قواعد) → Object.
+                - لو الكلاس غرضه نقل بيانات من طبقة لطبقة → Data Structure.
+
+                الاستخدام الغلط بيعمل مشاكل:
+                - Object overloaded = صعب يتقرا ويتصان.
+                - Data structure في الـ domain = business rules ممكن تتكسر.
+                `,
+                    tips: [
+                        'DTOs = Data Structure. دايماً.',
+                        'Domain entities = Objects. دايماً.',
+                        'ViewModels = Data Structure. عادةً.',
+                        'Services + Repositories = Objects. دايماً.',
+                        'لو مش متأكد، اسأل: مين بيعمل المنطق؟'
+                    ],
+                    samples: [
+                        {
+                            label: 'shopping-cart.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript — Object',
+                            code: `export class ShoppingCart {
+  private items: CartItem[] = [];
+
+  addItem(item: CartItem): void {
+    if (item.quantity <= 0) throw new Error('Quantity must be positive');
+    this.items.push(item);
+  }
+
+  removeItem(itemId: string): void {
+    this.items = this.items.filter(i => i.id !== itemId);
+  }
+
+  calculateTotal(): number {
+    return this.items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  }
+
+  getItemCount(): number {
+    return this.items.length;
+  }
+}
+
+// DTO للنقل
+export interface CartDto {
+  items: CartItemDto[];
+  total: number;
+  itemCount: number;
+}`,
+                            notes: [
+                                'ShoppingCart object: بيحمي القواعد (مثلاً quantity > 0).',
+                                'CartDto data structure: نقل البيانات فقط.',
+                                'الـ caller مش قادر يحط item بـ quantity سالب مباشرة.',
+                                'الـ rule اتحققت جوه الـ object.'
+                            ]
+                        },
+                        {
+                            label: 'ShoppingCart.cs',
+                            language: 'csharp',
+                            framework: 'C# — Object',
+                            code: `public class ShoppingCart
+{
+    private readonly List<CartItem> _items = new();
+
+    public void AddItem(CartItem item)
+    {
+        if (item.Quantity <= 0)
+            throw new ArgumentException("Quantity must be positive");
+        _items.Add(item);
+    }
+
+    public void RemoveItem(string itemId)
+    {
+        _items.RemoveAll(i => i.Id == itemId);
+    }
+
+    public decimal CalculateTotal()
+    {
+        return _items.Sum(i => i.Price * i.Quantity);
+    }
+
+    public IReadOnlyList<CartItem> GetItems() => _items.AsReadOnly();
+}
+
+public class CartDto
+{
+    public List<CartItemDto> Items { get; set; } = new();
+    public decimal Total { get; set; }
+    public int ItemCount { get; set; }
+}`,
+                            notes: [
+                                'IReadOnlyList للـ getter — مفيش تعديل من الخارج.',
+                                'CartDto كلاس بسيط — فقط properties.',
+                                'Cart (object) لا يكشف الـ List مباشرة.',
+                                'CartDto (data structure) لا يحتوي على logic.'
+                            ]
+                        },
+                        {
+                            label: 'CartRepository.cs',
+                            language: 'csharp',
+                            framework: 'EF Core — Object',
+                            code: `public class CartRepository
+{
+    private readonly AppDbContext _context;
+
+    public CartRepository(AppDbContext context)
+        => _context = context;
+
+    public async Task<ShoppingCart> LoadCartAsync(int userId)
+    {
+        var items = await _context.CartItems
+            .AsNoTracking()
+            .Where(c => c.UserId == userId)
+            .Select(c => new CartItem(c.ProductId, c.Price, c.Quantity))
+            .ToListAsync();
+
+        var cart = new ShoppingCart();
+        foreach (var item in items)
+            cart.AddItem(item);
+
+        return cart;
+    }
+
+    public async Task SaveCartAsync(int userId, ShoppingCart cart)
+    {
+        var existing = await _context.CartItems
+            .Where(c => c.UserId == userId)
+            .ToListAsync();
+
+        _context.CartItems.RemoveRange(existing);
+
+        foreach (var item in cart.GetItems())
+        {
+            _context.CartItems.Add(new CartItemEntity
+            {
+                UserId = userId,
+                ProductId = item.Id,
+                Price = item.Price,
+                Quantity = item.Quantity
+            });
+        }
+
+        await _context.SaveChangesAsync();
+    }
+}`,
+                            notes: [
+                                'الـ repository بيحوّل بين EF entities (data structures) و ShoppingCart (object).',
+                                'ده التطبيق السليم: objects في الـ domain، data structures في الـ persistence.',
+                                'الـ mapping معزول في الطبقة دي.',
+                                'لو بكرة غيّرنا schema، الـ ShoppingCart object مش هيتأثر.'
+                            ]
+                        },
+                        {
+                            label: 'carts.sql',
+                            language: 'sql',
+                            framework: 'SQL Server',
+                            code: `CREATE TABLE Carts (
+    Id INT IDENTITY PRIMARY KEY,
+    UserId INT NOT NULL,
+    CreatedAt DATETIME2 DEFAULT SYSUTCDATETIME()
+);
+
+CREATE TABLE CartItems (
+    Id INT IDENTITY PRIMARY KEY,
+    CartId INT NOT NULL REFERENCES Carts(Id),
+    ProductId INT NOT NULL,
+    Price DECIMAL(10, 2) NOT NULL,
+    Quantity INT NOT NULL CHECK (Quantity > 0)
+);
+
+-- Data structure جاهزة للنقل
+SELECT
+    ci.ProductId,
+    ci.Price,
+    ci.Quantity
+FROM CartItems AS ci
+INNER JOIN Carts AS c ON c.Id = ci.CartId
+WHERE c.UserId = @UserId;`,
+                            notes: [
+                                'CHECK constraint بيفرض القاعدة على مستوى DB.',
+                                'لكن الـ object ShoppingCart بيفرضها في طبقة الـ domain.',
+                                'الاتنين مكمّلين لبعض — defense in depth.',
+                                'الـ query بترجع data structure بسيطة.'
+                            ]
+                        }
+                    ]
+                },
+
+                {
+                    title: '٣. The Law of Demeter — قانون ديميتر',
+                    icon: 'fa-solid fa-people-arrows',
+                    description: `
+                الـ method بتاعتك متتكلمش غير مع "أصحابها المباشرين"،
+                مش مع "أصحاب أصحابها".
+                `,
+                    badExample: {
+                        title: 'غلط — Train wreck',
+                        code: `// ✕ سلسلة طويلة من الوصول
+var city = order.Customer.Address.City.Name;
+var zip = order.Customer.Address.ZipCode;
+
+if (order.Customer.Address.City.Name == "Cairo")
+{
+    ApplyDiscount(order);
+}
+
+// المشاكل:
+// 1. order لازم تعرف Customer.
+// 2. Customer لازم تعرف Address.
+// 3. Address لازم تعرف City.
+// 4. أي تغيير في أي حلقة بيكسر الكود.`
+                    },
+                    goodExample: {
+                        title: 'صح — Delegation',
+                        code: `// ✓ Order بيعرض اللي محتاجه بس
+public class Order
+{
+    private Customer _customer;
+
+    public string GetCustomerCity()
+    {
+        return _customer.GetCity();
+    }
+
+    public string GetCustomerZipCode()
+    {
+        return _customer.GetZipCode();
+    }
+}
+
+// الاستخدام:
+var city = order.GetCustomerCity();
+if (order.GetCustomerCity() == "Cairo")
+{
+    ApplyDiscount(order);
+}`
+                    },
+                    explanation: `
+                الـ Train wreck (order.Customer.Address.City.Name) عندها مشاكل:
+                - بتكسر الـ encapsulation: عرفت 4 مستويات من الداتا الداخلية.
+                - هشة: أي تغيير في أي حلقة = كسر الكود.
+                - صعبة القراءة: مين الـ order ده؟ ومين الـ customer؟
+
+                الـ Law of Demeter بيقول: الـ method تسأل صاحبها المباشر فقط.
+
+                مثال: عايز فلوس من جيب صاحبك، بتسأله هو، مش بتحط إيدك في جيبه.
+                `,
+                    tips: [
+                        'متعملش \`a.b.c.d\` أبدًا في production code.',
+                        'لو محتاج قيمة داخلية، ضيف method في الـ parent.',
+                        'الـ DTOs مستثناة — هي مش objects أصلاً.',
+                        'لو بتكسر القانون بشكل متكرر، فكّر في التصميم.'
+                    ],
+                    visualization: {
+                        kind: 'ascii',
+                        title: 'Train Wreck vs Delegation',
+                        content: `✕ TRAIN WRECK:
+   Caller
+     |
+     +-- order
+          +-- customer
+               +-- address
+                    +-- city
+                         +-- name
+   (4 hops inside other objects)
+
+✓ DELEGATION:
+   Caller
+     |
+     +-- order.GetCustomerCity()
+          | (order handles the chain internally)
+          +-- returns "Cairo"
+   (1 hop from caller's perspective)`,
+                        caption: 'Caller المفروض يتكلم مع صاحبه المباشر بس.'
+                    },
+                    samples: [
+                        {
+                            label: 'order.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript — Delegation',
+                            code: `export class Order {
+  constructor(
+    private readonly customer: Customer,
+    private readonly items: OrderItem[]
+  ) {}
+
+  getCustomerCity(): string {
+    return this.customer.getCity();
+  }
+
+  getCustomerName(): string {
+    return this.customer.getName();
+  }
+
+  getTotal(): number {
+    return this.items.reduce((s, i) => s + i.price * i.qty, 0);
+  }
+}
+
+export class Customer {
+  constructor(private readonly address: Address, private readonly name: string) {}
+
+  getCity(): string {
+    return this.address.getCity();
+  }
+
+  getName(): string {
+    return this.name;
+  }
+}
+
+export class Address {
+  constructor(private readonly city: string) {}
+  getCity(): string {
+    return this.city;
+  }
+}
+
+// ✓ الاستخدام الصحيح
+const city = order.getCustomerCity();
+const total = order.getTotal();`,
+                            notes: [
+                                'الـ Order بيخفي سلسلة customer.address.city عن الخارج.',
+                                'لو بكرة Address اتغير اسمه، بس الـ Order هو اللي يتعدّل.',
+                                'الـ caller مش عارف structure الداخلي — ده هو الـ encapsulation.'
+                            ]
+                        },
+                        {
+                            label: 'Order.cs',
+                            language: 'csharp',
+                            framework: 'C# — Delegation',
+                            code: `public class Order
+{
+    private readonly Customer _customer;
+    private readonly List<OrderItem> _items;
+
+    public Order(Customer customer, List<OrderItem> items)
+    {
+        _customer = customer;
+        _items = items;
+    }
+
+    public string GetCustomerCity() => _customer.GetCity();
+    public string GetCustomerZip() => _customer.GetZipCode();
+    public decimal GetTotal() => _items.Sum(i => i.Price * i.Quantity);
+}
+
+public class Customer
+{
+    private readonly Address _address;
+    private readonly string _name;
+
+    public Customer(string name, Address address)
+    {
+        _name = name;
+        _address = address;
+    }
+
+    public string GetName() => _name;
+    public string GetCity() => _address.GetCity();
+    public string GetZipCode() => _address.GetZipCode();
+}
+
+public class Address
+{
+    private readonly string _city;
+    private readonly string _zipCode;
+
+    public Address(string city, string zipCode)
+    {
+        _city = city;
+        _zipCode = zipCode;
+    }
+
+    public string GetCity() => _city;
+    public string GetZipCode() => _zipCode;
+}`,
+                            notes: [
+                                'كل كلاس بيعرض اللي محتاجه بس.',
+                                'لو بكرة Address اتحوّل لـ record أو value object، التغيير معزول.',
+                                'الـ caller (شوفه في السطر التالي) بيسأل مرة واحدة بس.',
+                                'بدل ما تكتب order.Customer.Address.City، بتكتب order.GetCustomerCity().'
+                            ]
+                        },
+                        {
+                            label: 'OrderQueries.cs',
+                            language: 'csharp',
+                            framework: 'LINQ — Fluent (لكن Data Access)',
+                            code: `var ordersInCairo = await _context.Orders
+    .Include(o => o.Customer.Address)
+    .Where(o => o.Customer.Address.City == "Cairo")
+    .Select(o => new OrderSummaryDto
+    {
+        OrderId = o.Id,
+        CustomerName = o.Customer.Name,
+        City = o.Customer.Address.City,
+        Total = o.Items.Sum(i => i.Price * i.Quantity)
+    })
+    .ToListAsync();`,
+                            notes: [
+                                'ملاحظة مهمة: القانون هنا بيسمح بالـ chain لأنها data structures (EF entities).',
+                                'لما بتquery DB، بتتعامل مع data structures (DB tables).',
+                                'لو حاولت تخفي كل حاجة ورا methods، الـ query هتبقى مستحيلة.',
+                                'الفصل بيقول صراحة: القانون للـ objects، مش للـ data structures.'
+                            ]
+                        },
+                        {
+                            label: 'orders.sql',
+                            language: 'sql',
+                            framework: 'SQL Server',
+                            code: `-- نفس المبدأ: بنستخدم JOIN مش dot notation
+-- لأن SQL بتتكلم مع data structures (tables)
+SELECT
+    o.Id AS OrderId,
+    c.Name AS CustomerName,
+    a.City AS City,
+    SUM(oi.Price * oi.Quantity) AS Total
+FROM Orders AS o
+INNER JOIN Customers AS c ON c.Id = o.CustomerId
+INNER JOIN Addresses AS a ON a.Id = c.AddressId
+INNER JOIN OrderItems AS oi ON oi.OrderId = o.Id
+WHERE a.City = @City
+GROUP BY
+    o.Id,
+    c.Name,
+    a.City;`,
+                            notes: [
+                                'SQL بتشتغل على data structures (tables) — الـ Law of Demeter مش بينطبق هنا.',
+                                'الـ JOIN هو الطريقة الطبيعية.',
+                                'المهم: اللي بيستخدم النتيجة (الـ service) ممكن يعمل abstraction عليها.'
+                            ]
+                        }
+                    ]
+                },
+
+                {
+                    title: '٤. Train Wrecks — القطارات المحطمة',
+                    icon: 'fa-solid fa-train',
+                    description: `
+                الـ Train wreck هي أي سلسلة طويلة من الـ property access،
+                زي \`a.b.c.d.e\`. كل واحدة من دول "عربة" في قطار محطم.
+                `,
+                    badExample: {
+                        title: 'غلط — سلسلة طويلة',
+                        code: `// Train wreck كامل
+public class ReportGenerator
+{
+    public void Generate(Order order)
+    {
+        var customerName = order.Customer.Profile.Name;
+        var customerEmail = order.Customer.Contact.Email;
+        var shippingCity = order.Shipping.Address.City;
+        var shippingCountry = order.Shipping.Address.Country.Name;
+        var billingZip = order.Billing.Address.ZipCode;
+
+        _logger.Log($"Report for {customerName} ({customerEmail})");
+        // ...
+    }
+}`
+                    },
+                    goodExample: {
+                        title: 'صح — نفس الفكرة بس من غير قطار',
+                        code: `public class ReportGenerator
+{
+    public void Generate(OrderSummary summary)
+    {
+        var customerName = summary.CustomerName;
+        var customerEmail = summary.CustomerEmail;
+        var shippingCity = summary.ShippingCity;
+        var shippingCountry = summary.ShippingCountry;
+        var billingZip = summary.BillingZip;
+
+        _logger.Log($"Report for {customerName} ({customerEmail})");
+        // ...
+    }
+}
+
+public class OrderSummary
+{
+    public string CustomerName { get; init; } = "";
+    public string CustomerEmail { get; init; } = "";
+    public string ShippingCity { get; init; } = "";
+    public string ShippingCountry { get; init; } = "";
+    public string BillingZip { get; init; } = "";
+}`
+                    },
+                    explanation: `
+                الفرق كبير:
+                - Train wreck: الكود الخارجي عارف كل تفاصيل الـ object.
+                - Summary: الكود الخارجي بيعرف بس اللي محتاجه.
+
+                لو بكرة غيّرنا structure الـ Order، الـ ReportGenerator
+                محتاج يتغير بالكامل في المثال الأول، ومش محتاج يتغير
+                في المثال التاني.
+
+                الـ Summary هنا هي data structure، لكن الفايدة إنها
+                بتخفي التعقيد عن الـ consumer.
+                `,
+                    tips: [
+                        'كل نقطة في السلسلة = احتمال كسر في المستقبل.',
+                        'كل \`null\` محتمل في السلسلة = bug محتمل.',
+                        'لو محتاج أكتر من نقطتين، فكّر في refactoring.',
+                        'استخدم aggregate أو summary objects.'
+                    ],
+                    samples: [
+                        {
+                            label: 'report.service.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript — Aggregate',
+                            code: `export interface OrderSummaryDto {
+  customerName: string;
+  customerEmail: string;
+  shippingCity: string;
+  shippingCountry: string;
+  billingZip: string;
+  total: number;
+}
+
+export class ReportService {
+  generate(summary: OrderSummaryDto): void {
+    console.log(\`Report for \${summary.customerName} (\${summary.customerEmail})\`);
+    console.log(\`Ship to: \${summary.shippingCity}, \${summary.shippingCountry}\`);
+    console.log(\`Total: \${summary.total}\`);
+  }
+}
+
+export class OrderSummaryFactory {
+  static from(order: Order): OrderSummaryDto {
+    return {
+      customerName: order.customer.profile.name,
+      customerEmail: order.customer.contact.email,
+      shippingCity: order.shipping.address.city,
+      shippingCountry: order.shipping.address.country.name,
+      billingZip: order.billing.address.zipCode,
+      total: order.items.reduce((s, i) => s + i.price * i.qty, 0)
+    };
+  }
+}`,
+                            notes: [
+                                'Train wreck موجود في الـ factory — لكنه معزول في مكان واحد.',
+                                'الـ ReportService بيتعامل مع DTO مسطّح.',
+                                'لو بكرة Order structure اتغيرت، بنعدّل الـ factory بس.',
+                                'ده pattern: aggregate all complexity in one place.'
+                            ]
+                        },
+                        {
+                            label: 'OrderSummaryFactory.cs',
+                            language: 'csharp',
+                            framework: 'C# — Aggregate Pattern',
+                            code: `public class OrderSummary
+{
+    public string CustomerName { get; init; } = "";
+    public string CustomerEmail { get; init; } = "";
+    public string ShippingCity { get; init; } = "";
+    public string ShippingCountry { get; init; } = "";
+    public string BillingZip { get; init; } = "";
+    public decimal Total { get; init; }
+}
+
+public static class OrderSummaryFactory
+{
+    public static OrderSummary From(Order order)
+    {
+        return new OrderSummary
+        {
+            CustomerName = order.Customer.Profile.Name,
+            CustomerEmail = order.Customer.Contact.Email,
+            ShippingCity = order.Shipping.Address.City,
+            ShippingCountry = order.Shipping.Address.Country.Name,
+            BillingZip = order.Billing.Address.ZipCode,
+            Total = order.Items.Sum(i => i.Price * i.Quantity)
+        };
+    }
+}
+
+public class ReportService
+{
+    public void Generate(OrderSummary summary)
+    {
+        _logger.Log($"Report for {summary.CustomerName} ({summary.CustomerEmail})");
+        _logger.Log($"Ship to: {summary.ShippingCity}, {summary.ShippingCountry}");
+    }
+}`,
+                            notes: [
+                                'الـ factory هي المكان الوحيد اللي فيه train wreck — ومبرر لأنه mapping.',
+                                'كل الـ consumers التانيين بيشوفوا OrderSummary مسطّح.',
+                                'لو Order structure اتغيرت، التعديل في مكان واحد.',
+                                'ده key insight: عزل التعقيد مش إخفاؤه.'
+                            ]
+                        },
+                        {
+                            label: 'orders-query.cs',
+                            language: 'csharp',
+                            framework: 'LINQ — Projection',
+                            code: `var summaries = await _context.Orders
+    .AsNoTracking()
+    .Select(o => new OrderSummary
+    {
+        CustomerName = o.Customer.Profile.Name,
+        CustomerEmail = o.Customer.Contact.Email,
+        ShippingCity = o.Shipping.Address.City,
+        ShippingCountry = o.Shipping.Address.Country.Name,
+        BillingZip = o.Billing.Address.ZipCode,
+        Total = o.Items.Sum(i => i.Price * i.Quantity)
+    })
+    .ToListAsync();`,
+                            notes: [
+                                'الـ chain هنا موجود جوه Select — لكنه data structure mapping.',
+                                'مقبول تمامًا لأن EF بيترجمه لـ SQL query واحد.',
+                                'المهم: الـ consumer بياخد OrderSummary جاهزة.',
+                                'ده الـ standard في مشاريع .NET.'
+                            ]
+                        }
+                    ]
+                },
+
+                {
+                    title: '٥. Data/Object Anti-Symmetry',
+                    icon: 'fa-solid fa-yin-yang',
+                    description: `
+                Objects و Data Structures نقيضين:
+                Objects تخفي البيانات وتكشف الـ behavior،
+                Data Structures تكشف البيانات وتخفي الـ behavior (أي مفيش).
+                `,
+                    badExample: {
+                        title: 'غلط — Hybrid الكارثي',
+                        code: `// ✕ Half object, half data structure
+public class User
+{
+    // بيانات مكشوفة (data structure)
+    public string Name { get; set; }
+    public string Email { get; set; }
+    public List<Order> Orders { get; set; } = new();
+
+    // لكن فيه logic بيفترض إن البيانات سليمة (object)
+    public decimal CalculateLifetimeValue()
+    {
+        return Orders.Sum(o => o.Total);  // ممكن Orders يكون null!
+    }
+
+    public bool IsVip()
+    {
+        return CalculateLifetimeValue() > 10000;
+    }
+}
+
+// الكود الخارجي يقدر يعمل:
+var user = new User();
+user.Orders = null;
+user.CalculateLifetimeValue();  // ✕ NullReferenceException`
+                    },
+                    goodExample: {
+                        title: 'صح — اختار نمط واحد',
+                        code: `// ✓ Object — بيانات مخفية
+public class User
+{
+    private readonly List<Order> _orders = new();
+    private string _name = "";
+    private string _email = "";
+
+    public string GetName() => _name;
+    public string GetEmail() => _email;
+
+    public void AddOrder(Order order) => _orders.Add(order);
+
+    public decimal CalculateLifetimeValue()
+        => _orders.Sum(o => o.Total);
+
+    public bool IsVip() => CalculateLifetimeValue() > 10000;
+}
+
+// ✓ Data Structure — بيانات مكشوفة بدون logic
+public class UserDto
+{
+    public string Name { get; set; } = "";
+    public string Email { get; set; } = "";
+    public List<OrderDto> Orders { get; set; } = new();
+}`,
+                    },
+                    explanation: `
+                الـ Anti-symmetry:
+                - Object: بيحمي البيانات ويقدّم behaviors.
+                - Data Structure: بيكشف البيانات بدون behaviors.
+
+                الـ Hybrid = أسوأ حاجة:
+                - بيكشف البيانات (زي data structure).
+                - وبيقدّم behaviors بتفترض سلامة البيانات (زي object).
+                - النتيجة: behaviors ممكن تكسر لأن البيانات مش مضمونة.
+                `,
+                    tips: [
+                        'لو الكلاس فيه methods فيها logic → خلي البيانات private.',
+                        'لو الكلاس public properties بس → خليه DTO صرف.',
+                        'الـ Hybrid دايماً هش.',
+                        'القرار بياخده الـ consumer: هل محتاج منطق ولا نقل؟'
+                    ],
+                    samples: [
+                        {
+                            label: 'user.model.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript — Object',
+                            code: `export class User {
+  private orders: Order[] = [];
+
+  constructor(private readonly name: string, private readonly email: string) {}
+
+  getName(): string { return this.name; }
+  getEmail(): string { return this.email; }
+
+  addOrder(order: Order): void {
+    this.orders.push(order);
+  }
+
+  calculateLifetimeValue(): number {
+    return this.orders.reduce((sum, o) => sum + o.total, 0);
+  }
+
+  isVip(): boolean {
+    return this.calculateLifetimeValue() > 10_000;
+  }
+}`,
+                            notes: [
+                                'البيانات private — الكود الخارجي ما بيقدرش يعبث بيها.',
+                                'الـ behaviors بتشتغل على بيانات مضمونة.',
+                                'مفيش احتمال \`null\` ولا empty غير متوقع.',
+                                'ده object نقي.'
+                            ]
+                        },
+                        {
+                            label: 'UserDto.cs',
+                            language: 'csharp',
+                            framework: 'C# — Data Structure',
+                            code: `public class UserDto
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = "";
+    public string Email { get; set; } = "";
+    public decimal LifetimeValue { get; set; }
+    public bool IsVip { get; set; }
+}
+
+// الاستخدام:
+var dto = new UserDto
+{
+    Id = 1,
+    Name = "Ali",
+    Email = "ali@x.com",
+    LifetimeValue = 12000,
+    IsVip = true
+};
+
+// مفيش logic — نقل بيانات فقط.`
+                            ,
+                            notes: [
+                                'كل حاجة public — طبيعي في DTO.',
+                                'مفيش methods ولا logic.',
+                                'الـ business logic اتحسب في مكان تاني (service).',
+                                'ده data structure نقي.'
+                            ]
+                        },
+                        {
+                            label: 'UserService.cs',
+                            language: 'csharp',
+                            framework: 'ASP.NET Core — بين الاتنين',
+                            code: `public class UserService
+{
+    private readonly AppDbContext _context;
+
+    public UserService(AppDbContext context) => _context = context;
+
+    public async Task<UserDto> GetUserAsync(int id)
+    {
+        var user = await _context.Users
+            .Include(u => u.Orders)
+            .FirstOrDefaultAsync(u => u.Id == id);
+
+        if (user == null) throw new UserNotFoundException(id);
+
+        var lifetimeValue = user.Orders.Sum(o => o.Total);
+
+        return new UserDto
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Email = user.Email,
+            LifetimeValue = lifetimeValue,
+            IsVip = lifetimeValue > 10_000
+        };
+    }
+}`,
+                            notes: [
+                                'الـ service هو object: بيخفي تفاصيل الـ DB وbusiness rules.',
+                                'الـ DTO هو data structure: نقل النتايج للـ API.',
+                                'الـ business logic محسوب في الـ service — مش في الـ DTO.',
+                                'ده التطبيق السليم للـ anti-symmetry.'
+                            ]
+                        }
+                    ]
+                },
+
+                {
+                    title: '٦. Handling Boundaries — التعامل مع الحدود',
+                    icon: 'fa-solid fa-border-all',
+                    description: `
+                عند الحدود بين الأنظمة (API، مكتبة خارجية)،
+                بنحوّل الأشكال لـ DTOs نظيفة، وبنحمي الكود الداخلي.
+                `,
+                    badExample: {
+                        title: 'غلط — كشف object خارجي للداخل',
+                        code: `// ✕ كشف الـ third-party library object مباشرة
+using ThirdParty.Payment;
+
+public class CheckoutService
+{
+    public void ProcessPayment(Order order)
+    {
+        var stripe = new StripeClient(API_KEY);
+
+        // لو Stripe غيّرت الـ API، الكود ده بيتكسر
+        var charge = stripe.Charges.Create(new ChargeCreateOptions
+        {
+            Amount = (long)(order.Total * 100),
+            Currency = "usd",
+            Source = order.Customer.CardToken,
+            Description = $"Order #{order.Id}"
+        });
+
+        if (charge.Status == "succeeded")
+            order.MarkAsPaid();
+    }
+}`
+                    },
+                    goodExample: {
+                        title: 'صح — Adapter pattern',
+                        code: `// ✓ Interface بتعزل الـ third-party
+public interface IPaymentGateway
+{
+    Task<PaymentResult> ChargeAsync(PaymentRequest request);
+}
+
+public record PaymentRequest(decimal Amount, string Currency, string CardToken);
+public record PaymentResult(bool Success, string TransactionId, string? Error);
+
+// Adapter للـ Stripe
+public class StripePaymentAdapter : IPaymentGateway
+{
+    private readonly StripeClient _client;
+
+    public StripePaymentAdapter(string apiKey)
+    {
+        _client = new StripeClient(apiKey);
+    }
+
+    public async Task<PaymentResult> ChargeAsync(PaymentRequest request)
+    {
+        try
+        {
+            var charge = await _client.Charges.CreateAsync(new ChargeCreateOptions
+            {
+                Amount = (long)(request.Amount * 100),
+                Currency = request.Currency,
+                Source = request.CardToken
+            });
+
+            return new PaymentResult(
+                Success: charge.Status == "succeeded",
+                TransactionId: charge.Id,
+                Error: null);
+        }
+        catch (StripeException ex)
+        {
+            return new PaymentResult(false, "", ex.Message);
+        }
+    }
+}`,
+                    },
+                    explanation: `
+                الحدود مع الأنظمة الخارجية = source of change.
+                لو تعاملت مع الـ third-party object مباشرة في الـ business logic،
+                أي تغيير في المكتبة هيكسر الكود كله.
+
+                الحل: Adapter pattern.
+                - interface بتعزل الـ external system.
+                - adapter بيترجم بين الأنظمة.
+                - الـ business logic بيتعامل مع الـ interface.
+                `,
+                    tips: [
+                        'لو مكتبة خارجية، اعزلها ورا interface.',
+                        'الـ DTOs عند الحدود تحمي الكود الداخلي.',
+                        'الـ Adapter pattern هو الحل المعياري.',
+                        'اختبر الـ adapter منفصل عن الـ business logic.'
+                    ],
+                    samples: [
+                        {
+                            label: 'payment-gateway.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript — Adapter',
+                            code: `export interface PaymentGateway {
+  charge(request: PaymentRequest): Promise<PaymentResult>;
+}
+
+export interface PaymentRequest {
+  amount: number;
+  currency: string;
+  cardToken: string;
+}
+
+export interface PaymentResult {
+  success: boolean;
+  transactionId: string;
+  error?: string;
+}
+
+export class StripeAdapter implements PaymentGateway {
+  constructor(private readonly apiKey: string) {}
+
+  async charge(request: PaymentRequest): Promise<PaymentResult> {
+    const stripe = new Stripe(this.apiKey, { apiVersion: '2024-01' });
+
+    try {
+      const charge = await stripe.charges.create({
+        amount: Math.round(request.amount * 100),
+        currency: request.currency,
+        source: request.cardToken
+      });
+
+      return {
+        success: charge.status === 'succeeded',
+        transactionId: charge.id
+      };
+    } catch (err) {
+      return {
+        success: false,
+        transactionId: '',
+        error: err instanceof Error ? err.message : 'Unknown error'
+      };
+    }
+  }
+}
+
+export class CheckoutService {
+  constructor(private readonly gateway: PaymentGateway) {}
+
+  async process(order: Order): Promise<void> {
+    const result = await this.gateway.charge({
+      amount: order.total,
+      currency: 'usd',
+      cardToken: order.customerCardToken
+    });
+
+    if (result.success) {
+      order.markAsPaid(result.transactionId);
+    } else {
+      throw new PaymentFailedError(result.error ?? 'Payment failed');
+    }
+  }
+}`,
+                            notes: [
+                                'الـ CheckoutService مش عارف إن فيه Stripe.',
+                                'لو بكرة نستخدم PayPal، بنضيف adapter تاني بس.',
+                                'الـ business logic ثابت — مستقل عن المزوّد.',
+                                'ده key insight: الفصل بين الـ boundary والـ domain.'
+                            ]
+                        },
+                        {
+                            label: 'PaymentGateway.cs',
+                            language: 'csharp',
+                            framework: 'C# — Adapter',
+                            code: `public interface IPaymentGateway
+{
+    Task<PaymentResult> ChargeAsync(PaymentRequest request, CancellationToken ct = default);
+}
+
+public record PaymentRequest(decimal Amount, string Currency, string CardToken);
+public record PaymentResult(bool Success, string TransactionId, string? Error);
+
+public class CheckoutService
+{
+    private readonly IPaymentGateway _gateway;
+
+    public CheckoutService(IPaymentGateway gateway) => _gateway = gateway;
+
+    public async Task ProcessAsync(Order order, CancellationToken ct = default)
+    {
+        var result = await _gateway.ChargeAsync(
+            new PaymentRequest(order.Total, "usd", order.CustomerCardToken),
+            ct);
+
+        if (!result.Success)
+            throw new PaymentFailedException(result.Error ?? "Payment failed");
+
+        order.MarkAsPaid(result.TransactionId);
+    }
+}`,
+                            notes: [
+                                'Order.MarkAsPaid — object behavior، مش data structure.',
+                                'الـ CheckoutService مستقل تمامًا عن الـ payment provider.',
+                                'في الـ unit tests، بنعمل MockIPaymentGateway.',
+                                'الـ boundaries isolation بيسهّل الاختبار كتير.'
+                            ]
+                        },
+                        {
+                            label: 'checkout.spec.ts',
+                            language: 'typescript',
+                            framework: 'Testing — Mock',
+                            code: `describe('CheckoutService', () => {
+  it('calls gateway with correct amount', async () => {
+    const mockGateway: PaymentGateway = {
+      charge: jasmine.createSpy('charge').and.returnValue(
+        Promise.resolve({ success: true, transactionId: 'tx_123' })
+      )
+    };
+
+    const service = new CheckoutService(mockGateway);
+    const order = createTestOrder({ total: 99.99, cardToken: 'tok_x' });
+
+    await service.process(order);
+
+    expect(mockGateway.charge).toHaveBeenCalledWith({
+      amount: 99.99,
+      currency: 'usd',
+      cardToken: 'tok_x'
+    });
+  });
+});`,
+                            notes: [
+                                'الـ mock عرفناه بسهولة بسبب الـ interface.',
+                                'لو كنا بنستخدم Stripe مباشرة، الاختبار هيحتاج network.',
+                                'ده فايدة مباشرة للـ Adapter pattern.',
+                                'بيشتغل أوفلاين وفي milliseconds.'
+                            ]
+                        }
+                    ]
+                }
+            ],
+
+            quote: {
+                text: `الأشياء المخفية تكشف، والأشياء المكشوفة تخفي.
+                   ده التناقض الجوهري بين Objects و Data Structures.`,
+                author: 'Robert C. Martin — الفصل السادس'
+            },
+
+            keyTakeaways: [
+                'Objects: بيانات مخفية + behaviors.',
+                'Data Structures: بيانات مكشوفة + بدون behaviors.',
+                'الـ Hybrid بينهم = هشاشة صامتة.',
+                'استخدم Objects للـ domain logic.',
+                'استخدم Data Structures للـ data transfer (DTOs).',
+                'The Law of Demeter: تكلم مع صاحبك المباشر بس.',
+                'الـ Train wrecks = كسر encapsulation.',
+                'الـ DTOs مستثناة من Law of Demeter.',
+                'عند الحدود: Adapter pattern + DTOs.',
+                'Data/Object Anti-Symmetry — القاعدة الجوهرية.'
+            ],
+
+            references: [
+                'Clean Code — الفصل السادس: Objects and Data Structures — Robert C. Martin',
+                'The Law of Demeter — Northeastern University',
+                'Refactoring — Extract Class / Hide Delegate — Martin Fowler',
+                'Patterns of Enterprise Application Architecture — Martin Fowler'
+            ],
+
+            hashtags: [
+                'CleanCode',
+                'Objects',
+                'DataStructures',
+                'LawOfDemeter',
+                'CSharp',
+                'TypeScript',
+                'JavaScript',
+                'EFCore',
+                'ASPNet',
+                'SQL',
+                'LINQ'
+            ]
+        }
+    },
 };
