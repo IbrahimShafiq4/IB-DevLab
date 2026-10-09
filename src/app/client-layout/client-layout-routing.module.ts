@@ -277,6 +277,12 @@ const routes: Routes = [
         data: { battleId: 'p33' },
         title: 'CSS Battle Project 33'
       },
+      {
+        path: 'css_battle_p34',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p34' },
+        title: 'CSS Battle Project 34'
+      },
       // ─── Problem Solving ───
       {
         path: 'problem-solving/roman-to-integer',
@@ -356,7 +362,12 @@ const routes: Routes = [
         data: { problemId: 'sqrt-x' },
         title: 'Sqrt(x)'
       },
-
+      {
+        path: 'problem-solving/climbing-stairs',
+        loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
+        data: { problemId: 'climbing-stairs' },
+        title: 'Climbing Stairs'
+      },
       // ─── Clean Code (unified — everything routed through clean-code-page) ───
       ...CLEAN_CODE_ROUTES,
 

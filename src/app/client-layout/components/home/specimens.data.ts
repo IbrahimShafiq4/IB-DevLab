@@ -827,6 +827,18 @@ const BASE_SPECIMENS: Specimen[] = [
     stage: 'light',
     sortKey: 132
   },
+  {
+    id: 'CB-34',
+    kind: 'css-battle',
+    title: 'CSS Battle — Twin Bars Reflection',
+    description: 'عمودين بلونين مختلفين، كل واحد له ساق صغيرة فوقه وانعكاس تحت — CSS خالص.',
+    date: 'أكتوبر 2026',
+    addedAt: '2026-10-09',
+    tags: ['CSS', 'Battle', 'Pseudo-elements', 'Box Reflect'],
+    href: '/css_battle_p34',
+    stage: 'light',
+    sortKey: 133
+  },
 
   // ─── Problem Solving ───
   {
@@ -971,6 +983,18 @@ const BASE_SPECIMENS: Specimen[] = [
     href: '/problem-solving/sqrt-x',
     stage: 'dark',
     sortKey: 212
+  },
+  {
+    id: 'PS-14',
+    kind: 'problem-solving',
+    title: 'Climbing Stairs',
+    description: 'عدد الطرق للوصول لقمة سلم بـ 1 أو 2 خطوة — Fibonacci في ثوب جديد.',
+    date: 'أكتوبر 2026',
+    addedAt: '2026-10-09',
+    tags: ['LeetCode', 'DP'],
+    href: '/problem-solving/climbing-stairs',
+    stage: 'dark',
+    sortKey: 213
   },
 
   // ─── Clean Code ───

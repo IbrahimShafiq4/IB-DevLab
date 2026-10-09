@@ -38,7 +38,16 @@ export class HomeComponent {
   readonly allSpecimens = SPECIMENS;
 
   readonly latestSpecimens = computed<Specimen[]>(() =>
-    [...SPECIMENS].sort((a, b) => b.sortKey - a.sortKey).slice(0, 4)
+    [...SPECIMENS]
+      .sort((a, b) => {
+        if (a.addedAt && b.addedAt) {
+          return b.addedAt.localeCompare(a.addedAt);
+        }
+        if (a.addedAt) return -1;
+        if (b.addedAt) return 1;
+        return b.sortKey - a.sortKey;
+      })
+      .slice(0, 4)
   );
 
   readonly activeCategory = signal<Category>('all');

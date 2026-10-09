@@ -54,6 +54,7 @@ export interface Specimen {
     title: string;
     description: string;
     date: string;
+    addedAt?: string;
     tags: string[];
     href: string;
     external?: string;

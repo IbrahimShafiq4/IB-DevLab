@@ -3678,4 +3678,454 @@ describe('mySqrt', () => {
             ]
         }
     },
+
+
+    'climbing-stairs': {
+        id: 'climbing-stairs',
+        projectName: 'Climbing Stairs',
+        projectDescription: 'احسب عدد الطرق المختلفة للوصول لقمة السلم بـ 1 أو 2 خطوة — Fibonacci في ثوب جديد.',
+        projectDate: 'October 9, 2026',
+        projectVersion: 'LeetCode #70',
+        tags: ['Problem Solving', 'JavaScript', 'TypeScript', 'LeetCode', 'Dynamic Programming', 'Fibonacci'],
+
+        problemSolvingContent: {
+            problem: `
+You are climbing a staircase. It takes n steps to reach the top.
+
+Each time you can either climb 1 or 2 steps.
+In how many distinct ways can you climb to the top?
+
+Example 1:
+Input: n = 2
+Output: 2
+Explanation:
+1. 1 step + 1 step
+2. 2 steps
+
+Example 2:
+Input: n = 3
+Output: 3
+Explanation:
+1. 1 step + 1 step + 1 step
+2. 1 step + 2 steps
+3. 2 steps + 1 step
+
+Constraints:
+1 <= n <= 45
+        `,
+
+            generalIdea: `
+المسألة بتبان "counting problem" عادية، بس الحقيقة إنها
+Fibonacci sequence متنكّرة.
+
+السبب:
+عشان توصل للخطوة n، آخر خطوة عملتها كانت:
+- يا إما خطوة واحدة من n-1
+- يا إما خطوتين من n-2
+
+يعني:
+ways(n) = ways(n - 1) + ways(n - 2)
+
+وده بالظبط نفس الـ Fibonacci recurrence.
+
+Base cases:
+ways(1) = 1
+ways(2) = 2
+
+فالمسألة بقت: احسب Fibonacci مع تحويل بسيط في الـ indices.
+        `,
+
+            solutionIdea: `
+فيه أكتر من طريقة:
+
+Approach 1 — Naive Recursion: بتحسب كل الفروع بشكل مباشر.
+بطيء جدًا لأن بيعيد حسابات كتير (O(2^n)).
+
+Approach 2 — Top-down DP: نفس الفكرة بس بـ memoization.
+بيمنع إعادة الحسابات (O(n) time, O(n) space).
+
+Approach 3 — Bottom-up DP: بنبني من 1 لـ n في loop واحد.
+(O(n) time, O(n) space) — أنضف بس بيستهلك array.
+
+Approach 4 — Space Optimized: بما إننا محتاجين آخر قيمتين بس،
+مش محتاجين array. بنستخدم متغيرين بس.
+ده الحل الأمثل: O(n) time, O(1) space.
+        `,
+
+            steps: [
+                'لو n = 1 → الإجابة 1.',
+                'لو n = 2 → الإجابة 2.',
+                'لأي n >= 3: بنبدأ من prev2 = 1 و prev1 = 2.',
+                'بنلف من i = 3 لحد n.',
+                'في كل خطوة: current = prev1 + prev2.',
+                'بنحدّث: prev2 = prev1، prev1 = current.',
+                'بنكرر لحد ما نوصل لـ n.',
+                'بنرجّع prev1 (اللي هو ways(n)).'
+            ],
+
+            example: {
+                input: 'n = 5',
+                output: '8',
+                explanation: `Base cases:
+ways(1) = 1
+ways(2) = 2
+
+الحساب:
+ways(3) = ways(2) + ways(1) = 2 + 1 = 3
+ways(4) = ways(3) + ways(2) = 3 + 2 = 5
+ways(5) = ways(4) + ways(3) = 5 + 3 = 8
+
+الـ Sequence: 1, 2, 3, 5, 8, 13, 21, ...
+اللي هو Fibonacci مزحزح بمكانين.
+
+التحقق من n = 5:
+1. 11111
+2. 1112
+3. 1121
+4. 1211
+5. 2111
+6. 122
+7. 212
+8. 221
+
+Total = 8 طرق ✓`
+            },
+
+            complexity: {
+                time: 'O(n)',
+                space: 'O(1)'
+            },
+
+            visualization: {
+                kind: 'diagram',
+                title: 'تتبّع الحل الأمثل لـ n = 6',
+                content: `Initial:  prev2 = 1,  prev1 = 2
+Sequence: 1, 2, 3, 5, 8, 13, 21, ...
+
+i = 3:  current = prev1 + prev2 = 2 + 1 = 3
+        prev2 = 2,  prev1 = 3
+
+i = 4:  current = prev1 + prev2 = 3 + 2 = 5
+        prev2 = 3,  prev1 = 5
+
+i = 5:  current = prev1 + prev2 = 5 + 3 = 8
+        prev2 = 5,  prev1 = 8
+
+i = 6:  current = prev1 + prev2 = 8 + 5 = 13
+        prev2 = 8,  prev1 = 13
+
+Return: prev1 = 13
+
+Final: ways(6) = 13 ✓
+
+Note: بنستخدم متغيرين بس في كل خطوة.
+Array بحجم n مش ضروري خالص.`,
+                caption: 'بدل ما نحفظ كل القيم، بنحفظ آخر اتنين بس.'
+            },
+
+            approaches: [
+                {
+                    name: 'Approach 1 - Space Optimized (الأمثل)',
+                    tagline: 'الـ Fibonacci rolling variables — O(n) time, O(1) space.',
+                    complexity: { time: 'O(n)', space: 'O(1)' },
+                    tradeoffs: [
+                        'أسرع حل من ناحية memory.',
+                        'أبسط حل مفهومًا لو عارف الـ pattern.',
+                        'شغال لأي n في حدود 45 بدون مشاكل.',
+                        'بياخد n خطوة بس في الـ loop.',
+                        'الـ interviewer هيفرح بيه.'
+                    ],
+                    samples: [
+                        {
+                            label: 'climbing-stairs.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function climbStairs(n: number): number {
+  let prev2 = 1;
+  let prev1 = 2;
+
+  for (let i = 3; i <= n; i++) {
+    const current = prev1 + prev2;
+    prev2 = prev1;
+    prev1 = current;
+  }
+
+  return n === 1 ? 1 : prev1;
+}`,
+                            notes: [
+                                'prev2 و prev1 بيمثلوا ways(i-2) و ways(i-1).',
+                                'بدل ما نخزّن array، بنزحزح القيم في متغيرين.',
+                                'الـ loop بيبدأ من i = 3 لأن ways(1) و ways(2) base cases.',
+                                'بنرجّع n === 1 ? 1 : prev1 لأن الـ loop مابيشتغلش لـ n = 1.',
+                                'Complexity: O(n) time، O(1) space.'
+                            ]
+                        },
+                        {
+                            label: 'climbing-stairs.js',
+                            language: 'javascript',
+                            framework: 'JavaScript',
+                            code: `var climbStairs = function(n) {
+    let prev2 = 1;
+    let prev1 = 2;
+
+    for (let i = 3; i <= n; i++) {
+        let current = prev1 + prev2;
+        prev2 = prev1;
+        prev1 = current;
+    }
+
+    return n === 1 ? 1 : prev1;
+};`,
+                            notes: [
+                                'نفس الحل بـ JavaScript.',
+                                'بيشتغل صح مع n = 1 (return 1) و n = 2 (return 2 من غير loop).',
+                                'الـ loop بيتنفذ n - 2 مرة.',
+                                'لا يستخدم أي built-in function — كل حاجة يدوي.'
+                            ]
+                        },
+                        {
+                            label: 'ClimbingStairs.cs',
+                            language: 'csharp',
+                            framework: 'C#',
+                            code: `public static class ClimbingStairs
+{
+    public static int Climb(int n)
+    {
+        if (n <= 2) return n;
+
+        int prev2 = 1;
+        int prev1 = 2;
+
+        for (int i = 3; i <= n; i++)
+        {
+            int current = prev1 + prev2;
+            prev2 = prev1;
+            prev1 = current;
+        }
+
+        return prev1;
+    }
+}`,
+                            notes: [
+                                'if (n <= 2) return n — بيعالج 1 و 2 مع بعض.',
+                                'int كفاية جدًا لأن n <= 45 والنتيجة max ~1.8 مليار.',
+                                'لو الحد الأقصى كان أكبر (زي 90)، محتاج long.',
+                                'static class — عشان مايحتاجش instance.'
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Approach 2 - Bottom-up DP (Array)',
+                    tagline: 'بنبني الـ dp array من 1 لـ n — أوضح في القراءة.',
+                    complexity: { time: 'O(n)', space: 'O(n)' },
+                    tradeoffs: [
+                        'أوضح لو لسه بتتعلم DP.',
+                        'بيوضّح الـ recurrence بشكل صريح.',
+                        'بيستهلك memory إضافية O(n).',
+                        'الـ pattern bidirectional مع باقي مسائل DP.'
+                    ],
+                    samples: [
+                        {
+                            label: 'climbing-stairs-dp.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function climbStairs(n: number): number {
+  if (n <= 2) return n;
+
+  const dp = new Array(n + 1).fill(0);
+  dp[1] = 1;
+  dp[2] = 2;
+
+  for (let i = 3; i <= n; i++) {
+    dp[i] = dp[i - 1] + dp[i - 2];
+  }
+
+  return dp[n];
+}`,
+                            notes: [
+                                'dp[i] معناها عدد الطرق للوصول للخطوة i.',
+                                'dp[1] = 1 و dp[2] = 2 هما الـ base cases.',
+                                'الـ recurrence: dp[i] = dp[i-1] + dp[i-2].',
+                                'لو عايز تشوف الـ subproblems كلها، الـ array ده أفضل.',
+                                'عيب: memory O(n) بدل O(1).'
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Approach 3 - Top-down with Memoization',
+                    tagline: 'Recursion + cache — أوضح لو بتفكر recursive.',
+                    complexity: { time: 'O(n)', space: 'O(n)' },
+                    tradeoffs: [
+                        'بتفكر recursive بشكل طبيعي.',
+                        'الـ memoization بتمنع الحسابات المتكررة.',
+                        'بتستهلك memory للـ cache + recursion stack.',
+                        'مناسبة لو الـ recurrence complexe شوية.'
+                    ],
+                    samples: [
+                        {
+                            label: 'climbing-stairs-memo.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function climbStairs(n: number): number {
+  const memo: Record<number, number> = { 1: 1, 2: 2 };
+
+  function solve(k: number): number {
+    if (memo[k] !== undefined) return memo[k];
+
+    memo[k] = solve(k - 1) + solve(k - 2);
+    return memo[k];
+  }
+
+  return solve(n);
+}`,
+                            notes: [
+                                'memo بتحفظ النتائج عشان مانحسبهاش مرتين.',
+                                'solve(k) بترجع عدد الطرق للخطوة k.',
+                                'بدون memoization، التعقيد O(2^n) — بيكبر بسرعة.',
+                                'مع memoization، التعقيد O(n) — لأن كل subproblem بيتحل مرة واحدة.'
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Approach 4 - Matrix Exponentiation',
+                    tagline: 'قوي جدًا لو n كبير — O(log n) time.',
+                    complexity: { time: 'O(log n)', space: 'O(1)' },
+                    tradeoffs: [
+                        'بيشتغل لـ n ضخم (ملايين).',
+                        'أسرع من O(n) بكتير.',
+                        'معقد في الكتابة والقراءة.',
+                        'overkill لمسألتنا (n <= 45).'
+                    ],
+                    samples: [
+                        {
+                            label: 'climbing-stairs-matrix.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function climbStairs(n: number): number {
+  if (n <= 2) return n;
+
+  type Matrix = [[number, number], [number, number]];
+
+  const multiply = (a: Matrix, b: Matrix): Matrix => [
+    [a[0][0] * b[0][0] + a[0][1] * b[1][0], a[0][0] * b[0][1] + a[0][1] * b[1][1]],
+    [a[1][0] * b[0][0] + a[1][1] * b[1][0], a[1][0] * b[0][1] + a[1][1] * b[1][1]]
+  ];
+
+  const power = (m: Matrix, p: number): Matrix => {
+    if (p === 1) return m;
+    if (p % 2 === 0) {
+      const half = power(m, p / 2);
+      return multiply(half, half);
+    }
+    return multiply(m, power(m, p - 1));
+  };
+
+  const base: Matrix = [[1, 1], [1, 0]];
+  const result = power(base, n);
+  return result[0][0];
+}`,
+                            notes: [
+                                'بنستغل العلاقة: [F(n+1), F(n); F(n), F(n-1)] = [[1,1],[1,0]]^n.',
+                                'الـ exponentiation by squaring بتخلي التعقيد O(log n).',
+                                'مفيد لو n كبير جدًا (زي 10^9).',
+                                'لـ n = 45، فرق مش هيبان — تقريبًا نفس السرعة.'
+                            ]
+                        }
+                    ]
+                }
+            ],
+
+            testing: [
+                {
+                    title: 'Jest',
+                    framework: 'Jest (TS/JS)',
+                    code: `import { climbStairs } from './climbing-stairs';
+
+describe('climbStairs', () => {
+  it.each([
+    [1, 1],
+    [2, 2],
+    [3, 3],
+    [4, 5],
+    [5, 8],
+    [6, 13],
+    [7, 21],
+    [8, 34],
+    [45, 1836311903]
+  ])('climbStairs(%i) = %i', (input, expected) => {
+    expect(climbStairs(input)).toBe(expected);
+  });
+});`
+                },
+                {
+                    title: 'xUnit',
+                    framework: 'xUnit (C#)',
+                    code: `public class ClimbingStairsTests
+{
+    [Theory]
+    [InlineData(1, 1)]
+    [InlineData(2, 2)]
+    [InlineData(3, 3)]
+    [InlineData(4, 5)]
+    [InlineData(5, 8)]
+    [InlineData(6, 13)]
+    [InlineData(45, 1836311903)]
+    public void Climb_ReturnsExpected(int n, int expected)
+    {
+        Assert.Equal(expected, ClimbingStairs.Climb(n));
+    }
+}`
+                }
+            ],
+
+            code: [
+                {
+                    codeTitle: 'climbing-stairs.ts',
+                    language: 'typescript',
+                    code: `function climbStairs(n: number): number {
+  let prev2 = 1;
+  let prev1 = 2;
+
+  for (let i = 3; i <= n; i++) {
+    const current = prev1 + prev2;
+    prev2 = prev1;
+    prev1 = current;
+  }
+
+  return n === 1 ? 1 : prev1;
+}`,
+                    lines: [
+                        { line: 'function climbStairs(n: number): number {', note: 'تعريف الدالة. بتاخد n (عدد الدرجات)، وبترجّع عدد الطرق.' },
+                        { line: '  let prev2 = 1;', note: 'بيمثل ways(i-2). بنبدأ بـ 1 لأن ways(1) = 1.' },
+                        { line: '  let prev1 = 2;', note: 'بيمثل ways(i-1). بنبدأ بـ 2 لأن ways(2) = 2.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '  for (let i = 3; i <= n; i++) {', note: 'بنبدأ من i = 3 لأن 1 و 2 base cases. بنلف لحد n.' },
+                        { line: '    const current = prev1 + prev2;', note: 'بنحسب ways(i) = ways(i-1) + ways(i-2).' },
+                        { line: '    prev2 = prev1;', note: 'بنزحزح: الـ prev2 القديم خلاص مش محتاجينه.' },
+                        { line: '    prev1 = current;', note: 'بنحدّث prev1 عشان يبقى ways(i) للـ iteration الجاية.' },
+                        { line: '  }', note: 'نهاية الـ loop.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '  return n === 1 ? 1 : prev1;', note: 'لو n = 1 → بنرجّع 1 (الـ loop مش هتشتغل أصلاً). غير كده بنرجّع prev1 (ways(n)).' },
+                        { line: '}', note: 'نهاية الدالة.' }
+                    ]
+                }
+            ],
+
+            learned: [
+                'المسألة دي Fibonacci sequence متنكّرة.',
+                'فهم الـ recurrence: ways(n) = ways(n-1) + ways(n-2).',
+                'الفرق بين Naive Recursion و Memoization و Bottom-up DP.',
+                'Space Optimization: استخدام متغيرين بدل array كامل.',
+                'الفرق بين O(2^n) و O(n) و O(log n) في الفهم العملي.',
+                'استخدام Matrix Exponentiation للـ Fibonacci في O(log n).',
+                'اختيار الحل المناسب حسب الـ constraints.',
+                'الـ base cases اللي لازم تتأكد منها قبل ما تبدأ.',
+                'الـ edge cases: n = 1 و n = 2.',
+                'الفهم العملي للـ pattern: كل DP مش دايماً محتاج array.'
+            ]
+        }
+    },
 };

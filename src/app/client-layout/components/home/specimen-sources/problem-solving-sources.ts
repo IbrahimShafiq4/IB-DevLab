@@ -1147,6 +1147,7 @@ a.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
 b.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
 run();`
     },
+
     'PS-13': {
         stage: 'dark',
         html: `<!DOCTYPE html>
@@ -1384,4 +1385,106 @@ inp.addEventListener('input', run);
 run();`
     },
 
+    'PS-14': {
+    stage: 'dark',
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climbing Stairs</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="demo">
+        <div class="row">
+            <label>n (steps)</label>
+            <input type="number" id="in" value="5" min="1" max="45" dir="ltr">
+        </div>
+        <button id="run">احسب</button>
+        <div class="row">
+            <label>ways(n) =</label>
+            <output id="out">—</output>
+        </div>
+        <p class="hint">جرّب: 1 · 2 · 3 · 5 · 10 · 20 · 30 · 45</p>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>`,
+    css: `* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: #0A1017;
+    font-family: system-ui, sans-serif; padding: 16px; font-size: 16px;
+}
+.demo {
+    background: #131C26; border: 1px solid #2A3846; border-radius: 4px;
+    padding: 20px; width: 100%; max-width: 400px;
+    display: flex; flex-direction: column; gap: 12px; color: #E9EFF5;
+}
+.row { display: flex; flex-direction: column; gap: 6px; }
+label {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 12px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #8394A5;
+}
+input {
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    padding: 8px 12px; color: #E9EFF5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 20px; outline: none;
+}
+input:focus { border-color: #E3A83A; }
+button {
+    padding: 10px 16px; background: #E3A83A; color: #101A24;
+    border: 0; border-radius: 4px; font-size: 16px;
+    font-weight: 600; cursor: pointer; font-family: inherit;
+}
+button:hover { opacity: 0.9; }
+output {
+    display: block; padding: 12px;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    color: #3CC4BE; font-family: ui-monospace, Consolas, monospace;
+    font-size: 22px; min-height: 44px; word-break: break-all;
+}
+.hint {
+    font-size: 12px; color: #8394A5;
+    font-family: ui-monospace, Consolas, monospace;
+}`,
+    js: `function climbStairs(n) {
+    let prev2 = 1;
+    let prev1 = 2;
+
+    for (let i = 3; i <= n; i++) {
+        let current = prev1 + prev2;
+        prev2 = prev1;
+        prev1 = current;
+    }
+
+    return n === 1 ? 1 : prev1;
+}
+
+const inp = document.getElementById('in');
+const out = document.getElementById('out');
+
+function run() {
+    const v = inp.value.trim();
+    const n = Number(v);
+
+    if (v === '' || isNaN(n) || n < 1 || n > 45) {
+        out.textContent = '✕ القيمة لازم تكون بين 1 و 45';
+        out.style.color = '#F26B62';
+        return;
+    }
+
+    const result = climbStairs(n);
+    out.style.color = '#3CC4BE';
+    out.textContent = 'ways(' + n + ') = ' + result;
+}
+
+document.getElementById('run').onclick = run;
+inp.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+inp.addEventListener('input', run);
+run();`
+},
 };

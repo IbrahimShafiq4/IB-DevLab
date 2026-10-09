@@ -1332,4 +1332,90 @@ p::after {
 }
     `.trim()
     },
+    'p34': {
+        id: 'p34',
+        title: 'CSS Battle — Twin Bars Reflection',
+        description: `
+CSS recreation of twin vertical bars with top stems and mirrored reflections using pure HTML and CSS.
+
+The design uses:
+- Flexbox for centering and spacing
+- CSS nesting for compact structure
+- ::before pseudo-elements for the top stems
+- -webkit-box-reflect for the mirrored reflections below
+- Different bar heights and colors for visual contrast
+- Minimal HTML structure with a single <p> and <i> element
+- Pure CSS without images or JavaScript
+    `.trim(),
+        date: 'Last updated: Oct 9, 2026',
+        version: 'v1.0.0',
+        tags: ['Web Development', 'HTML', 'CSS', 'Pseudo-elements', 'Box Reflect', 'Flexbox', 'CSS Battle'],
+        youtube: '',
+        zipFile: 'assets/zip-files/cssBattle/34 - p34.zip',
+        html: `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twin Bars</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <p></p>
+    <i></i>
+</body>
+</html>
+    `.trim(),
+        css: `
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #DFF6FB;
+    gap: 20px;
+    min-height: 100vh;
+    margin: 0;
+}
+
+p, i {
+    width: 50px;
+    height: 100px;
+    background: #D07B5F;
+    position: relative;
+}
+
+p:before,
+i:before {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 20px;
+    background: inherit;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    -webkit-box-reflect: below 100px;
+}
+
+i {
+    height: 170px;
+}
+
+i:before {
+    height: 40px;
+    top: -40px;
+    -webkit-box-reflect: below 170px;
+}
+
+p {
+    background: #4DCB60;
+    height: 130px;
+}
+
+p:before {
+    -webkit-box-reflect: below 130px;
+}
+    `.trim()
+    },
 };

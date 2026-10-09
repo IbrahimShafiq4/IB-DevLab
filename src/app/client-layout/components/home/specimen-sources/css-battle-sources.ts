@@ -2031,5 +2031,68 @@ p::after {
     transform: translateX(-50%);
 }`
   },
+  'CB-34': {
+    stage: 'light',
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twin Bars</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <p></p>
+    <i></i>
+</body>
+</html>`,
+    css: `body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #DFF6FB;
+    gap: 20px;
+    min-height: 100vh;
+    margin: 0;
+}
 
+p, i {
+    width: 50px;
+    height: 100px;
+    background: #D07B5F;
+    position: relative;
+}
+
+p:before,
+i:before {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 20px;
+    background: inherit;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    -webkit-box-reflect: below 100px;
+}
+
+i {
+    height: 170px;
+}
+
+i:before {
+    height: 40px;
+    top: -40px;
+    -webkit-box-reflect: below 170px;
+}
+
+p {
+    background: #4DCB60;
+    height: 130px;
+}
+
+p:before {
+    -webkit-box-reflect: below 130px;
+}`
+  },
 };
