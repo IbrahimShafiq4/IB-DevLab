@@ -8,10 +8,12 @@ import {
   ChangeDetectionStrategy,
   signal,
   computed,
-  OnInit
+  OnInit,
+  PLATFORM_ID
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import Prism from 'prismjs';
 
 import { LivePreviewComponent, StageTone } from '../live-preview/live-preview';
@@ -75,6 +77,12 @@ export interface IApproach {
   tradeoffs: string[];
 }
 
+export interface IProblemSolvingRunnable {
+  html: string;
+  css: string;
+  js: string;
+}
+
 export interface IProblemSolvingContent {
   problem: string;
   generalIdea: string;
@@ -87,6 +95,7 @@ export interface IProblemSolvingContent {
   approaches?: IApproach[];
   visualization?: IVisualization;
   testing?: ITestingExample[];
+  runnable?: IProblemSolvingRunnable;
 }
 
 export interface ICleanCodePrinciple {
@@ -173,6 +182,8 @@ export class SharedCodeComponent implements OnInit, AfterViewInit {
 
   private readonly _router = inject(Router);
   private readonly _route = inject(ActivatedRoute);
+  private readonly sanitizer = inject(DomSanitizer);
+  private readonly platformId = inject(PLATFORM_ID);
 
   @ViewChild('sourceElement') sourceElement?: ElementRef;
 
@@ -211,6 +222,74 @@ export class SharedCodeComponent implements OnInit, AfterViewInit {
       nextLabel: this.resolveNextLabel(s.next ?? ''),
     };
   });
+
+  private _lastRunnableKey = '';
+  private _lastRunnableSrcdoc: SafeHtml | null = null;
+
+  get problemRunnableSrcdoc(): SafeHtml {
+    if (!isPlatformBrowser(this.platformId)) {
+      if (!this._lastRunnableSrcdoc) {
+        this._lastRunnableSrcdoc = this.sanitizer.bypassSecurityTrustHtml('');
+      }
+      return this._lastRunnableSrcdoc;
+    }
+
+    const r = this.problemSolvingContent?.runnable;
+    const key = r ? (r.html + '||' + r.css + '||' + r.js) : '';
+
+    if (key === this._lastRunnableKey && this._lastRunnableSrcdoc) {
+      return this._lastRunnableSrcdoc;
+    }
+
+    this._lastRunnableKey = key;
+    this._lastRunnableSrcdoc = this.sanitizer.bypassSecurityTrustHtml(
+      r ? this.buildProblemRunnableDoc(r) : ''
+    );
+    return this._lastRunnableSrcdoc;
+  }
+
+  private buildProblemRunnableDoc(runnable: IProblemSolvingRunnable): string {
+    const tokens = this.readCodeThemeTokens();
+
+    const csp =
+      "default-src 'none'; " +
+      "style-src 'unsafe-inline'; " +
+      "img-src data: blob: https:; " +
+      "font-src data:; " +
+      "script-src 'unsafe-inline'; " +
+      "connect-src 'none';";
+
+    return `<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="${csp}">
+<style>
+${tokens}
+${runnable.css}
+</style>
+</head>
+<body>
+${runnable.html}
+<script>${runnable.js}<\/script>
+</body>
+</html>`;
+  }
+
+  private readCodeThemeTokens(): string {
+    if (!isPlatformBrowser(this.platformId)) return '';
+    const styles = getComputedStyle(document.documentElement);
+    const keys = [
+      '--ct-bg', '--ct-bg-elevated', '--ct-border', '--ct-text',
+      '--ct-comment', '--ct-keyword', '--ct-string', '--ct-number',
+      '--ct-function', '--ct-tag', '--ct-attr', '--ct-operator',
+      '--ct-punctuation', '--ct-selection', '--ct-cursor',
+      '--ct-scroll-track', '--ct-scroll-thumb', '--ct-scroll-thumb-hover',
+    ];
+    return `:root { ${keys
+      .map(k => `${k}: ${styles.getPropertyValue(k).trim() || 'initial'};`)
+      .join(' ')} }`;
+  }
 
   get hasYoutubePreview(): boolean {
     return !!this.projectOnYoutube && !this.isItProblemSolving && !this.isItCleanCode;

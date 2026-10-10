@@ -283,6 +283,12 @@ const routes: Routes = [
         data: { battleId: 'p34' },
         title: 'CSS Battle Project 34'
       },
+      {
+        path: 'css_battle_p35',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p35' },
+        title: 'CSS Battle Project 35'
+      },
       // ─── Problem Solving ───
       {
         path: 'problem-solving/roman-to-integer',
@@ -367,6 +373,12 @@ const routes: Routes = [
         loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
         data: { problemId: 'climbing-stairs' },
         title: 'Climbing Stairs'
+      },
+      {
+        path: 'problem-solving/remove-duplicates-from-sorted-list',
+        loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
+        data: { problemId: 'remove-duplicates-from-sorted-list' },
+        title: 'Remove Duplicates from Sorted List'
       },
       // ─── Clean Code (unified — everything routed through clean-code-page) ───
       ...CLEAN_CODE_ROUTES,

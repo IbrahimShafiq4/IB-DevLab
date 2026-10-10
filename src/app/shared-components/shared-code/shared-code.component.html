@@ -88,6 +88,20 @@
     @if (isItProblemSolving && problemSolvingContent) {
     <div class="specimen__body" dir="rtl">
 
+        @if (problemSolvingContent.runnable) {
+        <section class="sect">
+            <header class="sect__head">
+                <span class="sect__dot" data-line="algo" aria-hidden="true"></span>
+                <h2 class="sect__title">شغّل بنفسك</h2>
+                <span class="sect__rule" aria-hidden="true"></span>
+            </header>
+            <div class="runner">
+                <iframe class="runner__frame" [srcdoc]="problemRunnableSrcdoc" sandbox="allow-scripts"
+                    referrerpolicy="no-referrer" loading="lazy" title="Visualizer"></iframe>
+            </div>
+        </section>
+        }
+
         <section class="sect">
             <header class="sect__head">
                 <span class="sect__dot" data-line="algo" aria-hidden="true"></span>

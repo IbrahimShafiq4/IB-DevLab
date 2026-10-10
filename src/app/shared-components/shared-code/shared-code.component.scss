@@ -13,7 +13,6 @@
     padding-block: t.$sp-4;
 }
 
-/* ─── Head ─────────────────────────────────────────────────── */
 .specimen__head {
     display: flex;
     flex-direction: column;
@@ -150,7 +149,6 @@
     }
 }
 
-/* ─── Sections ─────────────────────────────────────────────── */
 .specimen__body {
     display: flex;
     flex-direction: column;
@@ -210,7 +208,6 @@
     max-width: 72ch;
 }
 
-/* ─── Steps ────────────────────────────────────────────────── */
 .steps {
     display: flex;
     flex-direction: column;
@@ -257,7 +254,6 @@
     color: var(--ink-secondary);
 }
 
-/* ─── Example ──────────────────────────────────────────────── */
 .example {
     display: flex;
     flex-direction: column;
@@ -316,7 +312,6 @@
     }
 }
 
-/* ─── Complexity ───────────────────────────────────────────── */
 .complexity {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -353,7 +348,6 @@
     letter-spacing: -0.01em;
 }
 
-/* ─── Code Panel ───────────────────────────────────────────── */
 .code-panel {
     background-color: var(--code-bg);
     border: 1px solid var(--code-border);
@@ -464,7 +458,6 @@
     }
 }
 
-/* ─── Code Breakdown (line-by-line) ────────────────────────── */
 .code-panel__breakdown {
     border-block-start: 1px solid var(--code-border);
     padding: t.$sp-5;
@@ -550,7 +543,6 @@
     max-width: 72ch;
 }
 
-/* ─── Learned ──────────────────────────────────────────────── */
 .learned {
     display: flex;
     flex-direction: column;
@@ -584,7 +576,6 @@
     }
 }
 
-/* ─── Clean Code ───────────────────────────────────────────── */
 .story-quote {
     margin: 0;
     padding: t.$sp-5;
@@ -718,7 +709,6 @@
     }
 }
 
-/* ─── Foot ─────────────────────────────────────────────────── */
 .specimen__foot {
     display: flex;
     justify-content: flex-end;
@@ -726,7 +716,6 @@
     border-block-start: 1px solid var(--rule-hairline);
 }
 
-/* ─── Live Stage ───────────────────────────────────────────── */
 .specimen__live {
     --specimen-live-height: clamp(460px, 44vw, 620px);
 
@@ -954,4 +943,27 @@
     font-size: 0.875rem;
     line-height: t.$lh-relaxed;
     color: var(--ink-secondary);
+}
+
+.runner {
+    border: 1px solid var(--rule-hairline);
+    border-radius: t.$r-sm;
+    overflow: hidden;
+    background: var(--bg-void);
+    aspect-ratio: 16 / 10;
+    min-height: 460px;
+}
+
+.runner__frame {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+@media (max-width: 640px) {
+    .runner {
+        aspect-ratio: 4 / 3;
+        min-height: 380px;
+    }
 }

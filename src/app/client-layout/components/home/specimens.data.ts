@@ -839,7 +839,18 @@ const BASE_SPECIMENS: Specimen[] = [
     stage: 'light',
     sortKey: 133
   },
-
+  {
+    id: 'CB-35',
+    kind: 'css-battle',
+    title: 'CSS Battle — Reflected Beams',
+    description: 'عمودين بإزاحات، مع انعكاس مرآوي أسفل الكتلة الصغيرة — CSS خالص.',
+    date: 'أكتوبر 2026',
+    addedAt: '2026-10-10',
+    tags: ['CSS', 'Battle', 'Pseudo-elements', 'Box Reflect'],
+    href: '/css_battle_p35',
+    stage: 'dark',
+    sortKey: 134
+  },
   // ─── Problem Solving ───
   {
     id: 'PS-01',
@@ -995,6 +1006,18 @@ const BASE_SPECIMENS: Specimen[] = [
     href: '/problem-solving/climbing-stairs',
     stage: 'dark',
     sortKey: 213
+  },
+  {
+    id: 'PS-15',
+    kind: 'problem-solving',
+    title: 'Remove Duplicates from Sorted List',
+    description: 'احذف المكرر من Linked List مرتّبة — مؤشر واحد بيعدّل الروابط في مكانها.',
+    date: 'أكتوبر 2026',
+    addedAt: '2026-10-10',
+    tags: ['LeetCode', 'Linked List'],
+    href: '/problem-solving/remove-duplicates-from-sorted-list',
+    stage: 'dark',
+    sortKey: 214
   },
 
   // ─── Clean Code ───

@@ -1386,8 +1386,8 @@ run();`
     },
 
     'PS-14': {
-    stage: 'dark',
-    html: `<!DOCTYPE html>
+        stage: 'dark',
+        html: `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -1411,7 +1411,7 @@ run();`
     <script src="main.js"></script>
 </body>
 </html>`,
-    css: `* { box-sizing: border-box; margin: 0; padding: 0; }
+        css: `* { box-sizing: border-box; margin: 0; padding: 0; }
 body {
     display: flex; align-items: center; justify-content: center;
     min-height: 100vh; background: #0A1017;
@@ -1451,7 +1451,7 @@ output {
     font-size: 12px; color: #8394A5;
     font-family: ui-monospace, Consolas, monospace;
 }`,
-    js: `function climbStairs(n) {
+        js: `function climbStairs(n) {
     let prev2 = 1;
     let prev1 = 2;
 
@@ -1486,5 +1486,146 @@ document.getElementById('run').onclick = run;
 inp.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
 inp.addEventListener('input', run);
 run();`
-},
+    },
+
+    'PS-15': {
+        stage: 'dark',
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remove Duplicates</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="demo">
+        <div class="row">
+            <label>linked list (comma separated)</label>
+            <input type="text" id="in" value="1,1,2,3,3" dir="ltr">
+        </div>
+        <button id="run">شيل المكرر</button>
+        <div class="row">
+            <label>النتيجة</label>
+            <output id="out">—</output>
+        </div>
+        <p class="hint">جرّب: 1,1,2 · 1,1,2,3,3 · 1,1,1,1 · 1,2,3 · 1</p>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>`,
+        css: `* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: #0A1017;
+    font-family: system-ui, sans-serif; padding: 16px; font-size: 16px;
+}
+.demo {
+    background: #131C26; border: 1px solid #2A3846; border-radius: 4px;
+    padding: 20px; width: 100%; max-width: 420px;
+    display: flex; flex-direction: column; gap: 12px; color: #E9EFF5;
+}
+.row { display: flex; flex-direction: column; gap: 6px; }
+label {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 12px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #8394A5;
+}
+input {
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    padding: 8px 12px; color: #E9EFF5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 18px; outline: none;
+}
+input:focus { border-color: #E3A83A; }
+button {
+    padding: 10px 16px; background: #E3A83A; color: #101A24;
+    border: 0; border-radius: 4px; font-size: 16px;
+    font-weight: 600; cursor: pointer; font-family: inherit;
+}
+button:hover { opacity: 0.9; }
+output {
+    display: block; padding: 12px;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    color: #3CC4BE; font-family: ui-monospace, Consolas, monospace;
+    font-size: 18px; min-height: 44px; word-break: break-all;
+}
+.hint {
+    font-size: 12px; color: #8394A5;
+    font-family: ui-monospace, Consolas, monospace;
+    line-height: 1.6;
+}`,
+        js: `class ListNode {
+    constructor(val, next = null) {
+        this.val = val;
+        this.next = next;
+    }
+}
+
+function buildList(arr) {
+    if (arr.length === 0) return null;
+    const head = new ListNode(arr[0]);
+    let current = head;
+    for (let i = 1; i < arr.length; i++) {
+        current.next = new ListNode(arr[i]);
+        current = current.next;
+    }
+    return head;
+}
+
+function listToArray(head) {
+    const result = [];
+    let current = head;
+    while (current !== null) {
+        result.push(current.val);
+        current = current.next;
+    }
+    return result;
+}
+
+function deleteDuplicates(head) {
+    let current = head;
+
+    while (current !== null && current.next !== null) {
+        if (current.val === current.next.val) {
+            current.next = current.next.next;
+        } else {
+            current = current.next;
+        }
+    }
+
+    return head;
+}
+
+const inp = document.getElementById('in');
+const out = document.getElementById('out');
+
+function run() {
+    const raw = inp.value.trim();
+    if (raw === '') {
+        out.textContent = '(قائمة فاضية)';
+        out.style.color = '#8394A5';
+        return;
+    }
+
+    const nums = raw.split(',').map(s => Number(s.trim())).filter(n => !isNaN(n));
+    if (nums.length === 0) {
+        out.textContent = '✕ قيمة غير صحيحة';
+        out.style.color = '#F26B62';
+        return;
+    }
+
+    const head = buildList(nums);
+    const result = deleteDuplicates(head);
+    const output = listToArray(result);
+
+    out.style.color = '#3CC4BE';
+    out.textContent = '[' + output.join(', ') + ']';
+}
+
+document.getElementById('run').onclick = run;
+inp.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+inp.addEventListener('input', run);
+run();`
+    },
 };

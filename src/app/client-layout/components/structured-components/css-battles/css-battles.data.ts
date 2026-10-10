@@ -1418,4 +1418,85 @@ p:before {
 }
     `.trim()
     },
+    'p35': {
+        id: 'p35',
+        title: 'CSS Battle — Reflected Beams',
+        description: `
+CSS recreation of a two-beam composition with offsets and a mirrored reflection using pure HTML and CSS.
+
+The design uses:
+- Grid layout for centering
+- CSS pseudo-elements (::before) for offset blocks
+- -webkit-box-reflect for the mirrored shadow below the small block
+- Nested structure using <p> and <i> tags with no extra classes
+- Precise positioning with calc() for offset alignment
+- Pure CSS without images or JavaScript
+        `.trim(),
+        date: 'Last updated: Oct 10, 2026',
+        version: 'v1.0.0',
+        tags: ['Web Development', 'HTML', 'CSS', 'Pseudo-elements', 'Box Reflect', 'Grid', 'CSS Battle'],
+        youtube: '',
+        zipFile: 'assets/zip-files/cssBattle/35 - p35.zip',
+        html: `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reflected Beams</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <p><i></i></p>
+</body>
+</html>
+        `.trim(),
+        css: `
+body {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background: #042F38;
+}
+
+p {
+    width: 200px;
+    height: 20px;
+    background: #BFA148;
+    position: relative;
+    transform: translateX(120px);
+}
+
+p:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: calc(-100% - 30px);
+    width: 100%;
+    height: 100%;
+    background: #D9D9D9;
+}
+
+p i {
+    position: absolute;
+    top: -55px;
+    left: 0;
+    width: 20px;
+    height: 40px;
+    background: #D9D9D9;
+    -webkit-box-reflect: below 50px;
+}
+
+p i:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -50px;
+    width: 100%;
+    height: 100%;
+    background: #BFA148;
+}
+        `.trim()
+    },
 };

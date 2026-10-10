@@ -1,4 +1,5 @@
 import type { IProblemSolvingContent } from '../../../../shared-components/shared-code/shared-code.component';
+import { PROBLEM_RUNNABLES } from './problem-solving-runnables.ts';
 
 export interface ProblemSolvingEntry {
     id: string;
@@ -10,7 +11,7 @@ export interface ProblemSolvingEntry {
     problemSolvingContent: IProblemSolvingContent;
 }
 
-export const PROBLEM_SOLVING_ENTRIES: Record<string, ProblemSolvingEntry> = {
+const BASE_ENTRIES: Record<string, ProblemSolvingEntry> = {
 
     // ═══════════════════════════════════════════════════════════════
     // 1. Roman to Integer — LeetCode #13
@@ -1751,6 +1752,7 @@ Result: dummy → 1 → 1 → 2 → 3 → 4
             ]
         }
     },
+
     // ═══════════════════════════════════════════════════════════════
     // 7. Remove Duplicates from Sorted Array — LeetCode #26
     // ═══════════════════════════════════════════════════════════════
@@ -3010,7 +3012,7 @@ i=25 → 'n' (بدأنا نعد)
     },
 
     // ═══════════════════════════════════════════════════════════════
-    // 12. Add Binary — LeetCode #67 🆕
+    // 12. Add Binary — LeetCode #67
     // ═══════════════════════════════════════════════════════════════
     'add-binary': {
         id: 'add-binary',
@@ -3245,9 +3247,8 @@ carry = 0
     },
 
     // ═══════════════════════════════════════════════════════════════
-    // 13. Sqart X — LeetCode #69 🆕
+    // 13. Sqrt(x) — LeetCode #69
     // ═══════════════════════════════════════════════════════════════
-
     'sqrt-x': {
         id: 'sqrt-x',
         projectName: 'Sqrt(x)',
@@ -3678,8 +3679,9 @@ describe('mySqrt', () => {
             ]
         }
     },
-
-
+    // ═══════════════════════════════════════════════════════════════
+    // 14. Climbing Stairs — LeetCode #70
+    // ═══════════════════════════════════════════════════════════════
     'climbing-stairs': {
         id: 'climbing-stairs',
         projectName: 'Climbing Stairs',
@@ -4128,4 +4130,534 @@ describe('climbStairs', () => {
             ]
         }
     },
+
+    // ═══════════════════════════════════════════════════════════════
+    // 15. Remove Duplicates from Sorted List — LeetCode #83
+    // ═══════════════════════════════════════════════════════════════
+    'remove-duplicates-from-sorted-list': {
+        id: 'remove-duplicates-from-sorted-list',
+        projectName: 'Remove Duplicates from Sorted List',
+        projectDescription: 'احذف العناصر المكررة من Linked List مرتّبة — كل عنصر يظهر مرة واحدة بس.',
+        projectDate: 'October 10, 2026',
+        projectVersion: 'LeetCode #83',
+        tags: ['Problem Solving', 'JavaScript', 'TypeScript', 'LeetCode', 'Linked List'],
+
+        problemSolvingContent: {
+            problem: `
+Given the head of a sorted linked list, delete all duplicates
+such that each element appears only once.
+
+Return the linked list sorted as well.
+
+Example 1:
+Input: head = [1,1,2]
+Output: [1,2]
+
+Example 2:
+Input: head = [1,1,2,3,3]
+Output: [1,2,3]
+
+Constraints:
+- The number of nodes in the list is in the range [0, 300].
+- -100 <= Node.val <= 100
+- The list is guaranteed to be sorted in ascending order.
+            `,
+
+            generalIdea: `
+المسألة بتستغل حاجة مهمة: القائمة **مرتّبة تصاعديًا**.
+
+يعني أي عنصرين متكررين هيكونوا **جنب بعض**.
+مفيش احتمال نلاقي 1 → 2 → 1.
+
+ده معناه إننا مش محتاجين hash set ولا أي data structure إضافية.
+مؤشر واحد (current) بيمشي على القائمة،
+وبيقارن كل node باللي بعدها.
+
+لو القيم متساوية → نحذف الـ next (بنعمل skip).
+لو مختلفة → نتحرك للي بعده.
+            `,
+
+            solutionIdea: `
+بنستخدم مؤشر واحد اسمه current بيبدأ من head.
+
+في كل خطوة:
+- لو current.val === current.next.val → نعمل skip للـ next
+  عن طريق current.next = current.next.next
+  (ومابنحركش current، لأن ممكن يكون فيه تكرار تاني).
+- لو القيم مختلفة → current = current.next.
+
+بنكرر لحد ما current أو current.next يبقوا null.
+
+بنرجّع head — لأنه لسه نفس الـ head الأصلي،
+التعديلات كلها بتتم على الروابط (next pointers).
+            `,
+
+            steps: [
+                'نبدأ current من head.',
+                'نتأكد إن current و current.next مش null.',
+                'نقارن current.val مع current.next.val.',
+                'لو متساويين → نتخطى الـ next (current.next = current.next.next).',
+                'لو مختلفين → نتحرك current للـ next.',
+                'نكرر لحد نهاية القائمة.',
+                'نرجّع head (اللي هو نفسه لسه في نفس المكان).'
+            ],
+
+            example: {
+                input: 'head = [1,1,2,3,3]',
+                output: '[1,2,3]',
+                explanation: `القائمة: 1 → 1 → 2 → 3 → 3 → null
+current = head (عند 1 الأولى)
+
+الخطوة 1:
+current.val = 1, current.next.val = 1
+1 === 1 → نتخطى الـ next
+current.next = current.next.next
+القائمة بقت: 1 → 2 → 3 → 3 → null
+(current لسه عند 1 الأولى)
+
+الخطوة 2:
+current.val = 1, current.next.val = 2
+1 !== 2 → نتحرك
+current = current.next (عند 2)
+
+الخطوة 3:
+current.val = 2, current.next.val = 3
+2 !== 3 → نتحرك
+current = current.next (عند 3 الأولى)
+
+الخطوة 4:
+current.val = 3, current.next.val = 3
+3 === 3 → نتخطى الـ next
+current.next = current.next.next
+القائمة بقت: 1 → 2 → 3 → null
+
+الخطوة 5:
+current.next = null → نتوقف
+
+النتيجة: 1 → 2 → 3 ✓`
+            },
+
+            complexity: {
+                time: 'O(n)',
+                space: 'O(1)'
+            },
+
+            visualization: {
+                kind: 'diagram',
+                title: 'مسار الحذف على [1,1,2,3,3]',
+                content: `Initial:  Head → [1] → [1] → [2] → [3] → [3] → null
+                 cur
+
+Step 1:   cur.val=1, cur.next.val=1  →  EQUAL
+          cur.next = cur.next.next
+          Head → [1] → [2] → [3] → [3] → null
+                 cur
+
+Step 2:   cur.val=1, cur.next.val=2  →  DIFF
+          cur = cur.next
+          Head → [1] → [2] → [3] → [3] → null
+                       cur
+
+Step 3:   cur.val=2, cur.next.val=3  →  DIFF
+          cur = cur.next
+          Head → [1] → [2] → [3] → [3] → null
+                              cur
+
+Step 4:   cur.val=3, cur.next.val=3  →  EQUAL
+          cur.next = cur.next.next
+          Head → [1] → [2] → [3] → null
+                              cur
+
+Step 5:   cur.next = null  →  STOP
+
+Return:   [1] → [2] → [3] → null  ✓`,
+                caption: 'بنحذف الـ node المكررة عن طريق تخطيها في الـ next pointer.'
+            },
+
+            approaches: [
+                {
+                    name: 'Approach 1 - Single Pointer (الأمثل)',
+                    tagline: 'مؤشر واحد بيمشي على القائمة، وبيتخطى المكرر — O(n) time, O(1) space.',
+                    complexity: { time: 'O(n)', space: 'O(1)' },
+                    tradeoffs: [
+                        'أبسط حل وأسرع واحد.',
+                        'مش محتاج أي data structure إضافية.',
+                        'بيعدّل الـ pointers مباشرة (in-place).',
+                        'بيستغل إن القائمة مرتّبة — ده اللي خلا الحل بسيط.',
+                        'شغال على القائمة بغض النظر عن طولها.'
+                    ],
+                    samples: [
+                        {
+                            label: 'remove-duplicates.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function deleteDuplicates(head: ListNode | null): ListNode | null {
+  let current = head;
+
+  while (current !== null && current.next !== null) {
+    if (current.val === current.next.val) {
+      current.next = current.next.next;
+    } else {
+      current = current.next;
+    }
+  }
+
+  return head;
+}`,
+                            notes: [
+                                'current بيبدأ من head.',
+                                'الشرط المزدوج بيضمن إننا مانلمسش null.',
+                                'لو القيم متساوية → skip بدون تحريك current.',
+                                'لو مختلفة → تحريك current للأمام.',
+                                'بنرجّع head لأننا عدّلنا الروابط مش الـ head نفسه.'
+                            ]
+                        },
+                        {
+                            label: 'remove-duplicates.js',
+                            language: 'javascript',
+                            framework: 'JavaScript',
+                            code: `var deleteDuplicates = function(head) {
+    let current = head;
+
+    while (current !== null && current.next !== null) {
+        if (current.val === current.next.val) {
+            current.next = current.next.next;
+        } else {
+            current = current.next;
+        }
+    }
+
+    return head;
+};`,
+                            notes: [
+                                'نفس الحل بـ JavaScript.',
+                                'بيشتغل مع head = null (list فاضية) → يرجع null.',
+                                'بيشتغل مع head = [1] (node واحدة) → يرجع [1] بدون loop.',
+                                'في أسوأ حالة، بنلف على كل node مرة واحدة.',
+                                'O(n) time لأن كل عملية skip بتشيل node نهائيًا.'
+                            ]
+                        },
+                        {
+                            label: 'RemoveDuplicates.cs',
+                            language: 'csharp',
+                            framework: 'C#',
+                            code: `public class ListNode
+{
+    public int val;
+    public ListNode next;
+    public ListNode(int val = 0, ListNode next = null)
+    {
+        this.val = val;
+        this.next = next;
+    }
+}
+
+public static class Solution
+{
+    public static ListNode DeleteDuplicates(ListNode head)
+    {
+        var current = head;
+
+        while (current != null && current.next != null)
+        {
+            if (current.val == current.next.val)
+            {
+                current.next = current.next.next;
+            }
+            else
+            {
+                current = current.next;
+            }
+        }
+
+        return head;
+    }
+}`,
+                            notes: [
+                                'نفس المنطق بلغة C#.',
+                                'بنستخدم var عشان نبسّط التعريف.',
+                                'المقارنة بـ == عادي عشان val عدد صحيح.',
+                                'لو عايز، ممكن نستخدم record بدل class.'
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Approach 2 - Two Pointers',
+                    tagline: 'مؤشرين: واحد للـ node الحالية وواحد للـ last unique.',
+                    complexity: { time: 'O(n)', space: 'O(1)' },
+                    tradeoffs: [
+                        'نفس التعقيد بالظبط.',
+                        'أوضح للبعض من ناحية القراءة.',
+                        'بيوضّح الـ pattern لو بتستخدمه في مسائل مشابهة.',
+                        'شغال على نفس الفكرة بس بـ pointer إضافي.'
+                    ],
+                    samples: [
+                        {
+                            label: 'remove-duplicates-two-pointer.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function deleteDuplicates(head: ListNode | null): ListNode | null {
+  if (head === null) return null;
+
+  let lastUnique: ListNode = head;
+  let current: ListNode | null = head.next;
+
+  while (current !== null) {
+    if (current.val === lastUnique.val) {
+      lastUnique.next = current.next;
+    } else {
+      lastUnique = current;
+    }
+    current = current.next;
+  }
+
+  return head;
+}`,
+                            notes: [
+                                'lastUnique بيشاور على آخر node unique لقيناها.',
+                                'current بيمشي على القائمة.',
+                                'لو current.value مكرر → نوصّل lastUnique بـ current.next.',
+                                'لو unique → lastUnique بيبقى current.',
+                                'بنحرّك current دايمًا للأمام.'
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Approach 3 - Recursive',
+                    tagline: 'حل recursive — أنيق بس مش الأمثل.',
+                    complexity: { time: 'O(n)', space: 'O(n) due to call stack' },
+                    tradeoffs: [
+                        'أنيق في القراءة لو بتفكر recursively.',
+                        'بيستهلك stack بحجم n.',
+                        'مش recommended لـ n كبير.',
+                        'مفيد كـ pattern لحل مسائل linked list تانية.'
+                    ],
+                    samples: [
+                        {
+                            label: 'remove-duplicates-recursive.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function deleteDuplicates(head: ListNode | null): ListNode | null {
+  if (head === null || head.next === null) return head;
+
+  const nextNode = deleteDuplicates(head.next);
+
+  if (head.val === nextNode.val) {
+    return nextNode;
+  }
+
+  head.next = nextNode;
+  return head;
+}`,
+                            notes: [
+                                'الـ base case: node واحدة أو فاضية.',
+                                'بنعمل recurse على الـ next للحصول على القائمة بدون تكرار.',
+                                'لو head.val = nextNode.val → نرجّع nextNode (نتخطى head).',
+                                'لو مختلفين → نربط head بـ nextNode ونرجّعه.',
+                                'الـ recursion بيستهلك O(n) stack في أسوأ حالة.'
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Approach 4 - Hash Set (للـ unsorted lists)',
+                    tagline: 'لو القائمة مش مرتّبة، الحل ده بيشتغل — بس بـ memory إضافية.',
+                    complexity: { time: 'O(n)', space: 'O(n)' },
+                    tradeoffs: [
+                        'بيشتغل حتى لو القائمة مش مرتّبة.',
+                        'بيستهلك memory O(n).',
+                        'الـ problem الأصلية مش محتاجاه (القائمة مرتّبة).',
+                        'مفيد لو قابلك variant بـ unsorted list.',
+                        'بيوضّح إن الحل الأمثل بيعتمد على الـ constraints.'
+                    ],
+                    samples: [
+                        {
+                            label: 'remove-duplicates-hashset.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function deleteDuplicatesUnsorted(head: ListNode | null): ListNode | null {
+  if (head === null) return null;
+
+  const seen = new Set<number>([head.val]);
+  let current = head;
+
+  while (current.next !== null) {
+    if (seen.has(current.next.val)) {
+      current.next = current.next.next;
+    } else {
+      seen.add(current.next.val);
+      current = current.next;
+    }
+  }
+
+  return head;
+}`,
+                            notes: [
+                                'Set بيحفظ القيم اللي شفناها قبل كده.',
+                                'لو القيمة موجودة → نتخطى الـ next.',
+                                'لو جديدة → نضيفها للـ Set ونتحرك.',
+                                'ده الحل الصح للـ unsorted version.',
+                                'لكن للـ sorted version، الأسهل والأسرع إننا نستغل الترتيب.'
+                            ]
+                        }
+                    ]
+                }
+            ],
+
+            testing: [
+                {
+                    title: 'Jest',
+                    framework: 'Jest (TS/JS)',
+                    code: `import { deleteDuplicates, ListNode } from './remove-duplicates';
+
+function buildList(vals: number[]): ListNode | null {
+  if (vals.length === 0) return null;
+  const head = new ListNode(vals[0]);
+  let current = head;
+  for (let i = 1; i < vals.length; i++) {
+    current.next = new ListNode(vals[i]);
+    current = current.next;
+  }
+  return head;
+}
+
+function toArray(head: ListNode | null): number[] {
+  const result: number[] = [];
+  let current = head;
+  while (current !== null) {
+    result.push(current.val);
+    current = current.next;
+  }
+  return result;
+}
+
+describe('deleteDuplicates', () => {
+  it.each([
+    [[1, 1, 2], [1, 2]],
+    [[1, 1, 2, 3, 3], [1, 2, 3]],
+    [[1, 1, 1, 1], [1]],
+    [[1], [1]],
+    [[], []],
+    [[1, 2, 3, 4, 5], [1, 2, 3, 4, 5]],
+    [[-3, -3, -1, 0, 0, 5], [-3, -1, 0, 5]]
+  ])('input %j → output %j', (input, expected) => {
+    const head = buildList(input);
+    const result = deleteDuplicates(head);
+    expect(toArray(result)).toEqual(expected);
+  });
+});`
+                },
+                {
+                    title: 'xUnit',
+                    framework: 'xUnit (C#)',
+                    code: `public class RemoveDuplicatesTests
+{
+    [Theory]
+    [InlineData(new[] { 1, 1, 2 }, new[] { 1, 2 })]
+    [InlineData(new[] { 1, 1, 2, 3, 3 }, new[] { 1, 2, 3 })]
+    [InlineData(new[] { 1, 1, 1, 1 }, new[] { 1 })]
+    [InlineData(new[] { 1 }, new[] { 1 })]
+    [InlineData(new int[] { }, new int[] { })]
+    [InlineData(new[] { 1, 2, 3, 4, 5 }, new[] { 1, 2, 3, 4, 5 })]
+    public void DeleteDuplicates_ReturnsExpected(int[] input, int[] expected)
+    {
+        var head = BuildList(input);
+        var result = Solution.DeleteDuplicates(head);
+        Assert.Equal(expected, ToArray(result));
+    }
+
+    private static ListNode BuildList(int[] vals)
+    {
+        if (vals.Length == 0) return null;
+        var head = new ListNode(vals[0]);
+        var current = head;
+        for (int i = 1; i < vals.Length; i++)
+        {
+            current.next = new ListNode(vals[i]);
+            current = current.next;
+        }
+        return head;
+    }
+
+    private static int[] ToArray(ListNode head)
+    {
+        var result = new List<int>();
+        var current = head;
+        while (current != null)
+        {
+            result.Add(current.val);
+            current = current.next;
+        }
+        return result.ToArray();
+    }
+}`
+                }
+            ],
+
+            code: [
+                {
+                    codeTitle: 'remove-duplicates.ts',
+                    language: 'typescript',
+                    code: `function deleteDuplicates(head: ListNode | null): ListNode | null {
+  let current = head;
+
+  while (current !== null && current.next !== null) {
+    if (current.val === current.next.val) {
+      current.next = current.next.next;
+    } else {
+      current = current.next;
+    }
+  }
+
+  return head;
+}`,
+                    lines: [
+                        { line: 'function deleteDuplicates(head: ListNode | null): ListNode | null {', note: 'تعريف الدالة. بتاخد head of the linked list (ممكن يكون null)، وبترجّع head القائمة المعدّلة.' },
+                        { line: '  let current = head;', note: 'المؤشر current بيبدأ من head. هو اللي هيمشي على القائمة.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '  while (current !== null && current.next !== null) {', note: 'بنلف طول ما إحنا لسه عند node سليمة والـ next موجودة. لو current أو current.next = null → نوقف.' },
+                        { line: '    if (current.val === current.next.val) {', note: 'بنقارن قيمة الـ node الحالية بالـ node اللي بعدها.' },
+                        { line: '      current.next = current.next.next;', note: 'لو القيم متساوية → بنتخطى الـ next عن طريق ربط current باللي بعد الـ next مباشرة. كده الـ next اتشال من السلسلة.' },
+                        { line: '    } else {', note: 'لو القيم مختلفة، يبقى الـ next مش مكرر — نتحرك للأمام.' },
+                        { line: '      current = current.next;', note: 'بنحرّك current خطوة واحدة لليمين. عادي نمشي دلوقتي لأن الـ next مؤكد مش مكرر.' },
+                        { line: '    }', note: 'نهاية الـ if/else.' },
+                        { line: '  }', note: 'نهاية الـ while. لو وصلنا هنا، لفينا على كل القائمة.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '  return head;', note: 'بنرجّع head — لسه نفسه لأنه مفيش تعديل على رأس القائمة، بس على الروابط جواها.' },
+                        { line: '}', note: 'نهاية الدالة.' }
+                    ]
+                }
+            ],
+
+            learned: [
+                'استغلال إن القائمة مرتّبة → الحل بسيط بدون hash set.',
+                'التعامل مع Linked Lists عن طريق تعديل الروابط (next pointers).',
+                'الفرق بين التخطي (skip) والتحرك للأمام (advance).',
+                'فهم ليه الحل O(n) time و O(1) space.',
+                'الـ in-place modification للـ linked list.',
+                'التعامل مع edge cases: قائمة فاضية، node واحدة، كل القيم متساوية.',
+                'الحل بيعتمد على الـ constraints — مسألة مشابهة في unsorted list محتاجة Set.',
+                'الـ recursive solution ممكن تكون أنيقة بس بتستهلك stack.',
+                'الـ two-pointer approach ممكن يستخدم لو الـ logic أعقد.',
+                'بنرجّع head نفسه — التعديلات كلها في الـ pointers مش في الـ head.'
+            ]
+        }
+    },
+
 };
+
+export const PROBLEM_SOLVING_ENTRIES: Record<string, ProblemSolvingEntry> =
+    Object.fromEntries(
+        Object.entries(BASE_ENTRIES).map(([key, entry]) => [
+            key,
+            {
+                ...entry,
+                problemSolvingContent: {
+                    ...entry.problemSolvingContent,
+                    runnable: PROBLEM_RUNNABLES[key] ?? entry.problemSolvingContent.runnable
+                }
+            }
+        ])
+    );

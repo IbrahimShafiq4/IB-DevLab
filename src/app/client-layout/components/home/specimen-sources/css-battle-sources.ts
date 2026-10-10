@@ -2095,4 +2095,64 @@ p:before {
     -webkit-box-reflect: below 130px;
 }`
   },
+  'CB-35': {
+    stage: 'dark',
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reflected Beams</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <p><i></i></p>
+</body>
+</html>`,
+    css: `body {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background: #042F38;
+}
+
+p {
+    width: 200px;
+    height: 20px;
+    background: #BFA148;
+    position: relative;
+    transform: translateX(120px);
+}
+
+p:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: calc(-100% - 30px);
+    width: 100%;
+    height: 100%;
+    background: #D9D9D9;
+}
+
+p i {
+    position: absolute;
+    top: -55px;
+    left: 0;
+    width: 20px;
+    height: 40px;
+    background: #D9D9D9;
+    -webkit-box-reflect: below 50px;
+}
+
+p i:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -50px;
+    width: 100%;
+    height: 100%;
+    background: #BFA148;
+}`
+  },
 };
