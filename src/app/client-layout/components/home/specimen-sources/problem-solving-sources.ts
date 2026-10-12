@@ -1628,4 +1628,129 @@ inp.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
 inp.addEventListener('input', run);
 run();`
     },
+
+    'PS-16': {
+        stage: 'dark',
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binary Tree Inorder Traversal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="demo">
+        <div class="row">
+            <label>tree array (null للـ empty node)</label>
+            <input type="text" id="in" value="1,null,2,3" dir="ltr">
+        </div>
+        <button id="run">اجتياز</button>
+        <div class="row">
+            <label>inorder result</label>
+            <output id="out">—</output>
+        </div>
+        <p class="hint">جرّب: 1,null,2,3 · 1,2,3,4,5,null,8 · 1 · (فاضي)</p>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>`,
+        css: `* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: #0A1017;
+    font-family: system-ui, sans-serif; padding: 16px; font-size: 16px;
+}
+.demo {
+    background: #131C26; border: 1px solid #2A3846; border-radius: 4px;
+    padding: 20px; width: 100%; max-width: 480px;
+    display: flex; flex-direction: column; gap: 12px; color: #E9EFF5;
+}
+.row { display: flex; flex-direction: column; gap: 6px; }
+label {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 12px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #8394A5;
+}
+input {
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    padding: 8px 12px; color: #E9EFF5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 14px; outline: none;
+}
+input:focus { border-color: #E3A83A; }
+button {
+    padding: 10px 16px; background: #E3A83A; color: #101A24;
+    border: 0; border-radius: 4px; font-size: 16px;
+    font-weight: 600; cursor: pointer; font-family: inherit;
+}
+button:hover { opacity: 0.9; }
+output {
+    display: block; padding: 12px;
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    color: #3CC4BE; font-family: ui-monospace, Consolas, monospace;
+    font-size: 18px; min-height: 44px; word-break: break-all;
+}
+.hint {
+    font-size: 12px; color: #8394A5;
+    font-family: ui-monospace, Consolas, monospace;
+    line-height: 1.6;
+}`,
+        js: `function TreeNode(val, left, right) {
+    this.val = (val === undefined ? 0 : val);
+    this.left = (left === undefined ? null : left);
+    this.right = (right === undefined ? null : right);
+}
+
+function buildTree(input) {
+    const parts = (input || '').split(',').map(s => s.trim());
+    const arr = parts.map(s => (s === 'null' || s === '') ? null : Number(s));
+    if (!arr.length || arr[0] === null) return null;
+
+    const nodes = arr.map(v => v === null ? null : new TreeNode(v));
+    for (let i = 0; i < nodes.length; i++) {
+        if (!nodes[i]) continue;
+        const li = 2 * i + 1;
+        const ri = 2 * i + 2;
+        if (li < nodes.length) nodes[i].left = nodes[li];
+        if (ri < nodes.length) nodes[i].right = nodes[ri];
+    }
+    return nodes[0];
+}
+
+function inorderTraversal(root) {
+    const result = [];
+
+    function traverse(node) {
+        if (node === null) return;
+
+        traverse(node.left);
+        result.push(node.val);
+        traverse(node.right);
+    }
+
+    traverse(root);
+    return result;
+}
+
+const inp = document.getElementById('in');
+const out = document.getElementById('out');
+
+function run() {
+    try {
+        const root = buildTree(inp.value);
+        const result = inorderTraversal(root);
+        out.style.color = '#3CC4BE';
+        out.textContent = '[' + result.join(', ') + ']';
+    } catch (e) {
+        out.style.color = '#F26B62';
+        out.textContent = '✕ ' + (e && e.message || e);
+    }
+}
+
+document.getElementById('run').onclick = run;
+inp.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+inp.addEventListener('input', run);
+run();`
+    },
 };

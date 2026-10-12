@@ -4646,6 +4646,554 @@ describe('deleteDuplicates', () => {
         }
     },
 
+    // ═══════════════════════════════════════════════════════════════
+    // 16. Binary Tree Inorder Traversal — LeetCode #94
+    // ═══════════════════════════════════════════════════════════════
+    'binary-tree-inorder-traversal': {
+        id: 'binary-tree-inorder-traversal',
+        projectName: 'Binary Tree Inorder Traversal',
+        projectDescription: 'اجتياز الشجرة الثنائية بترتيب Inorder (Left → Root → Right) — recursive و iterative.',
+        projectDate: 'October 12, 2026',
+        projectVersion: 'LeetCode #94',
+        tags: ['Problem Solving', 'JavaScript', 'TypeScript', 'LeetCode', 'Binary Tree', 'DFS'],
+
+        problemSolvingContent: {
+            problem: `
+Given the root of a binary tree, return the inorder traversal of its nodes' values.
+
+Example 1:
+Input: root = [1,null,2,3]
+Output: [1,3,2]
+
+Example 2:
+Input: root = [1,2,3,4,5,null,8,null,null,6,7,9]
+Output: [4,2,6,5,7,1,3,9,8]
+
+Example 3:
+Input: root = []
+Output: []
+
+Example 4:
+Input: root = [1]
+Output: [1]
+
+Constraints:
+- The number of nodes in the tree is in the range [0, 100].
+- -100 <= Node.val <= 100
+
+Follow up: Recursive solution is trivial, could you do it iteratively?
+            `,
+
+            generalIdea: `
+الـ Inorder Traversal معناه إننا نزور الـ nodes بالترتيب ده:
+1. الـ left subtree كله
+2. الـ node الحالية
+3. الـ right subtree كله
+
+ده بيدي ترتيب مرتّب تصاعديًا في حالة Binary Search Tree.
+
+الفكرة الأساسية:
+- لكل node، ابدأ بالـ left.
+- لما تخلّص left، اطبع قيمة الـ node نفسها.
+- بعد كده روح للـ right.
+
+ممكن نعملها بـ recursion — بسيط وواضح.
+أو بـ stack صريح (iterative) — من غير recursion.
+
+الـ follow up بتطلب منك الحل الـ iterative عشان تبيّن إنك فاهم إيه اللي بيحصل في الـ call stack.
+            `,
+
+            solutionIdea: `
+الحل الـ recursive:
+- لو node = null → ارجع.
+- استدعي الدالة على node.left.
+- ضيف node.val للـ result.
+- استدعي الدالة على node.right.
+
+الحل الـ iterative:
+- استخدم stack صريح.
+- current = root.
+- Loop: طول ما current مش null أو الـ stack فيه عناصر:
+  - طول ما current مش null: push current على الـ stack، ثم current = current.left.
+  - لو current = null: pop من الـ stack، ضيف قيمته للـ result، ثم current = popped.right.
+
+الـ insight في الحل الـ iterative:
+بنمشي لأقصى حد في الـ left، بعدين نرجع لأبونا (اللي هو في الـ stack)،
+نطبعه، ثم نروح لـ subtree اليمين بتاعه.
+            `,
+
+            steps: [
+                'نبدأ من الـ root.',
+                'نروح لأقصى node في الـ left (بنستخدم recursion أو stack).',
+                'لما نوصل لـ null، نرجع للـ parent.',
+                'نطبع قيمة الـ parent.',
+                'نروح للـ right subtree.',
+                'نكرر العملية على الـ right subtree.',
+                'نجمع القيم في الـ result بترتيب Inorder.'
+            ],
+
+            example: {
+                input: 'root = [1,null,2,3]',
+                output: '[1,3,2]',
+                explanation: `الشجرة:
+    1
+     \\
+      2
+     /
+    3
+
+Inorder يعني Left → Root → Right.
+
+الـ traversal:
+1. عند root=1:
+   - left = null → نرجع.
+   - اطبع 1.
+   - right = node 2.
+2. عند node=2:
+   - left = node 3.
+   - عند node=3:
+     - left = null → نرجع.
+     - اطبع 3.
+     - right = null → نرجع.
+   - اطبع 2.
+   - right = null → نرجع.
+
+الـ result: [1, 3, 2] ✓
+
+مثال تاني من الـ array [1,2,3,4,5,null,8,null,null,6,7,9]:
+
+الشجرة:
+        1
+       / \\
+      2   3
+     / \\   \\
+    4   5   8
+       / \\  /
+      6   7 9
+
+Inorder: 4, 2, 6, 5, 7, 1, 3, 9, 8 ✓`
+            },
+
+            complexity: {
+                time: 'O(n)',
+                space: 'O(h) — ارتفاع الشجرة (recursion stack أو explicit stack)'
+            },
+
+            visualization: {
+                kind: 'diagram',
+                title: 'مسار Inorder على [1,null,2,3]',
+                content: `Tree:
+    1
+     \\
+      2
+     /
+    3
+
+الـ traversal steps:
+1. visit(1)
+2.   visit(1.left) = null → return
+3.   output 1
+4.   visit(1.right) = node 2
+5.     visit(2.left) = node 3
+6.       visit(3.left) = null → return
+7.       output 3
+8.       visit(3.right) = null → return
+9.     output 2
+10.    visit(2.right) = null → return
+
+Result: [1, 3, 2]
+
+الفكرة: "Left → Root → Right" على كل subtree.`,
+                caption: 'Inorder بيزور الـ left subtree كله قبل الـ root، ثم الـ right.'
+            },
+
+            approaches: [
+                {
+                    name: 'Approach 1 - Recursive',
+                    tagline: 'الحل الأبسط: recursion بيوصف الـ traversal بشكل مباشر.',
+                    complexity: { time: 'O(n)', space: 'O(h) — الـ call stack' },
+                    tradeoffs: [
+                        'الأبسط والأوضح في القراءة.',
+                        'بيوصف الـ "Left → Root → Right" بشكل مباشر.',
+                        'الـ recursion بيستهلك stack بحجم ارتفاع الشجرة.',
+                        'مش مناسب لو الشجرة عميقة جدًا (stack overflow).'
+                    ],
+                    samples: [
+                        {
+                            label: 'inorder-recursive.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function inorderTraversal(root: TreeNode | null): number[] {
+  const result: number[] = [];
+
+  function traverse(node: TreeNode | null): void {
+    if (node === null) return;
+
+    traverse(node.left);
+    result.push(node.val);
+    traverse(node.right);
+  }
+
+  traverse(root);
+  return result;
+}`,
+                            notes: [
+                                'بنستخدم دالة داخلية traverse عشان result تكون في الـ closure.',
+                                'الترتيب دايمًا: left → push → right.',
+                                'الـ base case: node = null → return.',
+                                'Complexity: O(n) time، O(h) space (h = ارتفاع الشجرة).'
+                            ]
+                        },
+                        {
+                            label: 'inorder-recursive.js',
+                            language: 'javascript',
+                            framework: 'JavaScript',
+                            code: `var inorderTraversal = function(root) {
+    const result = [];
+
+    function traverse(node) {
+        if (node === null) return;
+
+        traverse(node.left);
+        result.push(node.val);
+        traverse(node.right);
+    }
+
+    traverse(root);
+    return result;
+};`,
+                            notes: [
+                                'نفس الحل بـ JavaScript.',
+                                'لو الشجرة فاضية، الـ traverse(root) هيرجع فورًا والـ result هيفضل [].',
+                                'لو الشجرة node واحدة، هتطبع قيمتها.',
+                                'في حالة BT متوازنة، h = log(n)، فالـ space بيبقى O(log n).'
+                            ]
+                        },
+                        {
+                            label: 'InorderTraversal.cs',
+                            language: 'csharp',
+                            framework: 'C#',
+                            code: `public class TreeNode
+{
+    public int val;
+    public TreeNode left;
+    public TreeNode right;
+    public TreeNode(int val = 0, TreeNode left = null, TreeNode right = null)
+    {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+public static class Solution
+{
+    public static IList<int> InorderTraversal(TreeNode root)
+    {
+        var result = new List<int>();
+        Traverse(root, result);
+        return result;
+    }
+
+    private static void Traverse(TreeNode node, List<int> result)
+    {
+        if (node == null) return;
+
+        Traverse(node.left, result);
+        result.Add(node.val);
+        Traverse(node.right, result);
+    }
+}`,
+                            notes: [
+                                'بنمرّر result كـ parameter بدل closure.',
+                                'في C# ممكن نستخدم local function جوه الدالة.',
+                                'الـ IList<int> بيرجع interface مرن.',
+                                'باقي المنطق نفسه زي TS.'
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Approach 2 - Iterative (Explicit Stack)',
+                    tagline: 'نفس المنطق بدون recursion — باستخدام stack صريح.',
+                    complexity: { time: 'O(n)', space: 'O(h)' },
+                    tradeoffs: [
+                        'بيتجنب الـ stack overflow للشجر العميقة.',
+                        'بيبيّن إيه اللي بيحصل في الـ call stack بشكل صريح.',
+                        'أصعب شوية في القراءة من الـ recursion.',
+                        'ده اللي الـ problem طلبته في الـ follow up.'
+                    ],
+                    samples: [
+                        {
+                            label: 'inorder-iterative.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function inorderTraversal(root: TreeNode | null): number[] {
+  const result: number[] = [];
+  const stack: TreeNode[] = [];
+  let current: TreeNode | null = root;
+
+  while (current !== null || stack.length > 0) {
+    while (current !== null) {
+      stack.push(current);
+      current = current.left;
+    }
+
+    current = stack.pop()!;
+    result.push(current.val);
+    current = current.right;
+  }
+
+  return result;
+}`,
+                            notes: [
+                                'الـ loop الخارجي بيكمل طول ما فيه شغل.',
+                                'الـ loop الداخلي بيدفع كل الـ left nodes على الـ stack.',
+                                'لما نوصل لـ null، بنعمل pop ونطبع.',
+                                'بعد الطباعة، current يتحول للـ right subtree.',
+                                'الـ stack بيحفظ "الأباء" اللي لسه هنرجع لهم.'
+                            ]
+                        },
+                        {
+                            label: 'inorder-iterative.js',
+                            language: 'javascript',
+                            framework: 'JavaScript',
+                            code: `var inorderTraversal = function(root) {
+    const result = [];
+    const stack = [];
+    let current = root;
+
+    while (current !== null || stack.length > 0) {
+        while (current !== null) {
+            stack.push(current);
+            current = current.left;
+        }
+
+        current = stack.pop();
+        result.push(current.val);
+        current = current.right;
+    }
+
+    return result;
+};`,
+                            notes: [
+                                'نفس الحل بـ JavaScript.',
+                                'لا يستخدم recursion — لا خطر من stack overflow.',
+                                'الـ stack explicit بيعمل نفس شغل الـ call stack.',
+                                'أداء مماثل للحل recursive — بس أكثر أمانًا.'
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Approach 3 - Morris Traversal',
+                    tagline: 'حل بدون stack وبدون recursion — O(1) space.',
+                    complexity: { time: 'O(n)', space: 'O(1)' },
+                    tradeoffs: [
+                        'Space complexity O(1) — الأفضل من ناحية memory.',
+                        'مفيش stack ولا recursion.',
+                        'معقد جدًا في القراءة والفهم.',
+                        'بيعدّل الشجرة مؤقتًا (threaded tree) ويرجّعها زي ما كانت.'
+                    ],
+                    samples: [
+                        {
+                            label: 'inorder-morris.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function inorderTraversal(root: TreeNode | null): number[] {
+  const result: number[] = [];
+  let current = root;
+
+  while (current !== null) {
+    if (current.left === null) {
+      result.push(current.val);
+      current = current.right;
+    } else {
+      let predecessor = current.left;
+      while (predecessor.right !== null && predecessor.right !== current) {
+        predecessor = predecessor.right;
+      }
+
+      if (predecessor.right === null) {
+        predecessor.right = current;
+        current = current.left;
+      } else {
+        predecessor.right = null;
+        result.push(current.val);
+        current = current.right;
+      }
+    }
+  }
+
+  return result;
+}`,
+                            notes: [
+                                'الفكرة: نعمل "threads" مؤقتة بين الـ nodes.',
+                                'لكل node عندها left، بنلاقي الـ inorder predecessor.',
+                                'لو الـ predecessor.right = null → نوصّله بـ current وننزل left.',
+                                'لو الـ predecessor.right = current → نفكّ الـ thread ونطبع current.',
+                                'الـ space O(1) بس بنعدّل الشجرة مؤقتًا.'
+                            ]
+                        }
+                    ]
+                }
+            ],
+
+            testing: [
+                {
+                    title: 'Jest',
+                    framework: 'Jest (TS/JS)',
+                    code: `import { inorderTraversal, TreeNode } from './inorder';
+
+function buildTree(arr: (number | null)[]): TreeNode | null {
+  if (!arr.length || arr[0] === null) return null;
+
+  const nodes = arr.map(v => v === null ? null : new TreeNode(v));
+  for (let i = 0; i < nodes.length; i++) {
+    if (!nodes[i]) continue;
+    const li = 2 * i + 1;
+    const ri = 2 * i + 2;
+    if (li < nodes.length) nodes[i]!.left = nodes[li];
+    if (ri < nodes.length) nodes[i]!.right = nodes[ri];
+  }
+  return nodes[0];
+}
+
+describe('inorderTraversal', () => {
+  it.each([
+    [[1, null, 2, 3], [1, 3, 2]],
+    [[1, 2, 3, 4, 5, null, 8, null, null, 6, 7, 9], [4, 2, 6, 5, 7, 1, 3, 9, 8]],
+    [[], []],
+    [[1], [1]],
+  ])('input %j → output %j', (input, expected) => {
+    expect(inorderTraversal(buildTree(input))).toEqual(expected);
+  });
+});`
+                },
+                {
+                    title: 'xUnit',
+                    framework: 'xUnit (C#)',
+                    code: `public class InorderTests
+{
+    [Fact]
+    public void Inorder_Example1_ReturnsCorrectOrder()
+    {
+        var root = new TreeNode(1, null, new TreeNode(2, new TreeNode(3)));
+        var result = Solution.InorderTraversal(root);
+        Assert.Equal(new[] { 1, 3, 2 }, result);
+    }
+
+    [Fact]
+    public void Inorder_EmptyTree_ReturnsEmpty()
+    {
+        var result = Solution.InorderTraversal(null);
+        Assert.Empty(result);
+    }
+
+    [Fact]
+    public void Inorder_SingleNode_ReturnsSingleValue()
+    {
+        var root = new TreeNode(1);
+        var result = Solution.InorderTraversal(root);
+        Assert.Equal(new[] { 1 }, result);
+    }
+}`
+                }
+            ],
+
+            code: [
+                {
+                    codeTitle: 'inorder-recursive.ts',
+                    language: 'typescript',
+                    code: `function inorderTraversal(root: TreeNode | null): number[] {
+  const result: number[] = [];
+
+  function traverse(node: TreeNode | null): void {
+    if (node === null) return;
+
+    traverse(node.left);
+    result.push(node.val);
+    traverse(node.right);
+  }
+
+  traverse(root);
+  return result;
+}`,
+                    lines: [
+                        { line: 'function inorderTraversal(root: TreeNode | null): number[] {', note: 'تعريف الدالة. بتاخد root (ممكن null)، وبترجّع array of numbers.' },
+                        { line: '  const result: number[] = [];', note: 'الـ accumulator اللي بنجمع فيه القيم بالترتيب.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '  function traverse(node: TreeNode | null): void {', note: 'دالة داخلية. بتاخد node وتنفذ الـ traversal عليها.' },
+                        { line: '    if (node === null) return;', note: 'الـ base case. لو node فاضية، نرجع فورًا.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '    traverse(node.left);', note: 'الخطوة 1: نزور الـ left subtree كله الأول.' },
+                        { line: '    result.push(node.val);', note: 'الخطوة 2: نضيف قيمة الـ node الحالية.' },
+                        { line: '    traverse(node.right);', note: 'الخطوة 3: نزور الـ right subtree.' },
+                        { line: '  }', note: 'نهاية الدالة الداخلية.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '  traverse(root);', note: 'بنبدأ الـ traversal من الـ root.' },
+                        { line: '  return result;', note: 'بنرجّع الـ result كامل بالترتيب الـ inorder.' },
+                        { line: '}', note: 'نهاية الدالة. Complexity O(n) time، O(h) space.' }
+                    ]
+                },
+                {
+                    codeTitle: 'inorder-iterative.ts',
+                    language: 'typescript',
+                    code: `function inorderTraversal(root: TreeNode | null): number[] {
+  const result: number[] = [];
+  const stack: TreeNode[] = [];
+  let current: TreeNode | null = root;
+
+  while (current !== null || stack.length > 0) {
+    while (current !== null) {
+      stack.push(current);
+      current = current.left;
+    }
+
+    current = stack.pop()!;
+    result.push(current.val);
+    current = current.right;
+  }
+
+  return result;
+}`,
+                    lines: [
+                        { line: 'function inorderTraversal(root: TreeNode | null): number[] {', note: 'نفس التعريف — بس هذه المرة حل بـ iteration.' },
+                        { line: '  const result: number[] = [];', note: 'الـ result array.' },
+                        { line: '  const stack: TreeNode[] = [];', note: 'الـ stack الصريح — بيحفظ الـ nodes اللي لسه هنرجع لها.' },
+                        { line: '  let current: TreeNode | null = root;', note: 'pointer بنبدأ بيه من الـ root.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '  while (current !== null || stack.length > 0) {', note: 'الـ loop الخارجي: بنكمل طول ما فيه شغل (إما current موجود أو الـ stack فيه حاجة).' },
+                        { line: '    while (current !== null) {', note: 'الـ loop الداخلي: بننزل على كل الـ left nodes وندفعهم على الـ stack.' },
+                        { line: '      stack.push(current);', note: 'بنحفظ الـ node الحالية عشان نرجع لها بعدين.' },
+                        { line: '      current = current.left;', note: 'بننزل للـ left.' },
+                        { line: '    }', note: 'نهاية الـ loop الداخلي. دلوقتي current = null.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '    current = stack.pop()!;', note: 'بنطلع أعلى node من الـ stack — ده اللي هنطبع قيمته.' },
+                        { line: '    result.push(current.val);', note: 'بنضيف القيمة للـ result.' },
+                        { line: '    current = current.right;', note: 'بنروح للـ right subtree عشان نعمل نفس الشيء.' },
+                        { line: '  }', note: 'نهاية الـ loop الخارجي.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '  return result;', note: 'بنرجّع النتيجة بالترتيب الـ inorder.' },
+                        { line: '}', note: 'نهاية الدالة. مفيش recursion — الأمان مضمون.' }
+                    ]
+                }
+            ],
+
+            learned: [
+                'فهم Inorder Traversal: Left → Root → Right.',
+                'Recursive vs Iterative للـ tree traversal.',
+                'الـ call stack بيحصل فيه إيه فعليًا (mapping على stack صريح).',
+                'الفايدة الأساسية من Inorder: في BST بيرجّع قيم مرتّبة.',
+                'الفرق بين O(h) و O(log n) و O(n) في الـ space.',
+                'Morris Traversal — O(1) space بدون stack ولا recursion.',
+                'التعامل مع الشجرة الجاية كـ array (Level Order Indexing).',
+                'الفرق بين الـ DFS بأنواعه: Inorder, Preorder, Postorder.',
+                'الـ stack كـ data structure بيحل مشاكل الـ traversal بأناقة.',
+                'التعامل مع edge cases: شجرة فاضية، node واحدة.'
+            ]
+        }
+    },
 };
 
 export const PROBLEM_SOLVING_ENTRIES: Record<string, ProblemSolvingEntry> =

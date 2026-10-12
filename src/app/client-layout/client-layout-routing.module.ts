@@ -392,6 +392,12 @@ const routes: Routes = [
         data: { problemId: 'remove-duplicates-from-sorted-list' },
         title: 'Remove Duplicates from Sorted List'
       },
+      {
+        path: 'problem-solving/binary-tree-inorder-traversal',
+        loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
+        data: { problemId: 'binary-tree-inorder-traversal' },
+        title: 'Binary Tree Inorder Traversal'
+      },
       // ─── Clean Code (unified — everything routed through clean-code-page) ───
       ...CLEAN_CODE_ROUTES,
 

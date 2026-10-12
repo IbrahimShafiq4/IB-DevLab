@@ -239,7 +239,7 @@ input:focus { border-color: #5B9DFF; }
 `;
 
 function makeHtml(label: string, defaultValue: string, type = 'text'): string {
-    return `<div class="app">
+  return `<div class="app">
   <div class="controls">
     <div class="ctrl">
       <label>${label}</label>
@@ -312,10 +312,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 export const PROBLEM_RUNNABLES: Record<string, IProblemSolvingRunnable> = {
 
-    'roman-to-integer': {
-        html: makeHtml('roman numeral', 'MCMXCIV'),
-        css: BASE_CSS,
-        js: `
+  'roman-to-integer': {
+    html: makeHtml('roman numeral', 'MCMXCIV'),
+    css: BASE_CSS,
+    js: `
 ${HARNESS}
 function build(input) {
   const s = (input || '').trim().toUpperCase();
@@ -367,12 +367,12 @@ function render(idx) {
 state = { steps: build($('in').value) };
 state.idx = -1;
 `
-    },
+  },
 
-    'longest-substring': {
-        html: makeHtml('string', 'abcabcbb'),
-        css: BASE_CSS,
-        js: `
+  'longest-substring': {
+    html: makeHtml('string', 'abcabcbb'),
+    css: BASE_CSS,
+    js: `
 ${HARNESS}
 function build(input) {
   const s = input || '';
@@ -426,12 +426,12 @@ function render(idx) {
 }
 state = { steps: build($('in').value) };
 `
-    },
+  },
 
-    'palindrome-number': {
-        html: makeHtml('number', '121', 'number'),
-        css: BASE_CSS,
-        js: `
+  'palindrome-number': {
+    html: makeHtml('number', '121', 'number'),
+    css: BASE_CSS,
+    js: `
 ${HARNESS}
 function build(input) {
   const s = String(input || '').trim();
@@ -478,12 +478,12 @@ function render(idx) {
 }
 state = { steps: build($('in').value) };
 `
-    },
+  },
 
-    'longest-common-prefix': {
-        html: makeHtml('strings (comma separated)', 'flower,flow,flight'),
-        css: BASE_CSS,
-        js: `
+  'longest-common-prefix': {
+    html: makeHtml('strings (comma separated)', 'flower,flow,flight'),
+    css: BASE_CSS,
+    js: `
 ${HARNESS}
 function build(input) {
   const arr = (input || '').split(',').map(s => s.trim()).filter(Boolean);
@@ -542,12 +542,12 @@ function render(idx) {
 }
 state = { steps: build($('in').value) };
 `
-    },
+  },
 
-    'valid-parentheses': {
-        html: makeHtml('brackets', '([])'),
-        css: BASE_CSS,
-        js: `
+  'valid-parentheses': {
+    html: makeHtml('brackets', '([])'),
+    css: BASE_CSS,
+    js: `
 ${HARNESS}
 function build(input) {
   const s = input || '';
@@ -623,12 +623,12 @@ function render(idx) {
 }
 state = { steps: build($('in').value) };
 `
-    },
+  },
 
-    'merge-two-sorted-lists': {
-        html: makeHtml('two lists (a;b)', '1,2,4;1,3,4'),
-        css: BASE_CSS,
-        js: `
+  'merge-two-sorted-lists': {
+    html: makeHtml('two lists (a;b)', '1,2,4;1,3,4'),
+    css: BASE_CSS,
+    js: `
 ${HARNESS}
 function build(input) {
   const parts = (input || '').split(';');
@@ -705,12 +705,12 @@ function render(idx) {
 }
 state = { steps: build($('in').value) };
 `
-    },
+  },
 
-    'remove-duplicates-from-sorted-array': {
-        html: makeHtml('sorted array', '0,0,1,1,1,2,2,3,3,4'),
-        css: BASE_CSS,
-        js: `
+  'remove-duplicates-from-sorted-array': {
+    html: makeHtml('sorted array', '0,0,1,1,1,2,2,3,3,4'),
+    css: BASE_CSS,
+    js: `
 ${HARNESS}
 function build(input) {
   const nums = (input || '').split(',').map(s => Number(s.trim())).filter(n => !isNaN(n));
@@ -760,12 +760,12 @@ function render(idx) {
 }
 state = { steps: build($('in').value) };
 `
-    },
+  },
 
-    'remove-element': {
-        html: makeHtml('array,val', '3,2,2,3,3'),
-        css: BASE_CSS,
-        js: `
+  'remove-element': {
+    html: makeHtml('array,val', '3,2,2,3,3'),
+    css: BASE_CSS,
+    js: `
 ${HARNESS}
 function build(input) {
   const parts = (input || '').split(',');
@@ -815,12 +815,12 @@ function render(idx) {
 }
 state = { steps: build($('in').value) };
 `
-    },
+  },
 
-    'find-the-index-of-the-first-occurrence': {
-        html: makeHtml('haystack;needle', 'sadbutsad;sad'),
-        css: BASE_CSS,
-        js: `
+  'find-the-index-of-the-first-occurrence': {
+    html: makeHtml('haystack;needle', 'sadbutsad;sad'),
+    css: BASE_CSS,
+    js: `
 ${HARNESS}
 function build(input) {
   const parts = (input || '').split(';');
@@ -893,12 +893,12 @@ function render(idx) {
 }
 state = { steps: build($('in').value) };
 `
-    },
+  },
 
-    'search-insert-position': {
-        html: makeHtml('sorted array,target', '1,3,5,6,4'),
-        css: BASE_CSS,
-        js: `
+  'search-insert-position': {
+    html: makeHtml('sorted array,target', '1,3,5,6,4'),
+    css: BASE_CSS,
+    js: `
 ${HARNESS}
 function build(input) {
   const parts = (input || '').split(',');
@@ -948,12 +948,12 @@ function render(idx) {
 }
 state = { steps: build($('in').value) };
 `
-    },
+  },
 
-    'length-of-last-word': {
-        html: makeHtml('string', '   fly me   to   the moon  '),
-        css: BASE_CSS,
-        js: `
+  'length-of-last-word': {
+    html: makeHtml('string', '   fly me   to   the moon  '),
+    css: BASE_CSS,
+    js: `
 ${HARNESS}
 function build(input) {
   const s = input || '';
@@ -1001,12 +1001,12 @@ function render(idx) {
 }
 state = { steps: build($('in').value) };
 `
-    },
+  },
 
-    'add-binary': {
-        html: makeHtml('a;b', '1010;1011'),
-        css: BASE_CSS,
-        js: `
+  'add-binary': {
+    html: makeHtml('a;b', '1010;1011'),
+    css: BASE_CSS,
+    js: `
 ${HARNESS}
 function build(input) {
   const parts = (input || '').split(';');
@@ -1088,12 +1088,12 @@ function render(idx) {
 }
 state = { steps: build($('in').value) };
 `
-    },
+  },
 
-    'sqrt-x': {
-        html: makeHtml('x', '8', 'number'),
-        css: BASE_CSS,
-        js: `
+  'sqrt-x': {
+    html: makeHtml('x', '8', 'number'),
+    css: BASE_CSS,
+    js: `
 ${HARNESS}
 function build(input) {
   const x = Number(input);
@@ -1151,12 +1151,12 @@ function render(idx) {
 }
 state = { steps: build($('in').value) };
 `
-    },
+  },
 
-    'climbing-stairs': {
-        html: makeHtml('n', '5', 'number'),
-        css: BASE_CSS,
-        js: `
+  'climbing-stairs': {
+    html: makeHtml('n', '5', 'number'),
+    css: BASE_CSS,
+    js: `
 ${HARNESS}
 function build(input) {
   const n = Number(input);
@@ -1216,12 +1216,12 @@ function render(idx) {
 }
 state = { steps: build($('in').value) };
 `
-    },
+  },
 
-    'remove-duplicates-from-sorted-list': {
-        html: makeHtml('linked list', '1,1,2,3,3'),
-        css: BASE_CSS,
-        js: `
+  'remove-duplicates-from-sorted-list': {
+    html: makeHtml('linked list', '1,1,2,3,3'),
+    css: BASE_CSS,
+    js: `
 ${HARNESS}
 function build(input) {
   const nums = (input || '').split(',').map(s => Number(s.trim())).filter(n => !isNaN(n));
@@ -1291,6 +1291,586 @@ function render(idx) {
 }
 state = { steps: build($('in').value) };
 `
+  },
+
+
+  'binary-tree-inorder-traversal': {
+    html: `<div class="app">
+  <div class="controls">
+    <div class="ctrl">
+      <label>tree (array, use "null" for empty)</label>
+      <input type="text" id="in" value="1,2,3,4,5,null,8,null,null,6,7,9" dir="ltr">
+    </div>
+    <div class="btns">
+      <button id="run" class="primary">▶ شغّل</button>
+      <button id="step">⏭ خطوة</button>
+      <button id="reset">↺ رجّع</button>
+    </div>
+  </div>
+  <div class="main-area">
+    <div class="stage" id="stage"></div>
+    <div class="sidebar">
+      <div class="stack-title">Call Stack</div>
+      <div class="stack" id="stack"></div>
+    </div>
+  </div>
+  <div class="result-area">
+    <div class="result-label">Result</div>
+    <div class="result-array" id="result"></div>
+  </div>
+  <div class="stats" id="stats"></div>
+  <div class="log" id="log"></div>
+</div>`,
+    css: `
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  min-height: 100vh;
+  background: #0A1017;
+  color: #E9EFF5;
+  font-family: 'IBM Plex Sans Arabic', system-ui, sans-serif;
+  padding: 14px;
+}
+.app {
+  max-width: 1200px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+  padding: 12px 14px;
+  background: #131C26;
+  border: 1px solid #1E2D42;
+  border-radius: 8px;
+}
+.ctrl {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 220px;
+}
+label {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 10px;
+  color: #6B7C92;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+input {
+  padding: 8px 12px;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 13px;
+  color: #E9EFF5;
+  background: #0A1017;
+  border: 1px solid #1E2D42;
+  border-radius: 4px;
+  outline: none;
+  direction: ltr;
+}
+input:focus { border-color: #5B9DFF; }
+.btns { display: flex; gap: 6px; flex-wrap: wrap; }
+.btns button {
+  padding: 8px 14px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: #E9EFF5;
+  background: #0A1017;
+  border: 1px solid #2A3846;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.15s;
+}
+.btns button:hover:not(:disabled) { border-color: #5B9DFF; color: #5B9DFF; }
+.btns button.primary { background: #F2B200; border-color: #F2B200; color: #0A1017; font-weight: 700; }
+.btns button.primary:hover { opacity: 0.9; color: #0A1017; }
+
+.main-area {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 12px;
+}
+@media (max-width: 720px) {
+  .main-area { grid-template-columns: 1fr; }
+}
+.stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: #0A1017;
+  border: 1px solid #1E2D42;
+  border-radius: 8px;
+  min-height: 320px;
+  overflow: auto;
+}
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: #131C26;
+  border: 1px solid #1E2D42;
+  border-radius: 8px;
+}
+.stack-title {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 11px;
+  color: #6B7C92;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 4px;
+}
+.stack {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 4px;
+  min-height: 60px;
+  padding: 6px;
+  background: #0A1017;
+  border: 2px dashed #2A3846;
+  border-radius: 6px;
+}
+.stack-empty {
+  color: #6B7C92;
+  font-size: 11px;
+  font-family: ui-monospace, Consolas, monospace;
+  text-align: center;
+  padding: 16px 8px;
+}
+.stack-frame {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: #1E2D42;
+  border-radius: 4px;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 12px;
+}
+.stack-frame.top {
+  background: #5B9DFF;
+  color: #0A1017;
+}
+.stack-val { font-weight: 700; }
+.stack-phase {
+  font-size: 10px;
+  opacity: 0.75;
+  letter-spacing: 0.05em;
+}
+
+.result-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #131C26;
+  border: 1px solid #1E2D42;
+  border-radius: 8px;
+  min-height: 60px;
+}
+.result-label {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 11px;
+  color: #6B7C92;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.result-array {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+.result-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 8px;
+  background: #4CD08A;
+  color: #0A1017;
+  border-radius: 4px;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 14px;
+  font-weight: 700;
+  animation: pop-in 0.25s ease-out;
+}
+@keyframes pop-in {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.muted { color: #6B7C92; font-family: ui-monospace, Consolas, monospace; }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 8px;
+}
+.stat {
+  padding: 10px 14px;
+  background: #131C26;
+  border: 1px solid #1E2D42;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.stat span {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 10px;
+  color: #6B7C92;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.stat b {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 15px;
+  color: #5B9DFF;
+  font-weight: 700;
+}
+.log {
+  padding: 12px 14px;
+  background: #0A1017;
+  border: 1px solid #1E2D42;
+  border-radius: 6px;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.8;
+  color: #8394A5;
+  min-height: 90px;
+  max-height: 180px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  direction: rtl;
+  text-align: right;
+}
+.log .ok { color: #4CD08A; }
+.log .warn { color: #F2B200; }
+.log .info { color: #5B9DFF; }
+.log .err { color: #F26B62; }
+.empty { color: #6B7C92; font-family: ui-monospace, Consolas, monospace; padding: 20px; }
+`,
+    js: `
+const $ = id => document.getElementById(id);
+let state = null, timer = null;
+
+function log(msg, cls) {
+  const el = $('log');
+  const line = document.createElement('div');
+  if (cls) line.className = cls;
+  line.textContent = msg;
+  el.appendChild(line);
+  el.scrollTop = el.scrollHeight;
+}
+
+function setStats(pairs) {
+  $('stats').innerHTML = pairs.map(p =>
+    '<div class="stat"><span>' + p[0] + '</span><b>' + p[1] + '</b></div>'
+  ).join('');
+}
+
+function parseTree(input) {
+  const parts = (input || '').split(',').map(s => s.trim());
+  const arr = parts.map(s => (s === 'null' || s === '') ? null : Number(s));
+  if (!arr.length || arr[0] === null) return null;
+  let counter = 0;
+  const nodes = arr.map(v => v === null ? null : { val: v, left: null, right: null, id: ++counter });
+  for (let i = 0; i < nodes.length; i++) {
+    if (!nodes[i]) continue;
+    const li = 2 * i + 1;
+    const ri = 2 * i + 2;
+    if (li < nodes.length) nodes[i].left = nodes[li];
+    if (ri < nodes.length) nodes[i].right = nodes[ri];
+  }
+  return nodes[0];
+}
+
+function layoutTree(root) {
+  let xCounter = 0;
+  const nodes = [];
+  const edges = [];
+  function visit(node, depth) {
+    if (!node) return;
+    visit(node.left, depth + 1);
+    node._x = xCounter++;
+    node._y = depth;
+    nodes.push(node);
+    visit(node.right, depth + 1);
+  }
+  visit(root, 0);
+  function collectEdges(node) {
+    if (!node) return;
+    if (node.left) edges.push({ from: node, to: node.left });
+    if (node.right) edges.push({ from: node, to: node.right });
+    collectEdges(node.left);
+    collectEdges(node.right);
+  }
+  collectEdges(root);
+  return { nodes, edges };
+}
+
+function buildSteps(root) {
+  const steps = [];
+  const result = [];
+  const outputIds = new Set();
+  const callStack = [];
+
+  function snapshot(extra) {
+    return Object.assign({
+      callStack: callStack.map(f => ({ id: f.id, val: f.val, phase: f.phase })),
+      result: result.slice(),
+      outputIds: new Set(outputIds)
+    }, extra);
+  }
+
+  function traverse(node) {
+    if (!node) {
+      steps.push(snapshot({
+        type: 'enter-null',
+        nodeId: null,
+        depth: callStack.length,
+        desc: 'وصلنا null — نرجع'
+      }));
+      return;
     }
+
+    callStack.push({ id: node.id, val: node.val, phase: 'enter' });
+    steps.push(snapshot({
+      type: 'enter',
+      nodeId: node.id,
+      depth: callStack.length,
+      desc: 'ندخل على ' + node.val + ' — نروح left الأول'
+    }));
+
+    callStack[callStack.length - 1].phase = 'left';
+    traverse(node.left);
+
+    callStack[callStack.length - 1].phase = 'output';
+    result.push(node.val);
+    outputIds.add(node.id);
+    steps.push(snapshot({
+      type: 'output',
+      nodeId: node.id,
+      depth: callStack.length,
+      desc: 'نطبع ' + node.val + ' — left خلص'
+    }));
+
+    callStack[callStack.length - 1].phase = 'right';
+    traverse(node.right);
+
+    callStack.pop();
+    steps.push(snapshot({
+      type: 'return',
+      nodeId: node.id,
+      depth: callStack.length,
+      desc: 'نرجع من ' + node.val
+    }));
+  }
+
+  traverse(root);
+
+  steps.push(snapshot({
+    type: 'done',
+    nodeId: null,
+    depth: 0,
+    desc: 'خلصنا ✓'
+  }));
+
+  return { steps, layout: layoutTree(root) };
+}
+
+function renderTree(layout, activeId, outputIds) {
+  const NODE_R = 22;
+  const X_GAP = 60;
+  const Y_GAP = 70;
+  const stage = $('stage');
+  stage.innerHTML = '';
+
+  const nodes = layout.nodes;
+  if (!nodes.length) {
+    stage.innerHTML = '<div class="empty">(شجرة فاضية)</div>';
+    return;
+  }
+
+  const maxX = Math.max.apply(null, nodes.map(n => n._x));
+  const maxY = Math.max.apply(null, nodes.map(n => n._y));
+  const width = (maxX + 1) * X_GAP + 40;
+  const height = (maxY + 1) * Y_GAP + 40;
+
+  const ns = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
+  svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+  svg.style.width = '100%';
+  svg.style.maxHeight = '340px';
+
+  layout.edges.forEach(e => {
+    const x1 = e.from._x * X_GAP + 20 + NODE_R;
+    const y1 = e.from._y * Y_GAP + 20 + NODE_R;
+    const x2 = e.to._x * X_GAP + 20 + NODE_R;
+    const y2 = e.to._y * Y_GAP + 20 + NODE_R;
+    const line = document.createElementNS(ns, 'line');
+    line.setAttribute('x1', x1);
+    line.setAttribute('y1', y1);
+    line.setAttribute('x2', x2);
+    line.setAttribute('y2', y2);
+    line.setAttribute('stroke', '#2A3846');
+    line.setAttribute('stroke-width', '2');
+    svg.appendChild(line);
+  });
+
+  nodes.forEach(n => {
+    const cx = n._x * X_GAP + 20 + NODE_R;
+    const cy = n._y * Y_GAP + 20 + NODE_R;
+    const isActive = n.id === activeId;
+    const isDone = outputIds.has(n.id);
+
+    const circle = document.createElementNS(ns, 'circle');
+    circle.setAttribute('cx', cx);
+    circle.setAttribute('cy', cy);
+    circle.setAttribute('r', NODE_R);
+    circle.setAttribute('fill', isActive ? '#F2B200' : (isDone ? '#4CD08A' : '#131C26'));
+    circle.setAttribute('stroke', isActive ? '#F2B200' : (isDone ? '#4CD08A' : '#5B9DFF'));
+    circle.setAttribute('stroke-width', '2');
+    svg.appendChild(circle);
+
+    const text = document.createElementNS(ns, 'text');
+    text.setAttribute('x', cx);
+    text.setAttribute('y', cy + 5);
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('font-family', 'ui-monospace, monospace');
+    text.setAttribute('font-size', '14');
+    text.setAttribute('font-weight', '700');
+    text.setAttribute('fill', (isActive || isDone) ? '#0A1017' : '#E9EFF5');
+    text.textContent = n.val;
+    svg.appendChild(text);
+  });
+
+  stage.appendChild(svg);
+}
+
+function renderStack(callStack) {
+  const el = $('stack');
+  el.innerHTML = '';
+  if (!callStack || !callStack.length) {
+    el.innerHTML = '<div class="stack-empty">(فاضي)</div>';
+    return;
+  }
+  callStack.forEach((frame, i) => {
+    const item = document.createElement('div');
+    item.className = 'stack-frame';
+    if (i === callStack.length - 1) item.classList.add('top');
+    const val = document.createElement('span');
+    val.className = 'stack-val';
+    val.textContent = frame.val;
+    const phase = document.createElement('span');
+    phase.className = 'stack-phase';
+    const labels = { enter: 'entering', left: 'left', output: 'output', right: 'right' };
+    phase.textContent = labels[frame.phase] || frame.phase;
+    item.appendChild(val);
+    item.appendChild(phase);
+    el.appendChild(item);
+  });
+}
+
+function renderResult(resultArr) {
+  const el = $('result');
+  el.innerHTML = '';
+  if (!resultArr || !resultArr.length) {
+    el.innerHTML = '<span class="muted">(فاضي)</span>';
+    return;
+  }
+  resultArr.forEach(v => {
+    const cell = document.createElement('div');
+    cell.className = 'result-cell';
+    cell.textContent = v;
+    el.appendChild(cell);
+  });
+}
+
+function render(idx) {
+  const st = state;
+  const safeIdx = Math.max(0, Math.min(idx, st.steps.length - 1));
+  const step = st.steps[safeIdx];
+
+  renderTree(st.layout, step.nodeId, step.outputIds || new Set());
+  renderStack(step.callStack);
+  renderResult(step.result);
+
+  setStats([
+    ['العملية', step.type],
+    ['depth', step.depth || 0],
+    ['نطبعنا', (step.result || []).length],
+    ['الحالة', step.type === 'done' ? 'خلصنا ✓' : '...']
+  ]);
+
+  if (idx >= 0 && step.desc) {
+    let cls = 'info';
+    if (step.type === 'output') cls = 'ok';
+    else if (step.type === 'done') cls = 'ok';
+    else if (step.type === 'enter-null') cls = 'warn';
+    log(step.desc, cls);
+  }
+}
+
+function init() {
+  stop();
+  try {
+    const root = parseTree($('in').value);
+    if (!root) {
+      state = {
+        steps: [{ type: 'done', nodeId: null, callStack: [], result: [], outputIds: new Set(), desc: 'شجرة فاضية' }],
+        layout: { nodes: [], edges: [] }
+      };
+    } else {
+      const built = buildSteps(root);
+      state = { steps: built.steps, layout: built.layout };
+    }
+    state.idx = -1;
+    $('log').innerHTML = '';
+    render(-1);
+  } catch (e) {
+    $('stage').innerHTML = '<div class="empty">' + (e && e.message || e) + '</div>';
+    log('✕ ' + (e && e.message || e), 'err');
+  }
+}
+
+function go() {
+  if (!state || state.idx >= state.steps.length - 1) return false;
+  state.idx++;
+  render(state.idx);
+  return true;
+}
+
+function play() {
+  if (timer) { stop(); return; }
+  if (!state || state.idx >= state.steps.length - 1) init();
+  $('run').textContent = '⏸ وقّف';
+  timer = setInterval(() => { if (!go()) stop(); }, 900);
+}
+
+function stop() {
+  if (timer) { clearInterval(timer); timer = null; }
+  $('run').textContent = '▶ شغّل';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  $('run').onclick = play;
+  $('step').onclick = () => { stop(); go(); };
+  $('reset').onclick = () => { stop(); init(); };
+  $('in').addEventListener('change', init);
+  $('in').addEventListener('keydown', e => { if (e.key === 'Enter') init(); });
+  init();
+});
+`
+  },
 
 };

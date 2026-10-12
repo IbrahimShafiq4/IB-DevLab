@@ -1043,7 +1043,18 @@ const BASE_SPECIMENS: Specimen[] = [
     stage: 'dark',
     sortKey: 214
   },
-
+  {
+    id: 'PS-16',
+    kind: 'problem-solving',
+    title: 'Binary Tree Inorder Traversal',
+    description: 'اجتياز الشجرة الثنائية بترتيب Inorder — recursive و iterative بـ stack صريح.',
+    date: 'أكتوبر 2026',
+    addedAt: '2026-10-12',
+    tags: ['LeetCode', 'Binary Tree', 'DFS'],
+    href: '/problem-solving/binary-tree-inorder-traversal',
+    stage: 'dark',
+    sortKey: 215
+  },
   // ─── Clean Code ───
   {
     id: 'CC-01',
