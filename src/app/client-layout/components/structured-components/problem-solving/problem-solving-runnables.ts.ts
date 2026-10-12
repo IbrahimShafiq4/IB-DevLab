@@ -1293,7 +1293,6 @@ state = { steps: build($('in').value) };
 `
   },
 
-
   'binary-tree-inorder-traversal': {
     html: `<div class="app">
   <div class="controls">
