@@ -851,6 +851,30 @@ const BASE_SPECIMENS: Specimen[] = [
     stage: 'dark',
     sortKey: 134
   },
+  {
+    id: 'CB-36',
+    kind: 'css-battle',
+    title: 'CSS Battle — Rocket Shape',
+    description: 'شكل صاروخ مبني من مستطيل + مثلثات بـ CSS borders — pseudo-elements خالص.',
+    date: 'أكتوبر 2026',
+    addedAt: '2026-10-11',
+    tags: ['CSS', 'Battle', 'Pseudo-elements', 'CSS Triangles'],
+    href: '/css_battle_p36',
+    stage: 'light',
+    sortKey: 135
+  },
+  {
+    id: 'CB-37',
+    kind: 'css-battle',
+    title: 'CSS Battle — Four Corners Pattern',
+    description: 'شرايط متماثلة بـ box-reflect + دائرتين بـ overflow hidden — CSS خالص.',
+    date: 'أكتوبر 2026',
+    addedAt: '2026-10-12',
+    tags: ['CSS', 'Battle', 'Pseudo-elements', 'Box Reflect'],
+    href: '/css_battle_p37',
+    stage: 'light',
+    sortKey: 136
+  },
   // ─── Problem Solving ───
   {
     id: 'PS-01',

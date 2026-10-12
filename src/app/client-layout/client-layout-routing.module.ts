@@ -289,6 +289,18 @@ const routes: Routes = [
         data: { battleId: 'p35' },
         title: 'CSS Battle Project 35'
       },
+      {
+        path: 'css_battle_p36',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p36' },
+        title: 'CSS Battle Project 36'
+      },
+      {
+        path: 'css_battle_p37',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p37' },
+        title: 'CSS Battle Project 37'
+      },
       // ─── Problem Solving ───
       {
         path: 'problem-solving/roman-to-integer',

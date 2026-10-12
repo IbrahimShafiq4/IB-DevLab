@@ -1499,4 +1499,189 @@ p i:before {
 }
         `.trim()
     },
+
+    'p36': {
+        id: 'p36',
+        title: 'CSS Battle — Rocket Shape',
+        description: `
+CSS recreation of a rocket-like geometric shape using pure HTML and CSS.
+
+The design uses:
+- Grid layout for centering
+- A single <p> element with ::before and ::after pseudo-elements
+- The classic CSS triangles trick using transparent borders
+- Two overlapping triangles at different sizes and z-index layers
+- Precise positioning with translateX(-50%) for horizontal centering
+- Pure CSS without images, SVG, or JavaScript
+        `.trim(),
+        date: 'Last updated: Oct 11, 2026',
+        version: 'v1.0.0',
+        tags: ['Web Development', 'HTML', 'CSS', 'Pseudo-elements', 'CSS Triangles', 'Grid', 'CSS Battle'],
+        youtube: '',
+        zipFile: 'assets/zip-files/cssBattle/36 - p36.zip',
+        html: `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rocket Shape</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <p></p>
+</body>
+</html>
+        `.trim(),
+        css: `
+body {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background: #FAE29E;
+}
+
+p {
+    width: 30px;
+    height: 160px;
+    background: #D16161;
+    transform: translateY(-30px);
+    position: relative;
+}
+
+p:before,
+p:after {
+    content: '';
+    position: absolute;
+    top: 160px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 84px solid transparent;
+    border-right: 84px solid transparent;
+    border-bottom: 84px solid transparent;
+    z-index: -1;
+}
+
+p:before {
+    border-top: 84px solid #3F4869;
+}
+
+p:after {
+    border-top: 42px solid #D16161;
+    border-left: 42px solid transparent;
+    border-right: 42px solid transparent;
+    border-bottom: 42px solid transparent;
+    z-index: 3;
+}
+        `.trim()
+    },
+
+    'p37': {
+        id: 'p37',
+        title: 'CSS Battle — Four Corners Pattern',
+        description: `
+CSS recreation of a four-corners composition with mirrored bars and layered circles using pure HTML and CSS.
+
+The design uses:
+- Grid layout for centering
+- A centered square <p> container with an inner <i> element
+- Two perpendicular bars built from ::before and ::after with -webkit-box-reflect
+- Two inner circles inside the <i> element, clipped by overflow: hidden
+- Precise positioning with transform: translate() and translate(-50%, -50%)
+- Layered z-index for proper visual stacking
+- Pure CSS without images, SVG, or JavaScript
+        `.trim(),
+        date: 'Last updated: Oct 12, 2026',
+        version: 'v1.0.0',
+        tags: ['Web Development', 'HTML', 'CSS', 'Pseudo-elements', 'Box Reflect', 'Grid', 'Border-radius', 'CSS Battle'],
+        youtube: '',
+        zipFile: 'assets/zip-files/cssBattle/37 - p37.zip',
+        html: `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Four Corners Pattern</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <p><i></i></p>
+</body>
+</html>
+        `.trim(),
+        css: `
+body {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background: #84B9C7;
+}
+
+p {
+    position: relative;
+    width: 200px;
+    height: 200px;
+}
+
+p:before,
+p:after,
+i:before,
+i:after {
+    content: '';
+    position: absolute;
+}
+
+p:before,
+p:after {
+    background: #ECD5E4;
+    top: 0;
+    left: 0;
+    z-index: 3;
+}
+
+p:before {
+    width: 260px;
+    height: 30px;
+    transform: translate(-30px, -10px);
+    -webkit-box-reflect: below 160px;
+}
+
+p:after {
+    width: 30px;
+    height: 260px;
+    transform: translate(-10px, -30px);
+    -webkit-box-reflect: right 160px;
+}
+
+p i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+}
+
+p i:before,
+p i:after {
+    content: '';
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background: #1D5260;
+    border-radius: 50%;
+    transform: translate(-40px, -40px);
+}
+
+p i:after {
+    bottom: 0;
+    right: 0;
+    transform: translate(40px, 40px);
+}
+        `.trim()
+    },
 };
