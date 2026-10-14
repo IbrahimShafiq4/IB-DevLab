@@ -1684,4 +1684,169 @@ p i:after {
 }
         `.trim()
     },
+    'p38': {
+        id: 'p38',
+        title: 'CSS Battle — Framed Oval',
+        description: `
+CSS recreation of a framed composition with an inner oval using pure HTML and CSS.
+
+The design uses:
+- Grid layout for centering
+- A single <i> element with a thick border to form the outer square frame
+- Two pseudo-elements (::before and ::after) for the top tab and inner oval
+- Precise positioning with translateX(-50%) for horizontal centering
+- border-radius: 50% for the elliptical inner shape
+- Layered z-index for proper visual stacking
+- Pure CSS without images, SVG, or JavaScript
+        `.trim(),
+        date: 'Last updated: Oct 13, 2026',
+        version: 'v1.0.0',
+        tags: ['Web Development', 'HTML', 'CSS', 'Pseudo-elements', 'Border', 'Border-radius', 'Grid', 'CSS Battle'],
+        youtube: '',
+        zipFile: 'assets/zip-files/cssBattle/38 - p38.zip',
+        html: `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Framed Oval</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <i></i>
+</body>
+</html>
+        `.trim(),
+        css: `
+body {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background: #173C46;
+}
+
+i {
+    width: 300px;
+    height: 300px;
+    background: transparent;
+    transform: translateY(32px);
+    border: 30px solid #A27848;
+    position: relative;
+    z-index: 1;
+}
+
+i:before,
+i:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+}
+
+i:before {
+    width: 30px;
+    height: 60px;
+    background: #A27848;
+    transform: translateX(-50%) translateY(-2px);
+}
+
+i:after {
+    width: 280px;
+    height: 160px;
+    background: #E0E7A2;
+    top: 40px;
+    border-radius: 50%;
+}
+        `.trim()
+    },
+    'p39': {
+        id: 'p39',
+        title: 'CSS Battle — Crown Shape',
+        description: `
+CSS recreation of a crown-like composition using pure HTML and CSS.
+
+The design uses:
+- Grid layout for centering
+- A <div> container with two pseudo-elements (::before, ::after)
+- A crown body from the base <div> and a wider base bar from ::after
+- An inner notch cutout built from ::before with border-radius: 0 0 9in 9in
+- The <i> element draws two decorative curved cuts on the sides
+  using radial-gradient with hard color stops
+- Precise positioning with top / left / translate for alignment
+- Pure CSS without images, SVG, or JavaScript
+        `.trim(),
+        date: 'Last updated: Oct 14, 2026',
+        version: 'v1.0.0',
+        tags: ['Web Development', 'HTML', 'CSS', 'Pseudo-elements', 'Radial Gradient', 'Border-radius', 'Grid', 'CSS Battle'],
+        youtube: '',
+        zipFile: 'assets/zip-files/cssBattle/39 - p39.zip',
+        html: `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crown Shape</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div>
+        <i></i>
+    </div>
+</body>
+</html>
+        `.trim(),
+        css: `
+body {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background: #9F6766;
+}
+
+div {
+    width: 140px;
+    height: 80px;
+    background: #BDE4C1;
+    top: -40px;
+    position: relative;
+}
+
+div:before {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 60px;
+    left: 45px;
+    background: #9F6766;
+    border-radius: 0 0 9in 9in;
+}
+
+div:after {
+    content: '';
+    position: absolute;
+    width: 180px;
+    height: 80px;
+    top: 100%;
+    left: -20px;
+    background: #BDE4C1;
+}
+
+div i {
+    position: absolute;
+    width: 160px;
+    height: 10px;
+    top: 70px;
+    left: -10px;
+    background:
+        radial-gradient(circle at 0 0, #9F6766 10px, #BDE4C1 0) left / 10px 10px no-repeat,
+        radial-gradient(circle at 100% 0, #9F6766 10px, #BDE4C1 0) right / 10px 10px no-repeat;
+}
+        `.trim()
+    },
 };

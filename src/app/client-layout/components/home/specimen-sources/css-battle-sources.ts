@@ -2295,4 +2295,124 @@ p i:after {
     transform: translate(40px, 40px);
 }`
   },
+  'CB-38': {
+    stage: 'dark',
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Framed Oval</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <i></i>
+</body>
+</html>`,
+    css: `body {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background: #173C46;
+}
+
+i {
+    width: 300px;
+    height: 300px;
+    background: transparent;
+    transform: translateY(32px);
+    border: 30px solid #A27848;
+    position: relative;
+    z-index: 1;
+}
+
+i:before,
+i:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+}
+
+i:before {
+    width: 30px;
+    height: 60px;
+    background: #A27848;
+    transform: translateX(-50%) translateY(-2px);
+}
+
+i:after {
+    width: 280px;
+    height: 160px;
+    background: #E0E7A2;
+    top: 40px;
+    border-radius: 50%;
+}`
+  },
+  'CB-39': {
+    stage: 'light',
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crown Shape</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div>
+        <i></i>
+    </div>
+</body>
+</html>`,
+    css: `body {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background: #9F6766;
+}
+
+div {
+    width: 140px;
+    height: 80px;
+    background: #BDE4C1;
+    top: -40px;
+    position: relative;
+}
+
+div:before {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 60px;
+    left: 45px;
+    background: #9F6766;
+    border-radius: 0 0 9in 9in;
+}
+
+div:after {
+    content: '';
+    position: absolute;
+    width: 180px;
+    height: 80px;
+    top: 100%;
+    left: -20px;
+    background: #BDE4C1;
+}
+
+div i {
+    position: absolute;
+    width: 160px;
+    height: 10px;
+    top: 70px;
+    left: -10px;
+    background:
+        radial-gradient(circle at 0 0, #9F6766 10px, #BDE4C1 0) left / 10px 10px no-repeat,
+        radial-gradient(circle at 100% 0, #9F6766 10px, #BDE4C1 0) right / 10px 10px no-repeat;
+}`
+  },
 };

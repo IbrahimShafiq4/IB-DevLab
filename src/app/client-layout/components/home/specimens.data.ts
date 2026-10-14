@@ -875,6 +875,30 @@ const BASE_SPECIMENS: Specimen[] = [
     stage: 'light',
     sortKey: 136
   },
+  {
+    id: 'CB-38',
+    kind: 'css-battle',
+    title: 'CSS Battle — Framed Oval',
+    description: 'إطار مربع بـ border سميك + شكل بيضاوي بداخله من pseudo-elements — CSS خالص.',
+    date: 'أكتوبر 2026',
+    addedAt: '2026-10-13',
+    tags: ['CSS', 'Battle', 'Pseudo-elements', 'Border-radius'],
+    href: '/css_battle_p38',
+    stage: 'dark',
+    sortKey: 137
+  },
+  {
+    id: 'CB-39',
+    kind: 'css-battle',
+    title: 'CSS Battle — Crown Shape',
+    description: 'شكل تاج بـ pseudo-elements + radial-gradient للقصات الجانبية — CSS خالص.',
+    date: 'أكتوبر 2026',
+    addedAt: '2026-10-14',
+    tags: ['CSS', 'Battle', 'Pseudo-elements', 'Radial Gradient'],
+    href: '/css_battle_p39',
+    stage: 'light',
+    sortKey: 138
+  },
   // ─── Problem Solving ───
   {
     id: 'PS-01',
@@ -1054,6 +1078,30 @@ const BASE_SPECIMENS: Specimen[] = [
     href: '/problem-solving/binary-tree-inorder-traversal',
     stage: 'dark',
     sortKey: 215
+  },
+  {
+    id: 'PS-17',
+    kind: 'problem-solving',
+    title: 'Same Tree',
+    description: 'قارن شجرتين ثنائيتين — structure وvalues — بـ recursion متوازي.',
+    date: 'أكتوبر 2026',
+    addedAt: '2026-10-13',
+    tags: ['LeetCode', 'Binary Tree', 'Recursion'],
+    href: '/problem-solving/same-tree',
+    stage: 'dark',
+    sortKey: 216
+  },
+  {
+    id: 'PS-18',
+    kind: 'problem-solving',
+    title: 'Symmetric Tree',
+    description: 'اتأكد إن الشجرة mirror حول مركزها — recursion بمقارنة متقاطعة أو BFS بـ queue.',
+    date: 'أكتوبر 2026',
+    addedAt: '2026-10-14',
+    tags: ['LeetCode', 'Binary Tree', 'Recursion'],
+    href: '/problem-solving/symmetric-tree',
+    stage: 'dark',
+    sortKey: 217
   },
   // ─── Clean Code ───
   {

@@ -1872,4 +1872,896 @@ document.addEventListener('DOMContentLoaded', () => {
 `
   },
 
+  'same-tree': {
+    html: makeHtml('two trees (p;q)', '1,2,3;1,2,3'),
+    css: BASE_CSS + `
+    .stage {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 18px;
+      gap: 12px;
+    }
+    .trees-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 640px) {
+      .trees-row { grid-template-columns: 1fr; }
+    }
+    .tree-box {
+      padding: 8px;
+      background: #131C26;
+      border: 1px solid #1E2D42;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .tree-label {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 10px;
+      color: #6B7C92;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      text-align: center;
+    }
+    .tree-box svg {
+      width: 100%;
+      max-height: 220px;
+      display: block;
+    }
+    .stack-panel {
+      padding: 10px 12px;
+      background: #131C26;
+      border: 1px solid #1E2D42;
+      border-radius: 6px;
+    }
+    .stack-title {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 10px;
+      color: #6B7C92;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .stack-list {
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 4px;
+      min-height: 26px;
+    }
+    .stack-frame {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 10px;
+      background: #1E2D42;
+      border-radius: 4px;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 12px;
+    }
+    .stack-frame.top {
+      background: #5B9DFF;
+      color: #0A1017;
+    }
+    .stack-frame .phase {
+      font-size: 10px;
+      opacity: 0.75;
+    }
+    .stack-frame.top .phase {
+      opacity: 0.9;
+    }
+    .stack-empty {
+      color: #6B7C92;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 11px;
+      text-align: center;
+      padding: 6px;
+    }
+    .verdict {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      border-radius: 6px;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .verdict.match {
+      background: rgba(76, 208, 138, 0.12);
+      color: #4CD08A;
+      border: 1px solid #4CD08A;
+    }
+    .verdict.mismatch {
+      background: rgba(242, 107, 98, 0.12);
+      color: #F26B62;
+      border: 1px solid #F26B62;
+    }
+    .verdict.pending {
+      background: #131C26;
+      color: #6B7C92;
+      border: 1px solid #2A3846;
+    }
+    `,
+    js: `
+${HARNESS}
+let _layoutP = null;
+let _layoutQ = null;
+let _shortCircuitAt = null;
+
+function parseTree(input) {
+  const parts = (input || '').split(',').map(s => s.trim());
+  const arr = parts.map(s => (s === 'null' || s === '') ? null : Number(s));
+  if (!arr.length || arr[0] === null) return null;
+  let counter = 0;
+  const nodes = arr.map(v => v === null ? null : ({ val: v, left: null, right: null, id: ++counter }));
+  for (let i = 0; i < nodes.length; i++) {
+    if (!nodes[i]) continue;
+    const li = 2 * i + 1;
+    const ri = 2 * i + 2;
+    if (li < nodes.length) nodes[i].left = nodes[li];
+    if (ri < nodes.length) nodes[i].right = nodes[ri];
+  }
+  return nodes[0];
+}
+
+function layoutTree(root) {
+  let xc = 0;
+  const nodes = [];
+  const edges = [];
+  function visit(n, depth) {
+    if (!n) return;
+    visit(n.left, depth + 1);
+    n._x = xc++;
+    n._y = depth;
+    nodes.push(n);
+    visit(n.right, depth + 1);
+  }
+  visit(root, 0);
+  function collect(n) {
+    if (!n) return;
+    if (n.left) edges.push({ from: n, to: n.left });
+    if (n.right) edges.push({ from: n, to: n.right });
+    collect(n.left);
+    collect(n.right);
+  }
+  collect(root);
+  return { nodes, edges };
+}
+
+function build(input) {
+  const parts = (input || '').split(';');
+  if (parts.length < 2) throw new Error('Format: 1,2,3;1,2,3');
+  const pRoot = parseTree(parts[0]);
+  const qRoot = parseTree(parts[1]);
+
+  _shortCircuitAt = null;
+  const steps = [];
+  const stack = [];
+  let finalResult = null;
+
+  function snap(extra) {
+    return Object.assign({
+      stack: stack.map(f => ({ pVal: f.pVal, qVal: f.qVal, phase: f.phase })),
+      finalResult: finalResult
+    }, extra);
+  }
+
+  function walk(p, q) {
+    if (finalResult !== null) return;
+
+    stack.push({
+      pVal: p ? p.val : null,
+      qVal: q ? q.val : null,
+      phase: 'enter'
+    });
+
+    const bothNull = p === null && q === null;
+    const oneNull = (p === null) !== (q === null);
+
+    if (bothNull) {
+      steps.push(snap({
+        type: 'both-null',
+        pId: null, qId: null,
+        desc: 'الاتنين null → ✓ true'
+      }));
+      stack.pop();
+      return;
+    }
+
+    if (oneNull) {
+      finalResult = false;
+      _shortCircuitAt = { pId: p ? p.id : null, qId: q ? q.id : null };
+      stack[stack.length - 1].phase = 'mismatch';
+      steps.push(snap({
+        type: 'one-null',
+        pId: p ? p.id : null,
+        qId: q ? q.id : null,
+        desc: 'واحد null والتاني ' + (p ? p.val : q.val) + ' → ✕ false'
+      }));
+      stack.pop();
+      return;
+    }
+
+    if (p.val !== q.val) {
+      finalResult = false;
+      _shortCircuitAt = { pId: p.id, qId: q.id };
+      stack[stack.length - 1].phase = 'mismatch';
+      steps.push(snap({
+        type: 'value-diff',
+        pId: p.id,
+        qId: q.id,
+        desc: p.val + ' ≠ ' + q.val + ' → ✕ false'
+      }));
+      stack.pop();
+      return;
+    }
+
+    steps.push(snap({
+      type: 'value-same',
+      pId: p.id,
+      qId: q.id,
+      desc: p.val + ' = ' + q.val + ' → ✓ نكمل'
+    }));
+
+    stack[stack.length - 1].phase = 'left';
+    walk(p.left, q.left);
+    if (finalResult !== null) { stack.pop(); return; }
+
+    stack[stack.length - 1].phase = 'right';
+    walk(p.right, q.right);
+    if (finalResult !== null) { stack.pop(); return; }
+
+    stack.pop();
+    steps.push(snap({
+      type: 'return-true',
+      pId: p.id,
+      qId: q.id,
+      desc: 'نرجع true من ' + p.val
+    }));
+  }
+
+  walk(pRoot, qRoot);
+
+  if (finalResult === null) {
+    finalResult = true;
+    steps.push(snap({
+      type: 'done',
+      pId: null, qId: null,
+      desc: 'خلصنا ✓ الشجرتين متطابقتين'
+    }));
+  } else {
+    steps.push(snap({
+      type: 'done',
+      pId: null, qId: null,
+      desc: 'خلصنا ✕ الشجرتين مختلفتين'
+    }));
+  }
+
+  _layoutP = layoutTree(pRoot);
+  _layoutQ = layoutTree(qRoot);
+  return steps;
+}
+
+function renderOneTree(layout, activeId, shortId, ns) {
+  if (!layout || !layout.nodes.length) {
+    const empty = document.createElement('div');
+    empty.className = 'stack-empty';
+    empty.textContent = '(فاضية)';
+    return empty;
+  }
+
+  const NODE_R = 18;
+  const X_GAP = 48;
+  const Y_GAP = 58;
+  const maxX = Math.max.apply(null, layout.nodes.map(n => n._x));
+  const maxY = Math.max.apply(null, layout.nodes.map(n => n._y));
+  const W = (maxX + 1) * X_GAP + 30;
+  const H = (maxY + 1) * Y_GAP + 30;
+
+  const svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+  svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+
+  layout.edges.forEach(e => {
+    const line = document.createElementNS(ns, 'line');
+    line.setAttribute('x1', e.from._x * X_GAP + 15 + NODE_R);
+    line.setAttribute('y1', e.from._y * Y_GAP + 15 + NODE_R);
+    line.setAttribute('x2', e.to._x * X_GAP + 15 + NODE_R);
+    line.setAttribute('y2', e.to._y * Y_GAP + 15 + NODE_R);
+    line.setAttribute('stroke', '#2A3846');
+    line.setAttribute('stroke-width', '2');
+    svg.appendChild(line);
+  });
+
+  layout.nodes.forEach(n => {
+    const cx = n._x * X_GAP + 15 + NODE_R;
+    const cy = n._y * Y_GAP + 15 + NODE_R;
+    const isActive = n.id === activeId;
+    const isShort = n.id === shortId;
+
+    const c = document.createElementNS(ns, 'circle');
+    c.setAttribute('cx', cx);
+    c.setAttribute('cy', cy);
+    c.setAttribute('r', NODE_R);
+    let fill = '#131C26';
+    let stroke = '#5B9DFF';
+    if (isShort) { fill = '#F26B62'; stroke = '#F26B62'; }
+    else if (isActive) { fill = '#F2B200'; stroke = '#F2B200'; }
+    c.setAttribute('fill', fill);
+    c.setAttribute('stroke', stroke);
+    c.setAttribute('stroke-width', '2');
+    svg.appendChild(c);
+
+    const t = document.createElementNS(ns, 'text');
+    t.setAttribute('x', cx);
+    t.setAttribute('y', cy + 4);
+    t.setAttribute('text-anchor', 'middle');
+    t.setAttribute('font-family', 'ui-monospace, monospace');
+    t.setAttribute('font-size', '12');
+    t.setAttribute('font-weight', '700');
+    t.setAttribute('fill', (isActive || isShort) ? '#0A1017' : '#E9EFF5');
+    t.textContent = n.val;
+    svg.appendChild(t);
+  });
+
+  return svg;
+}
+
+function render(idx) {
+  const safe = Math.max(0, Math.min(idx, state.steps.length - 1));
+  const step = state.steps[safe];
+  const stage = $('stage');
+  stage.innerHTML = '';
+
+  const ns = 'http://www.w3.org/2000/svg';
+  const scP = _shortCircuitAt ? _shortCircuitAt.pId : null;
+  const scQ = _shortCircuitAt ? _shortCircuitAt.qId : null;
+
+  const row = document.createElement('div');
+  row.className = 'trees-row';
+
+  const boxP = document.createElement('div');
+  boxP.className = 'tree-box';
+  const lblP = document.createElement('div');
+  lblP.className = 'tree-label';
+  lblP.textContent = 'Tree p';
+  boxP.appendChild(lblP);
+  boxP.appendChild(renderOneTree(_layoutP, step.pId, scP, ns));
+
+  const boxQ = document.createElement('div');
+  boxQ.className = 'tree-box';
+  const lblQ = document.createElement('div');
+  lblQ.className = 'tree-label';
+  lblQ.textContent = 'Tree q';
+  boxQ.appendChild(lblQ);
+  boxQ.appendChild(renderOneTree(_layoutQ, step.qId, scQ, ns));
+
+  row.appendChild(boxP);
+  row.appendChild(boxQ);
+  stage.appendChild(row);
+
+  const stackPanel = document.createElement('div');
+  stackPanel.className = 'stack-panel';
+  const stackTitle = document.createElement('div');
+  stackTitle.className = 'stack-title';
+  stackTitle.textContent = 'Call Stack';
+  const stackList = document.createElement('div');
+  stackList.className = 'stack-list';
+
+  if (!step.stack || !step.stack.length) {
+    const em = document.createElement('div');
+    em.className = 'stack-empty';
+    em.textContent = '(فاضي)';
+    stackList.appendChild(em);
+  } else {
+    const labels = { enter: 'entering', left: 'left', right: 'right', mismatch: 'mismatch' };
+    step.stack.forEach((frame, i) => {
+      const el = document.createElement('div');
+      el.className = 'stack-frame';
+      if (i === step.stack.length - 1) el.classList.add('top');
+      const val = document.createElement('span');
+      val.textContent = 'p=' + (frame.pVal === null ? 'null' : frame.pVal) + '  q=' + (frame.qVal === null ? 'null' : frame.qVal);
+      const phase = document.createElement('span');
+      phase.className = 'phase';
+      phase.textContent = labels[frame.phase] || frame.phase;
+      el.appendChild(val);
+      el.appendChild(phase);
+      stackList.appendChild(el);
+    });
+  }
+
+  stackPanel.appendChild(stackTitle);
+  stackPanel.appendChild(stackList);
+  stage.appendChild(stackPanel);
+
+  let verdictCls = 'pending';
+  let verdictText = '...';
+  if (step.type === 'done') {
+    if (step.finalResult === true) { verdictCls = 'match'; verdictText = '✓ same tree'; }
+    else { verdictCls = 'mismatch'; verdictText = '✕ not same tree'; }
+  } else if (step.finalResult === false) {
+    verdictCls = 'mismatch';
+    verdictText = '✕ short-circuit false';
+  } else if (step.type === 'both-null' || step.type === 'value-same' || step.type === 'return-true') {
+    verdictCls = 'match';
+    verdictText = '✓ so far';
+  }
+
+  const verdict = document.createElement('div');
+  verdict.className = 'verdict ' + verdictCls;
+  verdict.textContent = verdictText;
+  stage.appendChild(verdict);
+
+  setStats([
+    ['العملية', step.type || '—'],
+    ['stack size', (step.stack || []).length],
+    ['الحالة', step.finalResult === null ? '...' : (step.finalResult ? 'true ✓' : 'false ✕')],
+    ['الخطوة', (safe + 1) + ' / ' + state.steps.length]
+  ]);
+
+  if (idx >= 0 && step.desc) {
+    let cls = 'info';
+    if (step.type === 'both-null' || step.type === 'value-same' || step.type === 'return-true' || (step.type === 'done' && step.finalResult)) cls = 'ok';
+    else if (step.type === 'one-null' || step.type === 'value-diff' || (step.type === 'done' && !step.finalResult)) cls = 'err';
+    log(step.desc, cls);
+  }
+}
+`
+  },
+  'symmetric-tree': {
+    html: makeHtml('tree array (null للـ empty)', '1,2,2,3,4,4,3'),
+    css: BASE_CSS + `
+    .stage {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 18px;
+      gap: 12px;
+    }
+    .stage svg {
+      width: 100%;
+      max-height: 280px;
+      display: block;
+    }
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 10px;
+      color: #6B7C92;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .stack-panel {
+      padding: 10px 12px;
+      background: #131C26;
+      border: 1px solid #1E2D42;
+      border-radius: 6px;
+    }
+    .stack-title {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 10px;
+      color: #6B7C92;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .stack-list {
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 4px;
+      min-height: 26px;
+    }
+    .stack-frame {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 10px;
+      background: #1E2D42;
+      border-radius: 4px;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 12px;
+    }
+    .stack-frame.top {
+      background: #5B9DFF;
+      color: #0A1017;
+    }
+    .stack-frame .phase {
+      font-size: 10px;
+      opacity: 0.75;
+    }
+    .stack-frame.top .phase { opacity: 0.9; }
+    .stack-empty {
+      color: #6B7C92;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 11px;
+      text-align: center;
+      padding: 6px;
+    }
+    .verdict {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      border-radius: 6px;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .verdict.match {
+      background: rgba(76, 208, 138, 0.12);
+      color: #4CD08A;
+      border: 1px solid #4CD08A;
+    }
+    .verdict.mismatch {
+      background: rgba(242, 107, 98, 0.12);
+      color: #F26B62;
+      border: 1px solid #F26B62;
+    }
+    .verdict.pending {
+      background: #131C26;
+      color: #6B7C92;
+      border: 1px solid #2A3846;
+    }
+    `,
+    js: `
+${HARNESS}
+let _treeLayout = null;
+let _shortCircuit = null;
+
+function parseTree(input) {
+  const parts = (input || '').split(',').map(s => s.trim());
+  const arr = parts.map(s => (s === 'null' || s === '') ? null : Number(s));
+  if (!arr.length || arr[0] === null) return null;
+  let counter = 0;
+  const nodes = arr.map(v => v === null ? null : ({ val: v, left: null, right: null, id: ++counter }));
+  for (let i = 0; i < nodes.length; i++) {
+    if (!nodes[i]) continue;
+    const li = 2 * i + 1;
+    const ri = 2 * i + 2;
+    if (li < nodes.length) nodes[i].left = nodes[li];
+    if (ri < nodes.length) nodes[i].right = nodes[ri];
+  }
+  return nodes[0];
+}
+
+function layoutTree(root) {
+  let xc = 0;
+  const nodes = [];
+  const edges = [];
+  function visit(n, depth) {
+    if (!n) return;
+    visit(n.left, depth + 1);
+    n._x = xc++;
+    n._y = depth;
+    nodes.push(n);
+    visit(n.right, depth + 1);
+  }
+  visit(root, 0);
+  function collect(n) {
+    if (!n) return;
+    if (n.left) edges.push({ from: n, to: n.left });
+    if (n.right) edges.push({ from: n, to: n.right });
+    collect(n.left);
+    collect(n.right);
+  }
+  collect(root);
+  return { nodes, edges };
+}
+
+function build(input) {
+  const root = parseTree(input);
+
+  if (!root) {
+    _treeLayout = { nodes: [], edges: [] };
+    _shortCircuit = null;
+    return [{
+      type: 'done',
+      finalResult: true,
+      leftId: null,
+      rightId: null,
+      stack: [],
+      desc: 'شجرة فاضية → true'
+    }];
+  }
+
+  _shortCircuit = null;
+  const steps = [];
+  const stack = [];
+  let finalResult = null;
+
+  function snap(extra) {
+    return Object.assign({
+      stack: stack.map(f => ({ leftVal: f.leftVal, rightVal: f.rightVal, phase: f.phase })),
+      finalResult: finalResult
+    }, extra);
+  }
+
+  function isMirror(left, right) {
+    if (finalResult !== null) return;
+
+    stack.push({
+      leftVal: left ? left.val : null,
+      rightVal: right ? right.val : null,
+      phase: 'enter'
+    });
+
+    const bothNull = left === null && right === null;
+    const oneNull = (left === null) !== (right === null);
+
+    if (bothNull) {
+      steps.push(snap({
+        type: 'both-null',
+        leftId: null, rightId: null,
+        desc: 'الاتنين null → ✓ true'
+      }));
+      stack.pop();
+      return;
+    }
+
+    if (oneNull) {
+      finalResult = false;
+      _shortCircuit = { leftId: left ? left.id : null, rightId: right ? right.id : null };
+      stack[stack.length - 1].phase = 'mismatch';
+      steps.push(snap({
+        type: 'one-null',
+        leftId: left ? left.id : null,
+        rightId: right ? right.id : null,
+        desc: 'واحد null والتاني ' + (left ? left.val : right.val) + ' → ✕ false'
+      }));
+      stack.pop();
+      return;
+    }
+
+    if (left.val !== right.val) {
+      finalResult = false;
+      _shortCircuit = { leftId: left.id, rightId: right.id };
+      stack[stack.length - 1].phase = 'mismatch';
+      steps.push(snap({
+        type: 'value-diff',
+        leftId: left.id,
+        rightId: right.id,
+        desc: left.val + ' ≠ ' + right.val + ' → ✕ false'
+      }));
+      stack.pop();
+      return;
+    }
+
+    steps.push(snap({
+      type: 'value-same',
+      leftId: left.id,
+      rightId: right.id,
+      desc: left.val + ' = ' + right.val + ' → ✓ نكمل'
+    }));
+
+    stack[stack.length - 1].phase = 'outer';
+    isMirror(left.left, right.right);
+    if (finalResult !== null) { stack.pop(); return; }
+
+    stack[stack.length - 1].phase = 'inner';
+    isMirror(left.right, right.left);
+    if (finalResult !== null) { stack.pop(); return; }
+
+    stack.pop();
+    steps.push(snap({
+      type: 'return-true',
+      leftId: left.id,
+      rightId: right.id,
+      desc: 'نرجع true من ' + left.val
+    }));
+  }
+
+  steps.push(snap({
+    type: 'start',
+    leftId: root.id,
+    rightId: root.id,
+    desc: 'نبدأ من الـ root — نقارن subtree اليسار مع subtree اليمين كـ mirror'
+  }));
+
+  isMirror(root.left, root.right);
+
+  if (finalResult === null) {
+    finalResult = true;
+    steps.push(snap({
+      type: 'done',
+      leftId: null, rightId: null,
+      desc: 'خلصنا ✓ الشجرة symmetric'
+    }));
+  } else {
+    steps.push(snap({
+      type: 'done',
+      leftId: null, rightId: null,
+      desc: 'خلصنا ✕ الشجرة مش symmetric'
+    }));
+  }
+
+  _treeLayout = layoutTree(root);
+  return steps;
+}
+
+function renderTree(activeLeft, activeRight, shortLeft, shortRight, ns) {
+  if (!_treeLayout || !_treeLayout.nodes.length) {
+    const empty = document.createElement('div');
+    empty.className = 'stack-empty';
+    empty.textContent = '(شجرة فاضية)';
+    return empty;
+  }
+
+  const NODE_R = 20;
+  const X_GAP = 55;
+  const Y_GAP = 62;
+  const maxX = Math.max.apply(null, _treeLayout.nodes.map(n => n._x));
+  const maxY = Math.max.apply(null, _treeLayout.nodes.map(n => n._y));
+  const W = (maxX + 1) * X_GAP + 30;
+  const H = (maxY + 1) * Y_GAP + 30;
+
+  const svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+  svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+
+  _treeLayout.edges.forEach(e => {
+    const line = document.createElementNS(ns, 'line');
+    line.setAttribute('x1', e.from._x * X_GAP + 15 + NODE_R);
+    line.setAttribute('y1', e.from._y * Y_GAP + 15 + NODE_R);
+    line.setAttribute('x2', e.to._x * X_GAP + 15 + NODE_R);
+    line.setAttribute('y2', e.to._y * Y_GAP + 15 + NODE_R);
+    line.setAttribute('stroke', '#2A3846');
+    line.setAttribute('stroke-width', '2');
+    svg.appendChild(line);
+  });
+
+  _treeLayout.nodes.forEach(n => {
+    const cx = n._x * X_GAP + 15 + NODE_R;
+    const cy = n._y * Y_GAP + 15 + NODE_R;
+    const isLeft = n.id === activeLeft;
+    const isRight = n.id === activeRight;
+    const isShort = n.id === shortLeft || n.id === shortRight;
+
+    const c = document.createElementNS(ns, 'circle');
+    c.setAttribute('cx', cx);
+    c.setAttribute('cy', cy);
+    c.setAttribute('r', NODE_R);
+
+    let fill = '#131C26';
+    let stroke = '#5B9DFF';
+    if (isShort) { fill = '#F26B62'; stroke = '#F26B62'; }
+    else if (isLeft) { fill = '#F2B200'; stroke = '#F2B200'; }
+    else if (isRight) { fill = '#5B9DFF'; stroke = '#5B9DFF'; }
+
+    c.setAttribute('fill', fill);
+    c.setAttribute('stroke', stroke);
+    c.setAttribute('stroke-width', '2');
+    svg.appendChild(c);
+
+    const t = document.createElementNS(ns, 'text');
+    t.setAttribute('x', cx);
+    t.setAttribute('y', cy + 4);
+    t.setAttribute('text-anchor', 'middle');
+    t.setAttribute('font-family', 'ui-monospace, monospace');
+    t.setAttribute('font-size', '13');
+    t.setAttribute('font-weight', '700');
+    t.setAttribute('fill', (isLeft || isRight || isShort) ? '#0A1017' : '#E9EFF5');
+    t.textContent = n.val;
+    svg.appendChild(t);
+  });
+
+  return svg;
+}
+
+function render(idx) {
+  const safe = Math.max(0, Math.min(idx, state.steps.length - 1));
+  const step = state.steps[safe];
+  const stage = $('stage');
+  stage.innerHTML = '';
+
+  const ns = 'http://www.w3.org/2000/svg';
+  const scL = _shortCircuit ? _shortCircuit.leftId : null;
+  const scR = _shortCircuit ? _shortCircuit.rightId : null;
+
+  stage.appendChild(renderTree(step.leftId, step.rightId, scL, scR, ns));
+
+  const legend = document.createElement('div');
+  legend.className = 'legend';
+  const items = [
+    { color: '#F2B200', text: 'Left node' },
+    { color: '#5B9DFF', text: 'Right node (mirror)' },
+    { color: '#F26B62', text: 'Mismatch' }
+  ];
+  items.forEach(it => {
+    const el = document.createElement('span');
+    el.className = 'legend-item';
+    const dot = document.createElement('span');
+    dot.className = 'legend-dot';
+    dot.style.background = it.color;
+    el.appendChild(dot);
+    el.appendChild(document.createTextNode(it.text));
+    legend.appendChild(el);
+  });
+  stage.appendChild(legend);
+
+  const stackPanel = document.createElement('div');
+  stackPanel.className = 'stack-panel';
+  const stackTitle = document.createElement('div');
+  stackTitle.className = 'stack-title';
+  stackTitle.textContent = 'Call Stack';
+  const stackList = document.createElement('div');
+  stackList.className = 'stack-list';
+
+  if (!step.stack || !step.stack.length) {
+    const em = document.createElement('div');
+    em.className = 'stack-empty';
+    em.textContent = '(فاضي)';
+    stackList.appendChild(em);
+  } else {
+    const labels = { enter: 'entering', outer: 'outer', inner: 'inner', mismatch: 'mismatch' };
+    step.stack.forEach((frame, i) => {
+      const el = document.createElement('div');
+      el.className = 'stack-frame';
+      if (i === step.stack.length - 1) el.classList.add('top');
+      const val = document.createElement('span');
+      val.textContent = 'L=' + (frame.leftVal === null ? 'null' : frame.leftVal) + '  R=' + (frame.rightVal === null ? 'null' : frame.rightVal);
+      const phase = document.createElement('span');
+      phase.className = 'phase';
+      phase.textContent = labels[frame.phase] || frame.phase;
+      el.appendChild(val);
+      el.appendChild(phase);
+      stackList.appendChild(el);
+    });
+  }
+
+  stackPanel.appendChild(stackTitle);
+  stackPanel.appendChild(stackList);
+  stage.appendChild(stackPanel);
+
+  let verdictCls = 'pending';
+  let verdictText = '...';
+  if (step.type === 'done') {
+    if (step.finalResult === true) { verdictCls = 'match'; verdictText = '✓ symmetric'; }
+    else { verdictCls = 'mismatch'; verdictText = '✕ not symmetric'; }
+  } else if (step.finalResult === false) {
+    verdictCls = 'mismatch';
+    verdictText = '✕ short-circuit false';
+  } else if (step.type === 'both-null' || step.type === 'value-same' || step.type === 'return-true' || step.type === 'start') {
+    verdictCls = 'match';
+    verdictText = '✓ so far';
+  }
+
+  const verdict = document.createElement('div');
+  verdict.className = 'verdict ' + verdictCls;
+  verdict.textContent = verdictText;
+  stage.appendChild(verdict);
+
+  setStats([
+    ['العملية', step.type || '—'],
+    ['stack size', (step.stack || []).length],
+    ['الحالة', step.finalResult === null ? '...' : (step.finalResult ? 'true ✓' : 'false ✕')],
+    ['الخطوة', (safe + 1) + ' / ' + state.steps.length]
+  ]);
+
+  if (idx >= 0 && step.desc) {
+    let cls = 'info';
+    if (step.type === 'both-null' || step.type === 'value-same' || step.type === 'return-true' || step.type === 'start' || (step.type === 'done' && step.finalResult)) cls = 'ok';
+    else if (step.type === 'one-null' || step.type === 'value-diff' || (step.type === 'done' && !step.finalResult)) cls = 'err';
+    log(step.desc, cls);
+  }
+}
+`
+  },
 };

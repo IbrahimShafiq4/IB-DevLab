@@ -301,6 +301,18 @@ const routes: Routes = [
         data: { battleId: 'p37' },
         title: 'CSS Battle Project 37'
       },
+      {
+        path: 'css_battle_p38',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p38' },
+        title: 'CSS Battle Project 38'
+      },
+      {
+        path: 'css_battle_p39',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p39' },
+        title: 'CSS Battle Project 39'
+      },
       // ─── Problem Solving ───
       {
         path: 'problem-solving/roman-to-integer',
@@ -397,6 +409,18 @@ const routes: Routes = [
         loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
         data: { problemId: 'binary-tree-inorder-traversal' },
         title: 'Binary Tree Inorder Traversal'
+      },
+      {
+        path: 'problem-solving/same-tree',
+        loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
+        data: { problemId: 'same-tree' },
+        title: 'Same Tree'
+      },
+      {
+        path: 'problem-solving/symmetric-tree',
+        loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
+        data: { problemId: 'symmetric-tree' },
+        title: 'Symmetric Tree'
       },
       // ─── Clean Code (unified — everything routed through clean-code-page) ───
       ...CLEAN_CODE_ROUTES,

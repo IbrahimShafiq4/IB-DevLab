@@ -5194,6 +5194,1081 @@ describe('inorderTraversal', () => {
             ]
         }
     },
+
+    // ═══════════════════════════════════════════════════════════════
+    // 17. Same Tree — LeetCode #100
+    // ═══════════════════════════════════════════════════════════════
+    'same-tree': {
+        id: 'same-tree',
+        projectName: 'Same Tree',
+        projectDescription: 'قارن شجرتين ثنائيتين — هل هما متطابقتين في الشكل والقيم؟',
+        projectDate: 'October 13, 2026',
+        projectVersion: 'LeetCode #100',
+        tags: ['Problem Solving', 'JavaScript', 'TypeScript', 'LeetCode', 'Binary Tree', 'Recursion'],
+
+        problemSolvingContent: {
+            problem: `
+Given the roots of two binary trees p and q,
+write a function to check if they are the same or not.
+
+Two binary trees are considered the same if they are
+structurally identical, and the nodes have the same value.
+
+Example 1:
+Input: p = [1,2,3], q = [1,2,3]
+Output: true
+
+Example 2:
+Input: p = [1,2], q = [1,null,2]
+Output: false
+
+Example 3:
+Input: p = [1,2,1], q = [1,1,2]
+Output: false
+
+Constraints:
+- The number of nodes in both trees is in the range [0, 100].
+- -10^4 <= Node.val <= 10^4
+            `,
+
+            generalIdea: `
+الشجرتين "متطابقتين" لو:
+1. نفس الشكل (نفس structure).
+2. كل node في نفس المكان عنده نفس القيمة.
+
+الفكرة الأساسية: **Recursion بمقارنة متوازية**.
+
+في كل خطوة:
+- لو الاتنين null → متطابقتين في الفرع ده.
+- لو واحد null والتاني مش null → مختلفتين (structure مختلف).
+- لو القيم مختلفة → مختلفتين.
+- غير كده → نكمل على left و right.
+
+ملاحظة مهمة: أي mismatch في أي مكان → نرجع false فورًا (short-circuit).
+مش محتاجين نكمل باقي الشجرة.
+            `,
+
+            solutionIdea: `
+بنستخدم دالة recursive بتاخد pointerين (p و q):
+
+1. لو p == null && q == null → return true.
+2. لو p == null || q == null → return false.
+3. لو p.val !== q.val → return false.
+4. return isSameTree(p.left, q.left) && isSameTree(p.right, q.right).
+
+الـ && بيعمل short-circuit:
+لو الـ left رجع false، مش محتاجين نفحص الـ right.
+
+المقارنة بتشتغل "متوازية":
+- كل نداء بياخد node من p و node من q في نفس المستوى.
+- وبالتالي الشكل لازم يتطابق قبل ما القيم تتقارن.
+
+الـ base cases هي اللي بتحدد الشكل:
+- both null → still same.
+- one null → different shape.
+            `,
+
+            steps: [
+                'لو p و q الاتنين null → نرجع true.',
+                'لو واحد منهم null والتاني مش → نرجع false.',
+                'لو p.val !== q.val → نرجع false.',
+                'نكرر على p.left و q.left (بنفس المنطق).',
+                'نكرر على p.right و q.right.',
+                'النتيجة النهائية: true لو كل النداءات رجعت true.',
+                'أي false في أي مكان → النتيجة كلها false فورًا.'
+            ],
+
+            example: {
+                input: 'p = [1,2,3], q = [1,2,3]',
+                output: 'true',
+                explanation: `الشجرتين:
+    p:        q:
+    1         1
+   / \\       / \\
+  2   3     2   3
+
+الـ trace:
+isSameTree(1, 1):
+  ✓ p.val === q.val
+  → isSameTree(2, 2):
+      ✓ p.val === q.val
+      → isSameTree(null, null) → true
+      → isSameTree(null, null) → true
+      → true
+  → isSameTree(3, 3):
+      ✓ p.val === q.val
+      → true
+  → true && true → true
+
+النتيجة: true ✓
+
+مثال مختلف:
+p = [1,2], q = [1,null,2]
+
+    p:        q:
+    1         1
+   /           \\
+  2             2
+
+الـ trace:
+isSameTree(1, 1):
+  ✓
+  → isSameTree(2, null):
+      ✕ one null → false
+  short-circuit → false
+
+النتيجة: false ✓`
+            },
+
+            complexity: {
+                time: 'O(min(n, m))',
+                space: 'O(min(h_p, h_q))'
+            },
+
+            visualization: {
+                kind: 'diagram',
+                title: 'مسار المقارنة على p = [1,2,3], q = [1,2,3]',
+                content: `isSameTree(1, 1)
+  │  ✓ 1 = 1
+  ├─ isSameTree(2, 2)
+  │    │  ✓ 2 = 2
+  │    ├─ isSameTree(null, null)  → true
+  │    └─ isSameTree(null, null)  → true
+  │    → true
+  └─ isSameTree(3, 3)
+       │  ✓ 3 = 3
+       ├─ isSameTree(null, null)  → true
+       └─ isSameTree(null, null)  → true
+       → true
+  → true && true → true
+
+Result: true ✓`,
+                caption: 'المقارنة بتشتغل depth-first على الاتنين في نفس الوقت.'
+            },
+
+            approaches: [
+                {
+                    name: 'Approach 1 - Recursive (الأمثل)',
+                    tagline: 'الحل الطبيعي: recursion بمقارنة متوازية.',
+                    complexity: { time: 'O(n)', space: 'O(h)' },
+                    tradeoffs: [
+                        'الأبسط والأوضح.',
+                        'بيوصف الـ structure + values في نفس الوقت.',
+                        'الـ && بيعمل short-circuit — أداء ممتاز.',
+                        'الـ space = ارتفاع الشجرة (call stack).'
+                    ],
+                    samples: [
+                        {
+                            label: 'same-tree.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function isSameTree(p: TreeNode | null, q: TreeNode | null): boolean {
+  if (p === null && q === null) return true;
+  if (p === null || q === null) return false;
+  if (p.val !== q.val) return false;
+
+  return isSameTree(p.left, q.left)
+      && isSameTree(p.right, q.right);
+}`,
+                            notes: [
+                                'أول base case: الاتنين null → متطابقتين.',
+                                'تاني base case: واحد بس null → مختلفتين.',
+                                'بعد ما نتأكد الاتنين مش null، نقارن القيم.',
+                                'الـ && بيعمل short-circuit — لو left false، مايفحصش right.',
+                                'Complexity: O(n) time، O(h) space.'
+                            ]
+                        },
+                        {
+                            label: 'same-tree.js',
+                            language: 'javascript',
+                            framework: 'JavaScript',
+                            code: `var isSameTree = function(p, q) {
+    if (p == null && q == null) return true;
+    if (p == null || q == null) return false;
+
+    return q.val == p.val &&
+        isSameTree(q.left, p.left) &&
+        isSameTree(q.right, p.right);
+};`,
+                            notes: [
+                                'نفس الحل بـ JavaScript (زي ما كتبته بالظبط).',
+                                'الترتيب مش مهم في النداء (q.left أو p.left) — نفس النتيجة.',
+                                'بنستخدم == بدل === عشان null == undefined → true.',
+                                'لو عايز strict، استخدم === وهي نفس النتيجة كمان.'
+                            ]
+                        },
+                        {
+                            label: 'SameTree.cs',
+                            language: 'csharp',
+                            framework: 'C#',
+                            code: `public class TreeNode
+{
+    public int val;
+    public TreeNode left;
+    public TreeNode right;
+    public TreeNode(int val = 0, TreeNode left = null, TreeNode right = null)
+    {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+public static class Solution
+{
+    public static bool IsSameTree(TreeNode p, TreeNode q)
+    {
+        if (p == null && q == null) return true;
+        if (p == null || q == null) return false;
+        if (p.val != q.val) return false;
+
+        return IsSameTree(p.left, q.left)
+            && IsSameTree(p.right, q.right);
+    }
+}`,
+                            notes: [
+                                'في C#، بنستخدم == عادي (بتشتغل صح مع null).',
+                                'باقي المنطق نفسه تمامًا.',
+                                'الـ && بيعمل short-circuit زي JavaScript.',
+                                'لو الشجرة كبيرة، الـ recursion depth ممكن تكون مشكلة — نستخدم iterative.'
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Approach 2 - Iterative (Queue / BFS)',
+                    tagline: 'نفس المنطق بس بـ queue — level by level.',
+                    complexity: { time: 'O(n)', space: 'O(n) (queue)' },
+                    tradeoffs: [
+                        'بيتجنب الـ recursion stack overflow.',
+                        'أوضح لو بتفكر BFS.',
+                        'بيستهلك memory أكبر (queue بدل call stack).',
+                        'مفيد لو الشجرة عميقة جدًا.'
+                    ],
+                    samples: [
+                        {
+                            label: 'same-tree-iterative.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function isSameTree(p: TreeNode | null, q: TreeNode | null): boolean {
+  const queue: Array<[TreeNode | null, TreeNode | null]> = [[p, q]];
+
+  while (queue.length) {
+    const [a, b] = queue.shift()!;
+
+    if (a === null && b === null) continue;
+    if (a === null || b === null) return false;
+    if (a.val !== b.val) return false;
+
+    queue.push([a.left, b.left]);
+    queue.push([a.right, b.right]);
+  }
+
+  return true;
+}`,
+                            notes: [
+                                'بنستخدم queue فيها أزواج (p_node, q_node).',
+                                'في كل iteration، بنطلع زوج وبنقارن.',
+                                'لو أي اختلاف → false.',
+                                'بنضيف الأبناء للـ queue عشان نفحصهم بعدين.',
+                                'BFS بدل DFS — نفس النتيجة.'
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Approach 3 - Iterative (Stack / DFS)',
+                    tagline: 'زي الـ recursive بس بـ stack صريح.',
+                    complexity: { time: 'O(n)', space: 'O(h)' },
+                    tradeoffs: [
+                        'بيقلّد الـ recursion بدون call stack.',
+                        'الـ memory مقارب للـ recursive.',
+                        'أسهل من queue لو بتفكر DFS.'
+                    ],
+                    samples: [
+                        {
+                            label: 'same-tree-stack.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function isSameTree(p: TreeNode | null, q: TreeNode | null): boolean {
+  const stack: Array<[TreeNode | null, TreeNode | null]> = [[p, q]];
+
+  while (stack.length) {
+    const [a, b] = stack.pop()!;
+
+    if (a === null && b === null) continue;
+    if (a === null || b === null) return false;
+    if (a.val !== b.val) return false;
+
+    stack.push([a.left, b.left]);
+    stack.push([a.right, b.right]);
+  }
+
+  return true;
+}`,
+                            notes: [
+                                'زي الـ queue بس بـ LIFO.',
+                                'الفرق مع queue: ترتيب الزيارة، لكن نفس النتيجة.',
+                                'مفيش recursion — مفيش خطر stack overflow.',
+                                'الـ space = O(h) في المتوسط، O(n) في أسوأ حالة.'
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Approach 4 - Serialization',
+                    tagline: 'سريع في الكتابة، بس memory أكتر.',
+                    complexity: { time: 'O(n)', space: 'O(n)' },
+                    tradeoffs: [
+                        'كود قصير جدًا.',
+                        'بيستهلك memory O(n) للـ serialized strings.',
+                        'بطيء نسبيًا بسبب string building.',
+                        'مفيد كـ shortcut في المقابلات لو الوقت ضيق.'
+                    ],
+                    samples: [
+                        {
+                            label: 'same-tree-serialize.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function isSameTree(p: TreeNode | null, q: TreeNode | null): boolean {
+  function serialize(node: TreeNode | null): string {
+    if (node === null) return 'N';
+    return node.val + ',' + serialize(node.left) + ',' + serialize(node.right);
+  }
+
+  return serialize(p) === serialize(q);
+}`,
+                            notes: [
+                                'بنعمل serialize لكل شجرة بنفس الترتيب (preorder).',
+                                'لو الـ strings متساوية → الشجرتين متطابقتين.',
+                                'الـ N بتمثل null.',
+                                'ملاحظة: فاصلة بين القيم ضرورية عشان مايحصلش خلط (مثلاً 12 vs 1,2).'
+                            ]
+                        }
+                    ]
+                }
+            ],
+
+            testing: [
+                {
+                    title: 'Jest',
+                    framework: 'Jest (TS/JS)',
+                    code: `import { isSameTree, TreeNode } from './same-tree';
+
+function buildTree(arr: (number | null)[]): TreeNode | null {
+  if (!arr.length || arr[0] === null) return null;
+  const nodes = arr.map(v => v === null ? null : new TreeNode(v));
+  for (let i = 0; i < nodes.length; i++) {
+    if (!nodes[i]) continue;
+    const li = 2 * i + 1;
+    const ri = 2 * i + 2;
+    if (li < nodes.length) nodes[i]!.left = nodes[li];
+    if (ri < nodes.length) nodes[i]!.right = nodes[ri];
+  }
+  return nodes[0];
+}
+
+describe('isSameTree', () => {
+  it('returns true for identical trees', () => {
+    expect(isSameTree(buildTree([1,2,3]), buildTree([1,2,3]))).toBe(true);
+  });
+
+  it('returns false for structural mismatch', () => {
+    expect(isSameTree(buildTree([1,2]), buildTree([1,null,2]))).toBe(false);
+  });
+
+  it('returns false for value mismatch', () => {
+    expect(isSameTree(buildTree([1,2,1]), buildTree([1,1,2]))).toBe(false);
+  });
+
+  it('returns true for both empty', () => {
+    expect(isSameTree(null, null)).toBe(true);
+  });
+
+  it('returns false for one empty', () => {
+    expect(isSameTree(buildTree([1]), null)).toBe(false);
+  });
+});`
+                },
+                {
+                    title: 'xUnit',
+                    framework: 'xUnit (C#)',
+                    code: `public class SameTreeTests
+{
+    [Fact]
+    public void SameTree_Identical_ReturnsTrue()
+    {
+        var p = new TreeNode(1, new TreeNode(2), new TreeNode(3));
+        var q = new TreeNode(1, new TreeNode(2), new TreeNode(3));
+        Assert.True(Solution.IsSameTree(p, q));
+    }
+
+    [Fact]
+    public void SameTree_StructuralMismatch_ReturnsFalse()
+    {
+        var p = new TreeNode(1, new TreeNode(2));
+        var q = new TreeNode(1, null, new TreeNode(2));
+        Assert.False(Solution.IsSameTree(p, q));
+    }
+
+    [Fact]
+    public void SameTree_BothNull_ReturnsTrue()
+    {
+        Assert.True(Solution.IsSameTree(null, null));
+    }
+}`
+                }
+            ],
+
+            code: [
+                {
+                    codeTitle: 'same-tree.ts',
+                    language: 'typescript',
+                    code: `function isSameTree(p: TreeNode | null, q: TreeNode | null): boolean {
+  if (p === null && q === null) return true;
+  if (p === null || q === null) return false;
+  if (p.val !== q.val) return false;
+
+  return isSameTree(p.left, q.left)
+      && isSameTree(p.right, q.right);
+}`,
+                    lines: [
+                        { line: 'function isSameTree(p: TreeNode | null, q: TreeNode | null): boolean {', note: 'تعريف الدالة. بتاخد node من كل شجرة، وبترجّع boolean.' },
+                        { line: '  if (p === null && q === null) return true;', note: 'لو الاتنين null → الـ subtrees متطابقتين. ده base case أساسي.' },
+                        { line: '  if (p === null || q === null) return false;', note: 'لو واحد منهم null والتاني مش → الشكل مختلف. false فورًا.' },
+                        { line: '  if (p.val !== q.val) return false;', note: 'بعد ما نتأكد إن الاتنين مش null، نقارن القيم.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '  return isSameTree(p.left, q.left)', note: 'بنكرر على الـ left subtrees.' },
+                        { line: '      && isSameTree(p.right, q.right);', note: 'والـ right subtrees. الـ && بيعمل short-circuit.' },
+                        { line: '}', note: 'نهاية الدالة. Complexity O(n) time، O(h) space.' }
+                    ]
+                },
+                {
+                    codeTitle: 'same-tree-iterative.ts',
+                    language: 'typescript',
+                    code: `function isSameTree(p: TreeNode | null, q: TreeNode | null): boolean {
+  const queue: Array<[TreeNode | null, TreeNode | null]> = [[p, q]];
+
+  while (queue.length) {
+    const [a, b] = queue.shift()!;
+
+    if (a === null && b === null) continue;
+    if (a === null || b === null) return false;
+    if (a.val !== b.val) return false;
+
+    queue.push([a.left, b.left]);
+    queue.push([a.right, b.right]);
+  }
+
+  return true;
+}`,
+                    lines: [
+                        { line: 'function isSameTree(p: TreeNode | null, q: TreeNode | null): boolean {', note: 'نفس التعريف — بس هذه المرة بـ iteration.' },
+                        { line: '  const queue: Array<[TreeNode | null, TreeNode | null]> = [[p, q]];', note: 'الـ queue بتبدأ بـ pair واحد (root_p, root_q).' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '  while (queue.length) {', note: 'الـ loop بتكمل طول ما فيه pairs نفحصها.' },
+                        { line: '    const [a, b] = queue.shift()!;', note: 'بنطلع أول pair من الـ queue.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '    if (a === null && b === null) continue;', note: 'لو الاتنين null، عادي — نكمل للزوج اللي بعده.' },
+                        { line: '    if (a === null || b === null) return false;', note: 'لو واحد null بس → مختلفتين.' },
+                        { line: '    if (a.val !== b.val) return false;', note: 'لو القيم مختلفة → مختلفتين.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '    queue.push([a.left, b.left]);', note: 'بنضيف الـ left subtrees عشان نفحصهم.' },
+                        { line: '    queue.push([a.right, b.right]);', note: 'ونفس الشيء للـ right.' },
+                        { line: '  }', note: 'نهاية الـ loop.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '  return true;', note: 'لو لفينا كل الأزواج بدون أي false → الشجرتين متطابقتين.' },
+                        { line: '}', note: 'نهاية الدالة.' }
+                    ]
+                }
+            ],
+
+            learned: [
+                'فهم فكرة Tree Equality: نفس الـ structure + نفس الـ values.',
+                'Recursion بمقارنة متوازية على شجرتين.',
+                'الـ base cases هي اللي بتحدد الشكل (both null vs one null).',
+                'الـ short-circuit مع && بيرجّع false بأسرع وقت.',
+                'الفرق بين DFS (recursive/stack) و BFS (queue).',
+                'الـ Serialization كحل بديل قصير لكن بـ memory أكتر.',
+                'التعامل مع edge cases: empty trees, single node, structural mismatch.',
+                'الـ complexity بتعتمد على أصغر شجرة (min).',
+                'الـ recursion depth = ارتفاع أصغر شجرة.',
+                'اختيار الحل المناسب حسب الـ constraints.'
+            ]
+        }
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // 18. Symmetric Tree — LeetCode #101
+    // ═══════════════════════════════════════════════════════════════
+    'symmetric-tree': {
+        id: 'symmetric-tree',
+        projectName: 'Symmetric Tree',
+        projectDescription: 'اتأكد إن الشجرة الثنائية symmetric حول مركزها — recursive و iterative.',
+        projectDate: 'October 14, 2026',
+        projectVersion: 'LeetCode #101',
+        tags: ['Problem Solving', 'JavaScript', 'TypeScript', 'LeetCode', 'Binary Tree', 'Recursion'],
+
+        problemSolvingContent: {
+            problem: `
+Given the root of a binary tree, check whether it is a mirror of itself
+(i.e., symmetric around its center).
+
+Example 1:
+Input: root = [1,2,2,3,4,4,3]
+Output: true
+
+Example 2:
+Input: root = [1,2,2,null,3,null,3]
+Output: false
+
+Constraints:
+- The number of nodes in the tree is in the range [1, 1000].
+- -100 <= Node.val <= 100
+
+Follow up: Could you solve it both recursively and iteratively?
+            `,
+
+            generalIdea: `
+الشجرة تكون symmetric لو:
+1. الـ left subtree والـ right subtree بتاع الـ root هما mirror لبعض.
+2. كل node في اليسار ليها نظير في اليمين بنفس القيمة.
+
+الفكرة الأساسية: **Mirror Comparison**.
+
+بعد ما نتخطى الـ root، بنقارن:
+- left.left مع right.right (الخارجي مع الخارجي)
+- left.right مع right.left (الداخلي مع الداخلي)
+
+ده **مختلف عن Same Tree**:
+في Same Tree كنا بنقارن left بـ left و right بـ right.
+في Symmetric Tree بنقارن left.left بـ right.right و left.right بـ right.left.
+
+الـ base cases هي نفسها:
+- الاتنين null → متطابقين (mirror-wise).
+- واحد null → مش mirror.
+- القيم مختلفة → مش mirror.
+- غير كده → نكمل بشكل متقاطع.
+            `,
+
+            solutionIdea: `
+الحل الـ recursive:
+1. لو الشجرة فاضية → true.
+2. استدعي isMirror(root.left, root.right).
+
+الدالة isMirror(left, right):
+1. لو الاتنين null → return true.
+2. لو واحد null → return false.
+3. لو left.val !== right.val → return false.
+4. return isMirror(left.left, right.right) && isMirror(left.right, right.left).
+
+الحل الـ iterative:
+- استخدم queue (BFS) أو stack (DFS).
+- ضع root.left و root.right في الـ queue.
+- Loop: اطلع اتنين node، قارنهم بنفس منطق isMirror.
+- ضع الأبناء بشكل **متقاطع**:
+  - push(left.left, right.right)
+  - push(left.right, right.left)
+
+الـ **insight** الأساسي: الترتيب المتقاطع هو اللي بيعمل الـ mirror.
+            `,
+
+            steps: [
+                'لو الـ root null → return true.',
+                'نبدأ بمقارنة root.left مع root.right.',
+                'لو الاتنين null → true في الفرع ده.',
+                'لو واحد null → false فورًا.',
+                'لو القيم مختلفة → false فورًا.',
+                'نكمل: left.left vs right.right (outer).',
+                'نكمل: left.right vs right.left (inner).',
+                'النتيجة: true لو كل المقارنات نجحت.'
+            ],
+
+            example: {
+                input: 'root = [1,2,2,3,4,4,3]',
+                output: 'true',
+                explanation: `الشجرة:
+        1
+       / \\
+      2   2
+     / \\ / \\
+    3  4 4  3
+
+isMirror(2, 2):
+  ✓ 2 = 2
+  → isMirror(3, 3):  (left.left vs right.right)
+      ✓ 3 = 3
+      → null, null → true
+      → null, null → true
+      → true
+  → isMirror(4, 4):  (left.right vs right.left)
+      ✓ 4 = 4
+      → true
+  → true && true → true
+
+النتيجة: true ✓
+
+مثال مختلف:
+root = [1,2,2,null,3,null,3]
+
+        1
+       / \\
+      2   2
+       \\   \\
+        3   3
+
+isMirror(2, 2):
+  ✓ 2 = 2
+  → isMirror(null, 3):   (2.left vs 2.right)
+      ✕ one null → false
+  short-circuit → false
+
+النتيجة: false ✓`
+            },
+
+            complexity: {
+                time: 'O(n)',
+                space: 'O(h) recursive — O(n) iterative'
+            },
+
+            visualization: {
+                kind: 'diagram',
+                title: 'مسار المقارنة على [1,2,2,3,4,4,3]',
+                content: `isMirror(2, 2)
+  │  ✓ 2 = 2
+  ├─ isMirror(3, 3)    ← left.left vs right.right (outer)
+  │    ✓ 3 = 3
+  │    ├─ isMirror(null, null) → true
+  │    └─ isMirror(null, null) → true
+  │    → true
+  └─ isMirror(4, 4)    ← left.right vs right.left (inner)
+       ✓ 4 = 4
+       ├─ isMirror(null, null) → true
+       └─ isMirror(null, null) → true
+       → true
+  → true && true → true
+
+Result: true ✓
+
+الفرق الأساسي عن Same Tree:
+  Same Tree:     (l.left, r.left) و (l.right, r.right)
+  Symmetric:     (l.left, r.right) و (l.right, r.left)  ← متقاطع!`,
+                caption: 'الترتيب المتقاطع هو اللي بيعمل الـ mirror.'
+            },
+
+            approaches: [
+                {
+                    name: 'Approach 1 - Recursive (الأمثل)',
+                    tagline: 'الحل الطبيعي: recursion بمقارنة متقاطعة.',
+                    complexity: { time: 'O(n)', space: 'O(h)' },
+                    tradeoffs: [
+                        'الأبسط والأوضح.',
+                        'بيوصف فكرة الـ mirror بشكل مباشر.',
+                        'الـ && بيعمل short-circuit — أداء ممتاز.',
+                        'الـ space = ارتفاع الشجرة.'
+                    ],
+                    samples: [
+                        {
+                            label: 'symmetric-tree-recursive.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function isSymmetric(root: TreeNode | null): boolean {
+  if (root === null) return true;
+  return isMirror(root.left, root.right);
+}
+
+function isMirror(left: TreeNode | null, right: TreeNode | null): boolean {
+  if (left === null && right === null) return true;
+  if (left === null || right === null) return false;
+  if (left.val !== right.val) return false;
+
+  return isMirror(left.left, right.right)
+      && isMirror(left.right, right.left);
+}`,
+                            notes: [
+                                'isSymmetric بس بتشيك على الـ root ثم تستدعي isMirror.',
+                                'isMirror هي القلب — بتقارن left.left بـ right.right.',
+                                'الترتيب المتقاطع هو الفرق الأساسي عن Same Tree.',
+                                'الـ && بيعمل short-circuit — لو outer false، مايفحصش inner.',
+                                'Complexity: O(n) time، O(h) space.'
+                            ]
+                        },
+                        {
+                            label: 'symmetric-tree-recursive.js',
+                            language: 'javascript',
+                            framework: 'JavaScript',
+                            code: `var isSymmetric = function(root) {
+    if (root == null) return true;
+    return isMirror(root.left, root.right);
+};
+
+function isMirror(leftNode, rightNode) {
+    if (leftNode == null && rightNode == null) return true;
+    if (leftNode == null || rightNode == null) return false;
+
+    if (leftNode.val !== rightNode.val) return false;
+
+    return isMirror(leftNode.left, rightNode.right) &&
+        isMirror(leftNode.right, rightNode.left);
+}`,
+                            notes: [
+                                'نفس الحل بـ JavaScript.',
+                                'الـ isMirror دالة خارجية — عشان مايحتاجش closure.',
+                                'لو عايز، ممكن تخليها inner function جوه isSymmetric.',
+                                'الترتيب (left.left, right.right) هو الأساس.'
+                            ]
+                        },
+                        {
+                            label: 'SymmetricTree.cs',
+                            language: 'csharp',
+                            framework: 'C#',
+                            code: `public static class Solution
+{
+    public static bool IsSymmetric(TreeNode root)
+    {
+        if (root == null) return true;
+        return IsMirror(root.left, root.right);
+    }
+
+    private static bool IsMirror(TreeNode left, TreeNode right)
+    {
+        if (left == null && right == null) return true;
+        if (left == null || right == null) return false;
+        if (left.val != right.val) return false;
+
+        return IsMirror(left.left, right.right)
+            && IsMirror(left.right, right.left);
+    }
+}`,
+                            notes: [
+                                'نفس المنطق بلغة C#.',
+                                'بنستخدم private للـ isMirror لأنها implementation detail.',
+                                'باقي الحل متطابق تمامًا.',
+                                'لو الشجرة عميقة جدًا، فكّر في الحل الـ iterative.'
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Approach 2 - Iterative with Queue (BFS)',
+                    tagline: 'بدون recursion — using explicit queue.',
+                    complexity: { time: 'O(n)', space: 'O(n)' },
+                    tradeoffs: [
+                        'بيتجنب الـ recursion stack overflow.',
+                        'مفيد للشجر العميقة.',
+                        'الـ memory usage = O(n) في أسوأ حالة (شجرة كاملة).',
+                        'نفس الفكرة recursive بس بـ queue.'
+                    ],
+                    samples: [
+                        {
+                            label: 'symmetric-tree-iterative.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function isSymmetric(root: TreeNode | null): boolean {
+  if (root === null) return true;
+
+  const queue: Array<TreeNode | null> = [root.left, root.right];
+
+  while (queue.length > 0) {
+    const left = queue.shift()!;
+    const right = queue.shift()!;
+
+    if (left === null && right === null) continue;
+    if (left === null || right === null) return false;
+    if (left.val !== right.val) return false;
+
+    queue.push(left.left, right.right);
+    queue.push(left.right, right.left);
+  }
+
+  return true;
+}`,
+                            notes: [
+                                'الـ queue بتبدأ بـ [root.left, root.right].',
+                                'في كل iteration، بنطلع pair من الـ queue.',
+                                'بنقارنهم، ثم نضيف الأبناء بشكل متقاطع.',
+                                'الـ push(left.left, right.right) — outer pair.',
+                                'الـ push(left.right, right.left) — inner pair.'
+                            ]
+                        },
+                        {
+                            label: 'symmetric-tree-iterative.js',
+                            language: 'javascript',
+                            framework: 'JavaScript',
+                            code: `var isSymmetric = function(root) {
+    if (root == null) return true;
+
+    const queue = [root.left, root.right];
+
+    while (queue.length > 0) {
+        const leftNode = queue.shift();
+        const rightNode = queue.shift();
+
+        if (leftNode == null && rightNode == null) continue;
+        if (leftNode == null || rightNode == null) return false;
+        if (leftNode.val !== rightNode.val) return false;
+
+        queue.push(leftNode.left, rightNode.right);
+        queue.push(leftNode.right, rightNode.left);
+    }
+
+    return true;
+};`,
+                            notes: [
+                                'الحل الـ iterative زي ما كتبته بالظبط.',
+                                'بنستخدم queue واحد بس — عشان هو BFS-level by level.',
+                                'الـ queue بيحفظ pairs بالترتيب.',
+                                'مفيش recursion stack — الأمان مضمون.',
+                                'الـ complexity: O(n) time، O(n) space.'
+                            ]
+                        },
+                        {
+                            label: 'symmetric-tree-stack.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript — Stack variant',
+                            code: `function isSymmetric(root: TreeNode | null): boolean {
+  if (root === null) return true;
+
+  const stack: Array<TreeNode | null> = [root.left, root.right];
+
+  while (stack.length > 0) {
+    const right = stack.pop()!;
+    const left = stack.pop()!;
+
+    if (left === null && right === null) continue;
+    if (left === null || right === null) return false;
+    if (left.val !== right.val) return false;
+
+    stack.push(left.left, right.right);
+    stack.push(left.right, right.left);
+  }
+
+  return true;
+}`,
+                            notes: [
+                                'نفس الفكرة بس بـ stack (LIFO بدل FIFO).',
+                                'ملاحظة: نطلع بترتيب معكوس (right ثم left).',
+                                'الترتيب مش مهم — المهم إننا بنقارن زوج صحيح.',
+                                'النتيجة نفسها — بس الـ order مختلف.',
+                                'الـ stack أفضل للشجر العميقة (DFS)، الـ queue أفضل للشجر العريضة (BFS).'
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Approach 3 - Serialization',
+                    tagline: 'حل بديل قصير — بس memory O(n).',
+                    complexity: { time: 'O(n)', space: 'O(n)' },
+                    tradeoffs: [
+                        'كود قصير جدًا.',
+                        'بيستهلك memory O(n) للـ serialized strings.',
+                        'بطيء نسبيًا بسبب string building.',
+                        'مفيد كـ shortcut في المقابلات.'
+                    ],
+                    samples: [
+                        {
+                            label: 'symmetric-serialize.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function isSymmetric(root: TreeNode | null): boolean {
+  if (root === null) return true;
+
+  function serializeLeft(node: TreeNode | null): string {
+    if (node === null) return 'N';
+    return node.val + ',' + serializeLeft(node.left) + ',' + serializeLeft(node.right);
+  }
+
+  function serializeRight(node: TreeNode | null): string {
+    if (node === null) return 'N';
+    return node.val + ',' + serializeRight(node.right) + ',' + serializeRight(node.left);
+  }
+
+  return serializeLeft(root.left) === serializeRight(root.right);
+}`,
+                            notes: [
+                                'بنعمل serialize للـ left subtree بترتيب عادي.',
+                                'وبنعمل serialize للـ right subtree بترتيب **معكوس**.',
+                                'لو الـ strings متساوية → الشجرة mirror.',
+                                'الـ N بتمثل null — عشان الشكل يبقى واحد.',
+                                'الحل ده بسيط بس بيستهلك memory إضافية.'
+                            ]
+                        }
+                    ]
+                }
+            ],
+
+            testing: [
+                {
+                    title: 'Jest',
+                    framework: 'Jest (TS/JS)',
+                    code: `import { isSymmetric, TreeNode } from './symmetric-tree';
+
+function buildTree(arr: (number | null)[]): TreeNode | null {
+  if (!arr.length || arr[0] === null) return null;
+  const nodes = arr.map(v => v === null ? null : new TreeNode(v));
+  for (let i = 0; i < nodes.length; i++) {
+    if (!nodes[i]) continue;
+    const li = 2 * i + 1;
+    const ri = 2 * i + 2;
+    if (li < nodes.length) nodes[i]!.left = nodes[li];
+    if (ri < nodes.length) nodes[i]!.right = nodes[ri];
+  }
+  return nodes[0];
+}
+
+describe('isSymmetric', () => {
+  it('returns true for symmetric [1,2,2,3,4,4,3]', () => {
+    expect(isSymmetric(buildTree([1,2,2,3,4,4,3]))).toBe(true);
+  });
+
+  it('returns false for [1,2,2,null,3,null,3]', () => {
+    expect(isSymmetric(buildTree([1,2,2,null,3,null,3]))).toBe(false);
+  });
+
+  it('returns true for single node', () => {
+    expect(isSymmetric(buildTree([1]))).toBe(true);
+  });
+
+  it('returns true for empty tree', () => {
+    expect(isSymmetric(null)).toBe(true);
+  });
+
+  it('returns false for [1,2,3]', () => {
+    expect(isSymmetric(buildTree([1,2,3]))).toBe(false);
+  });
+});`
+                },
+                {
+                    title: 'xUnit',
+                    framework: 'xUnit (C#)',
+                    code: `public class SymmetricTreeTests
+{
+    [Fact]
+    public void Symmetric_ReturnsTrue()
+    {
+        var root = new TreeNode(1,
+            new TreeNode(2, new TreeNode(3), new TreeNode(4)),
+            new TreeNode(2, new TreeNode(4), new TreeNode(3)));
+        Assert.True(Solution.IsSymmetric(root));
+    }
+
+    [Fact]
+    public void NotSymmetric_ReturnsFalse()
+    {
+        var root = new TreeNode(1,
+            new TreeNode(2, null, new TreeNode(3)),
+            new TreeNode(2, null, new TreeNode(3)));
+        Assert.False(Solution.IsSymmetric(root));
+    }
+
+    [Fact]
+    public void SingleNode_ReturnsTrue()
+    {
+        Assert.True(Solution.IsSymmetric(new TreeNode(1)));
+    }
+
+    [Fact]
+    public void EmptyTree_ReturnsTrue()
+    {
+        Assert.True(Solution.IsSymmetric(null));
+    }
+}`
+                }
+            ],
+
+            code: [
+                {
+                    codeTitle: 'symmetric-tree-recursive.ts',
+                    language: 'typescript',
+                    code: `function isSymmetric(root: TreeNode | null): boolean {
+  if (root === null) return true;
+  return isMirror(root.left, root.right);
+}
+
+function isMirror(left: TreeNode | null, right: TreeNode | null): boolean {
+  if (left === null && right === null) return true;
+  if (left === null || right === null) return false;
+  if (left.val !== right.val) return false;
+
+  return isMirror(left.left, right.right)
+      && isMirror(left.right, right.left);
+}`,
+                    lines: [
+                        { line: 'function isSymmetric(root: TreeNode | null): boolean {', note: 'الدالة الأساسية. بتاخد الـ root وبترجّع boolean.' },
+                        { line: '  if (root === null) return true;', note: 'شجرة فاضية = symmetric (بالـ convention).' },
+                        { line: '  return isMirror(root.left, root.right);', note: 'بنفحص الـ left subtree مع الـ right subtree كـ mirror.' },
+                        { line: '}', note: 'نهاية isSymmetric.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: 'function isMirror(left: TreeNode | null, right: TreeNode | null): boolean {', note: 'الدالة الأساسية للمقارنة. بتاخد node من اليسار و node من اليمين.' },
+                        { line: '  if (left === null && right === null) return true;', note: 'لو الاتنين null → mirror في الفرع ده.' },
+                        { line: '  if (left === null || right === null) return false;', note: 'لو واحد null → مش mirror (شكل مختلف).' },
+                        { line: '  if (left.val !== right.val) return false;', note: 'لو القيم مختلفة → مش mirror.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '  return isMirror(left.left, right.right)', note: 'الـ outer pair: left.left مع right.right (متقاطع).' },
+                        { line: '      && isMirror(left.right, right.left);', note: 'الـ inner pair: left.right مع right.left (متقاطع).' },
+                        { line: '}', note: 'نهاية الدالة. Complexity O(n) time، O(h) space.' }
+                    ]
+                },
+                {
+                    codeTitle: 'symmetric-tree-iterative.ts',
+                    language: 'typescript',
+                    code: `function isSymmetric(root: TreeNode | null): boolean {
+  if (root === null) return true;
+
+  const queue: Array<TreeNode | null> = [root.left, root.right];
+
+  while (queue.length > 0) {
+    const left = queue.shift()!;
+    const right = queue.shift()!;
+
+    if (left === null && right === null) continue;
+    if (left === null || right === null) return false;
+    if (left.val !== right.val) return false;
+
+    queue.push(left.left, right.right);
+    queue.push(left.right, right.left);
+  }
+
+  return true;
+}`,
+                    lines: [
+                        { line: 'function isSymmetric(root: TreeNode | null): boolean {', note: 'نفس التعريف — بس هذه المرة بـ iteration.' },
+                        { line: '  if (root === null) return true;', note: 'base case.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '  const queue: Array<TreeNode | null> = [root.left, root.right];', note: 'الـ queue بتبدأ بـ pair: left subtree مع right subtree.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '  while (queue.length > 0) {', note: 'الـ loop بتكمل طول ما فيه pairs نفحصها.' },
+                        { line: '    const left = queue.shift()!;', note: 'بنطلع أول عنصر (الـ left من الـ pair).' },
+                        { line: '    const right = queue.shift()!;', note: 'بنطلع تاني عنصر (الـ right).' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '    if (left === null && right === null) continue;', note: 'الاتنين null → نكمل للزوج اللي بعده.' },
+                        { line: '    if (left === null || right === null) return false;', note: 'واحد null → مش symmetric.' },
+                        { line: '    if (left.val !== right.val) return false;', note: 'قيم مختلفة → مش symmetric.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '    queue.push(left.left, right.right);', note: 'الـ outer pair: left.left مع right.right.' },
+                        { line: '    queue.push(left.right, right.left);', note: 'الـ inner pair: left.right مع right.left.' },
+                        { line: '  }', note: 'نهاية الـ loop.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '  return true;', note: 'لو لفينا كل الأزواج بدون false → symmetric.' },
+                        { line: '}', note: 'نهاية الدالة.' }
+                    ]
+                }
+            ],
+
+            learned: [
+                'فهم فكرة Mirror Symmetry في الشجر الثنائية.',
+                'الفرق بين Same Tree و Symmetric Tree (الترتيب المتقاطع).',
+                'Recursion بمقارنة متقاطعة: (l.left, r.right) و (l.right, r.left).',
+                'الـ base cases هي اللي بتحدد الـ structure.',
+                'Short-circuit في الـ && بيرجّع false بأسرع وقت.',
+                'BFS بـ queue vs DFS بـ stack.',
+                'Serialization كحل بديل (left عادي + right معكوس).',
+                'التعامل مع edge cases: empty, single node, asymmetric.',
+                'الـ complexity بيعتمد على حجم الشجرة.',
+                'الـ iterative مفيد للشجر العميقة (تجنب stack overflow).'
+            ]
+        }
+    },
 };
 
 export const PROBLEM_SOLVING_ENTRIES: Record<string, ProblemSolvingEntry> =
