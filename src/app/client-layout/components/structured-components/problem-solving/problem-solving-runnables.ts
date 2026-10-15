@@ -2764,4 +2764,399 @@ function render(idx) {
 }
 `
   },
+
+  'maximum-depth-of-binary-tree': {
+    html: `<div class="app">
+  <div class="controls">
+    <div class="ctrl">
+      <label>tree (array, use "null" for empty)</label>
+      <input type="text" id="in" value="3,9,20,null,null,15,7" dir="ltr">
+    </div>
+    <div class="btns">
+      <button id="run" class="primary">▶ شغّل</button>
+      <button id="step">⏭ خطوة</button>
+      <button id="reset">↺ رجّع</button>
+    </div>
+  </div>
+  <div class="main-area">
+    <div class="stage" id="stage"></div>
+    <div class="sidebar">
+      <div class="stack-title">Call Stack</div>
+      <div class="stack" id="stack"></div>
+      <div class="result-label">أقصى عمق</div>
+      <div class="depth-box" id="depth-box">—</div>
+    </div>
+  </div>
+  <div class="stats" id="stats"></div>
+  <div class="log" id="log"></div>
+</div>`,
+    css: BASE_CSS + `
+    .main-area {
+      display: grid;
+      grid-template-columns: 1fr 240px;
+      gap: 12px;
+    }
+    @media (max-width: 720px) {
+      .main-area { grid-template-columns: 1fr; }
+    }
+    .stage {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: #0A1017;
+      border: 1px solid #1E2D42;
+      border-radius: 8px;
+      min-height: 340px;
+      overflow: auto;
+    }
+    .stage svg {
+      width: 100%;
+      max-height: 340px;
+      display: block;
+    }
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 12px;
+      background: #131C26;
+      border: 1px solid #1E2D42;
+      border-radius: 8px;
+    }
+    .stack-title, .result-label {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 10px;
+      color: #6B7C92;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      text-align: center;
+    }
+    .stack {
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 4px;
+      min-height: 60px;
+      padding: 6px;
+      background: #0A1017;
+      border: 2px dashed #2A3846;
+      border-radius: 6px;
+      flex: 1;
+    }
+    .stack-empty {
+      color: #6B7C92;
+      font-size: 11px;
+      font-family: ui-monospace, Consolas, monospace;
+      text-align: center;
+      padding: 16px 8px;
+    }
+    .stack-frame {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px 10px;
+      background: #1E2D42;
+      border-radius: 4px;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 12px;
+    }
+    .stack-frame.top {
+      background: #5B9DFF;
+      color: #0A1017;
+    }
+    .stack-frame.returning {
+      background: #4CD08A;
+      color: #0A1017;
+    }
+    .stack-frame .phase {
+      font-size: 10px;
+      opacity: 0.75;
+    }
+    .stack-frame.top .phase { opacity: 0.9; }
+    .depth-box {
+      padding: 12px;
+      background: #0A1017;
+      border: 1px solid #1E2D42;
+      border-radius: 6px;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 28px;
+      font-weight: 700;
+      text-align: center;
+      color: #F2B200;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .depth-box.done {
+      color: #4CD08A;
+      border-color: #4CD08A;
+    }
+    `,
+    js: `
+${HARNESS}
+
+let _treeLayout = null;
+
+function parseTree(input) {
+  const parts = (input || '').split(',').map(s => s.trim());
+  const arr = parts.map(s => (s === 'null' || s === '') ? null : Number(s));
+  if (!arr.length || arr[0] === null) return null;
+  let counter = 0;
+  const nodes = arr.map(v => v === null ? null : ({ val: v, left: null, right: null, id: ++counter }));
+  for (let i = 0; i < nodes.length; i++) {
+    if (!nodes[i]) continue;
+    const li = 2 * i + 1;
+    const ri = 2 * i + 2;
+    if (li < nodes.length) nodes[i].left = nodes[li];
+    if (ri < nodes.length) nodes[i].right = nodes[ri];
+  }
+  return nodes[0];
+}
+
+function layoutTree(root) {
+  let xc = 0;
+  const nodes = [];
+  const edges = [];
+  function visit(n, depth) {
+    if (!n) return;
+    visit(n.left, depth + 1);
+    n._x = xc++;
+    n._y = depth;
+    nodes.push(n);
+    visit(n.right, depth + 1);
+  }
+  visit(root, 0);
+  function collect(n) {
+    if (!n) return;
+    if (n.left) edges.push({ from: n, to: n.left });
+    if (n.right) edges.push({ from: n, to: n.right });
+    collect(n.left);
+    collect(n.right);
+  }
+  collect(root);
+  return { nodes, edges };
+}
+
+function build(input) {
+  const root = parseTree(input);
+
+  if (!root) {
+    _treeLayout = { nodes: [], edges: [] };
+    return [{
+      type: 'done',
+      finalResult: 0,
+      activeId: null,
+      stack: [],
+      desc: 'شجرة فاضية → 0'
+    }];
+  }
+
+  const steps = [];
+  const stack = [];
+  const depths = {};  // nodeId → returned depth
+
+  function snap(extra) {
+    return Object.assign({
+      stack: stack.map(f => ({ id: f.id, val: f.val, phase: f.phase })),
+      depths: { ...depths },
+      activeId: stack.length ? stack[stack.length - 1].id : null
+    }, extra);
+  }
+
+  function walk(node) {
+    if (node === null) {
+      steps.push(snap({
+        type: 'null',
+        activeId: null,
+        desc: 'وصلنا null → return 0'
+      }));
+      return 0;
+    }
+
+    stack.push({ id: node.id, val: node.val, phase: 'enter' });
+    steps.push(snap({
+      type: 'enter',
+      desc: 'ندخل على ' + node.val + ' — نروح left الأول'
+    }));
+
+    stack[stack.length - 1].phase = 'left';
+    const leftD = walk(node.left);
+
+    stack[stack.length - 1].phase = 'right';
+    const rightD = walk(node.right);
+
+    const result = 1 + Math.max(leftD, rightD);
+    depths[node.id] = result;
+
+    steps.push(snap({
+      type: 'return',
+      desc: 'نرجع من ' + node.val + ': 1 + max(' + leftD + ', ' + rightD + ') = ' + result
+    }));
+
+    stack.pop();
+    return result;
+  }
+
+  const finalResult = walk(root);
+
+  steps.push(snap({
+    type: 'done',
+    activeId: null,
+    finalResult: finalResult,
+    desc: 'خلصنا ✓ max depth = ' + finalResult
+  }));
+
+  _treeLayout = layoutTree(root);
+  return steps;
+}
+
+function renderTree(activeId, depths, returningId, ns) {
+  if (!_treeLayout || !_treeLayout.nodes.length) {
+    const empty = document.createElement('div');
+    empty.className = 'stack-empty';
+    empty.textContent = '(شجرة فاضية)';
+    return empty;
+  }
+
+  const NODE_R = 20;
+  const X_GAP = 55;
+  const Y_GAP = 62;
+  const maxX = Math.max.apply(null, _treeLayout.nodes.map(n => n._x));
+  const maxY = Math.max.apply(null, _treeLayout.nodes.map(n => n._y));
+  const W = (maxX + 1) * X_GAP + 30;
+  const H = (maxY + 1) * Y_GAP + 30;
+
+  const svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+  svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+
+  _treeLayout.edges.forEach(e => {
+    const line = document.createElementNS(ns, 'line');
+    line.setAttribute('x1', e.from._x * X_GAP + 15 + NODE_R);
+    line.setAttribute('y1', e.from._y * Y_GAP + 15 + NODE_R);
+    line.setAttribute('x2', e.to._x * X_GAP + 15 + NODE_R);
+    line.setAttribute('y2', e.to._y * Y_GAP + 15 + NODE_R);
+    line.setAttribute('stroke', '#2A3846');
+    line.setAttribute('stroke-width', '2');
+    svg.appendChild(line);
+  });
+
+  _treeLayout.nodes.forEach(n => {
+    const cx = n._x * X_GAP + 15 + NODE_R;
+    const cy = n._y * Y_GAP + 15 + NODE_R;
+    const isActive = n.id === activeId;
+    const isReturning = n.id === returningId;
+    const hasDepth = depths && depths[n.id] !== undefined;
+
+    const c = document.createElementNS(ns, 'circle');
+    c.setAttribute('cx', cx);
+    c.setAttribute('cy', cy);
+    c.setAttribute('r', NODE_R);
+
+    let fill = '#131C26';
+    let stroke = '#5B9DFF';
+    if (isActive) { fill = '#F2B200'; stroke = '#F2B200'; }
+    else if (isReturning) { fill = '#4CD08A'; stroke = '#4CD08A'; }
+    else if (hasDepth) { fill = 'rgba(76,208,138,0.15)'; stroke = '#4CD08A'; }
+
+    c.setAttribute('fill', fill);
+    c.setAttribute('stroke', stroke);
+    c.setAttribute('stroke-width', '2');
+    svg.appendChild(c);
+
+    const t = document.createElementNS(ns, 'text');
+    t.setAttribute('x', cx);
+    t.setAttribute('y', cy + 4);
+    t.setAttribute('text-anchor', 'middle');
+    t.setAttribute('font-family', 'ui-monospace, monospace');
+    t.setAttribute('font-size', '13');
+    t.setAttribute('font-weight', '700');
+    t.setAttribute('fill', (isActive || isReturning) ? '#0A1017' : '#E9EFF5');
+    t.textContent = n.val;
+    svg.appendChild(t);
+
+    if (hasDepth) {
+      const d = document.createElementNS(ns, 'text');
+      d.setAttribute('x', cx);
+      d.setAttribute('y', cy + NODE_R + 12);
+      d.setAttribute('text-anchor', 'middle');
+      d.setAttribute('font-family', 'ui-monospace, monospace');
+      d.setAttribute('font-size', '10');
+      d.setAttribute('font-weight', '700');
+      d.setAttribute('fill', '#4CD08A');
+      d.textContent = 'd=' + depths[n.id];
+      svg.appendChild(d);
+    }
+  });
+
+  return svg;
+}
+
+function render(idx) {
+  const safe = Math.max(0, Math.min(idx, state.steps.length - 1));
+  const step = state.steps[safe];
+  const stage = $('stage');
+  stage.innerHTML = '';
+
+  const ns = 'http://www.w3.org/2000/svg';
+  const returningId = step.type === 'return'
+    ? (step.stack.length ? step.stack[step.stack.length - 1].id : null)
+    : null;
+
+  stage.appendChild(renderTree(step.activeId, step.depths, returningId, ns));
+
+  const stackList = $('stack');
+  stackList.innerHTML = '';
+  if (!step.stack || !step.stack.length) {
+    const em = document.createElement('div');
+    em.className = 'stack-empty';
+    em.textContent = '(فاضي)';
+    stackList.appendChild(em);
+  } else {
+    const labels = { enter: 'entering', left: 'left', right: 'right' };
+    step.stack.forEach((frame, i) => {
+      const el = document.createElement('div');
+      el.className = 'stack-frame';
+      if (i === step.stack.length - 1) el.classList.add('top');
+      const val = document.createElement('span');
+      val.textContent = frame.val;
+      const phase = document.createElement('span');
+      phase.className = 'phase';
+      phase.textContent = labels[frame.phase] || frame.phase;
+      el.appendChild(val);
+      el.appendChild(phase);
+      stackList.appendChild(el);
+    });
+  }
+
+  const depthBox = $('depth-box');
+  if (step.type === 'done') {
+    depthBox.textContent = step.finalResult;
+    depthBox.classList.add('done');
+  } else {
+    const rootDepth = step.depths && Object.keys(step.depths).length
+      ? step.depths[Object.keys(step.depths)[0]]
+      : null;
+    depthBox.textContent = rootDepth !== undefined && rootDepth !== null ? rootDepth : '—';
+    depthBox.classList.remove('done');
+  }
+
+  setStats([
+    ['العملية', step.type || '—'],
+    ['stack size', (step.stack || []).length],
+    ['nodes solved', step.depths ? Object.keys(step.depths).length : 0],
+    ['الخطوة', (safe + 1) + ' / ' + state.steps.length]
+  ]);
+
+  if (idx >= 0 && step.desc) {
+    let cls = 'info';
+    if (step.type === 'return') cls = 'ok';
+    else if (step.type === 'done') cls = 'ok';
+    else if (step.type === 'null') cls = 'warn';
+    log(step.desc, cls);
+  }
+}
+`
+  }
 };

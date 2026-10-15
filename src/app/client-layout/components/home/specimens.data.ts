@@ -899,6 +899,18 @@ const BASE_SPECIMENS: Specimen[] = [
     stage: 'light',
     sortKey: 138
   },
+  {
+    id: 'CB-40',
+    kind: 'css-battle',
+    title: 'CSS Battle — Grey Squares Grid',
+    description: 'شبكة 4×2 من مربعات رمادية مع مربع أحمر في الركن — CSS خالص بـ 8 linear-gradients + box-reflect.',
+    date: 'أكتوبر 2026',
+    addedAt: '2026-10-15',
+    tags: ['CSS', 'Battle', 'Linear Gradient', 'Box Reflect'],
+    href: '/css_battle_p40',
+    stage: 'dark',
+    sortKey: 139
+  },
   // ─── Problem Solving ───
   {
     id: 'PS-01',
@@ -1102,6 +1114,18 @@ const BASE_SPECIMENS: Specimen[] = [
     href: '/problem-solving/symmetric-tree',
     stage: 'dark',
     sortKey: 217
+  },
+  {
+    id: 'PS-19',
+    kind: 'problem-solving',
+    title: 'Maximum Depth of Binary Tree',
+    description: 'احسب أقصى عمق لشجرة ثنائية — recursive و iterative.',
+    date: 'أكتوبر 2026',
+    addedAt: '2026-10-15',
+    tags: ['LeetCode', 'Binary Tree', 'DFS'],
+    href: '/problem-solving/maximum-depth-of-binary-tree',
+    stage: 'dark',
+    sortKey: 218
   },
   // ─── Clean Code ───
   {

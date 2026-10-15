@@ -1,14 +1,14 @@
 import {
   Component,
   ChangeDetectionStrategy,
-  computed,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { VisitorsCounterComponent } from '../../../visitors-counter/visitors-counter';
 
 @Component({
   selector: 'app-info-menu',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, VisitorsCounterComponent],
   templateUrl: './info-menu.component.html',
   styleUrl: './info-menu.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

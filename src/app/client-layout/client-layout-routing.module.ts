@@ -313,6 +313,12 @@ const routes: Routes = [
         data: { battleId: 'p39' },
         title: 'CSS Battle Project 39'
       },
+      {
+        path: 'css_battle_p40',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p40' },
+        title: 'CSS Battle Project 40'
+      },
       // ─── Problem Solving ───
       {
         path: 'problem-solving/roman-to-integer',
@@ -421,6 +427,12 @@ const routes: Routes = [
         loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
         data: { problemId: 'symmetric-tree' },
         title: 'Symmetric Tree'
+      },
+      {
+        path: 'problem-solving/maximum-depth-of-binary-tree',
+        loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
+        data: { problemId: 'maximum-depth-of-binary-tree' },
+        title: 'Maximum Depth of Binary Tree'
       },
       // ─── Clean Code (unified — everything routed through clean-code-page) ───
       ...CLEAN_CODE_ROUTES,

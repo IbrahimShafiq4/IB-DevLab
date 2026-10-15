@@ -1684,6 +1684,7 @@ p i:after {
 }
         `.trim()
     },
+    
     'p38': {
         id: 'p38',
         title: 'CSS Battle — Framed Oval',
@@ -1763,6 +1764,7 @@ i:after {
 }
         `.trim()
     },
+
     'p39': {
         id: 'p39',
         title: 'CSS Battle — Crown Shape',
@@ -1848,5 +1850,100 @@ div i {
         radial-gradient(circle at 100% 0, #9F6766 10px, #BDE4C1 0) right / 10px 10px no-repeat;
 }
         `.trim()
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // P40 — Grey Squares Grid with Red Highlight
+    // ═══════════════════════════════════════════════════════════════
+    'p40': {
+        id: 'p40',
+        title: 'CSS Battle — Grey Squares Grid',
+        description: `
+CSS recreation of a 4×2 grid of small grey squares with one red square
+highlighted in the top-right position, plus a vertical grey bar above
+the first column mirrored via box-reflect.
+
+The design uses:
+- Multiple linear-gradient layers on a single <p> element
+- background-size + background-position for precise square placement
+- ::before pseudo-element with -webkit-box-reflect for the mirrored bar
+- Minimal HTML structure — only one <p> element
+- Pure CSS without images, SVG, or JavaScript
+    `.trim(),
+        date: 'Last updated: Oct 15, 2026',
+        version: 'v1.0.0',
+        tags: ['Web Development', 'HTML', 'CSS', 'Linear Gradient', 'Box Reflect', 'Background Layers', 'CSS Battle'],
+        youtube: '',
+        zipFile: 'assets/zip-files/cssBattle/40 - p40.zip',
+        html: `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grey Squares Grid</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <p></p>
+</body>
+</html>
+    `.trim(),
+        css: `
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    background-color: #1A1A1A;
+}
+
+p {
+    width: 190px;
+    height: 170px;
+    transform: translateY(25px);
+    background-color: #D9D9D9;
+    background-image:
+        linear-gradient(#8C8C8C 0 0),
+        linear-gradient(#8C8C8C 0 0),
+        linear-gradient(#8C8C8C 0 0),
+        linear-gradient(#CA5348 0 0),
+        linear-gradient(#8C8C8C 0 0),
+        linear-gradient(#8C8C8C 0 0),
+        linear-gradient(#8C8C8C 0 0),
+        linear-gradient(#8C8C8C 0 0);
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    background-position:
+        25px 60px,
+        65px 60px,
+        105px 60px,
+        145px 60px,
+        25px 110px,
+        65px 110px,
+        105px 110px,
+        145px 110px;
+    position: relative;
+    z-index: 2;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translate(30px, -20px);
+        width: 20px;
+        height: 40px;
+        background: #8C8C8C;
+        z-index: 3;
+        -webkit-box-reflect: right 90px;
+    }
+}
+    `.trim()
     },
 };

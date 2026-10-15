@@ -1,5 +1,5 @@
 import type { IProblemSolvingContent } from '../../../../shared-components/shared-code/shared-code.component';
-import { PROBLEM_RUNNABLES } from './problem-solving-runnables.ts';
+import { PROBLEM_RUNNABLES } from './problem-solving-runnables';
 
 export interface ProblemSolvingEntry {
     id: string;
@@ -6266,6 +6266,422 @@ function isMirror(left: TreeNode | null, right: TreeNode | null): boolean {
                 'التعامل مع edge cases: empty, single node, asymmetric.',
                 'الـ complexity بيعتمد على حجم الشجرة.',
                 'الـ iterative مفيد للشجر العميقة (تجنب stack overflow).'
+            ]
+        }
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // 19. Maximum Depth of Binary Tree — LeetCode #104
+    // ═══════════════════════════════════════════════════════════════
+    'maximum-depth-of-binary-tree': {
+        id: 'maximum-depth-of-binary-tree',
+        projectName: 'Maximum Depth of Binary Tree',
+        projectDescription: 'احسب أقصى عمق لشجرة ثنائية — عدد الـ nodes على أطول مسار من الـ root لأبعد leaf.',
+        projectDate: 'October 15, 2026',
+        projectVersion: 'LeetCode #104',
+        tags: ['Problem Solving', 'JavaScript', 'TypeScript', 'LeetCode', 'Binary Tree', 'DFS', 'Recursion'],
+
+        problemSolvingContent: {
+            problem: `
+Given the root of a binary tree, return its maximum depth.
+
+A binary tree's maximum depth is the number of nodes along the
+longest path from the root node down to the farthest leaf node.
+
+Example 1:
+Input: root = [3,9,20,null,null,15,7]
+Output: 3
+
+Example 2:
+Input: root = [1,null,2]
+Output: 2
+
+Constraints:
+- The number of nodes in the tree is in the range [0, 10^4].
+- -100 <= Node.val <= 100
+        `,
+
+            generalIdea: `
+المسألة بتسأل عن "أطول مسار" من الجذر لأبعد ورقة.
+
+لو فكّرنا فيها recursive:
+- أي شجرة فاضية (null) → عمقها = 0.
+- أي node عندها subtree يسار و subtree يمين.
+- عمق الـ node = 1 + max(عمق الـ left, عمق الـ right).
+
+الفكرة إننا منقيس من تحت لفوق — نجيب عمق كل subtree،
+وبعدين نضيف 1 (عشان الـ node الحالية نفسها).
+
+الـ recurrence: depth(node) = 1 + max(depth(node.left), depth(node.right)).
+
+ده بيدي حل في O(n) time و O(h) space (الـ recursion stack = ارتفاع الشجرة).
+        `,
+
+            solutionIdea: `
+بنستخدم recursion مباشر:
+
+1. Base case: node = null → return 0.
+2. نستدعي maxDepth(node.left) → depth_left.
+3. نستدعي maxDepth(node.right) → depth_right.
+4. نرجع 1 + Math.max(depth_left, depth_right).
+
+الحل أنيق جدًا — 4 سطور بس.
+كل نداء recursive بيعالج subtree كامل، والنتيجة بتتبنى من تحت لفوق.
+
+بديل: Iterative BFS بـ queue — نعدّ الـ levels (كل level زيادة = depth + 1).
+        `,
+
+            steps: [
+                'لو الـ node null → نرجع 0 (شجرة فاضية أو وصلنا لنهاية فرع).',
+                'نستدعي maxDepth على الـ left subtree.',
+                'نستدعي maxDepth على الـ right subtree.',
+                'نأخد الـ max من الاتنين (أطول فرع).',
+                'نضيف 1 (عشان الـ node الحالية).',
+                'نرجع الناتج للـ parent.'
+            ],
+
+            example: {
+                input: 'root = [3,9,20,null,null,15,7]',
+                output: '3',
+                explanation: `الشجرة:
+        3
+       / \\
+      9  20
+        /  \\
+       15   7
+
+التتبع:
+maxDepth(3):
+  1 + max( maxDepth(9), maxDepth(20) )
+
+maxDepth(9):
+  1 + max( maxDepth(null), maxDepth(null) )
+  = 1 + max(0, 0) = 1
+
+maxDepth(20):
+  1 + max( maxDepth(15), maxDepth(7) )
+
+maxDepth(15):
+  1 + max(0, 0) = 1
+
+maxDepth(7):
+  1 + max(0, 0) = 1
+
+maxDepth(20) = 1 + max(1, 1) = 2
+maxDepth(3) = 1 + max(1, 2) = 3
+
+النتيجة: 3 ✓
+
+مثال تاني: root = [1,null,2]
+    1
+     \\
+      2
+maxDepth(1) = 1 + max(0, maxDepth(2))
+            = 1 + max(0, 1)
+            = 2 ✓`
+            },
+
+            complexity: {
+                time: 'O(n)',
+                space: 'O(h) — height of the tree'
+            },
+
+            visualization: {
+                kind: 'diagram',
+                title: 'مسار الـ recursion على [3,9,20,null,null,15,7]',
+                content: `maxDepth(3)
+  │
+  ├─ maxDepth(9)
+  │    ├─ maxDepth(null) → 0
+  │    ├─ maxDepth(null) → 0
+  │    → 1 + max(0,0) = 1
+  │
+  └─ maxDepth(20)
+       ├─ maxDepth(15)
+       │    ├─ maxDepth(null) → 0
+       │    ├─ maxDepth(null) → 0
+       │    → 1
+       │
+       ├─ maxDepth(7)
+       │    ├─ maxDepth(null) → 0
+       │    ├─ maxDepth(null) → 0
+       │    → 1
+       │
+       → 1 + max(1, 1) = 2
+
+→ 1 + max(1, 2) = 3 ✓
+
+العمق بيتبنى من الأوراق (leaves) لفوق.`,
+                caption: 'كل subtree بترجع عمقها للـ parent — bottom-up.'
+            },
+
+            approaches: [
+                {
+                    name: 'Approach 1 - Recursive DFS (الأمثل)',
+                    tagline: 'الحل الأنيق: 4 سطور وبيوصف الفكرة مباشرة.',
+                    complexity: { time: 'O(n)', space: 'O(h)' },
+                    tradeoffs: [
+                        'الأبسط والأوضح.',
+                        'بيوصف الـ recurrence بشكل مباشر.',
+                        'الـ space = ارتفاع الشجرة (call stack).',
+                        'في شجرة عميقة جدًا، ممكن يحصل stack overflow.',
+                        'الـ interviewer بيحب الحل ده.'
+                    ],
+                    samples: [
+                        {
+                            label: 'max-depth.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function maxDepth(root: TreeNode | null): number {
+  if (root === null) return 0;
+
+  return 1 + Math.max(
+    maxDepth(root.left),
+    maxDepth(root.right)
+  );
+}`,
+                            notes: [
+                                'الـ base case: شجرة فاضية → 0.',
+                                'بنستدعي recursively على الـ left والـ right.',
+                                'بناخد الـ max + 1.',
+                                'Complexity: O(n) time، O(h) space.'
+                            ]
+                        },
+                        {
+                            label: 'max-depth.js',
+                            language: 'javascript',
+                            framework: 'JavaScript',
+                            code: `var maxDepth = function(root) {
+    if (root === null) return 0;
+
+    return 1 + Math.max(
+        maxDepth(root.left),
+        maxDepth(root.right)
+    );
+};`,
+                            notes: [
+                                'نفس الحل بـ JavaScript — هو ده الكود الأصلي بتاعك.',
+                                'بيشتغل مع root = null → 0.',
+                                'كل نداء بيستدعي اتنين، فالـ recursion tree بحجم 2n-1.',
+                                'الـ call stack بيوصل لعمق h في أسوأ حالة.'
+                            ]
+                        },
+                        {
+                            label: 'MaxDepth.cs',
+                            language: 'csharp',
+                            framework: 'C#',
+                            code: `public static class Solution
+{
+    public static int MaxDepth(TreeNode root)
+    {
+        if (root == null) return 0;
+
+        int leftDepth = MaxDepth(root.left);
+        int rightDepth = MaxDepth(root.right);
+
+        return 1 + Math.Max(leftDepth, rightDepth);
+    }
+}`,
+                            notes: [
+                                'في C#، بنفصل left و right في متغيرات عشان نسهّل debug.',
+                                'Math.Max موجودة في System.',
+                                'لو الشجرة عميقة جدًا (10^4 nodes في خط واحد)، ممكن يحصل StackOverflow.',
+                                'في الحالة دي، نستخدم iterative.'
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Approach 2 - Iterative BFS (Level Counting)',
+                    tagline: 'بدون recursion — بنعدّ الـ levels بـ queue.',
+                    complexity: { time: 'O(n)', space: 'O(w) — w = max width' },
+                    tradeoffs: [
+                        'بيتجنب الـ stack overflow.',
+                        'مفيد للشجر العريضة (wide trees).',
+                        'الـ space = O(w) حيث w = أوسع level.',
+                        'لو الشجرة ضيقة وطويلة، الـ space يكون أقل من الـ recursive.',
+                        'لكن لو الشجرة عريضة، الـ space يكون أكبر.'
+                    ],
+                    samples: [
+                        {
+                            label: 'max-depth-bfs.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function maxDepth(root: TreeNode | null): number {
+  if (root === null) return 0;
+
+  const queue: TreeNode[] = [root];
+  let depth = 0;
+
+  while (queue.length > 0) {
+    const levelSize = queue.length;
+    depth++;
+
+    for (let i = 0; i < levelSize; i++) {
+      const node = queue.shift()!;
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
+    }
+  }
+
+  return depth;
+}`,
+                            notes: [
+                                'بنستخدم queue بـ BFS.',
+                                'في كل iteration، بنعالج level كامل.',
+                                'بنزود depth عشان عدّينا level.',
+                                'لو عندنا levelSize = 0 في level، مش هنوصل له.',
+                                'الـ space: queue بيحمل أوسع level.'
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Approach 3 - Iterative DFS with Stack',
+                    tagline: 'نفس الـ recursion بس بـ stack صريح.',
+                    complexity: { time: 'O(n)', space: 'O(h)' },
+                    tradeoffs: [
+                        'بيقلّد الـ recursion بدون call stack.',
+                        'الـ space مشابه للـ recursive.',
+                        'بيحمل pairs (node, depth) عشان يتتبع العمق.',
+                        'مفيد لو الشجرة عميقة جدًا.'
+                    ],
+                    samples: [
+                        {
+                            label: 'max-depth-stack.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function maxDepth(root: TreeNode | null): number {
+  if (root === null) return 0;
+
+  const stack: Array<[TreeNode, number]> = [[root, 1]];
+  let max = 0;
+
+  while (stack.length > 0) {
+    const [node, depth] = stack.pop()!;
+    max = Math.max(max, depth);
+
+    if (node.left) stack.push([node.left, depth + 1]);
+    if (node.right) stack.push([node.right, depth + 1]);
+  }
+
+  return max;
+}`,
+                            notes: [
+                                'كل عنصر في الـ stack بيحمل (node, depth).',
+                                'بنستخدم depth الـ parent + 1 للـ children.',
+                                'بنحدّث max في كل خطوة.',
+                                'الـ space: O(h) — مش O(w) زي BFS.'
+                            ]
+                        }
+                    ]
+                }
+            ],
+
+            testing: [
+                {
+                    title: 'Jest',
+                    framework: 'Jest (TS/JS)',
+                    code: `import { maxDepth, TreeNode } from './max-depth';
+
+function buildTree(arr: (number | null)[]): TreeNode | null {
+  if (!arr.length || arr[0] === null) return null;
+  const nodes = arr.map(v => v === null ? null : new TreeNode(v));
+  for (let i = 0; i < nodes.length; i++) {
+    if (!nodes[i]) continue;
+    const li = 2 * i + 1;
+    const ri = 2 * i + 2;
+    if (li < nodes.length) nodes[i]!.left = nodes[li];
+    if (ri < nodes.length) nodes[i]!.right = nodes[ri];
+  }
+  return nodes[0];
+}
+
+describe('maxDepth', () => {
+  it.each([
+    [[3, 9, 20, null, null, 15, 7], 3],
+    [[1, null, 2], 2],
+    [[1], 1],
+    [[], 0],
+    [[1, 2, 3, 4, 5], 3],
+    [[1, 2, null, 3, null, 4], 4],
+  ])('maxDepth(%j) = %i', (input, expected) => {
+    expect(maxDepth(buildTree(input))).toBe(expected);
+  });
+});`
+                },
+                {
+                    title: 'xUnit',
+                    framework: 'xUnit (C#)',
+                    code: `public class MaxDepthTests
+{
+    [Fact]
+    public void Example1_Returns3()
+    {
+        var root = new TreeNode(3,
+            new TreeNode(9),
+            new TreeNode(20, new TreeNode(15), new TreeNode(7)));
+        Assert.Equal(3, Solution.MaxDepth(root));
+    }
+
+    [Fact]
+    public void Example2_Returns2()
+    {
+        var root = new TreeNode(1, null, new TreeNode(2));
+        Assert.Equal(2, Solution.MaxDepth(root));
+    }
+
+    [Fact]
+    public void EmptyTree_Returns0()
+    {
+        Assert.Equal(0, Solution.MaxDepth(null));
+    }
+
+    [Fact]
+    public void SingleNode_Returns1()
+    {
+        Assert.Equal(1, Solution.MaxDepth(new TreeNode(1)));
+    }
+}`
+                }
+            ],
+
+            code: [
+                {
+                    codeTitle: 'max-depth.ts',
+                    language: 'typescript',
+                    code: `function maxDepth(root: TreeNode | null): number {
+  if (root === null) return 0;
+
+  return 1 + Math.max(
+    maxDepth(root.left),
+    maxDepth(root.right)
+  );
+}`,
+                    lines: [
+                        { line: 'function maxDepth(root: TreeNode | null): number {', note: 'تعريف الدالة. بتاخد root (ممكن null)، وبترجّع number.' },
+                        { line: '  if (root === null) return 0;', note: 'الـ base case: شجرة فاضية → عمق 0. ده اللي بيوقف الـ recursion.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '  return 1 + Math.max(', note: 'عمق الـ node = 1 (نفسها) + أكبر عمق من subtree اليسار أو اليمين.' },
+                        { line: '    maxDepth(root.left),', note: 'العمق الأقصى للـ left subtree.' },
+                        { line: '    maxDepth(root.right)', note: 'العمق الأقصى للـ right subtree.' },
+                        { line: '  );', note: 'نهاية Math.max.' },
+                        { line: '}', note: 'نهاية الدالة. Complexity: O(n) time، O(h) space.' }
+                    ]
+                }
+            ],
+
+            learned: [
+                'فهم الـ recursion على شجرة ثنائية.',
+                'الـ base case: null → 0.',
+                'الـ recurrence: depth = 1 + max(left, right).',
+                'الـ bottom-up computation: النتيجة بتتبنى من الأوراق لفوق.',
+                'فهم إن العمق = عدد الـ nodes مش عدد الـ edges.',
+                'الفرق بين DFS (recursive/stack) و BFS (queue).',
+                'الـ complexity: O(n) time دايماً (كل node بتتزار مرة).',
+                'الـ space: O(h) في الـ DFS، O(w) في الـ BFS.',
+                'الـ edge cases: شجرة فاضية، node واحدة، شجرة مائلة (skewed).',
+                'المقارنة بين الـ approaches حسب الـ constraints.'
             ]
         }
     },
