@@ -3158,5 +3158,424 @@ function render(idx) {
   }
 }
 `
+  },
+
+  'sorted-array-to-bst': {
+    html: makeHtml('sorted array (comma separated)', '-10,-3,0,5,9'),
+    css: BASE_CSS + `
+    .array-strip {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      padding: 14px 10px;
+      background: #131C26;
+      border: 1px solid #1E2D42;
+      border-radius: 8px;
+      flex-wrap: wrap;
+    }
+    .arr-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      min-width: 52px;
+    }
+    .arr-cell .val {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 15px;
+      font-weight: 700;
+      color: #E9EFF5;
+      background: #0A1017;
+      border: 2px solid #2A3846;
+      border-radius: 6px;
+      transition: all 0.25s ease;
+    }
+    .arr-cell .idx {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 10px;
+      color: #6B7C92;
+    }
+    .arr-cell.in-range .val {
+      border-color: #5B9DFF;
+      color: #5B9DFF;
+    }
+    .arr-cell.pivot .val {
+      background: #F2B200;
+      border-color: #F2B200;
+      color: #0A1017;
+      box-shadow: 0 0 0 4px rgba(242, 178, 0, 0.18);
+      transform: scale(1.08);
+    }
+    .arr-cell.left-side .val { border-color: rgba(91, 157, 255, 0.55); color: #5B9DFF; }
+    .arr-cell.right-side .val { border-color: rgba(197, 134, 192, 0.55); color: #C586C0; }
+    `,
+    js: `
+${HARNESS}
+
+let _origArray = [];
+let _treeLayout = null;
+
+function computeHeight(node) {
+  if (!node) return 0;
+  return 1 + Math.max(computeHeight(node.left), computeHeight(node.right));
+}
+
+function layoutTree(root) {
+  let xc = 0;
+  const nodes = [];
+  const edges = [];
+
+  function visit(n, depth) {
+    if (!n) return;
+    visit(n.left, depth + 1);
+    n._x = xc++;
+    n._y = depth;
+    nodes.push(n);
+    visit(n.right, depth + 1);
   }
+  visit(root, 0);
+
+  function collect(n) {
+    if (!n) return;
+    if (n.left) edges.push({ from: n, to: n.left });
+    if (n.right) edges.push({ from: n, to: n.right });
+    collect(n.left);
+    collect(n.right);
+  }
+  collect(root);
+
+  return { nodes, edges };
+}
+
+/* ✅ build ترجع الـ steps array مباشرة (مش { steps, root }) */
+function build(input) {
+  const nums = (input || '')
+    .split(',')
+    .map(s => Number(s.trim()))
+    .filter(n => !isNaN(n));
+
+  if (nums.length === 0) throw new Error('Enter at least one number');
+
+  for (let i = 1; i < nums.length; i++) {
+    if (nums[i] <= nums[i - 1]) {
+      throw new Error('Array must be strictly sorted ascending (no dups)');
+    }
+  }
+
+  _origArray = nums;
+
+  let idCounter = 0;
+  const steps = [];
+  const stack = [];
+  const inorder = [];
+
+  const ranges = Array.from({ length: nums.length }, () => ({
+    inRange: false,
+    pivot: false,
+    leftSide: false,
+    rightSide: false
+  }));
+
+  function snap(extra) {
+    return Object.assign({
+      stack: stack.map(f => ({ left: f.left, right: f.right, phase: f.phase })),
+      inorder: inorder.slice(),
+      /* ✅ snapshot فعلي من الحالة الحالية */
+      ranges: ranges.map(r => ({ ...r }))
+    }, extra);
+  }
+
+  function paintRange(l, r, mid) {
+    for (let i = 0; i < nums.length; i++) {
+      const cell = ranges[i];
+      cell.inRange = i >= l && i <= r;
+      cell.pivot = mid !== undefined && i === mid;
+      /* ✅ reset الـ sides كل مرة */
+      cell.leftSide = mid !== undefined && i >= l && i < mid;
+      cell.rightSide = mid !== undefined && i > mid && i <= r;
+    }
+  }
+
+  function buildTree(left, right) {
+    stack.push({ left, right, phase: 'enter' });
+
+    if (left > right) {
+      paintRange(left, right, undefined);
+      steps.push(snap({
+        type: 'empty',
+        activeId: null,
+        desc: 'range [' + left + ', ' + right + '] فاضي — return null'
+      }));
+      stack.pop();
+      return null;
+    }
+
+    const mid = Math.floor((left + right) / 2);
+    const val = nums[mid];
+    const node = { id: ++idCounter, val, left: null, right: null };
+
+    paintRange(left, right, mid);
+
+    steps.push(snap({
+      type: 'pick-mid',
+      activeId: node.id,
+      desc: 'range [' + left + ', ' + right + '] → mid=' + mid + ' → root=' + val
+    }));
+
+    stack[stack.length - 1].phase = 'left';
+    node.left = buildTree(left, mid - 1);
+
+    stack[stack.length - 1].phase = 'right';
+    node.right = buildTree(mid + 1, right);
+
+    inorder.push(val);
+
+    steps.push(snap({
+      type: 'return',
+      activeId: node.id,
+      desc: 'نرجع ' + val + ' — left=' + (node.left ? node.left.val : 'null') + ', right=' + (node.right ? node.right.val : 'null')
+    }));
+
+    stack.pop();
+    return node;
+  }
+
+  const root = buildTree(0, nums.length - 1);
+
+  steps.push(snap({
+    type: 'done',
+    activeId: null,
+    desc: 'خلصنا ✓ — BST متوازن بارتفاع ' + computeHeight(root)
+  }));
+
+  _treeLayout = layoutTree(root);
+
+  return steps;  /* ✅ array مباشر */
+}
+
+function renderArray(step) {
+  const arr = _origArray;
+  const row = document.createElement('div');
+  row.className = 'array-strip';
+
+  const cellData = step.ranges || arr.map(() => ({}));
+
+  arr.forEach((v, i) => {
+    const info = cellData[i] || {};
+    const cell = document.createElement('div');
+    cell.className = 'arr-cell';
+    if (info.inRange) cell.classList.add('in-range');
+    if (info.pivot) cell.classList.add('pivot');
+    if (info.leftSide) cell.classList.add('left-side');
+    if (info.rightSide) cell.classList.add('right-side');
+
+    const val = document.createElement('div');
+    val.className = 'val';
+    val.textContent = v;
+
+    const idx = document.createElement('div');
+    idx.className = 'idx';
+    idx.textContent = i;
+
+    cell.appendChild(val);
+    cell.appendChild(idx);
+    row.appendChild(cell);
+  });
+
+  return row;
+}
+
+function renderTree(activeId, ns) {
+  if (!_treeLayout || !_treeLayout.nodes.length) {
+    const empty = document.createElement('div');
+    empty.style.cssText = 'color:#6B7C92;font-family:ui-monospace,monospace;font-size:12px;padding:20px';
+    empty.textContent = '(لا توجد شجرة بعد)';
+    return empty;
+  }
+
+  const NODE_R = 20;
+  const X_GAP = 55;
+  const Y_GAP = 62;
+  const maxX = Math.max.apply(null, _treeLayout.nodes.map(n => n._x));
+  const maxY = Math.max.apply(null, _treeLayout.nodes.map(n => n._y));
+  const W = (maxX + 1) * X_GAP + 30;
+  const H = (maxY + 1) * Y_GAP + 30;
+
+  const svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+  svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+  svg.style.width = '100%';
+  svg.style.maxHeight = '220px';
+  svg.style.display = 'block';
+
+  _treeLayout.edges.forEach(e => {
+    const line = document.createElementNS(ns, 'line');
+    line.setAttribute('x1', e.from._x * X_GAP + 15 + NODE_R);
+    line.setAttribute('y1', e.from._y * Y_GAP + 15 + NODE_R);
+    line.setAttribute('x2', e.to._x * X_GAP + 15 + NODE_R);
+    line.setAttribute('y2', e.to._y * Y_GAP + 15 + NODE_R);
+    line.setAttribute('stroke', '#2A3846');
+    line.setAttribute('stroke-width', '2');
+    svg.appendChild(line);
+  });
+
+  _treeLayout.nodes.forEach(n => {
+    const cx = n._x * X_GAP + 15 + NODE_R;
+    const cy = n._y * Y_GAP + 15 + NODE_R;
+    const isActive = n.id === activeId;
+
+    const c = document.createElementNS(ns, 'circle');
+    c.setAttribute('cx', cx);
+    c.setAttribute('cy', cy);
+    c.setAttribute('r', NODE_R);
+    c.setAttribute('fill', isActive ? '#F2B200' : '#131C26');
+    c.setAttribute('stroke', isActive ? '#F2B200' : '#5B9DFF');
+    c.setAttribute('stroke-width', '2');
+    svg.appendChild(c);
+
+    const t = document.createElementNS(ns, 'text');
+    t.setAttribute('x', cx);
+    t.setAttribute('y', cy + 5);
+    t.setAttribute('text-anchor', 'middle');
+    t.setAttribute('font-family', 'ui-monospace, monospace');
+    t.setAttribute('font-size', '13');
+    t.setAttribute('font-weight', '700');
+    t.setAttribute('fill', isActive ? '#0A1017' : '#E9EFF5');
+    t.textContent = n.val;
+    svg.appendChild(t);
+  });
+
+  return svg;
+}
+
+function render(idx) {
+  const safe = Math.max(0, Math.min(idx, state.steps.length - 1));
+  const step = state.steps[safe];
+
+  const stage = $('stage');
+  stage.innerHTML = '';
+  stage.style.cssText =
+    'display:flex;flex-direction:column;gap:10px;padding:14px;' +
+    'background:#0A1017;border:1px solid #1E2D42;border-radius:8px;' +
+    'flex:1;min-height:280px';
+
+  /* Array strip */
+  stage.appendChild(renderArray(step));
+
+  /* Tree */
+  const ns = 'http://www.w3.org/2000/svg';
+  const treeWrap = document.createElement('div');
+  treeWrap.style.cssText =
+    'display:flex;justify-content:center;align-items:center;min-height:180px';
+  treeWrap.appendChild(renderTree(step.activeId, ns));
+  stage.appendChild(treeWrap);
+
+  /* Bottom row: stack + inorder */
+  const bottomRow = document.createElement('div');
+  bottomRow.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:10px';
+
+  /* Stack */
+  const stackBox = document.createElement('div');
+  stackBox.style.cssText =
+    'padding:8px;background:#131C26;border:1px solid #1E2D42;border-radius:6px';
+
+  const stackTitle = document.createElement('div');
+  stackTitle.style.cssText =
+    'font-family:ui-monospace,monospace;font-size:10px;color:#6B7C92;' +
+    'text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px';
+  stackTitle.textContent = 'Recursion Stack';
+  stackBox.appendChild(stackTitle);
+
+  const stackEl = document.createElement('div');
+  stackEl.style.cssText =
+    'display:flex;flex-direction:column-reverse;gap:4px;min-height:40px;' +
+    'padding:6px;background:#0A1017;border:2px dashed #2A3846;border-radius:6px';
+
+  if (!step.stack || !step.stack.length) {
+    stackEl.innerHTML =
+      '<div style="color:#6B7C92;font-size:11px;font-family:ui-monospace,monospace;text-align:center;padding:12px 8px">(فاضي)</div>';
+  } else {
+    const labels = { enter: 'enter', left: 'left', right: 'right' };
+    step.stack.forEach((frame, i) => {
+      const isTop = i === step.stack.length - 1;
+      const el = document.createElement('div');
+      el.style.cssText =
+        'display:flex;justify-content:space-between;align-items:center;' +
+        'padding:5px 10px;border-radius:4px;' +
+        'font-family:ui-monospace,monospace;font-size:12px;' +
+        (isTop ? 'background:#5B9DFF;color:#0A1017' : 'background:#1E2D42');
+
+      const val = document.createElement('span');
+      val.textContent = '[' + frame.left + ', ' + frame.right + ']';
+
+      const phase = document.createElement('span');
+      phase.style.cssText = 'font-size:10px;opacity:0.75;text-transform:lowercase';
+      phase.textContent = labels[frame.phase] || frame.phase;
+
+      el.appendChild(val);
+      el.appendChild(phase);
+      stackEl.appendChild(el);
+    });
+  }
+  stackBox.appendChild(stackEl);
+  bottomRow.appendChild(stackBox);
+
+  /* Inorder */
+  const inBox = document.createElement('div');
+  inBox.style.cssText =
+    'padding:8px;background:#131C26;border:1px solid #1E2D42;border-radius:6px';
+
+  const inTitle = document.createElement('div');
+  inTitle.style.cssText =
+    'font-family:ui-monospace,monospace;font-size:10px;color:#6B7C92;' +
+    'text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px';
+  inTitle.textContent = 'Inorder (built so far)';
+  inBox.appendChild(inTitle);
+
+  const inArr = document.createElement('div');
+  inArr.style.cssText =
+    'display:flex;flex-wrap:wrap;gap:4px;padding:6px;background:#0A1017;' +
+    'border:1px solid #1E2D42;border-radius:6px;min-height:32px';
+
+  if (!step.inorder || !step.inorder.length) {
+    inArr.innerHTML =
+      '<span style="color:#6B7C92;font-size:11px;font-family:ui-monospace,monospace">(لسه)</span>';
+  } else {
+    step.inorder.forEach(v => {
+      const cell = document.createElement('div');
+      cell.style.cssText =
+        'display:inline-flex;align-items:center;justify-content:center;' +
+        'min-width:30px;height:30px;padding:0 6px;' +
+        'background:#4CD08A;color:#0A1017;border-radius:4px;' +
+        'font-size:12px;font-weight:700;font-family:ui-monospace,monospace';
+      cell.textContent = v;
+      inArr.appendChild(cell);
+    });
+  }
+  inBox.appendChild(inArr);
+  bottomRow.appendChild(inBox);
+
+  stage.appendChild(bottomRow);
+
+  setStats([
+    ['العملية', step.type || '—'],
+    ['stack size', (step.stack || []).length],
+    ['inorder count', (step.inorder || []).length],
+    ['الخطوة', (safe + 1) + ' / ' + state.steps.length]
+  ]);
+
+  if (idx >= 0 && step.desc) {
+    let cls = 'info';
+    if (step.type === 'return' || step.type === 'done') cls = 'ok';
+    else if (step.type === 'empty') cls = 'warn';
+    log(step.desc, cls);
+  }
+}
+`
+  },
 };

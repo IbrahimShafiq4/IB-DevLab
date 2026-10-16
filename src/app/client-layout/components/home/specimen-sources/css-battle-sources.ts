@@ -2489,4 +2489,51 @@ p {
     }
 }`
   },
+  // ═══════════════════════════════════════════════════════════════
+  // CB-41 — Cream Portrait with Circle & Bars
+  // ═══════════════════════════════════════════════════════════════
+  'CB-41': {
+    stage: 'light',
+    html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cream Portrait</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body></body>
+</html>`,
+    css: `
+body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: #F3EAD2;
+    background-image:
+        radial-gradient(circle at 50% 0%, #4C455B 110px, transparent 110px),
+        linear-gradient(#4C455B, #4C455B),
+        linear-gradient(#D96C7B, #D96C7B),
+        linear-gradient(#4C455B, #4C455B),
+        linear-gradient(#D96C7B, #D96C7B),
+        linear-gradient(#4C455B, #4C455B),
+        linear-gradient(#D96C7B, #D96C7B);
+    background-repeat: no-repeat;
+    background-size:
+        220px 220px,
+        20px 45px,
+        20px 45px,
+        20px 80px,
+        20px 80px,
+        20px 80px,
+        20px 80px;
+    background-position:
+        calc(50% + 0px) 70px,
+        calc(50% - 15px) 175px,
+        calc(50% + 15px) 175px,
+        calc(50% - 100px) -20px,
+        calc(50% - 70px) -20px,
+        calc(50% + 70px) -20px,
+        calc(50% + 100px) -20px;
+}`
+  },
 };

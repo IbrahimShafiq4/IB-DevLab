@@ -6685,6 +6685,526 @@ describe('maxDepth', () => {
             ]
         }
     },
+
+    // ═══════════════════════════════════════════════════════════════
+    // 20. Convert Sorted Array to BST — LeetCode #108
+    // ═══════════════════════════════════════════════════════════════
+    'sorted-array-to-bst': {
+        id: 'sorted-array-to-bst',
+        projectName: 'Convert Sorted Array to Binary Search Tree',
+        projectDescription: 'حوّل مصفوفة مرتّبة تصاعديًا لـ height-balanced BST — بالـ Divide & Conquer.',
+        projectDate: 'October 16, 2026',
+        projectVersion: 'LeetCode #108',
+        tags: ['Problem Solving', 'JavaScript', 'TypeScript', 'LeetCode', 'Binary Tree', 'BST', 'Divide and Conquer'],
+
+        problemSolvingContent: {
+            problem: `
+Given an integer array nums where the elements are sorted in ascending order,
+convert it to a height-balanced binary search tree.
+
+A height-balanced binary tree is a binary tree in which the depth of the
+two subtrees of every node never differs by more than one.
+
+Example 1:
+Input: nums = [-10,-3,0,5,9]
+Output: [0,-3,9,-10,null,5]
+Explanation: [0,-10,5,null,-3,null,9] is also accepted.
+
+Example 2:
+Input: nums = [1,3]
+Output: [3,1]
+Explanation: [1,null,3] and [3,1] are both height-balanced BSTs.
+
+Constraints:
+- 1 <= nums.length <= 10^4
+- -10^4 <= nums[i] <= 10^4
+- nums is sorted in a strictly increasing order.
+            `,
+
+            generalIdea: `
+الفكرة الأساسية: **Divide and Conquer**.
+
+لو عايزين BST متوازن، لازم نختار الـ root بعناية.
+الحل الطبيعي: **خُد العنصر اللي في النص** يبقى هو الـ root.
+
+ليه؟
+- كل العناصر اللي على شماله أصغر منه (وهيبقوا في الـ left subtree).
+- كل العناصر اللي على يمينه أكبر منه (وهيبقوا في الـ right subtree).
+- النص بيدي توازن طبيعي بين الشمال واليمين.
+
+بعد ما نختار الـ root، بنطبّق نفس الفكرة recursively على:
+- الـ left half (من left لـ mid-1)
+- الـ right half (من mid+1 لـ right)
+
+الفكرة إن كل recursive call بياخد "قطعة" من الـ array،
+وبيختار نصها كـ root بتاعها. مع الوقت، الشجرة بتتبنى **من فوق لتحت** (Top-Down).
+            `,
+
+            solutionIdea: `
+بنستخدم دالة recursive بتاخد حدود المصفوفة (left, right):
+
+1. Base case: لو left > right → مفيش عناصر → return null.
+2. نحسب mid = Math.floor((left + right) / 2).
+3. نعمل root جديد بـ nums[mid].
+4. root.left = buildTree(left, mid - 1).
+5. root.right = buildTree(mid + 1, right).
+6. نرجّع root.
+
+**ليه height-balanced؟**
+لأن كل مستوى بيفصل المصفوفة لـ 2 نص متساويين تقريبًا.
+ارتفاع الشجرة = log₂(n) تقريبًا.
+كل node عندها subtree يسار و subtree يمين بفرق ارتفاع ≤ 1.
+
+**ملاحظة مهمة:** في أي لحظة، القطعة اللي بتتعالج
+من الـ array لسه مرتّبة (subarray من array مرتّبة).
+فكل recursive call بياخد نص مرتّب، وبيختار نصه. النتيجة BST سليم.
+            `,
+
+            steps: [
+                'نبدأ بالـ range الكامل: left = 0، right = n - 1.',
+                'لو left > right → مفيش عناصر → return null.',
+                'نحسب النص: mid = floor((left + right) / 2).',
+                'نعمل node جديدة بقيمة nums[mid] — دي هتكون root للقطعة دي.',
+                'نبني الـ left subtree recursively من [left, mid-1].',
+                'نبني الـ right subtree recursively من [mid+1, right].',
+                'نربط الـ left والـ right بالـ root.',
+                'نرجّع الـ root لأبوه في الـ recursion.'
+            ],
+
+            example: {
+                input: 'nums = [-10, -3, 0, 5, 9]',
+                output: '[0, -3, 9, -10, null, 5]',
+                explanation: `المصفوفة: [-10, -3, 0, 5, 9]  (indices 0..4)
+
+buildTree(0, 4):
+  mid = floor((0+4)/2) = 2
+  root = nums[2] = 0   ← العنصر اللي في النص
+
+  buildTree(0, 1):       ← النص الشمال
+    mid = floor((0+1)/2) = 0
+    root = nums[0] = -10
+    buildTree(0, -1) → null
+    buildTree(1, 1):
+      mid = 1
+      root = nums[1] = -3
+      → left = null, right = null
+      → return -3
+    → -10.left = null, -10.right = -3
+    → return -10
+
+  buildTree(3, 4):       ← النص اليمين
+    mid = floor((3+4)/2) = 3
+    root = nums[3] = 5
+    buildTree(3, 2) → null
+    buildTree(4, 4):
+      mid = 4
+      root = nums[4] = 9
+      → return 9
+    → 5.left = null, 5.right = 9
+    → return 5
+
+  0.left = -10, 0.right = 5
+  → return 0
+
+الشجرة النهائية:
+        0
+       / \\
+     -10   5
+       \\    \\
+       -3    9
+
+الارتفاع = 3
+كل node عندها فرق ارتفاع بين الشمال واليمين ≤ 1 ✓
+هي height-balanced BST ✓
+
+ملاحظة: فيه حلول تانية صحيحة (زي [0,-10,5,null,-3,null,9])
+لأن اختيار الـ mid مش unique — بس كلهم height-balanced.
+            `
+            },
+
+            complexity: {
+                time: 'O(n)',
+                space: 'O(log n) — ارتفاع الشجرة (call stack)'
+            },
+
+            visualization: {
+                kind: 'diagram',
+                title: 'مسار Divide & Conquer على [-10, -3, 0, 5, 9]',
+                content: `         nums = [-10, -3, 0, 5, 9]
+                 idx:  0    1   2  3  4
+                       └────┬────┘  │  └───┬───┘
+                         left half  mid  right half
+                            │       │       │
+                            v       v       v
+                       buildTree  root = 0  buildTree
+                       (0, 1)             (3, 4)
+                            │                 │
+                       mid=0, root=-10   mid=3, root=5
+                            │                 │
+                       buildTree(1,1)    buildTree(4,4)
+                       mid=1, root=-3    mid=4, root=9
+
+الارتفاع = ceil(log2(5)) = 3
+Number of nodes = 5 = n
+Balance factor at every node | <= 1`,
+
+                caption: 'بنختار النص كـ root، وبعدين نحل النصين recursively.'
+            },
+
+            approaches: [
+                {
+                    name: 'Approach 1 - Recursive Divide & Conquer (الأمثل)',
+                    tagline: 'الحل الطبيعي — O(n) time، O(log n) space.',
+                    complexity: { time: 'O(n)', space: 'O(log n)' },
+                    tradeoffs: [
+                        'أبسط حل وأوضحه.',
+                        'بيختار النص كـ root — يضمن height balance.',
+                        'كل node بتتزار مرة واحدة بالظبط.',
+                        'الـ recursion depth = ارتفاع الشجرة = O(log n).'
+                    ],
+                    samples: [
+                        {
+                            label: 'sorted-array-to-bst.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `class TreeNode {
+  val: number;
+  left: TreeNode | null = null;
+  right: TreeNode | null = null;
+  constructor(val: number) { this.val = val; }
+}
+
+function sortedArrayToBST(nums: number[]): TreeNode | null {
+  function build(left: number, right: number): TreeNode | null {
+    if (left > right) return null;
+
+    const mid = Math.floor((left + right) / 2);
+    const root = new TreeNode(nums[mid]);
+
+    root.left = build(left, mid - 1);
+    root.right = build(mid + 1, right);
+
+    return root;
+  }
+
+  return build(0, nums.length - 1);
+}`,
+                            notes: [
+                                'build(left, right) بتشتغل على subarray من الـ array.',
+                                'الـ base case: left > right → مفيش عناصر.',
+                                'اختيار mid كـ root يضمن balance.',
+                                'root.left/right بيتبنوا recursively.',
+                                'return root في الآخر يربط الشجرة كلها.',
+                                'Complexity: O(n) time (كل عنصر node واحدة)، O(log n) space.'
+                            ]
+                        },
+                        {
+                            label: 'sorted-array-to-bst.js',
+                            language: 'javascript',
+                            framework: 'JavaScript',
+                            code: `var sortedArrayToBST = function(nums) {
+    function buildTree(left, right) {
+        if (left > right) {
+            return null;
+        }
+
+        const mid = Math.floor((left + right) / 2);
+        const root = new TreeNode(nums[mid]);
+
+        root.left = buildTree(left, mid - 1);
+        root.right = buildTree(mid + 1, right);
+
+        return root;
+    }
+
+    return buildTree(0, nums.length - 1);
+};`,
+                            notes: [
+                                'ده الحل الأصلي بتاعك — أنيق ومختصر.',
+                                'الـ closure بيخلي nums متاح للدالة الداخلية.',
+                                'كل recursive call بياخد subarray مختلفة.',
+                                'لو nums فاضية، left=0 > right=-1 → يرجع null فورًا.',
+                                'لو nums عنصر واحد، mid = 0 → root = nums[0] → يرجعها.'
+                            ]
+                        },
+                        {
+                            label: 'SortedArrayToBST.cs',
+                            language: 'csharp',
+                            framework: 'C#',
+                            code: `public class TreeNode
+{
+    public int val;
+    public TreeNode left;
+    public TreeNode right;
+    public TreeNode(int val = 0, TreeNode left = null, TreeNode right = null)
+    {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+public static class Solution
+{
+    public static TreeNode SortedArrayToBST(int[] nums)
+    {
+        return Build(nums, 0, nums.Length - 1);
+    }
+
+    private static TreeNode Build(int[] nums, int left, int right)
+    {
+        if (left > right) return null;
+
+        int mid = left + (right - left) / 2;
+        var root = new TreeNode(nums[mid]);
+
+        root.left = Build(nums, left, mid - 1);
+        root.right = Build(nums, mid + 1, right);
+
+        return root;
+    }
+}`,
+                            notes: [
+                                'left + (right - left) / 2 أأمن ضد overflow.',
+                                'في C#، arrays بتتمرر بـ reference — مش محتاج closure.',
+                                'لـ n = 10^4، العمق = ~14 — مش هيحصل stack overflow.',
+                                'الحل recursive هو الأمثل هنا.'
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'Approach 2 - Iterative with Stack',
+                    tagline: 'نفس الفكرة بس بـ stack صريح — مفيد للشجر العميقة جدًا.',
+                    complexity: { time: 'O(n)', space: 'O(n)' },
+                    tradeoffs: [
+                        'بيتجنب الـ call stack overflow.',
+                        'أصعب في القراءة من الـ recursion.',
+                        'بيحتاج نتبع (left, right, parent) لكل node.',
+                        'مفيد لو الشجرة عميقة جدًا (مش حالتنا لأن n ≤ 10^4).'
+                    ],
+                    samples: [
+                        {
+                            label: 'sorted-array-to-bst-iterative.ts',
+                            language: 'typescript',
+                            framework: 'TypeScript',
+                            code: `function sortedArrayToBST(nums: number[]): TreeNode | null {
+  if (nums.length === 0) return null;
+
+  type Task = { left: number; right: number; parent: TreeNode | null; side: 'left' | 'right' | 'root' };
+
+  const root = new TreeNode(0); // placeholder
+  const stack: Task[] = [{ left: 0, right: nums.length - 1, parent: null, side: 'root' }];
+  let realRoot: TreeNode | null = null;
+
+  while (stack.length > 0) {
+    const { left, right, parent, side } = stack.pop()!;
+
+    if (left > right) {
+      if (parent && side === 'left') parent.left = null;
+      if (parent && side === 'right') parent.right = null;
+      continue;
+    }
+
+    const mid = Math.floor((left + right) / 2);
+    const node = new TreeNode(nums[mid]);
+
+    if (side === 'root') realRoot = node;
+    else if (side === 'left' && parent) parent.left = node;
+    else if (side === 'right' && parent) parent.right = node;
+
+    // Push right first so left gets processed first (order doesn't matter)
+    stack.push({ left: mid + 1, right, parent: node, side: 'right' });
+    stack.push({ left, right: mid - 1, parent: node, side: 'left' });
+  }
+
+  return realRoot;
+}`,
+                            notes: [
+                                'بنستخدم stack بدل call stack.',
+                                'كل task بتقول: حِل الـ range [left, right] واربطها في parent.',
+                                'الترتيب في الـ stack مش مهم — الـ tree structure ثابت.',
+                                'مفيش recursion — مفيش خطر overflow.'
+                            ]
+                        }
+                    ]
+                }
+            ],
+
+            testing: [
+                {
+                    title: 'Jest',
+                    framework: 'Jest (TS/JS)',
+                    code: `import { sortedArrayToBST, TreeNode } from './sorted-array-to-bst';
+
+function isBalanced(node: TreeNode | null): boolean {
+  function height(n: TreeNode | null): number {
+    if (!n) return 0;
+    const lh = height(n.left);
+    const rh = height(n.right);
+    if (lh === -1 || rh === -1 || Math.abs(lh - rh) > 1) return -1;
+    return 1 + Math.max(lh, rh);
+  }
+  return height(node) !== -1;
+}
+
+function inorder(node: TreeNode | null, out: number[] = []): number[] {
+  if (!node) return out;
+  inorder(node.left, out);
+  out.push(node.val);
+  inorder(node.right, out);
+  return out;
+}
+
+describe('sortedArrayToBST', () => {
+  it('builds a height-balanced BST', () => {
+    const nums = [-10, -3, 0, 5, 9];
+    const tree = sortedArrayToBST(nums);
+    expect(isBalanced(tree)).toBe(true);
+  });
+
+  it('inorder traversal equals input', () => {
+    const nums = [-10, -3, 0, 5, 9];
+    const tree = sortedArrayToBST(nums);
+    expect(inorder(tree)).toEqual(nums);
+  });
+
+  it('handles single element', () => {
+    const tree = sortedArrayToBST([42]);
+    expect(tree?.val).toBe(42);
+    expect(tree?.left).toBeNull();
+    expect(tree?.right).toBeNull();
+  });
+
+  it('handles two elements', () => {
+    const tree = sortedArrayToBST([1, 3]);
+    expect(isBalanced(tree)).toBe(true);
+    expect(inorder(tree)).toEqual([1, 3]);
+  });
+
+  it('handles empty array', () => {
+    expect(sortedArrayToBST([])).toBeNull();
+  });
+});`
+                },
+                {
+                    title: 'xUnit',
+                    framework: 'xUnit (C#)',
+                    code: `public class SortedArrayToBSTTests
+{
+    [Fact]
+    public void Builds_Balanced_BST()
+    {
+        var nums = new[] { -10, -3, 0, 5, 9 };
+        var tree = Solution.SortedArrayToBST(nums);
+        Assert.True(IsBalanced(tree));
+    }
+
+    [Fact]
+    public void Inorder_Matches_Input()
+    {
+        var nums = new[] { -10, -3, 0, 5, 9 };
+        var tree = Solution.SortedArrayToBST(nums);
+        Assert.Equal(nums, Inorder(tree).ToArray());
+    }
+
+    [Fact]
+    public void Single_Element()
+    {
+        var tree = Solution.SortedArrayToBST(new[] { 42 });
+        Assert.Equal(42, tree.val);
+        Assert.Null(tree.left);
+        Assert.Null(tree.right);
+    }
+
+    [Fact]
+    public void Empty_Array_Returns_Null()
+    {
+        Assert.Null(Solution.SortedArrayToBST(Array.Empty<int>()));
+    }
+
+    private static bool IsBalanced(TreeNode node)
+    {
+        return Height(node) != -1;
+    }
+
+    private static int Height(TreeNode node)
+    {
+        if (node == null) return 0;
+        var lh = Height(node.left);
+        var rh = Height(node.right);
+        if (lh == -1 || rh == -1 || Math.Abs(lh - rh) > 1) return -1;
+        return 1 + Math.Max(lh, rh);
+    }
+
+    private static IEnumerable<int> Inorder(TreeNode node)
+    {
+        if (node == null) yield break;
+        foreach (var v in Inorder(node.left)) yield return v;
+        yield return node.val;
+        foreach (var v in Inorder(node.right)) yield return v;
+    }
+}`
+                }
+            ],
+
+            code: [
+                {
+                    codeTitle: 'sorted-array-to-bst.js',
+                    language: 'javascript',
+                    code: `var sortedArrayToBST = function(nums) {
+    function buildTree(left, right) {
+        if (left > right) {
+            return null;
+        }
+
+        const mid = Math.floor((left + right) / 2);
+        const root = new TreeNode(nums[mid]);
+
+        root.left = buildTree(left, mid - 1);
+        root.right = buildTree(mid + 1, right);
+
+        return root;
+    }
+
+    return buildTree(0, nums.length - 1);
+};`,
+                    lines: [
+                        { line: 'var sortedArrayToBST = function(nums) {', note: 'الدالة الأساسية. بتاخد array مرتّبة، وبترجّع root الـ BST.' },
+                        { line: '    function buildTree(left, right) {', note: 'دالة داخلية recursive. بتشتغل على الـ subarray [left, right].' },
+                        { line: '        if (left > right) {', note: 'الـ base case: لو الحدود اتعكست، يبقى مفيش عناصر.' },
+                        { line: '            return null;', note: 'نرجّع null — الفرع ده فاضي.' },
+                        { line: '        }', note: 'نهاية الـ base case.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '        const mid = Math.floor((left + right) / 2);', note: 'بنختار العنصر اللي في النص. ده الـ root بتاع الـ subarray دي.' },
+                        { line: '        const root = new TreeNode(nums[mid]);', note: 'بنعمل node جديدة بالقيمة اللي في النص.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '        root.left = buildTree(left, mid - 1);', note: 'بنبني الـ left subtree من النص الشمال (كل العناصر الأصغر).' },
+                        { line: '        root.right = buildTree(mid + 1, right);', note: 'بنبني الـ right subtree من النص اليمين (كل العناصر الأكبر).' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '        return root;', note: 'بنرجّع الـ root — للـ parent عشان يربطها.' },
+                        { line: '    }', note: 'نهاية الدالة الداخلية.' },
+                        { line: '', note: 'سطر فاضي للقراءة.' },
+                        { line: '    return buildTree(0, nums.length - 1);', note: 'بنبدأ من الـ range الكامل — أول عنصر لآخر عنصر.' },
+                        { line: '};', note: 'نهاية الدالة. Complexity O(n) time، O(log n) space.' }
+                    ]
+                }
+            ],
+
+            learned: [
+                'فهم فكرة Divide & Conquer على مصفوفة مرتّبة.',
+                'ليه اختيار الـ mid كـ root بيدي height balance.',
+                'العلاقة بين BST inorder traversal والـ sorted array.',
+                'الـ recursion مع subarray ranges (left, right) بدل splice.',
+                'الـ Top-Down construction — من الـ root للأوراق.',
+                'التعامل مع edge cases: empty، single، two elements.',
+                'Complexity: O(n) time لأن كل عنصر node واحدة، O(log n) space بسبب العمق.',
+                'اختبار الشجرة من خلال isBalanced + inorder matching.',
+                'الفرق بين Recursive و Iterative للـ tree construction.',
+                'إن الـ balanced BST هو الشكل الأمثل للـ sorted input.'
+            ]
+        }
+    },
 };
 
 export const PROBLEM_SOLVING_ENTRIES: Record<string, ProblemSolvingEntry> =

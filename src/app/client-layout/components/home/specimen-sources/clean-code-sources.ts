@@ -119,9 +119,9 @@ p {
         font-size: .7rem;
     }
 }`,
-        js: `const bad = 'function calc(d, x) {\\n  const t = d * x;\\n  const r = t * 0.15;\\n  return t - r;\\n}\\n\\nconst u = { n: "Ali", a: 30 };\\nconsole.log(u.n);';
+        js: `const bad = 'function calc(d, x) {\\n  const t = d * x;\\n  const r = t * 0.15;\\n  return t - r;\\n}\\n\\nconst u = { n: "Ibrahim", a: 30 };\\nconsole.log(u.n);';
 
-const good = 'function calculateFinalPrice(basePrice, quantity) {\\n  const subtotal = basePrice * quantity;\\n  const taxAmount = subtotal * TAX_RATE;\\n  return subtotal - taxAmount;\\n}\\n\\nconst user = { name: "Ali", age: 30 };\\nconsole.log(user.name);';
+const good = 'function calculateFinalPrice(basePrice, quantity) {\\n  const subtotal = basePrice * quantity;\\n  const taxAmount = subtotal * TAX_RATE;\\n  return subtotal - taxAmount;\\n}\\n\\nconst user = { name: "Ibrahim", age: 30 };\\nconsole.log(user.name);';
 
 const code = document.getElementById('code');
 const btns = document.querySelectorAll('.btns button');

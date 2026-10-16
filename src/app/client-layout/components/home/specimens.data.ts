@@ -911,6 +911,18 @@ const BASE_SPECIMENS: Specimen[] = [
     stage: 'dark',
     sortKey: 139
   },
+  {
+    id: 'CB-41',
+    kind: 'css-battle',
+    title: 'CSS Battle — Cream Portrait',
+    description: 'بورتريه بسيط بخلفية كريمي — دايرة كبيرة في الأعلى + 6 أعمدة بأطوال مختلفة، CSS خالص بدون أي عنصر HTML.',
+    date: 'أكتوبر 2026',
+    addedAt: '2026-10-16',
+    tags: ['CSS', 'Battle', 'Radial Gradient', 'Linear Gradient'],
+    href: '/css_battle_p41',
+    stage: 'light',
+    sortKey: 140
+  },
   // ─── Problem Solving ───
   {
     id: 'PS-01',
@@ -1126,6 +1138,18 @@ const BASE_SPECIMENS: Specimen[] = [
     href: '/problem-solving/maximum-depth-of-binary-tree',
     stage: 'dark',
     sortKey: 218
+  },
+  {
+    id: 'PS-20',
+    kind: 'problem-solving',
+    title: 'Convert Sorted Array to BST',
+    description: 'حوّل مصفوفة مرتّبة لـ height-balanced BST — بالـ Divide & Conquer.',
+    date: 'أكتوبر 2026',
+    addedAt: '2026-10-16',
+    tags: ['LeetCode', 'BST', 'Binary Tree'],
+    href: '/problem-solving/sorted-array-to-bst',
+    stage: 'dark',
+    sortKey: 219
   },
   // ─── Clean Code ───
   {

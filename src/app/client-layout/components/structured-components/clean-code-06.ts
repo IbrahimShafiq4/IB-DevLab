@@ -635,7 +635,7 @@ public class UserOrdersController : ControllerBase
         badExample: {
           title: 'غلط — كل حاجة ملزّقة',
           code: `int total=subtotal+tax;
-var user=new User{Name="Ali",Age=30};
+var user=new User{Name="Ibrahim",Age=30};
 if(user.Age>=18){SendEmail(user);}
 for(int i=0;i<users.Count;i++){Process(users[i]);}
 var query=users.Where(u=>u.Age>18).Select(u=>u.Name).ToList();`
@@ -644,7 +644,7 @@ var query=users.Where(u=>u.Age>18).Select(u=>u.Name).ToList();`
           title: 'صح — المسافات بتوضح العلاقات',
           code: `int total = subtotal + tax;
 
-var user = new User { Name = "Ali", Age = 30 };
+var user = new User { Name = "Ibrahim", Age = 30 };
 
 if (user.Age >= 18)
 {
@@ -829,7 +829,7 @@ indent_size = 2`
           title: 'غلط — اختبارات مش منظمة',
           code: `[Fact]
 public void Test1() {
-    var u=new User{Name="Ali",Age=30};
+    var u=new User{Name="Ibrahim",Age=30};
     var s=new UserService();
     var r=s.RegisterUser(u);
     Assert.True(r);
@@ -856,7 +856,7 @@ public void Test1() {
     public void RegisterUser_WithValidData_ReturnsTrue()
     {
         // Arrange
-        var user = new User { Name = "Ali", Age = 30 };
+        var user = new User { Name = "Ibrahim", Age = 30 };
 
         // Act
         var result = _sut.RegisterUser(user);
@@ -910,7 +910,7 @@ describe('UserService.registerUser', () => {
   });
 
   it('returns true when user data is valid', () => {
-    const user = { name: 'Ali', age: 30 };
+    const user = { name: 'Ibrahim', age: 30 };
     const result = service.registerUser(user);
     expect(result).toBe(true);
   });

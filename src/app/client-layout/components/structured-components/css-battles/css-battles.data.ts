@@ -1684,7 +1684,7 @@ p i:after {
 }
         `.trim()
     },
-    
+
     'p38': {
         id: 'p38',
         title: 'CSS Battle — Framed Oval',
@@ -1943,6 +1943,74 @@ p {
         z-index: 3;
         -webkit-box-reflect: right 90px;
     }
+}
+    `.trim()
+    },
+
+    // ═══════════════════════════════════════════════════════════════
+    // P41 — Cream Portrait
+    // ═══════════════════════════════════════════════════════════════
+    'p41': {
+        id: 'p41',
+        title: 'CSS Battle — Cream Portrait',
+        description: `
+CSS recreation of a minimal portrait-like composition on a cream background.
+
+The design uses:
+- A single radial-gradient for the large dark circle (head)
+- Multiple linear-gradients stacked as background layers for the side bars
+- Precise background-position with calc() for horizontal centering
+- Negative top offsets to clip the side bars from the top edge
+- Zero HTML elements — pure body styling
+- No images, SVG, or JavaScript
+    `.trim(),
+        date: 'Last updated: Oct 16, 2026',
+        version: 'v1.0.0',
+        tags: ['Web Development', 'HTML', 'CSS', 'Radial Gradient', 'Linear Gradient', 'Background Layers', 'CSS Battle'],
+        youtube: '',
+        zipFile: 'assets/zip-files/cssBattle/41 - p41.zip',
+        html: `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cream Portrait</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body></body>
+</html>
+    `.trim(),
+        css: `
+body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: #F3EAD2;
+    background-image:
+        radial-gradient(circle at 50% 0%, #4C455B 110px, transparent 110px),
+        linear-gradient(#4C455B, #4C455B),
+        linear-gradient(#D96C7B, #D96C7B),
+        linear-gradient(#4C455B, #4C455B),
+        linear-gradient(#D96C7B, #D96C7B),
+        linear-gradient(#4C455B, #4C455B),
+        linear-gradient(#D96C7B, #D96C7B);
+    background-repeat: no-repeat;
+    background-size:
+        220px 220px,
+        20px 45px,
+        20px 45px,
+        20px 80px,
+        20px 80px,
+        20px 80px,
+        20px 80px;
+    background-position:
+        calc(50% + 0px) 70px,
+        calc(50% - 15px) 175px,
+        calc(50% + 15px) 175px,
+        calc(50% - 100px) -20px,
+        calc(50% - 70px) -20px,
+        calc(50% + 70px) -20px,
+        calc(50% + 100px) -20px;
 }
     `.trim()
     },

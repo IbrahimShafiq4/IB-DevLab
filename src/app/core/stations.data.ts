@@ -736,6 +736,638 @@ const LINKED_LIST_RUNNABLE: Runnable = {
   `
 };
 
+const MERGE_SORT_RUNNABLE: Runnable = {
+  html: `
+    <div class="app">
+      <nav class="tabs" role="tablist">
+        <button class="tab active" data-tab="preview"><span class="tab__icon">📺</span><span>المعاينة</span></button>
+        <button class="tab" data-tab="cinema"><span class="tab__icon">🎬</span><span>خطوة بخطوة</span></button>
+      </nav>
+
+      <section class="panel active" data-panel="preview">
+        <div class="controls">
+          <div class="ctrl-group"><label>array</label><input id="pv-arr" type="text" value="38,27,43,3,9,82,10" dir="ltr"></div>
+          <div class="btns">
+            <button id="pv-play" class="primary">▶ شغّل</button>
+            <button id="pv-step">⏭ خطوة</button>
+            <button id="pv-reset">↺ رجّع</button>
+          </div>
+        </div>
+        <div class="stage" id="pv-stage" dir="ltr"></div>
+        <div class="stats">
+          <div class="stat"><span class="stat-label">الحجم</span><span class="stat-value" id="pv-size">0</span></div>
+          <div class="stat"><span class="stat-label">المقارنات</span><span class="stat-value" id="pv-comp">0</span></div>
+          <div class="stat"><span class="stat-label">الدمجات</span><span class="stat-value" id="pv-merge-count">0</span></div>
+        </div>
+        <div class="log" id="pv-log"></div>
+      </section>
+
+      <section class="panel" data-panel="cinema">
+        <div class="cinema-controls">
+          <div class="cinema-arr"><label>array</label><input id="cn-arr" type="text" value="38,27,43,3,9,82,10" dir="ltr"></div>
+          <div class="btns">
+            <button id="cn-prev">⏮</button>
+            <button id="cn-play" class="primary">▶ شغّل</button>
+            <button id="cn-next">⏭</button>
+            <button id="cn-reset">↺</button>
+          </div>
+          <div class="step-info"><span id="cn-counter">0 / 0</span></div>
+        </div>
+        <div class="cinema-grid">
+          <div class="panel-box code-panel">
+            <div class="panel-box__head"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="panel-box__title">merge-sort.js</span></div>
+            <div class="code-body" id="cn-code" dir="ltr"></div>
+          </div>
+          <div class="panel-box stage-panel">
+            <div class="panel-box__head"><span class="panel-box__title">الرسم</span></div>
+            <div class="stage stage--cinema" id="cn-stage" dir="ltr"></div>
+            <div class="values" id="cn-values"></div>
+          </div>
+        </div>
+        <div class="op-desc" id="cn-desc">—</div>
+      </section>
+    </div>
+  `,
+  css: `
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --bg:#0F1B2D; --bg-2:#0A1422; --bg-3:#152236; --border:#1E2D42; --border-2:#2A3846;
+      --text:#E6EDF2; --text-2:#9DAEC2; --text-3:#6B7C92;
+      --blue:#5B9DFF; --yellow:#F2B200; --red:#FF6B57; --green:#4CD08A; --purple:#C586C0;
+    }
+    body { font-family:'IBM Plex Sans Arabic',system-ui,sans-serif; background:var(--bg); color:var(--text); padding:16px; min-height:100vh; overflow-x:hidden; }
+    ::-webkit-scrollbar { width:10px; height:10px; }
+    ::-webkit-scrollbar-track { background:var(--bg-2); }
+    ::-webkit-scrollbar-thumb { background:var(--border-2); border-radius:6px; border:2px solid var(--bg-2); background-clip:padding-box; }
+    ::-webkit-scrollbar-thumb:hover { background:#4A5F7A; background-clip:padding-box; }
+    .app { max-width:1200px; margin-inline:auto; display:flex; flex-direction:column; gap:14px; min-height:calc(100vh - 32px); }
+
+    .tabs { display:flex; gap:6px; padding:6px; background:var(--bg-2); border:1px solid var(--border); border-radius:8px; width:fit-content; }
+    .tab { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; font-family:inherit; font-size:13px; font-weight:600; color:var(--text-2); background:transparent; border:none; border-radius:6px; cursor:pointer; transition:all .2s; white-space:nowrap; }
+    .tab:hover { color:var(--text); }
+    .tab.active { background:var(--bg-3); color:var(--text); box-shadow:0 2px 8px rgba(0,0,0,.3); }
+    .tab__icon { font-size:14px; }
+    @media (max-width:480px) { .tabs { width:100%; } .tab { flex:1; justify-content:center; padding:10px 12px; font-size:12px; } }
+
+    .panel { display:none; flex-direction:column; gap:14px; flex:1; min-height:0; }
+    .panel.active { display:flex; }
+
+    .controls, .cinema-controls { display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; padding:14px 16px; background:var(--bg-3); border:1px solid var(--border); border-radius:8px; }
+    .ctrl-group, .cinema-arr { display:flex; flex-direction:column; gap:4px; flex:1; min-width:180px; }
+    .ctrl-group label, .cinema-arr label { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--text-3); letter-spacing:.08em; text-transform:uppercase; }
+    .ctrl-group input, .cinema-arr input { padding:8px 12px; font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--text); background:var(--bg-2); border:1px solid var(--border); border-radius:4px; outline:none; direction:ltr; }
+    .ctrl-group input:focus, .cinema-arr input:focus { border-color:var(--purple); }
+
+    .btns { display:flex; gap:6px; flex-wrap:wrap; }
+    .btns button { padding:8px 14px; font-family:inherit; font-size:13px; font-weight:500; color:var(--text); background:var(--bg-2); border:1px solid var(--border-2); border-radius:4px; cursor:pointer; transition:.15s; white-space:nowrap; }
+    .btns button:hover:not(:disabled) { border-color:var(--purple); color:var(--purple); }
+    .btns button.primary { background:var(--yellow); border-color:var(--yellow); color:#0F1B2D; font-weight:600; }
+    .btns button.primary:hover { opacity:.9; color:#0F1B2D; }
+    .btns button:disabled { opacity:.35; cursor:not-allowed; }
+    .step-info { display:inline-flex; align-items:center; padding:8px 14px; background:var(--bg-2); border:1px solid var(--border-2); border-radius:4px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--yellow); font-weight:600; min-width:80px; justify-content:center; }
+
+    .stage { display:flex; justify-content:center; align-items:flex-end; gap:8px; padding:24px 20px; background:var(--bg-2); border:1px solid var(--border); border-radius:8px; min-height:300px; direction:ltr; overflow-x:auto; overflow-y:hidden; flex:1; }
+    .stage--cinema { border-radius:0; border:none; padding:20px 16px; min-height:0; }
+
+    .bar { display:flex; flex-direction:column; align-items:center; gap:4px; flex-shrink:0; transition:transform .4s cubic-bezier(.2,.8,.2,1); }
+    .bar__value { font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; color:var(--text); min-height:16px; transition:color .3s, transform .3s; }
+    .bar__body { width: clamp(28px, 4.5vw, 42px); background:var(--purple); border-radius:4px 4px 0 0; transition:background .35s, box-shadow .35s, height .4s cubic-bezier(.2,.8,.2,1); min-height:18px; }
+    .bar__index { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--text-3); transition:color .3s; }
+
+    .bar.in-range .bar__body { background:var(--blue); }
+    .bar.in-range .bar__value { color:var(--blue); }
+    .bar.in-range .bar__index { color:var(--blue); }
+
+    .bar.comparing .bar__body { background:var(--red); box-shadow:0 0 16px rgba(255,107,87,.6); }
+    .bar.comparing .bar__value { color:var(--red); transform:scale(1.15); }
+
+    .bar.writing .bar__body { background:var(--yellow); box-shadow:0 0 20px rgba(242,178,0,.8); animation:write-pop .5s ease; }
+    .bar.writing .bar__value { color:var(--yellow); transform:scale(1.2); }
+
+    @keyframes write-pop {
+      0% { transform:scaleY(1); }
+      50% { transform:scaleY(1.08); }
+      100% { transform:scaleY(1); }
+    }
+
+    .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .stat { padding:12px 14px; background:var(--bg-3); border:1px solid var(--border); border-radius:6px; display:flex; flex-direction:column; gap:4px; }
+    .stat-label { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--text-3); letter-spacing:.08em; text-transform:uppercase; }
+    .stat-value { font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600; color:var(--purple); }
+
+    .log { padding:14px 16px; font-family:'IBM Plex Mono',monospace; font-size:12px; line-height:1.8; color:var(--text-2); background:var(--bg-2); border:1px solid var(--border); border-radius:8px; min-height:120px; max-height:200px; overflow-y:auto; white-space:pre-wrap; }
+    .log__ok { color:var(--green); }
+    .log__info { color:var(--blue); }
+    .log__warn { color:var(--yellow); }
+    .log__err { color:var(--red); }
+
+    .cinema-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); gap:14px; flex:1; min-height:0; height:clamp(400px,55vh,520px); }
+    .panel-box { display:flex; flex-direction:column; background:var(--bg-2); border:1px solid var(--border); border-radius:8px; overflow:hidden; min-height:0; }
+    .panel-box__head { display:flex; align-items:center; gap:6px; padding:10px 14px; background:var(--bg-3); border-bottom:1px solid var(--border); flex-shrink:0; }
+    .panel-box__title { font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-3); letter-spacing:.08em; text-transform:uppercase; margin-inline-start:6px; }
+    .dot { width:9px; height:9px; border-radius:50%; }
+    .dot.red { background:var(--red); }
+    .dot.yellow { background:var(--yellow); }
+    .dot.green { background:var(--green); }
+
+    .code-body { flex:1; padding:12px 0; font-family:'IBM Plex Mono',monospace; font-size:12px; line-height:1.7; overflow:auto; direction:ltr; text-align:left; white-space:pre; min-height:0; }
+    .code-line { display:block; padding:1px 14px 1px 48px; position:relative; min-height:20px; color:#3A4A5F; transition:color .2s, background .2s; }
+    .code-line::before { content:attr(data-ln); position:absolute; left:8px; top:1px; width:30px; text-align:right; font-size:10px; color:#2A3846; user-select:none; }
+    .code-line.typed { color:var(--text-2); }
+    .code-line.typed::before { color:#4A5F7A; }
+    .code-line.typing { color:var(--text); background:rgba(197,134,192,.08); }
+    .code-line.typing::after { content:'▌'; color:var(--purple); margin-left:1px; animation:caret .55s steps(2) infinite; }
+    @keyframes caret { 0%,50% { opacity:1; } 51%,100% { opacity:0; } }
+    .code-line.active { color:var(--yellow); background:rgba(242,178,0,.12); border-left:3px solid var(--yellow); padding-left:45px; }
+    .code-line.active::before { color:var(--yellow); font-weight:700; }
+
+    .values { padding:10px 14px; border-top:1px solid var(--border); background:var(--bg-3); font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-3); display:flex; flex-wrap:wrap; gap:12px; min-height:38px; align-items:center; flex-shrink:0; }
+    .values b { color:var(--yellow); }
+
+    .op-desc { padding:12px 16px; background:var(--bg-3); border:1px solid var(--border); border-left:3px solid var(--purple); border-radius:6px; font-size:13px; color:var(--text); min-height:44px; display:flex; align-items:center; line-height:1.6; flex-shrink:0; }
+
+    @media (max-width:860px) { .cinema-grid { grid-template-columns:1fr; grid-template-rows:minmax(220px,1fr) minmax(220px,1fr); height:auto; min-height:520px; } }
+    @media (max-width:560px) {
+      body { padding:10px; }
+      .app { min-height:calc(100vh - 20px); }
+      .controls, .cinema-controls { padding:10px 12px; gap:8px; }
+      .ctrl-group, .cinema-arr { min-width:100%; }
+      .btns button { padding:7px 11px; font-size:12px; }
+      .code-body { font-size:11px; }
+      .stat-value { font-size:13px; }
+      .stat { padding:10px 12px; }
+      .stage { padding:18px 12px; min-height:240px; }
+      .cinema-grid { min-height:480px; }
+    }
+  `,
+  js: `
+    const $ = id => document.getElementById(id);
+    let cinemaInit = false;
+
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const name = tab.dataset.tab;
+        document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t === tab));
+        document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.dataset.panel === name));
+        if (name === 'cinema' && !cinemaInit) { cinemaInit = true; initCinema(); }
+      });
+    });
+
+    /* ═══════ PREVIEW ═══════ */
+    const pvStage = $('pv-stage');
+    const pvLogEl = $('pv-log');
+    const pvSize = $('pv-size');
+    const pvComp = $('pv-comp');
+    const pvMergeCount = $('pv-merge-count');
+    const pvInput = $('pv-arr');
+
+    let pvState = null, pvTimer = null, pvPlaying = false;
+
+    function pvParse() {
+      return pvInput.value.split(',').map(s => Number(s.trim())).filter(n => !isNaN(n));
+    }
+
+    function pvBuildSteps(arr) {
+      const a = [...arr];
+      const steps = [];
+      pvMs(a, 0, a.length - 1, steps, 0);
+      return steps;
+    }
+
+    function pvMs(arr, left, right, steps, depth) {
+      if (left >= right) return;
+      const mid = Math.floor((left + right) / 2);
+
+      steps.push({ type: 'divide', left, right, mid, arr: [...arr], depth });
+      pvMs(arr, left, mid, steps, depth + 1);
+      pvMs(arr, mid + 1, right, steps, depth + 1);
+      pvDoMerge(arr, left, mid, right, steps, depth);
+    }
+
+    function pvDoMerge(arr, left, mid, right, steps, depth) {
+      const leftArr = arr.slice(left, mid + 1);
+      const rightArr = arr.slice(mid + 1, right + 1);
+      steps.push({ type: 'merge-start', left, mid, right, arr: [...arr], leftArr, rightArr, depth });
+
+      let i = 0, j = 0, k = left;
+      while (i < leftArr.length && j < rightArr.length) {
+        steps.push({ type: 'compare', left, mid, right, i: left + i, j: mid + 1 + j, k, a: leftArr[i], b: rightArr[j], arr: [...arr], depth });
+        if (leftArr[i] <= rightArr[j]) {
+          arr[k] = leftArr[i];
+          steps.push({ type: 'write', k, value: leftArr[i], arr: [...arr], from: 'left', depth });
+          i++;
+        } else {
+          arr[k] = rightArr[j];
+          steps.push({ type: 'write', k, value: rightArr[j], arr: [...arr], from: 'right', depth });
+          j++;
+        }
+        k++;
+      }
+      while (i < leftArr.length) {
+        arr[k] = leftArr[i];
+        steps.push({ type: 'write', k, value: leftArr[i], arr: [...arr], from: 'left', depth });
+        i++; k++;
+      }
+      while (j < rightArr.length) {
+        arr[k] = rightArr[j];
+        steps.push({ type: 'write', k, value: rightArr[j], arr: [...arr], from: 'right', depth });
+        j++; k++;
+      }
+      steps.push({ type: 'merge-end', left, right, arr: [...arr], depth });
+    }
+
+    function pvAddLog(text, cls) {
+      const line = document.createElement('div');
+      if (cls) line.className = 'log__' + cls;
+      line.textContent = text;
+      pvLogEl.appendChild(line);
+      pvLogEl.scrollTop = pvLogEl.scrollHeight;
+    }
+
+    function pvInit() {
+      const arr = pvParse();
+      if (arr.length < 2) {
+        pvStage.innerHTML = '<div style="color:#6B7C92;font-family:monospace;padding:40px">Enter at least 2 numbers</div>';
+        return;
+      }
+      pvState = {
+        original: [...arr],
+        current: [...arr],
+        steps: pvBuildSteps(arr),
+        stepIndex: 0,
+        comp: 0,
+        merges: 0
+      };
+      pvRender();
+      pvLogEl.innerHTML = '';
+      pvAddLog('المصفوفة الأصلية: [' + arr.join(', ') + ']', 'info');
+    }
+
+    function pvRender() {
+      if (!pvState) return;
+      const step = pvState.steps[pvState.stepIndex];
+      const maxVal = Math.max(...pvState.original, 1);
+      pvStage.innerHTML = '';
+
+      for (let i = 0; i < pvState.current.length; i++) {
+        const val = pvState.current[i];
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+
+        if (step) {
+          if (step.type === 'write' && i === step.k) bar.classList.add('writing');
+          else if (step.type === 'compare' && (i === step.i || i === step.j)) bar.classList.add('comparing');
+          else if (step.left !== undefined && i >= step.left && i <= step.right) bar.classList.add('in-range');
+        }
+
+        const v = document.createElement('div');
+        v.className = 'bar__value';
+        v.textContent = val;
+
+        const b = document.createElement('div');
+        b.className = 'bar__body';
+        b.style.height = Math.max(20, (val / maxVal) * 180) + 'px';
+
+        const idx = document.createElement('div');
+        idx.className = 'bar__index';
+        idx.textContent = i;
+
+        bar.appendChild(v);
+        bar.appendChild(b);
+        bar.appendChild(idx);
+        pvStage.appendChild(bar);
+      }
+
+      pvSize.textContent = pvState.current.length;
+      pvComp.textContent = pvState.comp;
+      pvMergeCount.textContent = pvState.merges;
+      $('pv-play').textContent = pvPlaying ? '⏸ وقّف' : '▶ شغّل';
+    }
+
+    function pvStep() {
+      if (!pvState || pvState.stepIndex >= pvState.steps.length) return false;
+      const s = pvState.steps[pvState.stepIndex];
+
+      if (s.type === 'divide') {
+        pvAddLog('قسّم [' + s.left + '..' + s.right + '] عند mid=' + s.mid, 'info');
+      } else if (s.type === 'merge-start') {
+        pvAddLog('ادمج [' + s.left + '..' + s.mid + '] مع [' + (s.mid + 1) + '..' + s.right + ']', 'warn');
+      } else if (s.type === 'compare') {
+        pvState.comp++;
+        pvAddLog('قارن: ' + s.a + ' vs ' + s.b + ' → ناخد ' + (s.a <= s.b ? s.a : s.b), 'info');
+      } else if (s.type === 'write') {
+        pvAddLog('اكتب ' + s.value + ' في index ' + s.k, 'ok');
+      } else if (s.type === 'merge-end') {
+        pvState.merges++;
+        pvAddLog('✓ اكتملت الدمج [' + s.left + '..' + s.right + ']', 'ok');
+      }
+
+      pvState.stepIndex++;
+      pvRender();
+      return pvState.stepIndex < pvState.steps.length;
+    }
+
+    function pvPlay() {
+      if (pvPlaying) { pvStop(); return; }
+      if (pvState.stepIndex >= pvState.steps.length) pvInit();
+      pvPlaying = true;
+      pvRender();
+      pvTimer = setInterval(() => { if (!pvStep()) pvStop(); }, 550);
+    }
+
+    function pvStop() {
+      pvPlaying = false;
+      if (pvTimer) { clearInterval(pvTimer); pvTimer = null; }
+      pvRender();
+    }
+
+    $('pv-play').onclick = pvPlay;
+    $('pv-step').onclick = () => { pvStop(); pvStep(); };
+    $('pv-reset').onclick = () => { pvStop(); pvInit(); };
+    pvInput.addEventListener('change', () => { pvStop(); pvInit(); });
+
+    pvInit();
+
+    /* ═══════ CINEMA ═══════ */
+    const MS_CODE = [
+      'function mergeSort(arr, left, right) {',
+      '  if (left >= right) return;',
+      '',
+      '  const mid = Math.floor((left + right) / 2);',
+      '',
+      '  mergeSort(arr, left, mid);',
+      '  mergeSort(arr, mid + 1, right);',
+      '',
+      '  merge(arr, left, mid, right);',
+      '}',
+      '',
+      'function merge(arr, left, mid, right) {',
+      '  const L = arr.slice(left, mid + 1);',
+      '  const R = arr.slice(mid + 1, right + 1);',
+      '',
+      '  let i = 0, j = 0, k = left;',
+      '',
+      '  while (i < L.length && j < R.length) {',
+      '    if (L[i] <= R[j]) arr[k++] = L[i++];',
+      '    else arr[k++] = R[j++];',
+      '  }',
+      '',
+      '  while (i < L.length) arr[k++] = L[i++];',
+      '  while (j < R.length) arr[k++] = R[j++];',
+      '}'
+    ];
+
+    const cnCode = $('cn-code');
+    const cnStage = $('cn-stage');
+    const cnValues = $('cn-values');
+    const cnDesc = $('cn-desc');
+    const cnCounter = $('cn-counter');
+    const cnInput = $('cn-arr');
+    const cnPrev = $('cn-prev');
+    const cnPlay = $('cn-play');
+    const cnNext = $('cn-next');
+    const cnReset = $('cn-reset');
+
+    let cnSteps = [], cnIndex = -1, cnTyped = 0;
+    let cnTimer = null, cnPlaying = false, cnTyping = false, cnCancelled = false;
+    const cnDelay = 2200;
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+    function cnBuildSteps(arr) {
+      const a = [...arr];
+      const steps = [];
+      steps.push({ line: 0, desc: 'نبدأ — نداء mergeSort على المصفوفة كاملة', arr: [...a], hl: {} });
+      cnMs(a, 0, a.length - 1, steps, 0);
+      steps.push({ line: 22, desc: 'خلصنا ✓ المصفوفة مرتبة [' + a.join(', ') + ']', arr: [...a], hl: {}, done: true });
+      return steps;
+    }
+
+    function cnMs(arr, left, right, steps, depth) {
+      if (left >= right) {
+        steps.push({ line: 1, desc: 'left=' + left + ' >= right=' + right + ' → نرجع فورًا', arr: [...arr], hl: { l: left, r: right }, depth });
+        return;
+      }
+      const mid = Math.floor((left + right) / 2);
+      steps.push({ line: 3, desc: 'mid = floor((' + left + ' + ' + right + ') / 2) = ' + mid, arr: [...arr], hl: { l: left, r: right, m: mid }, depth });
+
+      steps.push({ line: 5, desc: 'نداء متكرر على النص الأول [' + left + '..' + mid + ']', arr: [...arr], hl: { l: left, r: mid }, depth });
+      cnMs(arr, left, mid, steps, depth + 1);
+
+      steps.push({ line: 6, desc: 'نداء متكرر على النص التاني [' + (mid + 1) + '..' + right + ']', arr: [...arr], hl: { l: mid + 1, r: right }, depth });
+      cnMs(arr, mid + 1, right, steps, depth + 1);
+
+      steps.push({ line: 8, desc: 'نبدأ الدمج — merge(arr, ' + left + ', ' + mid + ', ' + right + ')', arr: [...arr], hl: { l: left, r: right, m: mid }, depth });
+      cnMerge(arr, left, mid, right, steps, depth);
+    }
+
+    function cnMerge(arr, left, mid, right, steps, depth) {
+      const L = arr.slice(left, mid + 1);
+      const R = arr.slice(mid + 1, right + 1);
+      steps.push({ line: 12, desc: 'نسخ النص الأول: L = [' + L.join(', ') + ']', arr: [...arr], hl: { l: left, r: mid }, depth });
+      steps.push({ line: 13, desc: 'نسخ النص التاني: R = [' + R.join(', ') + ']', arr: [...arr], hl: { l: mid + 1, r: right }, depth });
+      steps.push({ line: 15, desc: 'i=0, j=0, k=' + left + ' — نبدأ الدمج', arr: [...arr], hl: { k: left }, depth });
+
+      let i = 0, j = 0, k = left;
+      while (i < L.length && j < R.length) {
+        steps.push({ line: 17, desc: 'قارن: L[' + i + ']=' + L[i] + ' vs R[' + j + ']=' + R[j] + ' → ناخد ' + (L[i] <= R[j] ? L[i] : R[j]), arr: [...arr], hl: { k, comparing: true }, depth });
+        if (L[i] <= R[j]) {
+          arr[k] = L[i];
+          steps.push({ line: 18, desc: 'arr[' + k + '] = ' + L[i], arr: [...arr], hl: { k, writing: true }, depth });
+          i++;
+        } else {
+          arr[k] = R[j];
+          steps.push({ line: 19, desc: 'arr[' + k + '] = ' + R[j], arr: [...arr], hl: { k, writing: true }, depth });
+          j++;
+        }
+        k++;
+      }
+      while (i < L.length) {
+        arr[k] = L[i];
+        steps.push({ line: 21, desc: 'باقي L → arr[' + k + '] = ' + L[i], arr: [...arr], hl: { k, writing: true }, depth });
+        i++; k++;
+      }
+      while (j < R.length) {
+        arr[k] = R[j];
+        steps.push({ line: 22, desc: 'باقي R → arr[' + k + '] = ' + R[j], arr: [...arr], hl: { k, writing: true }, depth });
+        j++; k++;
+      }
+    }
+
+    function cnBuildCodeDOM() {
+      cnCode.innerHTML = '';
+      MS_CODE.forEach((_, i) => {
+        const s = document.createElement('span');
+        s.className = 'code-line';
+        s.dataset.ln = String(i + 1);
+        cnCode.appendChild(s);
+      });
+    }
+
+    async function cnTypeLine(idx) {
+      const el = cnCode.children[idx];
+      if (!el || el.classList.contains('typed')) return;
+      el.classList.add('typing');
+      const text = MS_CODE[idx];
+      for (let i = 0; i < text.length; i++) {
+        if (cnCancelled) { el.classList.remove('typing'); return; }
+        el.textContent = text.slice(0, i + 1);
+        await sleep(text[i] === ' ' ? 5 : 12);
+      }
+      el.classList.remove('typing');
+      el.classList.add('typed');
+    }
+
+    async function cnEnsureTyped(target) {
+      while (cnTyped <= target) {
+        cnTyping = true;
+        await cnTypeLine(cnTyped);
+        cnTyping = false;
+        if (cnCancelled) return;
+        cnTyped++;
+      }
+    }
+
+    function cnSetActive(idx) {
+      cnCode.querySelectorAll('.code-line').forEach((el, i) => el.classList.toggle('active', i === idx));
+      const a = cnCode.querySelector('.code-line.active');
+      if (a) {
+        const top = a.offsetTop, c = cnCode;
+        if (top < c.scrollTop || top + 24 > c.scrollTop + c.clientHeight) c.scrollTo({ top: top - c.clientHeight / 2, behavior: 'smooth' });
+      }
+    }
+
+    function cnRenderStage(step) {
+      const maxVal = Math.max(...step.arr, 1);
+      cnStage.innerHTML = '';
+      for (let idx = 0; idx < step.arr.length; idx++) {
+        const val = step.arr[idx];
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+
+        if (step.hl.l !== undefined && idx >= step.hl.l && idx <= (step.hl.r ?? step.hl.l)) bar.classList.add('in-range');
+        if (step.hl.comparing && (idx === step.hl.k)) bar.classList.add('comparing');
+        if (step.hl.writing && idx === step.hl.k) bar.classList.add('writing');
+        if (step.done) bar.classList.add('sorted');
+
+        const v = document.createElement('div');
+        v.className = 'bar__value';
+        v.textContent = val;
+
+        const b = document.createElement('div');
+        b.className = 'bar__body';
+        b.style.height = Math.max(20, (val / maxVal) * 180) + 'px';
+
+        const i = document.createElement('div');
+        i.className = 'bar__index';
+        i.textContent = idx;
+
+        bar.appendChild(v);
+        bar.appendChild(b);
+        bar.appendChild(i);
+        cnStage.appendChild(bar);
+      }
+    }
+
+    function cnRenderValues(step) {
+      const parts = [];
+      if (step.hl.l !== undefined) parts.push('L = <b>' + step.hl.l + '</b>');
+      if (step.hl.m !== undefined) parts.push('mid = <b>' + step.hl.m + '</b>');
+      if (step.hl.r !== undefined) parts.push('R = <b>' + step.hl.r + '</b>');
+      if (step.hl.k !== undefined) parts.push('k = <b>' + step.hl.k + '</b>');
+      if (!parts.length) parts.push('arr = [' + step.arr.join(', ') + ']');
+      cnValues.innerHTML = parts.join(' · ');
+    }
+
+    async function cnGoto(idx, animate) {
+      cnCancelled = false;
+      cnIndex = idx;
+      const step = cnSteps[idx];
+
+      cnCounter.textContent = (idx + 1) + ' / ' + cnSteps.length;
+
+      if (animate) {
+        await cnEnsureTyped(step.line);
+        if (cnCancelled) return;
+      } else {
+        while (cnTyped <= step.line) {
+          const el = cnCode.children[cnTyped];
+          el.textContent = MS_CODE[cnTyped];
+          el.classList.add('typed');
+          cnTyped++;
+        }
+      }
+
+      cnSetActive(step.line);
+      cnRenderStage(step);
+      cnRenderValues(step);
+      cnDesc.textContent = step.desc;
+
+      cnPrev.disabled = idx <= 0;
+      cnNext.disabled = idx >= cnSteps.length - 1;
+    }
+
+    async function cnNextFn() {
+      if (cnPlaying) return;
+      if (cnIndex >= cnSteps.length - 1) return;
+      cnPlaying = true;
+      await cnGoto(cnIndex + 1, true);
+      cnPlaying = false;
+    }
+
+    async function cnPrevFn() {
+      if (cnTyping) { cnCancelled = true; await sleep(80); }
+      if (cnIndex <= 0) return;
+      cnPlaying = false;
+      cnStop();
+      await cnGoto(cnIndex - 1, false);
+    }
+
+    async function cnFirst() {
+      const arr = cnInput.value.split(',').map(s => Number(s.trim())).filter(n => !isNaN(n));
+      if (arr.length < 2) return;
+      cnSteps = cnBuildSteps(arr);
+      cnCancelled = false;
+      cnTyped = 0;
+      cnIndex = -1;
+      cnBuildCodeDOM();
+      cnStop();
+      await cnGoto(0, false);
+    }
+
+    function cnStart() {
+      if (cnTimer) return;
+      cnPlaying = true;
+      cnPlay.textContent = '⏸ وقّف';
+      cnTimer = setTimeout(async function tick() {
+        if (cnIndex >= cnSteps.length - 1) { cnStop(); return; }
+        await cnGoto(cnIndex + 1, true);
+        if (cnTimer !== null && cnPlaying) cnTimer = setTimeout(tick, cnDelay);
+      }, 300);
+    }
+
+    function cnStop() {
+      cnPlaying = false;
+      cnPlay.textContent = '▶ شغّل';
+      if (cnTimer) { clearTimeout(cnTimer); cnTimer = null; }
+    }
+
+    async function initCinema() {
+      await cnFirst();
+      cnStart();
+    }
+
+    cnNext.onclick = () => { cnStop(); cnNextFn(); };
+    cnPrev.onclick = () => { cnStop(); cnPrevFn(); };
+    cnReset.onclick = () => { cnStop(); cnFirst(); };
+    cnPlay.onclick = () => {
+      if (cnPlaying) { cnStop(); return; }
+      if (cnIndex >= cnSteps.length - 1) cnFirst().then(() => cnStart());
+      else cnStart();
+    };
+    cnInput.addEventListener('change', () => { cnStop(); cnFirst(); });
+  `
+};
+
 const STACK_RUNNABLE: Runnable = {
   html: `
     <div class="app">
@@ -1642,6 +2274,713 @@ const STACK_RUNNABLE: Runnable = {
       else cnStart();
     };
     cnValue.addEventListener('change', () => { cnStop(); cnFirst(); });
+  `
+};
+
+const HASH_TABLE_RUNNABLE: Runnable = {
+  html: `
+    <div class="app">
+      <nav class="tabs" role="tablist">
+        <button class="tab active" data-tab="preview"><span class="tab__icon">📺</span><span>المعاينة</span></button>
+        <button class="tab" data-tab="cinema"><span class="tab__icon">🎬</span><span>خطوة بخطوة</span></button>
+      </nav>
+
+      <section class="panel active" data-panel="preview">
+        <div class="controls">
+          <div class="ctrl-group"><label>key</label><input id="pv-key" type="text" value="name" dir="ltr"></div>
+          <div class="ctrl-group"><label>value</label><input id="pv-val" type="text" value="Ibrahim" dir="ltr"></div>
+          <div class="btns">
+            <button id="pv-set" class="primary">Set</button>
+            <button id="pv-get">Get</button>
+            <button id="pv-del">Delete</button>
+            <button id="pv-clear">امسح</button>
+          </div>
+        </div>
+
+        <div class="stage stage--hash">
+          <div class="buckets" id="pv-buckets"></div>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><span class="stat-label">الحجم</span><span class="stat-value" id="pv-size">0</span></div>
+          <div class="stat"><span class="stat-label">Buckets</span><span class="stat-value" id="pv-buckets-count">8</span></div>
+          <div class="stat"><span class="stat-label">آخر عملية</span><span class="stat-value" id="pv-last">—</span></div>
+        </div>
+
+        <div class="log" id="pv-log"></div>
+      </section>
+
+      <section class="panel" data-panel="cinema">
+        <div class="cinema-controls">
+          <div class="cinema-arr"><label>operations (comma-separated)</label><input id="cn-ops" type="text" value="set:name=Ibrahim,set:age=25,set:city=Cairo,get:name,set:job=Dev,get:city,delete:age" dir="ltr"></div>
+          <div class="btns">
+            <button id="cn-prev">⏮</button>
+            <button id="cn-play" class="primary">▶ شغّل</button>
+            <button id="cn-next">⏭</button>
+            <button id="cn-reset">↺</button>
+          </div>
+          <div class="step-info"><span id="cn-counter">0 / 0</span></div>
+        </div>
+        <div class="cinema-grid">
+          <div class="panel-box code-panel">
+            <div class="panel-box__head"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="panel-box__title">hash-table.js</span></div>
+            <div class="code-body" id="cn-code" dir="ltr"></div>
+          </div>
+          <div class="panel-box stage-panel">
+            <div class="panel-box__head"><span class="panel-box__title">الرسم</span></div>
+            <div class="stage stage--hash stage--cinema" id="cn-stage"></div>
+            <div class="values" id="cn-values"></div>
+          </div>
+        </div>
+        <div class="op-desc" id="cn-desc">—</div>
+      </section>
+    </div>
+  `,
+  css: `
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --bg:#0F1B2D; --bg-2:#0A1422; --bg-3:#152236; --border:#1E2D42; --border-2:#2A3846;
+      --text:#E6EDF2; --text-2:#9DAEC2; --text-3:#6B7C92;
+      --blue:#5B9DFF; --yellow:#F2B200; --red:#FF6B57; --green:#4CD08A; --purple:#C586C0;
+    }
+    body { font-family:'IBM Plex Sans Arabic',system-ui,sans-serif; background:var(--bg); color:var(--text); padding:16px; min-height:100vh; overflow-x:hidden; }
+    ::-webkit-scrollbar { width:10px; height:10px; }
+    ::-webkit-scrollbar-track { background:var(--bg-2); }
+    ::-webkit-scrollbar-thumb { background:var(--border-2); border-radius:6px; border:2px solid var(--bg-2); background-clip:padding-box; }
+    ::-webkit-scrollbar-thumb:hover { background:#4A5F7A; background-clip:padding-box; }
+    .app { max-width:1200px; margin-inline:auto; display:flex; flex-direction:column; gap:14px; min-height:calc(100vh - 32px); }
+
+    .tabs { display:flex; gap:6px; padding:6px; background:var(--bg-2); border:1px solid var(--border); border-radius:8px; width:fit-content; }
+    .tab { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; font-family:inherit; font-size:13px; font-weight:600; color:var(--text-2); background:transparent; border:none; border-radius:6px; cursor:pointer; transition:all .2s; white-space:nowrap; }
+    .tab:hover { color:var(--text); }
+    .tab.active { background:var(--bg-3); color:var(--text); box-shadow:0 2px 8px rgba(0,0,0,.3); }
+    .tab__icon { font-size:14px; }
+    @media (max-width:480px) { .tabs { width:100%; } .tab { flex:1; justify-content:center; padding:10px 12px; font-size:12px; } }
+
+    .panel { display:none; flex-direction:column; gap:14px; flex:1; min-height:0; }
+    .panel.active { display:flex; }
+
+    .controls, .cinema-controls { display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; padding:14px 16px; background:var(--bg-3); border:1px solid var(--border); border-radius:8px; }
+    .ctrl-group, .cinema-arr { display:flex; flex-direction:column; gap:4px; flex:1; min-width:140px; }
+    .ctrl-group label, .cinema-arr label { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--text-3); letter-spacing:.08em; text-transform:uppercase; }
+    .ctrl-group input, .cinema-arr input { padding:8px 12px; font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--text); background:var(--bg-2); border:1px solid var(--border); border-radius:4px; outline:none; direction:ltr; }
+    .ctrl-group input:focus, .cinema-arr input:focus { border-color:var(--red); }
+
+    .btns { display:flex; gap:6px; flex-wrap:wrap; }
+    .btns button { padding:8px 14px; font-family:inherit; font-size:13px; font-weight:500; color:var(--text); background:var(--bg-2); border:1px solid var(--border-2); border-radius:4px; cursor:pointer; transition:.15s; white-space:nowrap; }
+    .btns button:hover:not(:disabled) { border-color:var(--red); color:var(--red); }
+    .btns button.primary { background:var(--yellow); border-color:var(--yellow); color:#0F1B2D; font-weight:600; }
+    .btns button.primary:hover { opacity:.9; color:#0F1B2D; }
+    .btns button:disabled { opacity:.35; cursor:not-allowed; }
+    .step-info { display:inline-flex; align-items:center; padding:8px 14px; background:var(--bg-2); border:1px solid var(--border-2); border-radius:4px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--yellow); font-weight:600; min-width:80px; justify-content:center; }
+
+    .stage { display:flex; justify-content:center; align-items:center; padding:24px 20px; background:var(--bg-2); border:1px solid var(--border); border-radius:8px; min-height:340px; flex:1; overflow:auto; }
+    .stage--hash { flex-direction:column; align-items:stretch; padding:20px; }
+    .stage--cinema { border-radius:0; border:none; min-height:0; }
+
+    .buckets { display:flex; flex-direction:column; gap:6px; width:100%; }
+    .bucket { display:grid; grid-template-columns:60px 1fr; gap:10px; align-items:center; padding:8px 12px; background:var(--bg-3); border:1px solid var(--border); border-radius:6px; transition:all .35s ease; }
+    .bucket.active { border-color:var(--yellow); box-shadow:0 0 0 3px rgba(242,178,0,.15); }
+    .bucket.hit { border-color:var(--green); background:rgba(76,208,138,.08); }
+    .bucket.miss { border-color:var(--red); background:rgba(255,107,87,.08); }
+    .bucket__index { font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:700; color:var(--text-3); text-align:center; padding:4px 6px; background:var(--bg-2); border-radius:4px; }
+    .bucket.active .bucket__index { color:var(--yellow); }
+    .bucket.hit .bucket__index { color:var(--green); }
+    .bucket.miss .bucket__index { color:var(--red); }
+    .bucket__chain { display:flex; flex-wrap:wrap; gap:6px; align-items:center; min-height:36px; }
+    .bucket__empty { color:var(--text-3); font-family:'IBM Plex Mono',monospace; font-size:11px; opacity:.5; }
+
+    .entry { display:inline-flex; align-items:stretch; background:var(--bg-2); border:1px solid var(--border-2); border-radius:4px; overflow:hidden; transition:all .3s ease; animation:entry-pop .3s cubic-bezier(.2,.8,.2,1); }
+    .entry__key { padding:6px 10px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; color:var(--blue); background:rgba(91,157,255,.1); border-inline-end:1px solid var(--border-2); }
+    .entry__val { padding:6px 10px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text); }
+    .entry.found { border-color:var(--green); background:rgba(76,208,138,.08); }
+    .entry.found .entry__key { color:var(--green); background:rgba(76,208,138,.15); }
+    .entry.new { border-color:var(--yellow); box-shadow:0 0 0 3px rgba(242,178,0,.15); }
+    .entry.deleted { border-color:var(--red); opacity:.4; text-decoration:line-through; }
+    .entry.deleted .entry__key { color:var(--red); }
+
+    @keyframes entry-pop {
+      0% { transform:scale(.5); opacity:0; }
+      100% { transform:scale(1); opacity:1; }
+    }
+
+    .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .stat { padding:12px 14px; background:var(--bg-3); border:1px solid var(--border); border-radius:6px; display:flex; flex-direction:column; gap:4px; }
+    .stat-label { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--text-3); letter-spacing:.08em; text-transform:uppercase; }
+    .stat-value { font-family:'IBM Plex Mono',monospace; font-size:15px; font-weight:600; color:var(--red); }
+
+    .log { padding:14px 16px; font-family:'IBM Plex Mono',monospace; font-size:12px; line-height:1.8; color:var(--text-2); background:var(--bg-2); border:1px solid var(--border); border-radius:8px; min-height:120px; max-height:200px; overflow-y:auto; white-space:pre-wrap; }
+    .log__ok { color:var(--green); }
+    .log__info { color:var(--blue); }
+    .log__warn { color:var(--yellow); }
+    .log__err { color:var(--red); }
+
+    .cinema-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); gap:14px; flex:1; min-height:0; height:clamp(400px,55vh,520px); }
+    .panel-box { display:flex; flex-direction:column; background:var(--bg-2); border:1px solid var(--border); border-radius:8px; overflow:hidden; min-height:0; }
+    .panel-box__head { display:flex; align-items:center; gap:6px; padding:10px 14px; background:var(--bg-3); border-bottom:1px solid var(--border); flex-shrink:0; }
+    .panel-box__title { font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-3); letter-spacing:.08em; text-transform:uppercase; margin-inline-start:6px; }
+    .dot { width:9px; height:9px; border-radius:50%; }
+    .dot.red { background:var(--red); }
+    .dot.yellow { background:var(--yellow); }
+    .dot.green { background:var(--green); }
+
+    .code-body { flex:1; padding:12px 0; font-family:'IBM Plex Mono',monospace; font-size:12px; line-height:1.7; overflow:auto; direction:ltr; text-align:left; white-space:pre; min-height:0; }
+    .code-line { display:block; padding:1px 14px 1px 48px; position:relative; min-height:20px; color:#3A4A5F; transition:color .2s, background .2s; }
+    .code-line::before { content:attr(data-ln); position:absolute; left:8px; top:1px; width:30px; text-align:right; font-size:10px; color:#2A3846; user-select:none; }
+    .code-line.typed { color:var(--text-2); }
+    .code-line.typed::before { color:#4A5F7A; }
+    .code-line.typing { color:var(--text); background:rgba(255,107,87,.08); }
+    .code-line.typing::after { content:'▌'; color:var(--red); margin-left:1px; animation:caret .55s steps(2) infinite; }
+    @keyframes caret { 0%,50% { opacity:1; } 51%,100% { opacity:0; } }
+    .code-line.active { color:var(--yellow); background:rgba(242,178,0,.12); border-left:3px solid var(--yellow); padding-left:45px; }
+    .code-line.active::before { color:var(--yellow); font-weight:700; }
+
+    .values { padding:10px 14px; border-top:1px solid var(--border); background:var(--bg-3); font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-3); display:flex; flex-wrap:wrap; gap:12px; min-height:38px; align-items:center; flex-shrink:0; }
+    .values b { color:var(--yellow); }
+
+    .op-desc { padding:12px 16px; background:var(--bg-3); border:1px solid var(--border); border-left:3px solid var(--red); border-radius:6px; font-size:13px; color:var(--text); min-height:44px; display:flex; align-items:center; line-height:1.6; flex-shrink:0; }
+
+    @media (max-width:860px) { .cinema-grid { grid-template-columns:1fr; grid-template-rows:minmax(220px,1fr) minmax(220px,1fr); height:auto; min-height:520px; } }
+    @media (max-width:560px) {
+      body { padding:10px; }
+      .app { min-height:calc(100vh - 20px); }
+      .controls, .cinema-controls { padding:10px 12px; gap:8px; }
+      .ctrl-group, .cinema-arr { min-width:100%; }
+      .btns button { padding:7px 11px; font-size:12px; }
+      .code-body { font-size:11px; }
+      .stat-value { font-size:13px; }
+      .stat { padding:10px 12px; }
+      .stage { padding:14px 12px; min-height:280px; }
+      .cinema-grid { min-height:480px; }
+      .bucket { grid-template-columns:50px 1fr; padding:6px 8px; }
+    }
+  `,
+  js: `
+    const $ = id => document.getElementById(id);
+    let cinemaInit = false;
+
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const name = tab.dataset.tab;
+        document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t === tab));
+        document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.dataset.panel === name));
+        if (name === 'cinema' && !cinemaInit) { cinemaInit = true; initCinema(); }
+      });
+    });
+
+    /* ═══════════════════════════════════════════════════════════
+       HASH FUNCTION — simple string hash (djb2)
+       ═══════════════════════════════════════════════════════════ */
+    function hash(key, size) {
+      let h = 5381;
+      for (let i = 0; i < key.length; i++) {
+        h = ((h << 5) + h + key.charCodeAt(i)) | 0;
+      }
+      return Math.abs(h) % size;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       PREVIEW
+       ═══════════════════════════════════════════════════════════ */
+    const pvBuckets = $('pv-buckets');
+    const pvLogEl = $('pv-log');
+    const pvSize = $('pv-size');
+    const pvBucketsCount = $('pv-buckets-count');
+    const pvLast = $('pv-last');
+    const pvKeyIn = $('pv-key');
+    const pvValIn = $('pv-val');
+
+    const BUCKET_COUNT = 8;
+    const pvTable = Array.from({ length: BUCKET_COUNT }, () => []);
+
+    // Preseed with sample data
+    function pvSeed() {
+      const seed = [['name','Ibrahim'],['age','25'],['city','Cairo'],['job','Dev']];
+      seed.forEach(([k, v]) => {
+        const idx = hash(k, BUCKET_COUNT);
+        pvTable[idx].push({ key: k, value: v });
+      });
+    }
+    pvSeed();
+
+    function pvRender(highlight) {
+      pvBuckets.innerHTML = '';
+      for (let i = 0; i < BUCKET_COUNT; i++) {
+        const bucket = document.createElement('div');
+        bucket.className = 'bucket';
+        if (highlight && highlight.idx === i) {
+          bucket.classList.add(highlight.state || 'active');
+        }
+
+        const idxEl = document.createElement('div');
+        idxEl.className = 'bucket__index';
+        idxEl.textContent = '[' + i + ']';
+        bucket.appendChild(idxEl);
+
+        const chain = document.createElement('div');
+        chain.className = 'bucket__chain';
+
+        if (pvTable[i].length === 0) {
+          const empty = document.createElement('span');
+          empty.className = 'bucket__empty';
+          empty.textContent = '— فارغ —';
+          chain.appendChild(empty);
+        } else {
+          pvTable[i].forEach((item, j) => {
+            const entry = document.createElement('div');
+            entry.className = 'entry';
+            if (highlight && highlight.idx === i && highlight.key === item.key) {
+              entry.classList.add(highlight.entryState || 'found');
+            }
+
+            const k = document.createElement('span');
+            k.className = 'entry__key';
+            k.textContent = item.key;
+
+            const v = document.createElement('span');
+            v.className = 'entry__val';
+            v.textContent = item.value;
+
+            entry.appendChild(k);
+            entry.appendChild(v);
+            chain.appendChild(entry);
+
+            if (j < pvTable[i].length - 1) {
+              const arrow = document.createElement('span');
+              arrow.style.color = 'var(--text-3)';
+              arrow.style.fontSize = '10px';
+              arrow.textContent = '→';
+              chain.appendChild(arrow);
+            }
+          });
+        }
+
+        bucket.appendChild(chain);
+        pvBuckets.appendChild(bucket);
+      }
+
+      const total = pvTable.reduce((sum, b) => sum + b.length, 0);
+      pvSize.textContent = total;
+      pvBucketsCount.textContent = BUCKET_COUNT;
+    }
+
+    function pvAddLog(text, cls) {
+      const line = document.createElement('div');
+      if (cls) line.className = 'log__' + cls;
+      line.textContent = text;
+      pvLogEl.appendChild(line);
+      pvLogEl.scrollTop = pvLogEl.scrollHeight;
+    }
+
+    function pvSet() {
+      const key = pvKeyIn.value.trim();
+      const value = pvValIn.value.trim();
+      if (!key) { pvAddLog('✕ key مطلوب', 'err'); return; }
+
+      const idx = hash(key, BUCKET_COUNT);
+      const bucket = pvTable[idx];
+      const existing = bucket.find(e => e.key === key);
+
+      if (existing) {
+        existing.value = value;
+        pvLast.textContent = 'Update ' + key;
+        pvAddLog('hash("' + key + '") = ' + idx + ' → تحديث القيمة من "' + existing.value + '" لـ "' + value + '"', 'warn');
+      } else {
+        bucket.push({ key, value });
+        pvLast.textContent = 'Set ' + key;
+        pvAddLog('hash("' + key + '") = ' + idx + ' → إضافة (' + key + ', ' + value + ') في bucket ' + idx, 'ok');
+      }
+      pvRender({ idx, key, state: 'active', entryState: 'new' });
+    }
+
+    function pvGet() {
+      const key = pvKeyIn.value.trim();
+      if (!key) { pvAddLog('✕ key مطلوب', 'err'); return; }
+
+      const idx = hash(key, BUCKET_COUNT);
+      const bucket = pvTable[idx];
+      const found = bucket.find(e => e.key === key);
+
+      if (found) {
+        pvLast.textContent = 'Get ' + key;
+        pvAddLog('hash("' + key + '") = ' + idx + ' → لقينا القيمة: "' + found.value + '"', 'ok');
+        pvRender({ idx, key, state: 'hit', entryState: 'found' });
+      } else {
+        pvLast.textContent = 'Miss ' + key;
+        pvAddLog('hash("' + key + '") = ' + idx + ' → مش موجودة (miss)', 'err');
+        pvRender({ idx, key, state: 'miss' });
+      }
+    }
+
+    function pvDelete() {
+      const key = pvKeyIn.value.trim();
+      if (!key) { pvAddLog('✕ key مطلوب', 'err'); return; }
+
+      const idx = hash(key, BUCKET_COUNT);
+      const bucket = pvTable[idx];
+      const before = bucket.length;
+      pvTable[idx] = bucket.filter(e => e.key !== key);
+
+      if (pvTable[idx].length < before) {
+        pvLast.textContent = 'Delete ' + key;
+        pvAddLog('حذفنا "' + key + '" من bucket ' + idx, 'warn');
+        pvRender({ idx, key, state: 'miss' });
+      } else {
+        pvAddLog('✕ "' + key + '" مش موجودة', 'err');
+        pvRender({ idx, state: 'miss' });
+      }
+    }
+
+    function pvClear() {
+      for (let i = 0; i < BUCKET_COUNT; i++) pvTable[i] = [];
+      pvLast.textContent = 'Clear';
+      pvAddLog('مسحنا كل الـ buckets', 'info');
+      pvRender();
+    }
+
+    $('pv-set').onclick = pvSet;
+    $('pv-get').onclick = pvGet;
+    $('pv-del').onclick = pvDelete;
+    $('pv-clear').onclick = pvClear;
+    pvKeyIn.addEventListener('keydown', e => { if (e.key === 'Enter') pvGet(); });
+
+    pvRender();
+    pvAddLog('Hash Table جاهزة — 8 buckets، بنستخدم chaining للتعامل مع الـ collisions', 'info');
+
+    /* ═══════════════════════════════════════════════════════════
+       CINEMA
+       ═══════════════════════════════════════════════════════════ */
+    const HT_CODE = [
+      'class HashTable {',
+      '  constructor(size = 8) {',
+      '    this.size = size;',
+      '    this.buckets = Array.from({ length: size }, () => []);',
+      '  }',
+      '',
+      '  hash(key) {',
+      '    let h = 5381;',
+      '    for (let i = 0; i < key.length; i++) {',
+      '      h = ((h << 5) + h + key.charCodeAt(i)) | 0;',
+      '    }',
+      '    return Math.abs(h) % this.size;',
+      '  }',
+      '',
+      '  set(key, value) {',
+      '    const idx = this.hash(key);',
+      '    const bucket = this.buckets[idx];',
+      '    const existing = bucket.find(e => e.key === key);',
+      '    if (existing) existing.value = value;',
+      '    else bucket.push({ key, value });',
+      '  }',
+      '',
+      '  get(key) {',
+      '    const idx = this.hash(key);',
+      '    const bucket = this.buckets[idx];',
+      '    const found = bucket.find(e => e.key === key);',
+      '    return found ? found.value : null;',
+      '  }',
+      '',
+      '  delete(key) {',
+      '    const idx = this.hash(key);',
+      '    this.buckets[idx] = this.buckets[idx].filter(e => e.key !== key);',
+      '  }',
+      '}'
+    ];
+
+    const cnCode = $('cn-code');
+    const cnStage = $('cn-stage');
+    const cnValues = $('cn-values');
+    const cnDesc = $('cn-desc');
+    const cnCounter = $('cn-counter');
+    const cnOpsInput = $('cn-ops');
+    const cnPrev = $('cn-prev');
+    const cnPlay = $('cn-play');
+    const cnNext = $('cn-next');
+    const cnReset = $('cn-reset');
+
+    let cnSteps = [], cnIndex = -1, cnTyped = 0;
+    let cnTimer = null, cnPlaying = false, cnTyping = false, cnCancelled = false;
+    const cnDelay = 2400;
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+    function cnBuildSteps(ops) {
+      const steps = [];
+      const table = Array.from({ length: BUCKET_COUNT }, () => []);
+      const snap = (extra) => Object.assign({
+        buckets: table.map(b => b.map(e => ({ key: e.key, value: e.value })))
+      }, extra);
+
+      steps.push({ line: 0, desc: 'ننشئ HashTable بحجم 8 buckets فاضية', hl: {}, op: 'init' });
+
+      ops.forEach(op => {
+        const parts = op.split(':');
+        if (parts.length < 2) return;
+        const cmd = parts[0].trim();
+        const rest = parts[1].trim();
+
+        if (cmd === 'set') {
+          const [key, value] = rest.split('=');
+          if (!key) return;
+          const k = key.trim();
+          const v = (value || '').trim();
+
+          steps.push({ line: 7, desc: 'set("' + k + '", "' + v + '") — نبدأ بالـ hash', hl: {}, op: 'set', key: k });
+
+          // Compute hash step by step
+          let h = 5381;
+          for (let i = 0; i < k.length; i++) {
+            h = ((h << 5) + h + k.charCodeAt(i)) | 0;
+            steps.push({ line: 9, desc: 'حرف "' + k[i] + '" (code ' + k.charCodeAt(i) + ') → h = ' + h, hl: {}, op: 'hash', key: k, char: k[i], hashSoFar: h });
+          }
+
+          const idx = Math.abs(h) % BUCKET_COUNT;
+          steps.push({ line: 11, desc: 'hash("' + k + '") = |' + h + '| % 8 = ' + idx, hl: { idx }, op: 'hash-done', key: k, idx });
+
+          const existing = table[idx].find(e => e.key === k);
+          if (existing) {
+            existing.value = v;
+            steps.push({ line: 16, desc: 'الـ key موجودة → تحديث القيمة لـ "' + v + '"', hl: { idx, key: k, state: 'active', entryState: 'new' }, op: 'update', key: k, value: v, idx });
+          } else {
+            table[idx].push({ key: k, value: v });
+            steps.push({ line: 17, desc: 'إضافة (' + k + ', ' + v + ') في bucket ' + idx, hl: { idx, key: k, state: 'active', entryState: 'new' }, op: 'insert', key: k, value: v, idx });
+          }
+
+        } else if (cmd === 'get') {
+          const k = rest.trim();
+          steps.push({ line: 20, desc: 'get("' + k + '") — نبدأ بالـ hash', hl: {}, op: 'get', key: k });
+
+          let h = 5381;
+          for (let i = 0; i < k.length; i++) {
+            h = ((h << 5) + h + k.charCodeAt(i)) | 0;
+          }
+          const idx = Math.abs(h) % BUCKET_COUNT;
+          steps.push({ line: 21, desc: 'hash("' + k + '") = ' + idx, hl: { idx }, op: 'hash-done', key: k, idx });
+
+          const found = table[idx].find(e => e.key === k);
+          if (found) {
+            steps.push({ line: 23, desc: '✓ لقينا "' + k + '" → value = "' + found.value + '"', hl: { idx, key: k, state: 'hit', entryState: 'found' }, op: 'found', key: k, value: found.value, idx });
+          } else {
+            steps.push({ line: 23, desc: '✕ "' + k + '" مش موجودة → نرجّع null', hl: { idx, state: 'miss' }, op: 'not-found', key: k, idx });
+          }
+
+        } else if (cmd === 'delete') {
+          const k = rest.trim();
+          const idx = Math.abs((function () { let h = 5381; for (let i = 0; i < k.length; i++) h = ((h << 5) + h + k.charCodeAt(i)) | 0; return h; })()) % BUCKET_COUNT;
+          const before = table[idx].length;
+          table[idx] = table[idx].filter(e => e.key !== k);
+          const after = table[idx].length;
+          if (after < before) {
+            steps.push({ line: 27, desc: 'حذفنا "' + k + '" من bucket ' + idx, hl: { idx, state: 'miss' }, op: 'delete', key: k, idx });
+          } else {
+            steps.push({ line: 27, desc: '"' + k + '" مش موجودة — مفيش حاجة اتحذفت', hl: { idx, state: 'miss' }, op: 'delete-miss', key: k, idx });
+          }
+        }
+      });
+
+      steps.push({ line: 29, desc: 'خلصنا ✓ — الـ HashTable النهائية جاهزة', hl: {}, op: 'done' });
+      return steps;
+    }
+
+    function cnBuildCodeDOM() {
+      cnCode.innerHTML = '';
+      HT_CODE.forEach((_, i) => {
+        const s = document.createElement('span');
+        s.className = 'code-line';
+        s.dataset.ln = String(i + 1);
+        cnCode.appendChild(s);
+      });
+    }
+
+    async function cnTypeLine(idx) {
+      const el = cnCode.children[idx];
+      if (!el || el.classList.contains('typed')) return;
+      el.classList.add('typing');
+      const text = HT_CODE[idx];
+      for (let i = 0; i < text.length; i++) {
+        if (cnCancelled) { el.classList.remove('typing'); return; }
+        el.textContent = text.slice(0, i + 1);
+        await sleep(text[i] === ' ' ? 5 : 12);
+      }
+      el.classList.remove('typing');
+      el.classList.add('typed');
+    }
+
+    async function cnEnsureTyped(target) {
+      while (cnTyped <= target) {
+        cnTyping = true;
+        await cnTypeLine(cnTyped);
+        cnTyping = false;
+        if (cnCancelled) return;
+        cnTyped++;
+      }
+    }
+
+    function cnSetActive(idx) {
+      cnCode.querySelectorAll('.code-line').forEach((el, i) => el.classList.toggle('active', i === idx));
+      const a = cnCode.querySelector('.code-line.active');
+      if (a) {
+        const top = a.offsetTop, c = cnCode;
+        if (top < c.scrollTop || top + 24 > c.scrollTop + c.clientHeight) c.scrollTo({ top: top - c.clientHeight / 2, behavior: 'smooth' });
+      }
+    }
+
+    function cnRenderBuckets(step) {
+      cnStage.innerHTML = '';
+      const wrap = document.createElement('div');
+      wrap.className = 'buckets';
+
+      for (let i = 0; i < BUCKET_COUNT; i++) {
+        const bucket = document.createElement('div');
+        bucket.className = 'bucket';
+        if (step.hl.idx === i) bucket.classList.add(step.hl.state || 'active');
+
+        const idxEl = document.createElement('div');
+        idxEl.className = 'bucket__index';
+        idxEl.textContent = '[' + i + ']';
+        bucket.appendChild(idxEl);
+
+        const chain = document.createElement('div');
+        chain.className = 'bucket__chain';
+
+        const items = step.buckets[i] || [];
+        if (items.length === 0) {
+          const empty = document.createElement('span');
+          empty.className = 'bucket__empty';
+          empty.textContent = '— فارغ —';
+          chain.appendChild(empty);
+        } else {
+          items.forEach((item, j) => {
+            const entry = document.createElement('div');
+            entry.className = 'entry';
+            if (step.hl.idx === i && step.hl.key === item.key) {
+              entry.classList.add(step.hl.entryState || 'found');
+            }
+
+            const k = document.createElement('span');
+            k.className = 'entry__key';
+            k.textContent = item.key;
+
+            const v = document.createElement('span');
+            v.className = 'entry__val';
+            v.textContent = item.value;
+
+            entry.appendChild(k);
+            entry.appendChild(v);
+            chain.appendChild(entry);
+
+            if (j < items.length - 1) {
+              const arrow = document.createElement('span');
+              arrow.style.color = 'var(--text-3)';
+              arrow.style.fontSize = '10px';
+              arrow.textContent = '→';
+              chain.appendChild(arrow);
+            }
+          });
+        }
+
+        bucket.appendChild(chain);
+        wrap.appendChild(bucket);
+      }
+
+      cnStage.appendChild(wrap);
+    }
+
+    function cnRenderValues(step) {
+      const parts = [];
+      if (step.key) parts.push('key = <b>' + step.key + '</b>');
+      if (step.idx !== undefined) parts.push('bucket = <b>' + step.idx + '</b>');
+      if (step.hashSoFar !== undefined) parts.push('hash = <b>' + step.hashSoFar + '</b>');
+      if (!parts.length) parts.push('الحالة: <b>جاهز</b>');
+      cnValues.innerHTML = parts.join(' · ');
+    }
+
+    async function cnGoto(idx, animate) {
+      cnCancelled = false;
+      cnIndex = idx;
+      const step = cnSteps[idx];
+
+      cnCounter.textContent = (idx + 1) + ' / ' + cnSteps.length;
+
+      if (animate) {
+        await cnEnsureTyped(step.line);
+        if (cnCancelled) return;
+      } else {
+        while (cnTyped <= step.line) {
+          const el = cnCode.children[cnTyped];
+          el.textContent = HT_CODE[cnTyped];
+          el.classList.add('typed');
+          cnTyped++;
+        }
+      }
+
+      cnSetActive(step.line);
+      cnRenderBuckets(step);
+      cnRenderValues(step);
+      cnDesc.textContent = step.desc;
+
+      cnPrev.disabled = idx <= 0;
+      cnNext.disabled = idx >= cnSteps.length - 1;
+    }
+
+    async function cnNextFn() {
+      if (cnPlaying) return;
+      if (cnIndex >= cnSteps.length - 1) return;
+      cnPlaying = true;
+      await cnGoto(cnIndex + 1, true);
+      cnPlaying = false;
+    }
+
+    async function cnPrevFn() {
+      if (cnTyping) { cnCancelled = true; await sleep(80); }
+      if (cnIndex <= 0) return;
+      cnPlaying = false;
+      cnStop();
+      await cnGoto(cnIndex - 1, false);
+    }
+
+    async function cnFirst() {
+      const ops = cnOpsInput.value.split(',').map(s => s.trim()).filter(Boolean);
+      if (ops.length < 1) return;
+      cnSteps = cnBuildSteps(ops);
+      cnCancelled = false;
+      cnTyped = 0;
+      cnIndex = -1;
+      cnBuildCodeDOM();
+      cnStop();
+      await cnGoto(0, false);
+    }
+
+    function cnStart() {
+      if (cnTimer) return;
+      cnPlaying = true;
+      cnPlay.textContent = '⏸ وقّف';
+      cnTimer = setTimeout(async function tick() {
+        if (cnIndex >= cnSteps.length - 1) { cnStop(); return; }
+        await cnGoto(cnIndex + 1, true);
+        if (cnTimer !== null && cnPlaying) cnTimer = setTimeout(tick, cnDelay);
+      }, 300);
+    }
+
+    function cnStop() {
+      cnPlaying = false;
+      cnPlay.textContent = '▶ شغّل';
+      if (cnTimer) { clearTimeout(cnTimer); cnTimer = null; }
+    }
+
+    async function initCinema() {
+      await cnFirst();
+      cnStart();
+    }
+
+    cnNext.onclick = () => { cnStop(); cnNextFn(); };
+    cnPrev.onclick = () => { cnStop(); cnPrevFn(); };
+    cnReset.onclick = () => { cnStop(); cnFirst(); };
+    cnPlay.onclick = () => {
+      if (cnPlaying) { cnStop(); return; }
+      if (cnIndex >= cnSteps.length - 1) cnFirst().then(() => cnStart());
+      else cnStart();
+    };
+    cnOpsInput.addEventListener('change', () => { cnStop(); cnFirst(); });
   `
 };
 
@@ -3730,6 +5069,714 @@ const PROMISE_RUNNABLE: Runnable = {
   `
 };
 
+const ARRAY_MAP_RUNNABLE: Runnable = {
+  html: `
+    <div class="app">
+      <nav class="tabs" role="tablist">
+        <button class="tab active" data-tab="preview"><span class="tab__icon">📺</span><span>المعاينة</span></button>
+        <button class="tab" data-tab="cinema"><span class="tab__icon">🎬</span><span>خطوة بخطوة</span></button>
+      </nav>
+
+      <section class="panel active" data-panel="preview">
+        <div class="controls">
+          <div class="ctrl-group">
+            <label>original array</label>
+            <input id="pv-arr" type="text" value="1,2,3,4,5" dir="ltr">
+          </div>
+          <div class="ctrl-group">
+            <label>transform (JS expression)</label>
+            <input id="pv-expr" type="text" value="x => x * 2" dir="ltr">
+          </div>
+          <div class="btns">
+            <button id="pv-play" class="primary">▶ شغّل</button>
+            <button id="pv-step">⏭ خطوة</button>
+            <button id="pv-reset">↺ رجّع</button>
+          </div>
+        </div>
+
+        <div class="example-row">
+          <span class="example-label">أمثلة سريعة:</span>
+          <button class="chip" data-expr="x => x * 2">x * 2</button>
+          <button class="chip" data-expr="x => x ** 2">x²</button>
+          <button class="chip" data-expr="x => x + 100">x + 100</button>
+          <button class="chip" data-expr="x => Math.sqrt(x)">√x</button>
+          <button class="chip" data-expr="x => \`item-\${x}\`">"item-" + x</button>
+        </div>
+
+        <div class="two-arrays">
+          <div class="array-panel">
+            <div class="array-label">
+              <span class="dot red"></span>
+              <span>original array</span>
+            </div>
+            <div class="array-grid" id="pv-original"></div>
+          </div>
+          <div class="arrow-col">
+            <div class="big-arrow">↓</div>
+          </div>
+          <div class="array-panel">
+            <div class="array-label">
+              <span class="dot green"></span>
+              <span>new array (map result)</span>
+            </div>
+            <div class="array-grid" id="pv-result"></div>
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><span class="stat-label">الطول</span><span class="stat-value" id="pv-len">0</span></div>
+          <div class="stat"><span class="stat-label">العنصر الحالي</span><span class="stat-value" id="pv-cur">—</span></div>
+          <div class="stat"><span class="stat-label">النتيجة</span><span class="stat-value" id="pv-out">—</span></div>
+        </div>
+
+        <div class="log" id="pv-log"></div>
+      </section>
+
+      <section class="panel" data-panel="cinema">
+        <div class="cinema-controls">
+          <div class="cinema-arr"><label>array</label><input id="cn-arr" type="text" value="1,2,3,4,5" dir="ltr"></div>
+          <div class="cinema-arr"><label>expr</label><input id="cn-expr" type="text" value="x => x * 2" dir="ltr"></div>
+          <div class="btns">
+            <button id="cn-prev">⏮</button>
+            <button id="cn-play" class="primary">▶ شغّل</button>
+            <button id="cn-next">⏭</button>
+            <button id="cn-reset">↺</button>
+          </div>
+          <div class="step-info"><span id="cn-counter">0 / 0</span></div>
+        </div>
+        <div class="cinema-grid">
+          <div class="panel-box code-panel">
+            <div class="panel-box__head"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span><span class="panel-box__title">array-map.js</span></div>
+            <div class="code-body" id="cn-code" dir="ltr"></div>
+          </div>
+          <div class="panel-box stage-panel">
+            <div class="panel-box__head"><span class="panel-box__title">الرسم</span></div>
+            <div class="stage stage--map" id="cn-stage" dir="ltr"></div>
+            <div class="values" id="cn-values"></div>
+          </div>
+        </div>
+        <div class="op-desc" id="cn-desc">—</div>
+      </section>
+    </div>
+  `,
+  css: `
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --bg:#0F1B2D; --bg-2:#0A1422; --bg-3:#152236; --border:#1E2D42; --border-2:#2A3846;
+      --text:#E6EDF2; --text-2:#9DAEC2; --text-3:#6B7C92;
+      --blue:#5B9DFF; --yellow:#F2B200; --red:#FF6B57; --green:#4CD08A;
+    }
+    body { font-family:'IBM Plex Sans Arabic',system-ui,sans-serif; background:var(--bg); color:var(--text); padding:16px; min-height:100vh; overflow-x:hidden; }
+    ::-webkit-scrollbar { width:10px; height:10px; }
+    ::-webkit-scrollbar-track { background:var(--bg-2); }
+    ::-webkit-scrollbar-thumb { background:var(--border-2); border-radius:6px; border:2px solid var(--bg-2); background-clip:padding-box; }
+    ::-webkit-scrollbar-thumb:hover { background:#4A5F7A; background-clip:padding-box; }
+    .app { max-width:1200px; margin-inline:auto; display:flex; flex-direction:column; gap:14px; min-height:calc(100vh - 32px); }
+
+    .tabs { display:flex; gap:6px; padding:6px; background:var(--bg-2); border:1px solid var(--border); border-radius:8px; width:fit-content; }
+    .tab { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; font-family:inherit; font-size:13px; font-weight:600; color:var(--text-2); background:transparent; border:none; border-radius:6px; cursor:pointer; transition:all .2s; white-space:nowrap; }
+    .tab:hover { color:var(--text); }
+    .tab.active { background:var(--bg-3); color:var(--text); box-shadow:0 2px 8px rgba(0,0,0,.3); }
+    .tab__icon { font-size:14px; }
+    @media (max-width:480px) { .tabs { width:100%; } .tab { flex:1; justify-content:center; padding:10px 12px; font-size:12px; } }
+
+    .panel { display:none; flex-direction:column; gap:14px; flex:1; min-height:0; }
+    .panel.active { display:flex; }
+
+    .controls, .cinema-controls { display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; padding:14px 16px; background:var(--bg-3); border:1px solid var(--border); border-radius:8px; }
+    .ctrl-group, .cinema-arr { display:flex; flex-direction:column; gap:4px; flex:1; min-width:160px; }
+    .ctrl-group label, .cinema-arr label { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--text-3); letter-spacing:.08em; text-transform:uppercase; }
+    .ctrl-group input, .cinema-arr input { padding:8px 12px; font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--text); background:var(--bg-2); border:1px solid var(--border); border-radius:4px; outline:none; direction:ltr; }
+    .ctrl-group input:focus, .cinema-arr input:focus { border-color:var(--green); }
+
+    .btns { display:flex; gap:6px; flex-wrap:wrap; }
+    .btns button { padding:8px 14px; font-family:inherit; font-size:13px; font-weight:500; color:var(--text); background:var(--bg-2); border:1px solid var(--border-2); border-radius:4px; cursor:pointer; transition:.15s; white-space:nowrap; }
+    .btns button:hover:not(:disabled) { border-color:var(--green); color:var(--green); }
+    .btns button.primary { background:var(--green); border-color:var(--green); color:var(--bg); font-weight:600; }
+    .btns button.primary:hover { opacity:.9; color:var(--bg); }
+    .btns button:disabled { opacity:.35; cursor:not-allowed; }
+    .step-info { display:inline-flex; align-items:center; padding:8px 14px; background:var(--bg-2); border:1px solid var(--border-2); border-radius:4px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--yellow); font-weight:600; min-width:80px; justify-content:center; }
+
+    .example-row { display:flex; flex-wrap:wrap; gap:6px; align-items:center; padding:0 4px; }
+    .example-label { font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-3); margin-inline-end:4px; }
+    .chip { padding:5px 12px; background:transparent; border:1px solid var(--border-2); border-radius:20px; color:var(--text-2); font-family:inherit; font-size:11px; cursor:pointer; transition:.15s; }
+    .chip:hover { border-color:var(--green); color:var(--green); }
+
+    .two-arrays { display:grid; grid-template-columns:1fr 60px 1fr; gap:14px; flex:1; min-height:280px; align-items:stretch; }
+    @media (max-width:700px) { .two-arrays { grid-template-columns:1fr; } .arrow-col { transform:rotate(90deg); } }
+
+    .array-panel { display:flex; flex-direction:column; gap:10px; padding:16px; background:var(--bg-2); border:1px solid var(--border); border-radius:8px; min-width:0; }
+    .array-label { display:flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-2); letter-spacing:.08em; text-transform:uppercase; }
+    .array-label .dot { width:8px; height:8px; border-radius:50%; }
+    .dot.red { background:var(--red); }
+    .dot.green { background:var(--green); }
+
+    .array-grid { display:flex; flex-wrap:wrap; gap:8px; flex:1; align-items:flex-start; align-content:flex-start; }
+
+    .cell { display:flex; flex-direction:column; align-items:center; gap:4px; transition:all .35s ease; }
+    .cell__val { display:flex; align-items:center; justify-content:center; min-width:52px; height:52px; padding:0 10px; font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:700; color:var(--text); background:var(--bg-3); border:2px solid var(--border-2); border-radius:6px; transition:all .3s ease; word-break:break-all; }
+    .cell__idx { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--text-3); }
+    .cell.active .cell__val { border-color:var(--yellow); background:rgba(242,178,0,.15); color:var(--yellow); box-shadow:0 0 0 4px rgba(242,178,0,.15); transform:scale(1.05); }
+    .cell.done .cell__val { opacity:.5; }
+    .cell.result .cell__val { border-color:var(--green); background:rgba(76,208,138,.1); color:var(--green); animation:cell-pop .4s cubic-bezier(.2,.8,.2,1); }
+    .cell.result-active .cell__val { border-color:var(--green); background:var(--green); color:var(--bg); box-shadow:0 0 0 4px rgba(76,208,138,.25); animation:cell-pop .4s cubic-bezier(.2,.8,.2,1); }
+
+    @keyframes cell-pop {
+      0% { transform:scale(.5); opacity:0; }
+      60% { transform:scale(1.1); }
+      100% { transform:scale(1); opacity:1; }
+    }
+
+    .arrow-col { display:flex; align-items:center; justify-content:center; }
+    .big-arrow { font-size:40px; color:var(--green); animation:pulse-down 1.5s ease-in-out infinite; }
+    @keyframes pulse-down {
+      0%,100% { transform:translateY(0); opacity:.6; }
+      50% { transform:translateY(6px); opacity:1; }
+    }
+
+    .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .stat { padding:12px 14px; background:var(--bg-3); border:1px solid var(--border); border-radius:6px; display:flex; flex-direction:column; gap:4px; }
+    .stat-label { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--text-3); letter-spacing:.08em; text-transform:uppercase; }
+    .stat-value { font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600; color:var(--green); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+    .log { padding:14px 16px; font-family:'IBM Plex Mono',monospace; font-size:12px; line-height:1.8; color:var(--text-2); background:var(--bg-2); border:1px solid var(--border); border-radius:8px; min-height:120px; max-height:200px; overflow-y:auto; white-space:pre-wrap; }
+    .log__ok { color:var(--green); }
+    .log__info { color:var(--blue); }
+    .log__warn { color:var(--yellow); }
+    .log__err { color:var(--red); }
+
+    .cinema-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); gap:14px; flex:1; min-height:0; height:clamp(400px,55vh,520px); }
+    .panel-box { display:flex; flex-direction:column; background:var(--bg-2); border:1px solid var(--border); border-radius:8px; overflow:hidden; min-height:0; }
+    .panel-box__head { display:flex; align-items:center; gap:6px; padding:10px 14px; background:var(--bg-3); border-bottom:1px solid var(--border); flex-shrink:0; }
+    .panel-box__title { font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-3); letter-spacing:.08em; text-transform:uppercase; margin-inline-start:6px; }
+
+    .code-body { flex:1; padding:12px 0; font-family:'IBM Plex Mono',monospace; font-size:12px; line-height:1.7; overflow:auto; direction:ltr; text-align:left; white-space:pre; min-height:0; }
+    .code-line { display:block; padding:1px 14px 1px 48px; position:relative; min-height:20px; color:#3A4A5F; transition:color .2s, background .2s; }
+    .code-line::before { content:attr(data-ln); position:absolute; left:8px; top:1px; width:30px; text-align:right; font-size:10px; color:#2A3846; user-select:none; }
+    .code-line.typed { color:var(--text-2); }
+    .code-line.typed::before { color:#4A5F7A; }
+    .code-line.typing { color:var(--text); background:rgba(76,208,138,.08); }
+    .code-line.typing::after { content:'▌'; color:var(--green); margin-left:1px; animation:caret .55s steps(2) infinite; }
+    @keyframes caret { 0%,50% { opacity:1; } 51%,100% { opacity:0; } }
+    .code-line.active { color:var(--yellow); background:rgba(242,178,0,.12); border-left:3px solid var(--yellow); padding-left:45px; }
+    .code-line.active::before { color:var(--yellow); font-weight:700; }
+
+    .stage { flex:1; display:flex; flex-direction:column; justify-content:center; padding:20px 16px; overflow:auto; min-height:0; }
+    .stage--map { justify-content:flex-start; }
+
+    .values { padding:10px 14px; border-top:1px solid var(--border); background:var(--bg-3); font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--text-3); display:flex; flex-wrap:wrap; gap:12px; min-height:38px; align-items:center; flex-shrink:0; }
+    .values b { color:var(--yellow); }
+
+    .op-desc { padding:12px 16px; background:var(--bg-3); border:1px solid var(--border); border-left:3px solid var(--green); border-radius:6px; font-size:13px; color:var(--text); min-height:44px; display:flex; align-items:center; line-height:1.6; flex-shrink:0; }
+
+    @media (max-width:860px) { .cinema-grid { grid-template-columns:1fr; grid-template-rows:minmax(220px,1fr) minmax(220px,1fr); height:auto; min-height:520px; } }
+    @media (max-width:560px) {
+      body { padding:10px; }
+      .app { min-height:calc(100vh - 20px); }
+      .controls, .cinema-controls { padding:10px 12px; gap:8px; }
+      .ctrl-group, .cinema-arr { min-width:100%; }
+      .btns button { padding:7px 11px; font-size:12px; }
+      .code-body { font-size:11px; }
+      .cell__val { min-width:42px; height:42px; font-size:12px; }
+      .two-arrays { min-height:200px; }
+      .cinema-grid { min-height:480px; }
+    }
+  `,
+  js: `
+    const $ = id => document.getElementById(id);
+    let cinemaInit = false;
+
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const name = tab.dataset.tab;
+        document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t === tab));
+        document.querySelectorAll('.panel').forEach(p => p.classList.toggle('active', p.dataset.panel === name));
+        if (name === 'cinema' && !cinemaInit) { cinemaInit = true; initCinema(); }
+      });
+    });
+
+    /* ═══════════════════════════════════════════════════════════
+       HELPERS
+       ═══════════════════════════════════════════════════════════ */
+    function parseArray(str) {
+      return str.split(',').map(s => s.trim()).filter(Boolean).map(s => {
+        const n = Number(s);
+        return isNaN(n) ? s : n;
+      });
+    }
+
+    function compileExpr(expr) {
+      try {
+        // eslint-disable-next-line no-new-func
+        const fn = new Function('return ' + expr)();
+        if (typeof fn !== 'function') throw new Error('لازم تكون دالة');
+        return fn;
+      } catch (e) {
+        throw new Error('تعبير غير صحيح: ' + e.message);
+      }
+    }
+
+    function fmtValue(v) {
+      if (typeof v === 'string') return '"' + v + '"';
+      if (v === undefined) return 'undefined';
+      if (v === null) return 'null';
+      return String(v);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       PREVIEW
+       ═══════════════════════════════════════════════════════════ */
+    const pvOriginal = $('pv-original');
+    const pvResult = $('pv-result');
+    const pvLogEl = $('pv-log');
+    const pvLen = $('pv-len');
+    const pvCur = $('pv-cur');
+    const pvOut = $('pv-out');
+    const pvArrInput = $('pv-arr');
+    const pvExprInput = $('pv-expr');
+
+    let pvState = null, pvTimer = null, pvPlaying = false;
+
+    document.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        pvExprInput.value = chip.dataset.expr;
+        pvStop();
+        pvInit();
+      });
+    });
+
+    function pvAddLog(text, cls) {
+      const line = document.createElement('div');
+      if (cls) line.className = 'log__' + cls;
+      line.textContent = text;
+      pvLogEl.appendChild(line);
+      pvLogEl.scrollTop = pvLogEl.scrollHeight;
+    }
+
+    function pvRenderOriginal(activeIdx) {
+      pvOriginal.innerHTML = '';
+      if (!pvState) return;
+      pvState.arr.forEach((val, i) => {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        if (i === activeIdx) cell.classList.add('active');
+        else if (i < activeIdx) cell.classList.add('done');
+
+        const v = document.createElement('div');
+        v.className = 'cell__val';
+        v.textContent = fmtValue(val);
+
+        const idx = document.createElement('div');
+        idx.className = 'cell__idx';
+        idx.textContent = i;
+
+        cell.appendChild(v);
+        cell.appendChild(idx);
+        pvOriginal.appendChild(cell);
+      });
+    }
+
+    function pvRenderResult(activeIdx, highlight) {
+      pvResult.innerHTML = '';
+      if (!pvState) return;
+
+      for (let i = 0; i < pvState.arr.length; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        if (i === activeIdx) cell.classList.add('result-active');
+        else if (i < activeIdx || (highlight && highlight !== -1 && i <= highlight)) cell.classList.add('result');
+
+        const v = document.createElement('div');
+        v.className = 'cell__val';
+        if (i < pvState.results.length) {
+          v.textContent = fmtValue(pvState.results[i]);
+        } else {
+          v.textContent = '?';
+          v.style.opacity = '.3';
+        }
+
+        const idx = document.createElement('div');
+        idx.className = 'cell__idx';
+        idx.textContent = i;
+
+        cell.appendChild(v);
+        cell.appendChild(idx);
+        pvResult.appendChild(cell);
+      }
+    }
+
+    function pvInit() {
+      let arr, fn;
+      try {
+        arr = parseArray(pvArrInput.value);
+        fn = compileExpr(pvExprInput.value);
+      } catch (e) {
+        pvLogEl.innerHTML = '';
+        pvAddLog('✕ ' + e.message, 'err');
+        pvOriginal.innerHTML = '';
+        pvResult.innerHTML = '';
+        return;
+      }
+
+      if (arr.length === 0) {
+        pvOriginal.innerHTML = '';
+        pvResult.innerHTML = '';
+        pvAddLog('✕ المصفوفة فاضية', 'err');
+        return;
+      }
+
+      pvState = {
+        arr,
+        fn,
+        results: [],
+        index: -1
+      };
+      pvLen.textContent = arr.length;
+      pvCur.textContent = '—';
+      pvOut.textContent = '—';
+
+      pvRenderOriginal(-1);
+      pvRenderResult(-1);
+      pvLogEl.innerHTML = '';
+      pvAddLog('map() هتنشئ مصفوفة جديدة — مش بتعدّل الأصلية', 'info');
+      pvAddLog('arr = [' + arr.map(fmtValue).join(', ') + ']', 'info');
+    }
+
+    function pvStep() {
+      if (!pvState) return false;
+      const next = pvState.index + 1;
+      if (next >= pvState.arr.length) return false;
+
+      pvState.index = next;
+      const val = pvState.arr[next];
+
+      let out;
+      try {
+        out = pvState.fn(val, next, pvState.arr);
+      } catch (e) {
+        pvAddLog('✕ خطأ في التنفيذ: ' + e.message, 'err');
+        return false;
+      }
+      pvState.results.push(out);
+
+      pvCur.textContent = fmtValue(val);
+      pvOut.textContent = fmtValue(out);
+      pvAddLog('arr[' + next + '] = ' + fmtValue(val) + ' → callback → ' + fmtValue(out), 'ok');
+
+      pvRenderOriginal(next);
+      pvRenderResult(next, next);
+
+      return next < pvState.arr.length - 1;
+    }
+
+    function pvPlay() {
+      if (pvPlaying) { pvStop(); return; }
+      if (!pvState || pvState.index >= pvState.arr.length - 1) pvInit();
+      pvPlaying = true;
+      $('pv-play').textContent = '⏸ وقّف';
+      pvTimer = setInterval(() => {
+        if (!pvStep()) pvStop();
+      }, 700);
+    }
+
+    function pvStop() {
+      pvPlaying = false;
+      if (pvTimer) { clearInterval(pvTimer); pvTimer = null; }
+      $('pv-play').textContent = '▶ شغّل';
+    }
+
+    $('pv-play').onclick = pvPlay;
+    $('pv-step').onclick = () => { pvStop(); pvStep(); };
+    $('pv-reset').onclick = () => { pvStop(); pvInit(); };
+    pvArrInput.addEventListener('change', () => { pvStop(); pvInit(); });
+    pvExprInput.addEventListener('change', () => { pvStop(); pvInit(); });
+
+    pvInit();
+
+    /* ═══════════════════════════════════════════════════════════
+       CINEMA
+       ═══════════════════════════════════════════════════════════ */
+    const MAP_CODE = [
+      'Array.prototype.myMap = function(callback) {',
+      '  const result = new Array(this.length);',
+      '',
+      '  for (let i = 0; i < this.length; i++) {',
+      '    result[i] = callback(this[i], i, this);',
+      '  }',
+      '',
+      '  return result;',
+      '};',
+      '',
+      '// الاستخدام:',
+      'const arr = [1, 2, 3, 4, 5];',
+      'const doubled = arr.myMap(x => x * 2);',
+      'console.log(doubled);',
+      '// [2, 4, 6, 8, 10]'
+    ];
+
+    const cnCode = $('cn-code');
+    const cnStage = $('cn-stage');
+    const cnValues = $('cn-values');
+    const cnDesc = $('cn-desc');
+    const cnCounter = $('cn-counter');
+    const cnArrInput = $('cn-arr');
+    const cnExprInput = $('cn-expr');
+    const cnPrev = $('cn-prev');
+    const cnPlay = $('cn-play');
+    const cnNext = $('cn-next');
+    const cnReset = $('cn-reset');
+
+    let cnSteps = [], cnIndex = -1, cnTyped = 0;
+    let cnTimer = null, cnPlaying = false, cnTyping = false, cnCancelled = false;
+    const cnDelay = 2200;
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+    function cnBuildSteps(arr, fn) {
+      const steps = [];
+      const results = [];
+
+      steps.push({ line: 0, desc: 'بنستدعي myMap على المصفوفة — callback هيتم تطبيقه على كل عنصر', arr, results: [], idx: -1, hl: {} });
+      steps.push({ line: 1, desc: 'بنعمل مصفوفة جديدة بنفس الطول: new Array(' + arr.length + ')', arr, results: [], idx: -1, hl: {} });
+      steps.push({ line: 3, desc: 'نبدأ الـ loop من i = 0 لـ ' + (arr.length - 1), arr, results: [], idx: -1, hl: {} });
+
+      for (let i = 0; i < arr.length; i++) {
+        const val = arr[i];
+        let out;
+        try { out = fn(val, i, arr); } catch (e) { out = '<error>'; }
+
+        steps.push({ line: 4, desc: 'استدعاء callback(' + fmtValue(val) + ', ' + i + ', arr)', arr, results: [...results], idx: i, hl: { active: i, phase: 'call' } });
+        steps.push({ line: 4, desc: 'الـ callback رجّعت ' + fmtValue(out), arr, results: [...results], idx: i, hl: { active: i, phase: 'return' } });
+
+        results.push(out);
+        steps.push({ line: 4, desc: 'بنحط النتيجة في result[' + i + '] = ' + fmtValue(out), arr, results: [...results], idx: i, hl: { active: i, phase: 'store' } });
+      }
+
+      steps.push({ line: 7, desc: 'الـ loop خلصت — نرجّع المصفوفة الجديدة', arr, results: [...results], idx: -1, hl: {} });
+      steps.push({ line: 13, desc: '✓ doubled = [' + results.map(fmtValue).join(', ') + ']', arr, results: [...results], idx: -1, done: true, hl: {} });
+      return steps;
+    }
+
+    function cnBuildCodeDOM() {
+      cnCode.innerHTML = '';
+      MAP_CODE.forEach((_, i) => {
+        const s = document.createElement('span');
+        s.className = 'code-line';
+        s.dataset.ln = String(i + 1);
+        cnCode.appendChild(s);
+      });
+    }
+
+    async function cnTypeLine(idx) {
+      const el = cnCode.children[idx];
+      if (!el || el.classList.contains('typed')) return;
+      el.classList.add('typing');
+      const text = MAP_CODE[idx];
+      for (let i = 0; i < text.length; i++) {
+        if (cnCancelled) { el.classList.remove('typing'); return; }
+        el.textContent = text.slice(0, i + 1);
+        await sleep(text[i] === ' ' ? 5 : 12);
+      }
+      el.classList.remove('typing');
+      el.classList.add('typed');
+    }
+
+    async function cnEnsureTyped(target) {
+      while (cnTyped <= target) {
+        cnTyping = true;
+        await cnTypeLine(cnTyped);
+        cnTyping = false;
+        if (cnCancelled) return;
+        cnTyped++;
+      }
+    }
+
+    function cnSetActive(idx) {
+      cnCode.querySelectorAll('.code-line').forEach((el, i) => el.classList.toggle('active', i === idx));
+      const a = cnCode.querySelector('.code-line.active');
+      if (a) {
+        const top = a.offsetTop, c = cnCode;
+        if (top < c.scrollTop || top + 24 > c.scrollTop + c.clientHeight) c.scrollTo({ top: top - c.clientHeight / 2, behavior: 'smooth' });
+      }
+    }
+
+    function cnRenderStage(step) {
+      cnStage.innerHTML = '';
+      const wrap = document.createElement('div');
+      wrap.style.cssText = 'display:flex;flex-direction:column;gap:14px;width:100%';
+
+      const origLabel = document.createElement('div');
+      origLabel.className = 'array-label';
+      origLabel.innerHTML = '<span class="dot red"></span><span>original</span>';
+      wrap.appendChild(origLabel);
+
+      const origGrid = document.createElement('div');
+      origGrid.className = 'array-grid';
+      step.arr.forEach((val, i) => {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        if (step.hl.active === i) cell.classList.add('active');
+        else if (step.idx > i) cell.classList.add('done');
+
+        const v = document.createElement('div');
+        v.className = 'cell__val';
+        v.textContent = fmtValue(val);
+
+        const idx = document.createElement('div');
+        idx.className = 'cell__idx';
+        idx.textContent = i;
+
+        cell.appendChild(v);
+        cell.appendChild(idx);
+        origGrid.appendChild(cell);
+      });
+      wrap.appendChild(origGrid);
+
+      const arrowRow = document.createElement('div');
+      arrowRow.style.cssText = 'text-align:center;color:var(--green);font-size:24px;font-family:monospace';
+      arrowRow.textContent = '↓';
+      wrap.appendChild(arrowRow);
+
+      const resLabel = document.createElement('div');
+      resLabel.className = 'array-label';
+      resLabel.innerHTML = '<span class="dot green"></span><span>result</span>';
+      wrap.appendChild(resLabel);
+
+      const resGrid = document.createElement('div');
+      resGrid.className = 'array-grid';
+      step.arr.forEach((_, i) => {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        if (step.hl.active === i && step.hl.phase === 'store') cell.classList.add('result-active');
+        else if (i < step.results.length) cell.classList.add('result');
+
+        const v = document.createElement('div');
+        v.className = 'cell__val';
+        if (i < step.results.length) v.textContent = fmtValue(step.results[i]);
+        else { v.textContent = '?'; v.style.opacity = '.3'; }
+
+        const idx = document.createElement('div');
+        idx.className = 'cell__idx';
+        idx.textContent = i;
+
+        cell.appendChild(v);
+        cell.appendChild(idx);
+        resGrid.appendChild(cell);
+      });
+      wrap.appendChild(resGrid);
+
+      cnStage.appendChild(wrap);
+    }
+
+    function cnRenderValues(step) {
+      const parts = [];
+      if (step.hl.active !== undefined && step.hl.active >= 0) {
+        parts.push('i = <b>' + step.hl.active + '</b>');
+        if (step.hl.phase === 'call') parts.push('مرحلة: <b>call</b>');
+        if (step.hl.phase === 'return') parts.push('مرحلة: <b>return</b>');
+        if (step.hl.phase === 'store') parts.push('مرحلة: <b>store</b>');
+      }
+      if (!parts.length) parts.push('الحالة: <b>جاهز</b>');
+      cnValues.innerHTML = parts.join(' · ');
+    }
+
+    async function cnGoto(idx, animate) {
+      cnCancelled = false;
+      cnIndex = idx;
+      const step = cnSteps[idx];
+
+      cnCounter.textContent = (idx + 1) + ' / ' + cnSteps.length;
+
+      if (animate) {
+        await cnEnsureTyped(step.line);
+        if (cnCancelled) return;
+      } else {
+        while (cnTyped <= step.line) {
+          const el = cnCode.children[cnTyped];
+          el.textContent = MAP_CODE[cnTyped];
+          el.classList.add('typed');
+          cnTyped++;
+        }
+      }
+
+      cnSetActive(step.line);
+      cnRenderStage(step);
+      cnRenderValues(step);
+      cnDesc.textContent = step.desc;
+
+      cnPrev.disabled = idx <= 0;
+      cnNext.disabled = idx >= cnSteps.length - 1;
+    }
+
+    async function cnNextFn() {
+      if (cnPlaying) return;
+      if (cnIndex >= cnSteps.length - 1) return;
+      cnPlaying = true;
+      await cnGoto(cnIndex + 1, true);
+      cnPlaying = false;
+    }
+
+    async function cnPrevFn() {
+      if (cnTyping) { cnCancelled = true; await sleep(80); }
+      if (cnIndex <= 0) return;
+      cnPlaying = false;
+      cnStop();
+      await cnGoto(cnIndex - 1, false);
+    }
+
+    async function cnFirst() {
+      let arr, fn;
+      try {
+        arr = parseArray(cnArrInput.value);
+        fn = compileExpr(cnExprInput.value);
+      } catch (e) {
+        cnDesc.textContent = '✕ ' + e.message;
+        return;
+      }
+      if (arr.length < 1) return;
+      cnSteps = cnBuildSteps(arr, fn);
+      cnCancelled = false;
+      cnTyped = 0;
+      cnIndex = -1;
+      cnBuildCodeDOM();
+      cnStop();
+      await cnGoto(0, false);
+    }
+
+    function cnStart() {
+      if (cnTimer) return;
+      cnPlaying = true;
+      cnPlay.textContent = '⏸ وقّف';
+      cnTimer = setTimeout(async function tick() {
+        if (cnIndex >= cnSteps.length - 1) { cnStop(); return; }
+        await cnGoto(cnIndex + 1, true);
+        if (cnTimer !== null && cnPlaying) cnTimer = setTimeout(tick, cnDelay);
+      }, 300);
+    }
+
+    function cnStop() {
+      cnPlaying = false;
+      cnPlay.textContent = '▶ شغّل';
+      if (cnTimer) { clearTimeout(cnTimer); cnTimer = null; }
+    }
+
+    async function initCinema() {
+      await cnFirst();
+      cnStart();
+    }
+
+    cnNext.onclick = () => { cnStop(); cnNextFn(); };
+    cnPrev.onclick = () => { cnStop(); cnPrevFn(); };
+    cnReset.onclick = () => { cnStop(); cnFirst(); };
+    cnPlay.onclick = () => {
+      if (cnPlaying) { cnStop(); return; }
+      if (cnIndex >= cnSteps.length - 1) cnFirst().then(() => cnStart());
+      else cnStart();
+    };
+    cnArrInput.addEventListener('change', () => { cnStop(); cnFirst(); });
+    cnExprInput.addEventListener('change', () => { cnStop(); cnFirst(); });
+  `
+};
+
 // ═══════════════════════════════════════════════════════════════════
 // Binary Search — الـ Visualizer الكامل
 // ═══════════════════════════════════════════════════════════════════
@@ -5614,7 +7661,188 @@ export const STATIONS: Station[] = [
       'احسب الـ recurrence: T(n) = T(n-1) + O(n) عشان توصل لـ O(n²) في أسوأ حالة.',
     ],
   },
-  { id: 'merge-sort', num: 'A3', line: 'algo', x: 420, y: 70, slug: 'merge-sort', href: '/station/merge-sort', level: 'متوسط', next: 'heap-sort', title: 'الترتيب بالدمج', titleEn: 'Merge Sort', summary: '', date: '', tags: [], whatItDoes: '', explanation: '', codeBreakdown: [], live: PREVIEW_BARS, practice: EMPTY_PRACTICE, useCases: [], whyItsGoodHere: '', relatedIdeas: [], mathProblems: [] },
+  {
+    id: 'merge-sort',
+    num: 'A3',
+    line: 'algo',
+    x: 420,
+    y: 70,
+    slug: 'merge-sort',
+    href: '/algorithms/merge-sort',
+    level: 'متوسط',
+    next: 'heap-sort',
+
+    title: 'الترتيب بالدمج',
+    titleEn: 'Merge Sort',
+    summary: 'قسّم المصفوفة لنصين، رتّب كل نص، ثم ادمجهم في مصفوفة مرتّبة.',
+    date: '2026',
+    tags: ['sorting', 'divide-and-conquer', 'stable', 'O(n log n)'],
+
+    whatItDoes:
+      'Merge Sort خوارزمية ترتيب بتتبع أسلوب Divide and Conquer. بتقسّم المصفوفة لنصين، بترتّب كل نص بشكل recursive، وبعدين بتدمج النصين في مصفوفة واحدة مرتّبة. الفرق الأساسي عن Quick Sort: مضمون O(n log n) في كل الحالات، وبيحافظ على ترتيب العناصر المتساوية (stable).',
+
+    explanation: `تخيّل إنك عندك كومة أوراق لعب مبعثرة، وعايز ترتّبها. بدل ما تحاول ترتّبها كلها مرة واحدة، بتقسّمها لنصين. كل نص بتقسّمه لنصين تاني، وهكذا لحد ما يبقى عندك أوراق فردية (كل ورقة مرتبة بطبيعتها).
+
+بعد كده، بتبدأ تدمج: ورقتين → كومة صغيرة مرتبة، ثم كومتين → كومة أكبر، وهكذا لحد ما ترجع لكل الأوراق مرتبة.
+
+الفرق الأساسي بين Merge Sort و Quick Sort:
+- Quick Sort: يقسّم الأول (partition)، ثم يرتّب.
+- Merge Sort: يقسّم الأول (split) لحد ما يوصل لعنصر واحد، ثم يدمج (merge) بشكل مرتب.
+
+الميزة الكبيرة: Merge Sort مضمون O(n log n) في كل الحالات (أفضل، متوسط، أسوأ). Quick Sort ممكن يوصل O(n²) في أسوأ حالة.
+
+العيب الأساسي: Merge Sort محتاج memory إضافية O(n) عشان المصفوفات المساعدة في الدمج.
+
+الـ Merge Sort stable — يعني العناصر المتساوية بتحافظ على ترتيبها الأصلي. ده مهم جدًا لو بترتّب حسب أكتر من معيار (مثلاً: رتّب بالاسم، وبعدين رتّب بالتاريخ).
+
+الخطوات:
+1. قسّم المصفوفة لنصين متساويين.
+2. رتّب كل نص بشكل recursive.
+3. ادمج النصين في مصفوفة مرتبة.
+
+الـ merge نفسه: عندك مؤشرين، واحد على بداية النص الأول، وواحد على بداية النص التاني. قارن، خد الأصغر، حرّك المؤشر. لما نص يخلص، انسخ الباقي.`,
+
+    codeBreakdown: [
+      { line: 'function mergeSort(arr, left, right) {', note: 'الدالة الأساسية. بتاخد المصفوفة، والحدود (left و right).' },
+      { line: '  if (left >= right) return;', note: 'لو الجزء فيه عنصر واحد أو فاضي — خلاص مرتب، نرجع.' },
+      { line: '', note: '—' },
+      { line: '  const mid = Math.floor((left + right) / 2);', note: 'بنحسب نقطة النص اللي هنقسّم عندها.' },
+      { line: '', note: '—' },
+      { line: '  mergeSort(arr, left, mid);', note: 'نرتّب النص الأول (recursive).' },
+      { line: '  mergeSort(arr, mid + 1, right);', note: 'نرتّب النص التاني (recursive).' },
+      { line: '', note: '—' },
+      { line: '  merge(arr, left, mid, right);', note: 'ندمج النصين المرتبين في مصفوفة واحدة مرتبة.' },
+      { line: '}', note: 'نهاية mergeSort.' },
+      { line: '', note: '—' },
+      { line: 'function merge(arr, left, mid, right) {', note: 'دالة الدمج — بتحتاج مصفوفتين مساعدتين.' },
+      { line: '  const L = arr.slice(left, mid + 1);', note: 'انسخ النص الأول في مصفوفة مؤقتة L.' },
+      { line: '  const R = arr.slice(mid + 1, right + 1);', note: 'انسخ النص التاني في مصفوفة مؤقتة R.' },
+      { line: '', note: '—' },
+      { line: '  let i = 0, j = 0, k = left;', note: 'i و j للـ L و R، و k هو مكان الكتابة في arr.' },
+      { line: '', note: '—' },
+      { line: '  while (i < L.length && j < R.length) {', note: 'نقارن لحد ما واحدة من المصفوفتين تخلص.' },
+      { line: '    if (L[i] <= R[j]) arr[k++] = L[i++];', note: 'لو L أصغر أو يساوي، ناخده (<= عشان stability).' },
+      { line: '    else arr[k++] = R[j++];', note: 'غير كده، ناخد من R.' },
+      { line: '  }', note: 'نهاية الـ while.' },
+      { line: '', note: '—' },
+      { line: '  while (i < L.length) arr[k++] = L[i++];', note: 'لو L لسه فيها عناصر، انسخ الباقي.' },
+      { line: '  while (j < R.length) arr[k++] = R[j++];', note: 'لو R لسه فيها عناصر، انسخ الباقي.' },
+      { line: '}', note: 'نهاية merge.' },
+    ],
+
+    live: MERGE_SORT_RUNNABLE,
+
+    practice: {
+      prompt:
+        'اكتب دالة `mergeSort(arr)` بترتب المصفوفة تصاعديًا باستخدام خوارزمية Merge Sort. لازم تعدّي كل الاختبارات.',
+      functionName: 'mergeSort',
+      starter: `function mergeSort(arr) {
+  // اكتب الكود هنا
+
+}`,
+      solution: `function mergeSort(arr) {
+  if (arr.length <= 1) return arr;
+
+  const mid = Math.floor(arr.length / 2);
+  const left = mergeSort(arr.slice(0, mid));
+  const right = mergeSort(arr.slice(mid));
+
+  return merge(left, right);
+}
+
+function merge(left, right) {
+  const result = [];
+  let i = 0, j = 0;
+
+  while (i < left.length && j < right.length) {
+    if (left[i] <= right[j]) result.push(left[i++]);
+    else result.push(right[j++]);
+  }
+
+  while (i < left.length) result.push(left[i++]);
+  while (j < right.length) result.push(right[j++]);
+
+  return result;
+}`,
+      tests: [
+        { id: 't1', description: 'مصفوفة عادية', args: [[38, 27, 43, 3, 9, 82, 10]], expected: [3, 9, 10, 27, 38, 43, 82] },
+        { id: 't2', description: 'مرتبة بالفعل', args: [[1, 2, 3, 4, 5]], expected: [1, 2, 3, 4, 5] },
+        { id: 't3', description: 'معكوسة', args: [[5, 4, 3, 2, 1]], expected: [1, 2, 3, 4, 5] },
+        { id: 't4', description: 'عنصر واحد', args: [[7]], expected: [7] },
+        { id: 't5', description: 'فاضية', args: [[]], expected: [] },
+        { id: 't6', description: 'عناصر مكررة', args: [[3, 1, 3, 2, 1]], expected: [1, 1, 2, 3, 3] },
+        { id: 't7', description: 'قيم سالبة', args: [[-3, 5, -1, 0, -8]], expected: [-8, -3, -1, 0, 5] },
+      ],
+    },
+
+    quizzes: [
+      {
+        question: 'إيه الـ Time Complexity المضمون لـ Merge Sort في كل الحالات؟',
+        options: ['O(n)', 'O(n log n)', 'O(n²)', 'O(log n)'],
+        correct: 1,
+        explanation: 'Merge Sort مضمون O(n log n) في أسوأ حالة — وده أهم فرق عن Quick Sort اللي ممكن يوصل O(n²).',
+      },
+      {
+        question: 'ليه Merge Sort بتعتبر "stable"؟',
+        options: [
+          'لأنها بتشتغل في نفس المكان',
+          'لأنها بتحافظ على ترتيب العناصر المتساوية',
+          'لأنها أسرع من Quick Sort',
+          'لأنها مش بتستخدم recursion',
+        ],
+        correct: 1,
+        explanation: 'في دالة الـ merge، بنستخدم `L[i] <= R[j]` (مش `<`)، عشان لو العنصرين متساويين، ناخد من النص الأول — وبكده نحافظ على الترتيب الأصلي.',
+      },
+      {
+        question: 'إيه أكبر عيب في Merge Sort مقارنة بـ Quick Sort؟',
+        options: [
+          'أبطأ في المتوسط',
+          'مش stable',
+          'محتاج memory إضافية O(n)',
+          'بيشتغل بس على أرقام صحيحة',
+        ],
+        correct: 2,
+        explanation: 'Merge Sort محتاج مصفوفتين مساعدتين L و R في كل مرة، وده بياخد O(n) memory إضافية. Quick Sort بيشتغل in-place بـ O(log n) بس للـ recursion stack.',
+      },
+      {
+        question: 'إيه الـ recurrence relation بتاع Merge Sort؟',
+        options: ['T(n) = T(n-1) + O(1)', 'T(n) = 2T(n/2) + O(n)', 'T(n) = T(n/2) + O(n)', 'T(n) = 2T(n-1) + O(1)'],
+        correct: 1,
+        explanation: 'بنقسّم لـ 2 subproblems كل واحد حجمه n/2 (ده الـ 2T(n/2))، والـ merge بياخد O(n). بالـ Master Theorem: T(n) = O(n log n).',
+      },
+    ],
+
+    useCases: [
+      'ترتيب Linked Lists — Merge Sort مثالي لأنه مش محتاج وصول عشوائي',
+      'الترتيب الخارجي (External Sort) — لملفات أكبر من الـ RAM',
+      'الترتيب الموزّع (Distributed Sorting) — كل node ترتّب جزء، ثم merge',
+      'Inversion Count — عدد الأزواج المعكوسة في مصفوفة',
+      'Sorting stability في الـ databases والـ reports',
+      'Java Arrays.sort() للـ objects بيستخدم Tim Sort (merge + insertion)',
+      'الـ CDN caching — بيدمجوا sorted lists من edge servers',
+    ],
+
+    whyItsGoodHere:
+      'Merge Sort هو الخيار الصح لما: (1) محتاج تضمن O(n log n) في كل الحالات — يعني مفيش worst case مفاجئ، أو (2) محتاج stability — العناصر المتساوية تحافظ على ترتيبها، أو (3) بتشتغل على Linked Lists — هنا Merge Sort يتفوّق على Quick Sort بشكل كبير، أو (4) الداتا أكبر من الـ memory (External Sort). في المقابل، لو memory محدودة أو الأداء المتوسط أهم، Quick Sort يبقى أحسن.',
+
+    relatedIdeas: [
+      'Quick Sort — in-place، أسرع في المتوسط، بس مش stable',
+      'Heap Sort — in-place، O(n log n) مضمون، بس مش stable',
+      'Tim Sort — hybrid (merge + insertion)، مستخدم في Python و Java',
+      'External Merge Sort — للـ datasets أكبر من الـ RAM',
+      'Natural Merge Sort — بيستغل الـ runs الموجودة أصلاً',
+      'In-place Merge Sort — variant نادر، O(n log n) بس معقد',
+      'Bottom-up Merge Sort — iterative بدل recursive',
+    ],
+
+    mathProblems: [
+      'حل الـ recurrence T(n) = 2T(n/2) + n باستخدام Master Theorem.',
+      'لو عندك مصفوفة 1,048,576 عنصر، كام level من الـ recursion؟',
+      'إيه العلاقة بين عدد المقارنات وعدد العناصر في Merge Sort؟',
+      'أثبت إن Merge Sort محتاج على الأقل ⌈n log₂ n⌉ - n + 1 مقارنة.',
+      'لو عندك 8 عناصر، ارسم شجرة الـ recursion الكاملة وعدّ المقارنات.',
+    ],
+  },
   { id: 'heap-sort', num: 'A4', line: 'algo', x: 280, y: 70, slug: 'heap-sort', href: '/station/heap-sort', level: 'متقدم', next: 'dijkstra', title: 'الترتيب بالكومة', titleEn: 'Heap Sort', summary: '', date: '', tags: [], whatItDoes: '', explanation: '', codeBreakdown: [], live: PREVIEW_BARS, practice: EMPTY_PRACTICE, useCases: [], whyItsGoodHere: '', relatedIdeas: [], mathProblems: [] },
   { id: 'dijkstra', num: 'A5', line: 'algo', x: 100, y: 70, slug: 'dijkstra', href: '/station/dijkstra', level: 'متقدم', next: 'linked-list', title: 'خوارزمية دايكسترا', titleEn: "Dijkstra's Algorithm", summary: '', date: '', tags: [], whatItDoes: '', explanation: '', codeBreakdown: [], live: PREVIEW_BARS, practice: EMPTY_PRACTICE, useCases: [], whyItsGoodHere: '', relatedIdeas: [], mathProblems: [] },
 
@@ -5975,7 +8203,199 @@ O(1). مهما كان حجم القائمة.
       'إيه علاقة الـ Stack بـ recursion depth؟',
     ],
   },
-  { id: 'hash-table', num: 'D3', line: 'ds', x: 420, y: 210, slug: 'hash-table', href: '/station/hash-table', level: 'متوسط', next: 'bst', title: 'جدول التقطيع', titleEn: 'Hash Table', summary: '', date: '', tags: [], whatItDoes: '', explanation: '', codeBreakdown: [], live: PREVIEW_CHAIN, practice: EMPTY_PRACTICE, useCases: [], whyItsGoodHere: '', relatedIdeas: [], mathProblems: [] },
+  {
+    id: 'hash-table',
+    num: 'D3',
+    line: 'ds',
+    x: 420,
+    y: 210,
+    slug: 'hash-table',
+    href: '/data-structures/hash-table',
+    level: 'متوسط',
+    next: 'bst',
+
+    title: 'جدول التقطيع',
+    titleEn: 'Hash Table',
+    summary: 'هيكل بيانات بيخزّن القيم في buckets، بيوصل لأي قيمة في O(1) تقريبًا.',
+    date: '2026',
+    tags: ['hash-table', 'O(1) lookup', 'collision', 'chaining'],
+
+    whatItDoes:
+      'Hash Table هو هيكل بيانات بيربط كل مفتاح (key) بقيمة (value)، وبيدي وصول سريع جدًا O(1) تقريبًا. الفكرة: بنحوّل الـ key لرقم باستخدام دالة hash، والرقم ده بيدينا الـ index في array من الـ buckets. لو اتنين keys طلعوا نفس الـ index (حصل collision)، بنستخدم استراتيجية للحل — أشهرها chaining (كل bucket فيها list) و open addressing (ندور على مكان فاضي في الـ array نفسه).',
+
+    explanation: `تخيّل مكتبة فيها 8 أرفف. لما حد يجي يقولك "عايز الكتاب الفلاني"، بدل ما تلف على كل رف واحد واحد، بتستخدم قاعدة سريعة: بتاخد أول حرف من اسم الكتاب، وبتحدّد الرف. مثلاً A → رف 0، B → رف 1، وهكذا. كده بتوصل للكتاب في خطوة واحدة.
+
+الـ Hash Table بالظبط كده:
+1. بناخد الـ key (زي "name" أو "age").
+2. بنمرّره على دالة hash — بتطلع رقم ثابت لكل key.
+3. بناخد الرقم ده modulo حجم الـ table → يطلع index الـ bucket.
+4. بنخزّن القيمة في الـ bucket دي.
+
+التحدي الأساسي: الـ collisions.
+لو عندك key "ab" و key "ba"، ممكن الاتنين يطلعوا نفس الـ index. ده اسمه collision، وهو وارد جدًا (نظرية الحمامة: لو عندك n+1 items في n buckets، لازم يحصل collision).
+
+فيه استراتيجيتين للحل:
+1. Chaining: كل bucket فيها list. لو حصل collision، بنضيف الـ item الجديد في الـ list دي.
+2. Open Addressing: ندور على bucket فاضية في الـ array نفسه (linear probing, quadratic probing, double hashing).
+
+اللي استخدمناه في الـ visualizer هو Chaining.
+
+الـ complexity:
+- المتوسط: O(1) لـ insert, search, delete.
+- الأسوأ: O(n) لو كل الـ items في bucket واحدة (سيء جدًا).
+
+عشان نمنع الحالة السيئة دي، بنختار دالة hash كويسة، وبنحافظ على load factor منخفض (عدد الـ items ÷ عدد الـ buckets). لما الـ load factor يعدي 0.75 تقريبًا، بنعمل resize ونعيد توزيع الـ items.
+
+الفرق بين Hash Table و Array:
+- Array: الوصول بـ index → O(1). لكن الـ index لازم يكون عدد صحيح في نطاق محدد.
+- Hash Table: الوصول بـ key → O(1) تقريبًا. والـ key ممكن يكون أي حاجة (string, number, object).`,
+
+    codeBreakdown: [
+      { line: 'class HashTable {', note: 'بنعرّف الكلاس. هنخزّن الـ buckets والـ size.' },
+      { line: '  constructor(size = 8) {', note: 'الـ constructor بياخد حجم افتراضي 8 (أولي، بيقلل الـ collisions).' },
+      { line: '    this.size = size;', note: 'عدد الـ buckets.' },
+      { line: '    this.buckets = Array.from({ length: size }, () => []);', note: 'بنعمل array من arrays فاضية. كل bucket فيها list للـ chaining.' },
+      { line: '  }', note: 'نهاية الـ constructor.' },
+      { line: '', note: '—' },
+      { line: '  hash(key) {', note: 'الدالة اللي بتحوّل الـ key لرقم. لازم تكون: (1) ثابتة — نفس الـ key يطلع نفس الرقم، (2) سريعة، (3) توزّع الـ keys بانتظام.' },
+      { line: '    let h = 5381;', note: 'رقم ابتدائي عشوائي (djb2 hash). أي رقم أولي كويس بيشتغل.' },
+      { line: '    for (let i = 0; i < key.length; i++) {', note: 'بنلف على كل حرف في الـ key.' },
+      { line: '      h = ((h << 5) + h + key.charCodeAt(i)) | 0;', note: 'h * 33 + charCode. الـ | 0 بتخلي الناتج 32-bit integer (تجنب الـ overflow).' },
+      { line: '    }', note: 'نهاية الـ for.' },
+      { line: '    return Math.abs(h) % this.size;', note: 'بناخد القيمة المطلقة (عشان نتجنب الـ negative) modulo حجم الـ table → الـ index النهائي.' },
+      { line: '  }', note: 'نهاية دالة الـ hash.' },
+      { line: '', note: '—' },
+      { line: '  set(key, value) {', note: 'إضافة أو تحديث قيمة.' },
+      { line: '    const idx = this.hash(key);', note: 'بنحسب الـ index.' },
+      { line: '    const bucket = this.buckets[idx];', note: 'بنجيب الـ bucket.' },
+      { line: '    const existing = bucket.find(e => e.key === key);', note: 'بندور لو الـ key موجودة بالفعل في الـ bucket.' },
+      { line: '    if (existing) existing.value = value;', note: 'لو موجودة → تحديث القيمة.' },
+      { line: '    else bucket.push({ key, value });', note: 'لو مش موجودة → إضافة entry جديد في الـ bucket.' },
+      { line: '  }', note: 'نهاية set.' },
+      { line: '', note: '—' },
+      { line: '  get(key) {', note: 'قراءة قيمة.' },
+      { line: '    const idx = this.hash(key);', note: 'نفس الـ index اللي اتحسب وقت الـ set (لأن دالة الـ hash ثابتة).' },
+      { line: '    const bucket = this.buckets[idx];', note: 'بنجيب الـ bucket.' },
+      { line: '    const found = bucket.find(e => e.key === key);', note: 'بندور على الـ key.' },
+      { line: '    return found ? found.value : null;', note: 'لو لقيناه نرجّع القيمة، وإلا null.' },
+      { line: '  }', note: 'نهاية get.' },
+      { line: '', note: '—' },
+      { line: '  delete(key) {', note: 'حذف key.' },
+      { line: '    const idx = this.hash(key);', note: 'نفس الفكرة.' },
+      { line: '    this.buckets[idx] = this.buckets[idx].filter(e => e.key !== key);', note: 'بنستخدم filter عشان نشيل الـ entry.' },
+      { line: '  }', note: 'نهاية delete.' },
+      { line: '}', note: 'نهاية الكلاس.' },
+    ],
+
+    live: HASH_TABLE_RUNNABLE,
+
+    practice: {
+      prompt:
+        'اكتب دالة `groupAnagrams(words)` بترجّع array من arrays، كل array فيها كلمات هي anagrams لبعضها. استخدم Hash Table.',
+      functionName: 'groupAnagrams',
+      starter: `function groupAnagrams(words) {
+  // اكتب الكود هنا
+
+}`,
+      solution: `function groupAnagrams(words) {
+  const map = new Map();
+
+  for (const word of words) {
+    const key = word.split('').sort().join('');
+    if (!map.has(key)) map.set(key, []);
+    map.get(key).push(word);
+  }
+
+  return Array.from(map.values());
+}`,
+      tests: [
+        { id: 't1', description: 'كلمات مختلفة', args: [['eat', 'tea', 'tan', 'ate', 'nat', 'bat']], expected: [['eat', 'tea', 'ate'], ['tan', 'nat'], ['bat']] },
+        { id: 't2', description: 'مصفوفة فاضية', args: [[]], expected: [] },
+        { id: 't3', description: 'كلمة واحدة', args: [['a']], expected: [['a']] },
+        { id: 't4', description: 'كلهم anagrams', args: [['ab', 'ba', 'ab']], expected: [['ab', 'ba', 'ab']] },
+      ],
+    },
+
+    quizzes: [
+      {
+        question: 'إيه الـ Time Complexity المتوسط لعملية search في Hash Table؟',
+        options: ['O(1)', 'O(log n)', 'O(n)', 'O(n log n)'],
+        correct: 0,
+        explanation: 'في المتوسط O(1) لأننا بنحسب الـ index مباشرة من الـ key. لكن الأسوأ O(n) لو كل الـ keys اتصادموا في bucket واحدة.',
+      },
+      {
+        question: 'إيه الـ collision في Hash Table؟',
+        options: [
+          'لما الـ table تبقى فاضية',
+          'لما اتنين keys مختلفين يطلعوا نفس الـ index',
+          'لما الـ key تكون string طويل',
+          'لما نحاول نحذف key مش موجودة',
+        ],
+        correct: 1,
+        explanation: 'الـ collision بتحصل لما دالة الـ hash ترجّع نفس القيمة لـ keys مختلفة. لازم نتعامل معاها بـ chaining أو open addressing.',
+      },
+      {
+        question: 'إيه الفرق الأساسي بين Hash Table و Array؟',
+        options: [
+          'الـ Hash Table أسرع دايماً',
+          'الـ Array بيستخدم أرقام كـ index، الـ Hash Table بيستخدم أي key',
+          'مفيش فرق',
+          'الـ Hash Table بيشتغل بس مع strings',
+        ],
+        correct: 1,
+        explanation: 'الـ Array محتاج index رقمي في نطاق محدد. الـ Hash Table بياخد أي key (string, object, إلخ) ويحوّله لـ index داخليًا.',
+      },
+      {
+        question: 'ليه بنستخدم load factor؟',
+        options: [
+          'لقياس متوسط طول الـ buckets',
+          'لقياس سرعة دالة الـ hash',
+          'لتحديد حجم الـ table الابتدائي',
+          'لمقارنة Hash Table بـ Array',
+        ],
+        correct: 0,
+        explanation: 'الـ load factor = عدد الـ items ÷ عدد الـ buckets. لو عالي، الـ buckets بتبقى طويلة والـ collisions بتزيد. لما يعدي 0.75، بنعمل resize.',
+      },
+      {
+        question: 'لو عندك 100 مفتاح وقاعدة بيانات فيها 10 buckets، إيه الـ load factor؟',
+        options: ['0.1', '1', '10', '100'],
+        correct: 2,
+        explanation: 'الـ load factor = 100 ÷ 10 = 10. ده رقم عالي جدًا — يعني كل bucket فيها 10 entries في المتوسط. محتاج resize.',
+      },
+    ],
+
+    useCases: [
+      'الـ Objects في JavaScript — كل object هو hash table في جوهره',
+      'الـ Map و Set في JavaScript',
+      'قواعد البيانات: الـ indexes عادة بتستخدم B-tree أو hash للبحث السريع',
+      'الـ caching: تخزين نتايج عمليات مكلفة (memoization)',
+      'الـ session storage: تخزين بيانات الـ sessions بمفتاح الـ sessionId',
+      'الـ routers: تخزين الـ routes في hash table للوصول السريع',
+      'الـ compiler symbol tables: تتبّع المتغيرات والدوال',
+      'الـ Graph adjacency list: تمثيل الـ graph باستخدام hash table',
+    ],
+
+    whyItsGoodHere:
+      'الـ Hash Table هو الخيار الأمثل لما: (1) عندك key-value pairs، أو (2) محتاج وصول سريع جدًا O(1) تقريبًا، أو (3) الـ keys مش أرقام متسلسلة — يعني مش قادر تستخدم array، أو (4) محتاج تتحقق من وجود عنصر بسرعة (deduplication). الفرق عن Array: الـ Array بيستخدم index رقمي، بينما الـ Hash Table بياخد أي key. العيب الأساسي: مفيش ترتيب للعناصر، ومحتاج memory إضافية للـ buckets والـ chaining.',
+
+    relatedIdeas: [
+      'Map — Hash Table أوسع في JavaScript (بيحفظ الترتيب + بياخد أي نوع)',
+      'Set — Hash Table بالقيم بس (بدون keys)',
+      'Collision Resolution: Chaining, Open Addressing, Robin Hood Hashing',
+      'Consistent Hashing — للـ distributed caches',
+      'Cuckoo Hashing — O(1) worst-case للـ lookup',
+      'Bloom Filter — probabilistic hash-based structure',
+      'B-tree — بديل للـ Hash Table في الـ databases (بيحفظ الترتيب)',
+    ],
+
+    mathProblems: [
+      'لو عندك hash table بـ n bucket، إيه احتمال إن مفيش collision لما تضيف k items؟ (Birthday problem)',
+      'إيه أفضل حجم للـ hash table؟ (نصيحة: عدد أولي)',
+      'احسب الـ load factor لو عندك 50 item في 32 bucket.',
+      'إيه العلاقة بين عدد الـ collisions والـ load factor؟',
+      'إثبت إن المتوسط لـ successful search = 1 + α/2 (α = load factor)',
+    ],
+  },
   { id: 'bst', num: 'D4', line: 'ds', x: 280, y: 210, slug: 'bst', href: '/station/bst', level: 'متوسط', next: 'trie', title: 'شجرة البحث', titleEn: 'Binary Search Tree', summary: '', date: '', tags: [], whatItDoes: '', explanation: '', codeBreakdown: [], live: PREVIEW_CHAIN, practice: EMPTY_PRACTICE, useCases: [], whyItsGoodHere: '', relatedIdeas: [], mathProblems: [] },
   { id: 'trie', num: 'D5', line: 'ds', x: 100, y: 210, slug: 'trie', href: '/station/trie', level: 'متقدم', next: 'fetch', title: 'شجرة الحروف', titleEn: 'Trie', summary: '', date: '', tags: [], whatItDoes: '', explanation: '', codeBreakdown: [], live: PREVIEW_CHAIN, practice: EMPTY_PRACTICE, useCases: [], whyItsGoodHere: '', relatedIdeas: [], mathProblems: [] },
 
@@ -6328,7 +8748,194 @@ O(1). مهما كان حجم القائمة.
       'لو promise بيفشل بعد 5 ثواني، وهناك timeout على 3 ثواني، مين هيكسب؟',
     ],
   },
-  { id: 'array-map', num: 'P3', line: 'api', x: 420, y: 350, slug: 'array-map', href: '/station/array-map', level: 'مبتدئ', next: 'canvas-2d', title: 'التحويل في المصفوفة', titleEn: 'Array.map()', summary: '', date: '', tags: [], whatItDoes: '', explanation: '', codeBreakdown: [], live: PREVIEW_NETWORK, practice: EMPTY_PRACTICE, useCases: [], whyItsGoodHere: '', relatedIdeas: [], mathProblems: [] },
+  {
+    id: 'array-map',
+    num: 'P3',
+    line: 'api',
+    x: 420,
+    y: 350,
+    slug: 'array-map',
+    href: '/built-in-apis/array-map',
+    level: 'مبتدئ',
+    next: 'canvas-2d',
+
+    title: 'التحويل في المصفوفة',
+    titleEn: 'Array.map()',
+    summary: 'دالة بتحوّل كل عنصر في array لعنصر جديد، وترجّع array جديدة بنفس الطول.',
+    date: '2026',
+    tags: ['array', 'functional', 'immutable', 'higher-order'],
+
+    whatItDoes:
+      'Array.map() هي دالة built-in في JavaScript، بتاخد callback function، وبتطبّقها على كل عنصر في المصفوفة. بترجّع مصفوفة جديدة بنفس الطول، من غير ما تعدّل الأصلية. الفكرة الجوهرية: transformation — تحويل شكل البيانات من شكل لشكل تاني.',
+
+    explanation: `تخيّل عندك مصفوفة أرقام [1, 2, 3]، وعايز تضاعف كل رقم. مش محتاج تعمل loop يدوي:
+
+  const doubled = [1, 2, 3].map(x => x * 2);
+  // [2, 4, 6]
+
+سطر واحد، ومفيش تعديل على الأصلية. ده هو الجمال الحقيقي في map.
+
+الفكرة الأساسية:
+map() بتعمل 3 حاجات:
+1. بتلف على كل عنصر في المصفوفة.
+2. بتنادي الـ callback function على العنصر ده.
+3. بتحط الـ return value بتاع الـ callback في المصفوفة الجديدة في نفس الـ index.
+
+الـ callback بتاخد 3 arguments:
+- element: العنصر الحالي.
+- index: رقم العنصر (اختياري).
+- array: المصفوفة الأصلية (اختياري).
+
+  [10, 20, 30].map((value, index, arr) => {
+    console.log(value, index, arr);
+    return value + index;
+  });
+  // 10 0 [10, 20, 30]
+  // 20 1 [10, 20, 30]
+  // 30 2 [10, 20, 30]
+  // [10, 21, 32]
+
+ليه بنستخدم map بدل for loop؟
+1. أقصر وأوضح — كل التفاصيل الـ boilerplate (i++, arr.length) مختفية.
+2. Immutable — الأصلية مش بتتغير. ده مهم جدًا في React و state management.
+3. Chainable — تقدر تعمل chain: filter().map().reduce().
+4. Functional style — بتوصف "إيه" بدل "إزاي".
+
+متى ما تستخدمش map:
+- لو مش محتاج المصفوفة الجديدة → استخدم forEach.
+- لو عايز تفلتر → استخدم filter.
+- لو عايز تجمع لقيمة واحدة → استخدم reduce.
+
+نقطة مهمة: map بتشتغل على الـ sparse arrays بحذر. لو عندك [1, , 3] (فيه فراغ)، الـ callback مش هتتنادى على الفراغ.
+
+الـ complexity: O(n) — لازم تلف على كل عنصر. لكن بما إن الـ callback ممكن تكون ثقيلة، الـ map بتضيف overhead بسيط مقارنة بـ for loop — لكن في المقابل بتديك readability وimmutability.`,
+
+    codeBreakdown: [
+      { line: 'Array.prototype.myMap = function(callback) {', note: 'بنضيف دالة جديدة للـ Array.prototype. this هتشاور على المصفوفة اللي map اتندت عليها.' },
+      { line: '  const result = new Array(this.length);', note: 'بنعمل مصفوفة جديدة بنفس الطول. مبسّطة — في الحقيقة، map بتتعامل مع الـ sparse arrays بحذر.' },
+      { line: '', note: '—' },
+      { line: '  for (let i = 0; i < this.length; i++) {', note: 'بنلف على كل عنصر من أول لآخر المصفوفة.' },
+      { line: '    result[i] = callback(this[i], i, this);', note: 'بننادي الـ callback بالـ 3 arguments: العنصر، الـ index، والمصفوفة نفسها. الناتج بيتحط في نفس الـ index في المصفوفة الجديدة.' },
+      { line: '  }', note: 'نهاية الـ loop.' },
+      { line: '', note: '—' },
+      { line: '  return result;', note: 'بنرجّع المصفوفة الجديدة. الأصلية اتسابت زي ما هي — مفيش modification.' },
+      { line: '};', note: 'نهاية الدالة.' },
+      { line: '', note: '—' },
+      { line: '// الاستخدام:', note: 'مثال عملي.' },
+      { line: 'const arr = [1, 2, 3, 4, 5];', note: 'المصفوفة الأصلية.' },
+      { line: 'const doubled = arr.myMap(x => x * 2);', note: 'بنستخدم الدالة اللي عملناها. callback بياخد x ويرجّع x * 2.' },
+      { line: 'console.log(doubled);', note: 'النتيجة: [2, 4, 6, 8, 10]' },
+      { line: '// [2, 4, 6, 8, 10]', note: 'الأصلية arr لسه [1, 2, 3, 4, 5].' },
+    ],
+
+    live: ARRAY_MAP_RUNNABLE,
+
+    practice: {
+      prompt:
+        'اكتب دالة `transformPrices(prices)` بتاخد array of numbers وترجّع array جديدة بكل سعر مضاف إليه 14% ضريبة. استخدم `map()`.',
+      functionName: 'transformPrices',
+      starter: `function transformPrices(prices) {
+  // اكتب الكود هنا
+
+}`,
+      solution: `function transformPrices(prices) {
+  return prices.map(price => price * 1.14);
+}`,
+      tests: [
+        { id: 't1', description: 'مصفوفة عادية', args: [[100, 200, 300]], expected: [114, 228, 342] },
+        { id: 't2', description: 'مصفوفة فاضية', args: [[]], expected: [] },
+        { id: 't3', description: 'صفر', args: [[0]], expected: [0] },
+        { id: 't4', description: 'أرقام عشرية', args: [[10.5, 20.25]], expected: [11.97, 23.085] },
+        { id: 't5', description: 'أرقام كبيرة', args: [[1000000]], expected: [1140000] },
+      ],
+    },
+
+    quizzes: [
+      {
+        question: 'إيه الفرق الأساسي بين map() و forEach()؟',
+        options: [
+          'مفيش فرق',
+          'map بترجّع array جديدة، forEach بترجّع undefined',
+          'forEach أسرع بكتير',
+          'map بتشتغل بس على أرقام',
+        ],
+        correct: 1,
+        explanation: 'map بترجّع array جديدة بنفس الطول. forEach بترجّع undefined — غرضها تنفيذ side effects (زي الطباعة) مش التحويل.',
+      },
+      {
+        question: 'هل map() بتعدّل المصفوفة الأصلية؟',
+        options: [
+          'أيوه دايماً',
+          'لأ، بترجّع array جديدة والأصلية تفضل زي ما هي',
+          'أيوه بس لو الـ callback بتعدّل',
+          'بيعتمد على المتصفح',
+        ],
+        correct: 1,
+        explanation: 'map() pure function — مش بتعدّل الأصلية. لكن لو الـ callback نفسها بتعدّل objects جواه، ده ممكن يأثر.',
+      },
+      {
+        question: 'إيه اللي الـ callback بتاع map() بتاخده كأول argument؟',
+        options: [
+          'الـ index',
+          'العنصر الحالي',
+          'المصفوفة نفسها',
+          'الطول',
+        ],
+        correct: 1,
+        explanation: 'الترتيب: (element, index, array). العنصر الأول، بعدين الـ index، وأخيرًا المصفوفة نفسها.',
+      },
+      {
+        question: 'إيه أفضل موقف لاستخدام map()؟',
+        options: [
+          'لما عايز تلف على array وتطبع كل عنصر',
+          'لما عايز تحوّل array لـ array جديدة بنفس الطول',
+          'لما عايز تفلتر array',
+          'لما عايز تجمع array لقيمة واحدة',
+        ],
+        correct: 1,
+        explanation: 'map للـ transformation. للطباعة استخدم forEach، للفلترة filter، للجمع reduce.',
+      },
+      {
+        question: 'إيه الـ output بتاع [1, 2, 3].map((x, i) => x * i)؟',
+        options: ['[1, 4, 9]', '[0, 2, 6]', '[1, 2, 3]', '[3, 6, 9]'],
+        correct: 1,
+        explanation: '1*0=0, 2*1=2, 3*2=6 → [0, 2, 6]. الـ index بيبدأ من 0.',
+      },
+    ],
+
+    useCases: [
+      'تحويل بيانات من API لشكل تاني (normalize)',
+      'تحويل array of objects لـ array of strings (استخراج حقل معين)',
+      'React: `.map()` بتحوّل array لـ JSX elements',
+      'تحويل array of IDs لـ array of URLs',
+      'تنسيق أرقام (add currency, percentages)',
+      'Chaining: `array.filter().map().reduce()`',
+      'تحويل array of strings لـ array of objects',
+      'تطبيق دالة على كل عنصر (transformation)',
+    ],
+
+    whyItsGoodHere:
+      'Array.map() هي أول دالة functional هتتعلمها في JavaScript، وهي الأساس لأي شغل مع arrays. سبب قوتها: (1) بتخلّي الكود declarative — بتوصف إيه اللي عايزه، مش إزاي (2) immutable — الأصلية مش بتتغير، ده مهم جدًا في React و Redux (3) chainable — تقدر تعمل سلسلة من العمليات (4) readability — أي حد يقرا الكود بيفهم على طول. متى تستخدمها: أي مرة محتاج تحوّل array لـ array تانية بنفس الطول. متى لأ: لو محتاج side effects (forEach)، أو فلترة (filter)، أو تجميع (reduce).',
+
+    relatedIdeas: [
+      'Array.filter() — بترجّع array أصغر (العناصر اللي تحقق شرط)',
+      'Array.reduce() — بتجمّع الـ array لقيمة واحدة',
+      'Array.forEach() — للـ side effects، مش للتحويل',
+      'Array.flatMap() — map + flatten في خطوة واحدة',
+      'Array.from() — تحويل iterable لـ array',
+      'Array.of() — إنشاء array من arguments',
+      'Lodash _.map() — نسخة محسّنة بتشتغل على objects كمان',
+      'Immutability — المبدأ اللي map بتعتمد عليه',
+    ],
+
+    mathProblems: [
+      'لو عندك array بـ 1,000,000 عنصر، إيه الـ time complexity بتاع map؟',
+      'لو عندك chain: filter().map().filter()، إيه الـ complexity الكلي؟',
+      'إيه الـ memory overhead بتاع map مقارنة بـ for loop؟ (فكّر: array جديدة)',
+      'لو الـ callback بتاخد 10ms، كم هتاخد map على array بـ 100 عنصر؟',
+      'إيه العلاقة بين عدد العناصر وحجم الـ garbage collection اللي بيحصل؟',
+    ],
+  }, 
   { id: 'canvas-2d', num: 'P4', line: 'api', x: 280, y: 350, slug: 'canvas-2d', href: '/station/canvas-2d', level: 'متوسط', next: 'intersection-obs', title: 'الرسم على الكانفاس', titleEn: 'Canvas 2D', summary: '', date: '', tags: [], whatItDoes: '', explanation: '', codeBreakdown: [], live: PREVIEW_NETWORK, practice: EMPTY_PRACTICE, useCases: [], whyItsGoodHere: '', relatedIdeas: [], mathProblems: [] },
   { id: 'intersection-obs', num: 'P5', line: 'api', x: 100, y: 350, slug: 'intersection-obs', href: '/station/intersection-obs', level: 'متوسط', title: 'مراقب التمرير', titleEn: 'IntersectionObserver', summary: '', date: '', tags: [], whatItDoes: '', explanation: '', codeBreakdown: [], live: PREVIEW_NETWORK, practice: EMPTY_PRACTICE, useCases: [], whyItsGoodHere: '', relatedIdeas: [], mathProblems: [] },
 ];

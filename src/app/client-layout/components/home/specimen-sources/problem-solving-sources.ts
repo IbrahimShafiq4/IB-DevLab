@@ -2227,4 +2227,252 @@ inp.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
 inp.addEventListener('input', run);
 run();`
     },
+
+        // ═══════════════════════════════════════════════════════════════
+    // PS-20 — Convert Sorted Array to BST
+    // ═══════════════════════════════════════════════════════════════
+    'PS-20': {
+        stage: 'dark',
+        html: `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorted Array → BST</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="demo">
+        <div class="row">
+            <label>sorted array (comma separated)</label>
+            <input type="text" id="in" value="-10,-3,0,5,9" dir="ltr">
+        </div>
+        <button id="run">حوّل لـ BST</button>
+        <div class="row">
+            <label>الـ BST</label>
+            <div class="tree" id="tree"></div>
+        </div>
+        <p class="hint">جرّب: -10,-3,0,5,9 · 1,3 · 1,2,3,4,5,6,7</p>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>`,
+        css: `* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: #0A1017;
+    font-family: system-ui, -apple-system, sans-serif;
+    padding: 16px; font-size: 16px;
+}
+
+.demo {
+    background: #131C26; border: 1px solid #2A3846; border-radius: 4px;
+    padding: 20px; width: 100%; max-width: 520px;
+    display: flex; flex-direction: column; gap: 12px;
+    color: #E9EFF5;
+}
+
+.row { display: flex; flex-direction: column; gap: 6px; }
+
+label {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 12px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #8394A5;
+}
+
+input {
+    background: #0A1017; border: 1px solid #2A3846; border-radius: 2px;
+    padding: 8px 12px; color: #E9EFF5;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 16px; outline: none;
+    direction: ltr;
+}
+
+input:focus { border-color: #E3A83A; }
+
+button {
+    padding: 10px 16px; background: #E3A83A; color: #101A24;
+    border: 0; border-radius: 4px; font-size: 15px;
+    font-weight: 600; cursor: pointer; font-family: inherit;
+    transition: opacity 0.16s;
+}
+
+button:hover { opacity: 0.9; }
+
+.tree {
+    background: #0A1017;
+    border: 1px solid #2A3846;
+    border-radius: 2px;
+    padding: 14px;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tree svg {
+    width: 100%;
+    max-height: 260px;
+    display: block;
+}
+
+.tree .empty {
+    color: #6B7C92;
+    font-family: ui-monospace, Consolas, monospace;
+    font-size: 12px;
+}
+
+.hint {
+    font-size: 12px; color: #8394A5;
+    font-family: ui-monospace, Consolas, monospace;
+    line-height: 1.6;
+}`,
+        js: `class TreeNode {
+    constructor(val) {
+        this.val = val;
+        this.left = null;
+        this.right = null;
+    }
+}
+
+function sortedArrayToBST(nums) {
+    function build(left, right) {
+        if (left > right) return null;
+
+        const mid = Math.floor((left + right) / 2);
+        const root = new TreeNode(nums[mid]);
+
+        root.left = build(left, mid - 1);
+        root.right = build(mid + 1, right);
+
+        return root;
+    }
+
+    return build(0, nums.length - 1);
+}
+
+// ─── Tree layout for rendering ───
+function layoutTree(root) {
+    let xc = 0;
+    const nodes = [];
+    const edges = [];
+
+    function visit(n, depth) {
+        if (!n) return;
+        visit(n.left, depth + 1);
+        n._x = xc++;
+        n._y = depth;
+        nodes.push(n);
+        visit(n.right, depth + 1);
+    }
+    visit(root, 0);
+
+    function collect(n) {
+        if (!n) return;
+        if (n.left) edges.push({ from: n, to: n.left });
+        if (n.right) edges.push({ from: n, to: n.right });
+        collect(n.left);
+        collect(n.right);
+    }
+    collect(root);
+
+    return { nodes, edges };
+}
+
+function renderTree(container, root) {
+    container.innerHTML = '';
+
+    if (!root) {
+        const empty = document.createElement('div');
+        empty.className = 'empty';
+        empty.textContent = '(المصفوفة فاضية)';
+        container.appendChild(empty);
+        return;
+    }
+
+    const layout = layoutTree(root);
+    const NODE_R = 20;
+    const X_GAP = 55;
+    const Y_GAP = 62;
+    const maxX = Math.max.apply(null, layout.nodes.map(n => n._x));
+    const maxY = Math.max.apply(null, layout.nodes.map(n => n._y));
+    const W = (maxX + 1) * X_GAP + 30;
+    const H = (maxY + 1) * Y_GAP + 30;
+
+    const ns = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+
+    layout.edges.forEach(e => {
+        const line = document.createElementNS(ns, 'line');
+        line.setAttribute('x1', e.from._x * X_GAP + 15 + NODE_R);
+        line.setAttribute('y1', e.from._y * Y_GAP + 15 + NODE_R);
+        line.setAttribute('x2', e.to._x * X_GAP + 15 + NODE_R);
+        line.setAttribute('y2', e.to._y * Y_GAP + 15 + NODE_R);
+        line.setAttribute('stroke', '#2A3846');
+        line.setAttribute('stroke-width', '2');
+        svg.appendChild(line);
+    });
+
+    layout.nodes.forEach(n => {
+        const cx = n._x * X_GAP + 15 + NODE_R;
+        const cy = n._y * Y_GAP + 15 + NODE_R;
+
+        const c = document.createElementNS(ns, 'circle');
+        c.setAttribute('cx', cx);
+        c.setAttribute('cy', cy);
+        c.setAttribute('r', NODE_R);
+        c.setAttribute('fill', '#131C26');
+        c.setAttribute('stroke', '#5B9DFF');
+        c.setAttribute('stroke-width', '2');
+        svg.appendChild(c);
+
+        const t = document.createElementNS(ns, 'text');
+        t.setAttribute('x', cx);
+        t.setAttribute('y', cy + 5);
+        t.setAttribute('text-anchor', 'middle');
+        t.setAttribute('font-family', 'ui-monospace, monospace');
+        t.setAttribute('font-size', '13');
+        t.setAttribute('font-weight', '700');
+        t.setAttribute('fill', '#E9EFF5');
+        t.textContent = n.val;
+        svg.appendChild(t);
+    });
+
+    container.appendChild(svg);
+}
+
+// ─── Wire up ───
+const inp = document.getElementById('in');
+const treeEl = document.getElementById('tree');
+
+function run() {
+    const nums = inp.value
+        .split(',')
+        .map(s => Number(s.trim()))
+        .filter(n => !isNaN(n));
+
+    if (nums.length === 0) {
+        treeEl.innerHTML = '<div class="empty">✕ اكتب أرقام صحيحة</div>';
+        return;
+    }
+
+    // Verify sorted
+    for (let i = 1; i < nums.length; i++) {
+        if (nums[i] <= nums[i - 1]) {
+            treeEl.innerHTML = '<div class="empty">✕ المصفوفة لازم تكون مرتّبة تصاعديًا (بدون تكرار)</div>';
+            return;
+        }
+    }
+
+    const root = sortedArrayToBST(nums);
+    renderTree(treeEl, root);
+}
+
+document.getElementById('run').onclick = run;
+inp.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+run();`
+    },
 };

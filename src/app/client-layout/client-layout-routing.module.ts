@@ -319,6 +319,12 @@ const routes: Routes = [
         data: { battleId: 'p40' },
         title: 'CSS Battle Project 40'
       },
+      {
+        path: 'css_battle_p41',
+        loadComponent: () => import('./components/structured-components/css-battles/css-battle-page/css-battle-page').then(m => m.CssBattlePageComponent),
+        data: { battleId: 'p41' },
+        title: 'CSS Battle Project 41'
+      },
       // ─── Problem Solving ───
       {
         path: 'problem-solving/roman-to-integer',
@@ -434,6 +440,12 @@ const routes: Routes = [
         data: { problemId: 'maximum-depth-of-binary-tree' },
         title: 'Maximum Depth of Binary Tree'
       },
+      {
+        path: 'problem-solving/sorted-array-to-bst',
+        loadComponent: () => import('./components/structured-components/problem-solving/problem-solving').then(m => m.ProblemSolvingPageComponent),
+        data: { problemId: 'sorted-array-to-bst' },
+        title: 'Convert Sorted Array to BST'
+      },
       // ─── Clean Code (unified — everything routed through clean-code-page) ───
       ...CLEAN_CODE_ROUTES,
 
@@ -446,6 +458,20 @@ const routes: Routes = [
         data: { stationId: 'A-001' }
       },
       {
+        path: 'algorithms/quick-sort',
+        loadComponent: () =>
+          import('../features/station-page/station-page').then(m => m.StationPageComponent),
+        title: 'Quick Sort - IBDevLab',
+        data: { stationId: 'quick-sort' }
+      },
+      {
+        path: 'algorithms/merge-sort',
+        loadComponent: () =>
+          import('../features/station-page/station-page').then(m => m.StationPageComponent),
+        title: 'Merge Sort - IBDevLab',
+        data: { stationId: 'merge-sort' }
+      },
+      {
         path: 'data-structures/linked-list',
         loadComponent: () =>
           import('../features/station-page/station-page').then(m => m.StationPageComponent),
@@ -453,18 +479,18 @@ const routes: Routes = [
         data: { stationId: 'linked-list' }
       },
       {
+        path: 'data-structures/hash-table',
+        loadComponent: () =>
+          import('../features/station-page/station-page').then(m => m.StationPageComponent),
+        title: 'Hash Table - IBDevLab',
+        data: { stationId: 'hash-table' }
+      },
+      {
         path: 'built-in-apis/fetch',
         loadComponent: () =>
           import('../features/station-page/station-page').then(m => m.StationPageComponent),
         title: 'fetch() - IBDevLab',
         data: { stationId: 'fetch' }
-      },
-      {
-        path: 'algorithms/quick-sort',
-        loadComponent: () =>
-          import('../features/station-page/station-page').then(m => m.StationPageComponent),
-        title: 'Quick Sort - IBDevLab',
-        data: { stationId: 'quick-sort' }
       },
       {
         path: 'data-structures/stack',
@@ -479,6 +505,13 @@ const routes: Routes = [
           import('../features/station-page/station-page').then(m => m.StationPageComponent),
         title: 'Promise - IBDevLab',
         data: { stationId: 'promise' }
+      },
+      {
+        path: 'built-in-apis/array-map',
+        loadComponent: () =>
+          import('../features/station-page/station-page').then(m => m.StationPageComponent),
+        title: 'Array.map() - IBDevLab',
+        data: { stationId: 'array-map' }
       },
     ]
   }

@@ -78,7 +78,7 @@ export const CLEAN_CODE_ENTRIES: Record<string, CleanCodeEntry> = {
   return t - r;
 }
 
-const u = { n: 'Ali', a: 30 };
+const u = { n: 'Ibrahim', a: 30 };
 console.log(u.n);`
                     },
                     goodExample: {
@@ -89,7 +89,7 @@ console.log(u.n);`
   return subtotal - taxAmount;
 }
 
-const user = { name: 'Ali', age: 30 };
+const user = { name: 'Ibrahim', age: 30 };
 console.log(user.name);`
                     },
                     explanation: `
@@ -1353,7 +1353,7 @@ ORDER BY c.X, c.Y;`
                     badExample: {
                         title: 'غلط – أسماء بتضلّل',
                         code: `// اسم بيقول List لكن مش List
-var accountList = new { Owner = "Ali", Balance = 500 };
+var accountList = new { Owner = "Ibrahim", Balance = 500 };
 
 // اسمين شبه بعض جداً
 class UserService { }
@@ -1367,7 +1367,7 @@ string orderItems = "item-001";`
                     },
                     goodExample: {
                         title: 'صح – أسماء بتوصف الحقيقة',
-                        code: `var account = new { Owner = "Ali", Balance = 500 };
+                        code: `var account = new { Owner = "Ibrahim", Balance = 500 };
 
 class UserAuthenticator { }
 class UserProfileManager { }
@@ -2882,7 +2882,7 @@ export function sendPackage(person: Person): void {
 }
 
 const person = {
-  firstName: 'Ali',
+  firstName: 'Ibrahim',
   lastName: 'Hassan',
   address: {
     street: 'Main St',
@@ -3854,7 +3854,7 @@ public class PaymentsController : ControllerBase
 {
 }
 
-CreateUser("Ali", "Hassan", "ali@x.com",
+CreateUser("Ibrahim", "Hassan", "ali@x.com",
     "0123", "Street", "Cairo", 30);`
                     },
                     goodExample: {
@@ -3874,7 +3874,7 @@ public class UserRegistrationDto
 
 CreateUser(new UserRegistrationDto
 {
-    FirstName = "Ali",
+    FirstName = "Ibrahim",
     LastName = "Hassan",
     Email = "ali@x.com",
     Phone = "0123",
@@ -3913,7 +3913,7 @@ export class UserService {
 
 const service = new UserService();
 service.createUser({
-  firstName: 'Ali',
+  firstName: 'Ibrahim',
   lastName: 'Hassan',
   email: 'ali@x.com',
   phone: '0123',
@@ -3932,7 +3932,7 @@ service.createUser({
 
 const service = new UserService();
 service.createUser({
-  firstName: 'Ali',
+  firstName: 'Ibrahim',
   lastName: 'Hassan',
   email: 'ali@x.com',
   phone: '0123',
@@ -6082,7 +6082,7 @@ FETCH NEXT @Size ROWS ONLY;`
                     badExample: {
                         title: 'غلط — كل حاجة ملزّقة',
                         code: `int total=subtotal+tax;
-var user=new User{Name="Ali",Age=30};
+var user=new User{Name="Ibrahim",Age=30};
 if(user.Age>=18){SendEmail(user);}
 for(int i=0;i<users.Count;i++){Process(users[i]);}
 var query=users.Where(u=>u.Age>18).Select(u=>u.Name).ToList();`
@@ -6091,7 +6091,7 @@ var query=users.Where(u=>u.Age>18).Select(u=>u.Name).ToList();`
                         title: 'صح — المسافات بتوضح العلاقات',
                         code: `int total = subtotal + tax;
 
-var user = new User { Name = "Ali", Age = 30 };
+var user = new User { Name = "Ibrahim", Age = 30 };
 
 if (user.Age >= 18)
 {
@@ -6123,7 +6123,7 @@ var query = users
                             language: 'typescript',
                             framework: 'TypeScript',
                             code: `const total = subtotal + tax;
-const user = { name: 'Ali', age: 30 };
+const user = { name: 'Ibrahim', age: 30 };
 
 if (user.age >= 18) {
   sendEmail(user);
@@ -6142,7 +6142,7 @@ const query = users
                             language: 'javascript',
                             framework: 'JavaScript',
                             code: `const total = subtotal + tax;
-const user = { name: 'Ali', age: 30 };
+const user = { name: 'Ibrahim', age: 30 };
 
 if (user.age >= 18) {
   sendEmail(user);
@@ -6337,7 +6337,7 @@ ORDER BY u.Name;`
                         title: 'غلط — اختبارات مش منظمة',
                         code: `[Fact]
 public void Test1() {
-    var u=new User{Name="Ali",Age=30};
+    var u=new User{Name="Ibrahim",Age=30};
     var s=new UserService();
     var r=s.RegisterUser(u);
     Assert.True(r);
@@ -6361,7 +6361,7 @@ public void Test1() {
     public void RegisterUser_WithValidData_ReturnsTrue()
     {
         // Arrange
-        var user = new User { Name = "Ali", Age = 30 };
+        var user = new User { Name = "Ibrahim", Age = 30 };
 
         // Act
         var result = _sut.RegisterUser(user);
@@ -6411,7 +6411,7 @@ describe('UserService.registerUser', () => {
 
   it('returns true when user data is valid', () => {
     // Arrange
-    const user = { name: 'Ali', age: 30 };
+    const user = { name: 'Ibrahim', age: 30 };
 
     // Act
     const result = service.registerUser(user);
@@ -6440,7 +6440,7 @@ describe('UserService.registerUser', () => {
   });
 
   it('returns true when user data is valid', () => {
-    const user = { name: 'Ali', age: 30 };
+    const user = { name: 'Ibrahim', age: 30 };
     const result = service.registerUser(user);
     expect(result).toBe(true);
   });
@@ -6462,7 +6462,7 @@ describe('UserService.registerUser', () => {
     [Fact]
     public void RegisterUser_WithValidData_ReturnsTrue()
     {
-        var user = new User { Name = "Ali", Age = 30 };
+        var user = new User { Name = "Ibrahim", Age = 30 };
         var result = _sut.RegisterUser(user);
         Assert.True(result);
     }
@@ -6483,7 +6483,7 @@ describe('UserService.registerUser', () => {
             .Options;
 
         await using var db = new AppDbContext(options);
-        var user = new User { Id = 1, Name = "Ali" };
+        var user = new User { Id = 1, Name = "Ibrahim" };
         db.Users.Add(user);
         await db.SaveChangesAsync();
 
@@ -6494,7 +6494,7 @@ describe('UserService.registerUser', () => {
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal("Ali", result!.Name);
+        Assert.Equal("Ibrahim", result!.Name);
     }
 }`
                         },
@@ -6509,12 +6509,12 @@ CREATE PROCEDURE UserTests.[test GetUser returns correct name]
 AS
 BEGIN
     EXEC tSQLt.FakeTable 'dbo.Users';
-    INSERT INTO dbo.Users (Id, Name) VALUES (1, 'Ali');
+    INSERT INTO dbo.Users (Id, Name) VALUES (1, 'Ibrahim');
 
     CREATE TABLE #Actual (Name NVARCHAR(100));
     INSERT INTO #Actual EXEC dbo.GetUser @Id = 1;
 
-    EXEC tSQLt.AssertEqualsString 'Ali', (SELECT Name FROM #Actual);
+    EXEC tSQLt.AssertEqualsString 'Ibrahim', (SELECT Name FROM #Actual);
 END;
 GO`
                         }
@@ -7790,7 +7790,7 @@ public class UserDto
 var dto = new UserDto
 {
     Id = 1,
-    Name = "Ali",
+    Name = "Ibrahim",
     Email = "ali@x.com",
     LifetimeValue = 12000,
     IsVip = true
